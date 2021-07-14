@@ -5,7 +5,6 @@ import { Box } from "theme-ui";
 import NOM from "src/abis/nomspace/Nom.json";
 import { AbiItem, hexToBytes } from "web3-utils";
 import { Nom } from "src/generated/Nom";
-import { react } from "@babel/types";
 import { ethers } from "ethers";
 
 export const SearchDetail: React.FC = () => {
@@ -22,6 +21,11 @@ export const SearchDetail: React.FC = () => {
       .resolve(ethers.utils.formatBytes32String(name))
       .call()
       .then((resolution: string) => console.log("Resolution: ", resolution));
+
+    nom.methods
+      .nameOwner(ethers.utils.formatBytes32String(name))
+      .call()
+      .then((owner: string) => console.log("Owner: ", owner));
   }, []);
 
   return <Box>Search {name}</Box>;
