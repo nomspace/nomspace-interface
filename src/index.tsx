@@ -42,9 +42,9 @@ if (process.env.REACT_APP_SENTRY_DSN) {
 ReactDOM.render(
   <React.StrictMode>
     <ContractKitProvider
-      dappName="Dahlia"
-      dappDescription="Dahlia"
-      dappUrl="https://app.dahlia.finance"
+      dappName="Nomspace"
+      dappDescription="Nomspace"
+      dappUrl="https://app.nom.space"
       networks={[Mainnet, Alfajores]}
     >
       <ThemeProvider theme={theme}>
