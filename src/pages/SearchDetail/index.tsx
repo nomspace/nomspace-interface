@@ -44,7 +44,7 @@ export const SearchDetail: React.FC = () => {
       <Box>Search {name}</Box>
       <Box>Resolution: {resolution}</Box>
       <Box>Owner: {owner}</Box>
-      <Box>Can be reserved: {parseInt(owner, 16) !== 0 ? "True" : "False"}</Box>
+      <Box>Can be reserved: {parseInt(owner, 16) === 0 ? "True" : "False"}</Box>
     </div>
   );
 };
