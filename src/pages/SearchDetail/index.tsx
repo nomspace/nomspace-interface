@@ -13,6 +13,7 @@ export const SearchDetail: React.FC = () => {
 
   const [resolution, setResolution] = useState("");
   const [owner, setOwner] = useState("");
+  const [expiration, setExpiration] = useState("");
 
   const nom = new kit.web3.eth.Contract(
     NOM.abi as AbiItem[],
@@ -37,6 +38,14 @@ export const SearchDetail: React.FC = () => {
         const reserved = parseInt(owner, 16) !== 0;
         console.log("Reserved: ", reserved);
       });
+
+    nom.methods
+      .expirations(ethers.utils.formatBytes32String(name))
+      .call()
+      .then((expiration: string) => {
+        console.log("Expiration: ", expiration);
+        setExpiration(expiration);
+      });
   }, [name, nom.methods]);
 
   return (
@@ -45,6 +54,10 @@ export const SearchDetail: React.FC = () => {
       <Box>Resolution: {resolution}</Box>
       <Box>Owner: {owner}</Box>
       <Box>Can be reserved: {parseInt(owner, 16) === 0 ? "True" : "False"}</Box>
+      <Box>
+        Expiration:{" "}
+        {new Date(parseInt(expiration) * 1000).toLocaleDateString("en-US")}
+      </Box>
     </div>
   );
 };
