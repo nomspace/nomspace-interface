@@ -25,7 +25,11 @@ export const SearchDetail: React.FC = () => {
     nom.methods
       .nameOwner(ethers.utils.formatBytes32String(name))
       .call()
-      .then((owner: string) => console.log("Owner: ", owner));
+      .then((owner: string) => {
+        console.log("Owner: ", owner);
+        const reserved = parseInt(owner, 16) != 0;
+        console.log("Reserved: ", reserved);
+      });
   }, []);
 
   return <Box>Search {name}</Box>;
