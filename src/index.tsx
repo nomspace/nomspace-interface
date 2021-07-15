@@ -1,4 +1,5 @@
 import "react-app-polyfill/stable";
+import "@celo-tools/use-contractkit/lib/styles.css";
 
 import {
   Alfajores,
@@ -45,7 +46,7 @@ ReactDOM.render(
       dappName="Nomspace"
       dappDescription="Nomspace"
       dappUrl="https://app.nom.space"
-      networks={[Mainnet, Alfajores]}
+      networks={[Alfajores]} // Mainnet
     >
       <ThemeProvider theme={theme}>
         <Provider store={store}>

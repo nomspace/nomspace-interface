@@ -1,15 +1,20 @@
 import { useContractKit } from "@celo-tools/use-contractkit";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box } from "theme-ui";
+import { Box, Button } from "theme-ui";
 import NOM from "src/abis/nomspace/Nom.json";
-import { AbiItem } from "web3-utils";
+import { AbiItem, toWei } from "web3-utils";
 import { Nom } from "src/generated/Nom";
 import { ethers } from "ethers";
 
 export const SearchDetail: React.FC = () => {
   const { name } = useParams<{ name: string }>();
-  const { kit } = useContractKit();
+  const { kit, performActions, network } = useContractKit();
+
+  console.log("network", network);
+
+  const AlfajoresAddress = "0x36C976Da6A6499Cad683064F849afa69CD4dec2e";
+  const MainnetAddress = "0xABf8faBbC071F320F222A526A2e1fBE26429344d";
 
   const [resolution, setResolution] = useState("");
   const [owner, setOwner] = useState("");
@@ -17,7 +22,7 @@ export const SearchDetail: React.FC = () => {
 
   const nom = new kit.web3.eth.Contract(
     NOM.abi as AbiItem[],
-    "0xABf8faBbC071F320F222A526A2e1fBE26429344d"
+    AlfajoresAddress
   ) as unknown as Nom;
 
   React.useEffect(() => {
@@ -28,6 +33,8 @@ export const SearchDetail: React.FC = () => {
         console.log("Resolution: ", resolution);
         setResolution(resolution);
       });
+
+    // TODO: nom.getPastEvents() <--- find all names the user owns.
 
     nom.methods
       .nameOwner(ethers.utils.formatBytes32String(name))
@@ -58,6 +65,26 @@ export const SearchDetail: React.FC = () => {
         Expiration:{" "}
         {new Date(parseInt(expiration) * 1000).toLocaleDateString("en-US")}
       </Box>
+      <Button
+        onClick={() => {
+          performActions((kit) => {
+            // kit is connected to a wallet
+            const nom = new kit.web3.eth.Contract(
+              NOM.abi as AbiItem[],
+              AlfajoresAddress
+            ) as unknown as Nom;
+
+            nom.methods
+              .reserve(ethers.utils.formatBytes32String(name), 600)
+              .send({ from: kit.defaultAccount, gas: 21000 })
+              .then((txn) => {
+                console.log("Transaction: ", txn);
+              });
+          });
+        }}
+      >
+        Reserve
+      </Button>
     </div>
   );
 };
