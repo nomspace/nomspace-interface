@@ -76,7 +76,7 @@ export const SearchDetail: React.FC = () => {
 
             nom.methods
               .reserve(ethers.utils.formatBytes32String(name), 600)
-              .send({ from: kit.defaultAccount, gas: 21000 })
+              .send({ from: kit.defaultAccount, gas: 210000 })
               .then((txn) => {
                 console.log("Transaction: ", txn);
               });
