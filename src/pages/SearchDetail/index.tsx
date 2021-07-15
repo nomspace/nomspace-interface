@@ -79,6 +79,9 @@ export const SearchDetail: React.FC = () => {
               .send({ from: kit.defaultAccount, gas: 210000 })
               .then((txn) => {
                 console.log("Transaction: ", txn);
+              })
+              .catch((e) => {
+                console.log("Error when reserving: ", e);
               });
           });
         }}
