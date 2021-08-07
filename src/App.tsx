@@ -5,8 +5,13 @@ import { Search } from "src/pages/Search";
 import { SearchDetail } from "src/pages/SearchDetail";
 import { Manage } from "src/pages/Manage";
 import { Header } from "src/components/Header";
+import Modal from "react-modal";
 
 const App: React.FC = () => {
+  React.useEffect(() => {
+    Modal.setAppElement("body");
+  });
+
   return (
     <Container sx={{ maxWidth: "100%", width: "auto" }}>
       <Container sx={{ py: 6, px: 4 }}>
