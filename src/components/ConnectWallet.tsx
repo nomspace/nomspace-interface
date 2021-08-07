@@ -8,7 +8,7 @@ export const ConnectWallet: React.FC = () => {
   const { address, connect } = useContractKit();
   return (
     <Card
-      sx={{ cursor: "pointer" }}
+      sx={{ cursor: "pointer", height: "fit-content" }}
       onClick={async () => {
         try {
           await connect();

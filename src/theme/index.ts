@@ -194,7 +194,6 @@ export const preset = {
       lineHeight: "20px",
       cursor: "pointer",
       borderRadius: "6px",
-      height: ["48px", "42px"],
       color: "primaryButtonText",
       bg: "primary",
       px: 4,

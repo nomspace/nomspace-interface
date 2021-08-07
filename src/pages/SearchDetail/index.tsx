@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { isAddress } from "ethers/lib/utils";
 import { QrCode } from "phosphor-react";
 import { QRNameModal } from "src/components/QRNameModal";
+import { SearchBar } from "src/components/SearchBar";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
@@ -34,6 +35,9 @@ export const SearchDetail: React.FC = () => {
 
   return (
     <>
+      <Box mb={4}>
+        <SearchBar size="small" />
+      </Box>
       <Card py={4} px={3}>
         <Flex mb={4}>
           <Heading as="h2" mr={2}>
@@ -179,7 +183,12 @@ export const SearchDetail: React.FC = () => {
           )}
         </Flex>
       </Card>
-      <QRNameModal name={name} address={address} isOpen={showQR} setIsOpen={setShowQR} />
+      <QRNameModal
+        name={name}
+        address={address}
+        isOpen={showQR}
+        setIsOpen={setShowQR}
+      />
     </>
   );
 };
