@@ -1,24 +1,16 @@
 import React from "react";
-import { SideNav } from "src/components/SideNav";
-import { Button, Container, Grid, Text } from "theme-ui";
+import { Container } from "theme-ui";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Search } from "src/pages/Search";
 import { SearchDetail } from "src/pages/SearchDetail";
 import { Manage } from "src/pages/Manage";
-import { useContractKit } from "@celo-tools/use-contractkit";
+import { Header } from "src/components/Header";
 
 const App: React.FC = () => {
-  const { address, connect } = useContractKit();
-
   return (
-    <Grid sx={{ gridTemplateColumns: "auto 1fr", gridGap: 54, my: 6, mx: 4 }}>
-      <SideNav />
-      <Container>
-        {address ? (
-          <Text>{address}</Text>
-        ) : (
-          <Button onClick={connect}>Connect to Wallet</Button>
-        )}
+    <Container sx={{ maxWidth: "100%", width: "auto" }}>
+      <Container sx={{ py: 6, px: 4 }}>
+        <Header />
         <Switch>
           <Route exact path="/">
             <Redirect to="/search" />
@@ -34,7 +26,7 @@ const App: React.FC = () => {
           </Route>
         </Switch>
       </Container>
-    </Grid>
+    </Container>
   );
 };
 

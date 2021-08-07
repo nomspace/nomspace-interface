@@ -30,10 +30,8 @@
   },
   "scripts": {
     "typechain": "typechain --target=web3-v1 ./src/abis/**/*.json --out-dir src/generated",
-    "start": "REACT_APP_CHAIN_ID=42220 yarn start:alfajores",
-    "start:alfajores": "yarn typechain && react-scripts --max_old_space_size=4096 start",
-    "build": "REACT_APP_CHAIN_ID=42220 yarn build:alfajores",
-    "build:alfajores": "yarn typechain && react-scripts --max_old_space_size=4096 build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write ."
@@ -52,7 +50,7 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
-    "@celo-tools/use-contractkit": "1.0.0-beta.13",
+    "@celo-tools/use-contractkit": "^1.0.6",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
     "@reduxjs/toolkit": "^1.6.0",
@@ -66,7 +64,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "theme-ui": "^0.10.0",
-    "web3": "^1.3.5"
+    "web3": "^1.3.5",
+    "web3-utils": "^1.5.1"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": "eslint --cache --fix",

@@ -1,11 +1,7 @@
 import "react-app-polyfill/stable";
 import "@celo-tools/use-contractkit/lib/styles.css";
 
-import {
-  Alfajores,
-  ContractKitProvider,
-  Mainnet,
-} from "@celo-tools/use-contractkit";
+import { ContractKitProvider } from "@celo-tools/use-contractkit";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 import React from "react";
@@ -43,10 +39,11 @@ if (process.env.REACT_APP_SENTRY_DSN) {
 ReactDOM.render(
   <React.StrictMode>
     <ContractKitProvider
-      dappName="Nomspace"
-      dappDescription="Nomspace"
-      dappUrl="https://app.nom.space"
-      networks={[Alfajores]} // Mainnet
+      dapp={{
+        name: "Nomspace",
+        description: "Protocol for name registration",
+        url: "https://app.nom.space",
+      }}
     >
       <ThemeProvider theme={theme}>
         <Provider store={store}>
