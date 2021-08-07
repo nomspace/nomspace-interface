@@ -5,6 +5,7 @@ import { Search } from "src/pages/Search";
 import { SearchDetail } from "src/pages/SearchDetail";
 import { Reserve } from "src/pages/Reserve";
 import { Header } from "src/components/Header";
+import { Footer } from "src/components/Footer";
 import Modal from "react-modal";
 
 const App: React.FC = () => {
@@ -31,6 +32,7 @@ const App: React.FC = () => {
           </Route>
         </Switch>
       </Container>
+      <Footer />
     </Container>
   );
 };
