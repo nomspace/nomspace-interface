@@ -82,7 +82,7 @@ export const preset = {
     },
     logo: {
       fontFamily: "body",
-      color: "accent",
+      color: "primaryText",
       fontSize: [20],
       lineHeight: "28px",
       letterSpacing: "small",

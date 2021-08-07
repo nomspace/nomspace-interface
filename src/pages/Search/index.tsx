@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Button, Flex, Heading, Input } from "theme-ui";
 import { Breakpoint, useBreakpoint } from "src/hooks/useBreakpoint";
 import SearchIcon from "src/icons/SearchIcon.svg";
+import { LogoIcon } from "src/icons/LogoIcon";
 
 const SEARCH_HEIGHT = [48, 90];
 
@@ -16,9 +17,10 @@ export const Search: React.FC = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        mt: ["33%", "15%"],
+        mt: ["33%", "10%"],
       }}
     >
+      <LogoIcon size={128} />
       <Heading as="h1" mb={4}>
         Nomspace
       </Heading>
