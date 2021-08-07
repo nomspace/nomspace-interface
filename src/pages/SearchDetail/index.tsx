@@ -183,12 +183,14 @@ export const SearchDetail: React.FC = () => {
           )}
         </Flex>
       </Card>
-      <QRNameModal
-        name={name}
-        address={address}
-        isOpen={showQR}
-        setIsOpen={setShowQR}
-      />
+      {nom.resolution && nom.resolution !== ZERO_ADDRESS && (
+        <QRNameModal
+          name={name}
+          address={nom.resolution}
+          isOpen={showQR}
+          setIsOpen={setShowQR}
+        />
+      )}
     </>
   );
 };
