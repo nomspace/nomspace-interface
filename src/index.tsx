@@ -1,5 +1,6 @@
 import "react-app-polyfill/stable";
 import "@celo-tools/use-contractkit/lib/styles.css";
+import "src/index.css";
 
 import { ContractKitProvider } from "@celo-tools/use-contractkit";
 import * as Sentry from "@sentry/react";
