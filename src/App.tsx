@@ -3,7 +3,7 @@ import { Container } from "theme-ui";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Search } from "src/pages/Search";
 import { SearchDetail } from "src/pages/SearchDetail";
-import { Manage } from "src/pages/Manage";
+import { Reserve } from "src/pages/Reserve";
 import { Header } from "src/components/Header";
 import Modal from "react-modal";
 
@@ -14,7 +14,7 @@ const App: React.FC = () => {
 
   return (
     <Container sx={{ maxWidth: "100%", width: "auto" }}>
-      <Container sx={{ py: 6, px: 4 }}>
+      <Container sx={{ py: 6, px: [4, "15%"] }}>
         <Header />
         <Switch>
           <Route exact path="/">
@@ -23,11 +23,11 @@ const App: React.FC = () => {
           <Route exact path="/search">
             <Search />
           </Route>
-          <Route path="/search/:name">
+          <Route exact path="/search/:name">
             <SearchDetail />
           </Route>
-          <Route path="/manage">
-            <Manage />
+          <Route exact path="/search/:name/reserve">
+            <Reserve />
           </Route>
         </Switch>
       </Container>

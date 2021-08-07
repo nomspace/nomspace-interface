@@ -1,7 +1,7 @@
 import React from "react";
 import { useNom } from "src/hooks/useNom";
 import { useContractKit } from "@celo-tools/use-contractkit";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Box, Button, Card, Flex, Heading, Spinner } from "theme-ui";
 import { ethers } from "ethers";
 import { BlockText } from "src/components/BlockText";
@@ -16,36 +16,37 @@ import { isAddress } from "ethers/lib/utils";
 import { QrCode } from "phosphor-react";
 import { QRNameModal } from "src/components/QRNameModal";
 import { SearchBar } from "src/components/SearchBar";
-
-const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+import { ZERO_ADDRESS } from "src/constants";
 
 export const SearchDetail: React.FC = () => {
   const { name } = useParams<{ name: string }>();
   const { address, getConnectedKit, network } = useContractKit();
-
   const [nom, refetchNom] = useNom(name);
   const [changeResLoading, setChangeResLoading] = React.useState(false);
   const [changeOwnerLoading, setChangeOwnerLoading] = React.useState(false);
-  const [reserveLoading, setReserveLoading] = React.useState(false);
   const [showQR, setShowQR] = React.useState(false);
+  const history = useHistory();
+
   if (nom == null) {
     return <Spinner />;
   }
   const isOwner = address && nom.owner.toLowerCase() === address.toLowerCase();
 
   return (
-    <>
-      <Box mb={4}>
+    <Flex sx={{ alignItems: "center", flexDirection: "column" }}>
+      <Box sx={{ width: "100%", maxWidth: "800px" }} mb={4}>
         <SearchBar size="small" />
       </Box>
-      <Card py={4} px={3}>
+      <Card sx={{ width: "100%", maxWidth: "800px" }} py={4} px={3}>
         <Flex mb={4}>
           <Heading as="h2" mr={2}>
             {name}.nom
           </Heading>
-          <Box sx={{ cursor: "pointer" }} onClick={() => setShowQR(true)}>
-            <QrCode size={32} />
-          </Box>
+          {nom.resolution !== ZERO_ADDRESS && (
+            <Box sx={{ cursor: "pointer" }} onClick={() => setShowQR(true)}>
+              <QrCode size={32} />
+            </Box>
+          )}
         </Flex>
         <BlockText variant="primary">Resolution</BlockText>
         <BlockText mb={2}>{shortenAddress(nom.resolution, 5)}</BlockText>
@@ -145,39 +146,13 @@ export const SearchDetail: React.FC = () => {
         </BlockText>
         <Flex sx={{ justifyContent: "center", mt: 6 }}>
           {nom.owner === ZERO_ADDRESS ? (
-            reserveLoading ? (
-              <Spinner />
-            ) : (
-              <Button
-                onClick={async () => {
-                  const kit = await getConnectedKit();
-                  // kit is connected to a wallet
-                  const nom = new kit.web3.eth.Contract(
-                    NomMetadata.abi as AbiItem[],
-                    NOM[network.chainId]
-                  ) as unknown as Nom;
-
-                  try {
-                    setReserveLoading(true);
-                    const tx = await nom.methods
-                      .reserve(ethers.utils.formatBytes32String(name), 600)
-                      .send({
-                        from: kit.defaultAccount,
-                        gasPrice: DEFAULT_GAS_PRICE,
-                        gas: 2e7,
-                      });
-                    toastTx(tx.transactionHash);
-                    refetchNom();
-                  } catch (e) {
-                    toast(e.message);
-                  } finally {
-                    setReserveLoading(false);
-                  }
-                }}
-              >
-                Reserve
-              </Button>
-            )
+            <Button
+              onClick={() => {
+                history.push(`/search/${name}/reserve`);
+              }}
+            >
+              Reserve
+            </Button>
           ) : (
             <BlockText>Name has already been reserved.</BlockText>
           )}
@@ -191,6 +166,6 @@ export const SearchDetail: React.FC = () => {
           setIsOpen={setShowQR}
         />
       )}
-    </>
+    </Flex>
   );
 };
