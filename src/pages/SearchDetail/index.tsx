@@ -31,7 +31,9 @@ export const SearchDetail: React.FC = () => {
 
   return (
     <Card py={4} px={3}>
-      <Heading as="h2">{name}.nom</Heading>
+      <Heading as="h2" mb={4}>
+        {name}.nom
+      </Heading>
       <BlockText variant="primary">Resolution</BlockText>
       <BlockText mb={2}>{shortenAddress(nom.resolution, 5)}</BlockText>
       {changeResLoading ? (
