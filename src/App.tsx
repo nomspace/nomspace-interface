@@ -32,7 +32,6 @@ const App: React.FC = () => {
           </Route>
         </Switch>
       </Container>
-      <Footer />
     </Container>
   );
 };
