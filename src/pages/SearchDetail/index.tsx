@@ -17,11 +17,14 @@ import { QrCode } from "phosphor-react";
 import { QRNameModal } from "src/components/QRNameModal";
 import { SearchBar } from "src/components/SearchBar";
 import { ZERO_ADDRESS } from "src/constants";
+import { formatName } from "src/utils/name";
 
 export const SearchDetail: React.FC = () => {
   const { name } = useParams<{ name: string }>();
+  const nameFormatted = formatName(name);
+
   const { address, getConnectedKit, network } = useContractKit();
-  const [nom, refetchNom] = useNom(name);
+  const [nom, refetchNom] = useNom(nameFormatted);
   const [changeResLoading, setChangeResLoading] = React.useState(false);
   const [changeOwnerLoading, setChangeOwnerLoading] = React.useState(false);
   const [showQR, setShowQR] = React.useState(false);
@@ -71,7 +74,7 @@ export const SearchDetail: React.FC = () => {
                 setChangeResLoading(true);
                 const tx = await nom.methods
                   .changeResolution(
-                    ethers.utils.formatBytes32String(name),
+                    ethers.utils.formatBytes32String(nameFormatted),
                     nextResolution
                   )
                   .send({
@@ -116,7 +119,7 @@ export const SearchDetail: React.FC = () => {
                 setChangeOwnerLoading(true);
                 const tx = await nom.methods
                   .changeNameOwner(
-                    ethers.utils.formatBytes32String(name),
+                    ethers.utils.formatBytes32String(nameFormatted),
                     nextOwner
                   )
                   .send({

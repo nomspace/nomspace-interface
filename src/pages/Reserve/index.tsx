@@ -27,11 +27,14 @@ import { useCUSD } from "src/hooks/useCUSD";
 import { StableToken } from "@celo/contractkit";
 import { MaxUint256 } from "@ethersproject/constants";
 import { useNomFee } from "src/hooks/useNomFee";
+import { formatName } from "src/utils/name";
 
 export const Reserve: React.FC = () => {
   const { name } = useParams<{ name: string }>();
+  const nameFormatted = formatName(name);
+
   const { getConnectedKit, network } = useContractKit();
-  const [nom, refetchNom] = useNom(name);
+  const [nom, refetchNom] = useNom(nameFormatted);
   const [years, setYears] = React.useState("1");
   const [cost, setCost] = React.useState("5");
   const [approveLoading, setApproveLoading] = React.useState(false);
@@ -88,7 +91,7 @@ export const Reserve: React.FC = () => {
           setReserveLoading(true);
           const tx = await nom.methods
             .reserve(
-              ethers.utils.formatBytes32String(name),
+              ethers.utils.formatBytes32String(nameFormatted),
               Math.floor(Number(years) * YEAR_IN_SECONDS)
             )
             .send({
