@@ -12,7 +12,7 @@ import { Provider } from "react-redux";
 import store from "src/state";
 import theme from "src/theme";
 import { ThemeProvider } from "theme-ui";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
@@ -49,9 +49,9 @@ ReactDOM.render(
     >
       <ThemeProvider theme={theme}>
         <Provider store={store}>
-          <BrowserRouter>
+          <Router>
             <App />
-          </BrowserRouter>
+          </Router>
         </Provider>
       </ThemeProvider>
     </ContractKitProvider>
