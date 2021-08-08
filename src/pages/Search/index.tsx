@@ -1,16 +1,9 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
-import { Button, Flex, Heading, Input } from "theme-ui";
-import { Breakpoint, useBreakpoint } from "src/hooks/useBreakpoint";
-import SearchIcon from "src/icons/SearchIcon.svg";
+import { Box, Flex, Heading } from "theme-ui";
 import { LogoIcon } from "src/icons/LogoIcon";
-
-const SEARCH_HEIGHT = [48, 90];
+import { SearchBar } from "src/components/SearchBar";
 
 export const Search: React.FC = () => {
-  const searchInput = React.useRef<any>(null);
-  const history = useHistory();
-  const breakpoint = useBreakpoint();
   return (
     <Flex
       sx={{
@@ -20,57 +13,13 @@ export const Search: React.FC = () => {
         mt: ["33%", "10%"],
       }}
     >
-      <LogoIcon size={128} />
+      <Box sx={{ fill: "text" }}>
+        <LogoIcon size={128} />
+      </Box>
       <Heading as="h1" mb={4}>
         Nomspace
       </Heading>
-      <Flex
-        sx={{
-          "form::before": {
-            content: '""',
-            position: "absolute",
-            height: 28,
-            width: 28,
-            transform: ["translate(8px, 8px)", "translate(16px, 32px)"],
-            backgroundColor: "var(--theme-ui-colors-text)",
-            background: `url(${SearchIcon}) no-repeat`,
-          },
-          width: "100%",
-          justifyContent: "center",
-        }}
-      >
-        <form
-          style={{ width: "100%", maxWidth: 1000 }}
-          onSubmit={(e) => {
-            const searchTerm = searchInput?.current.value;
-            history.push(`/search/${searchTerm}`);
-            e.preventDefault();
-          }}
-        >
-          <Flex>
-            <Input
-              sx={{
-                pl: [6, 7],
-                height: SEARCH_HEIGHT,
-                width: ["100%"],
-                backgroundColor: "secondaryBackground",
-                border: "none",
-                borderRadius: "6px 0 0 6px",
-              }}
-              ref={searchInput}
-              placeholder="Search name"
-            />
-            {breakpoint === Breakpoint.DESKTOP && (
-              <Button
-                sx={{ height: SEARCH_HEIGHT, borderRadius: "0 6px 6px 0" }}
-                type="submit"
-              >
-                Search
-              </Button>
-            )}
-          </Flex>
-        </form>
-      </Flex>
+      <SearchBar />
     </Flex>
   );
 };

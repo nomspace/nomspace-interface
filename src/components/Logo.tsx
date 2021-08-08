@@ -14,7 +14,7 @@ export const Logo: React.FC = () => {
         history.push("/");
       }}
     >
-      <Box sx={{ color: "primaryText" }} mr={2}>
+      <Box sx={{ fill: "text" }} mr={2}>
         <LogoIcon />
       </Box>
       {breakpoint === Breakpoint.DESKTOP && (

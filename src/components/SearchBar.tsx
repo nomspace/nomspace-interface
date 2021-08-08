@@ -1,8 +1,9 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Breakpoint, useBreakpoint } from "src/hooks/useBreakpoint";
-import SearchIcon from "src/icons/SearchIcon.svg";
-import { Button, Flex, Input } from "theme-ui";
+import WhiteSearchIcon from "src/icons/WhiteSearchIcon.svg";
+import BlackSearchIcon from "src/icons/BlackSearchIcon.svg";
+import { Button, Flex, Input, useColorMode } from "theme-ui";
 
 const SEARCH_HEIGHT = [56, 90];
 const TRANSFORM = ["translate(8px, 12px)", "translate(16px, 32px)"];
@@ -15,6 +16,7 @@ export const SearchBar: React.FC<IProps> = ({ size }) => {
   const searchInput = React.useRef<any>(null);
   const history = useHistory();
   const breakpoint = useBreakpoint();
+  const [colorMode] = useColorMode();
 
   let height;
   let transform;
@@ -39,7 +41,9 @@ export const SearchBar: React.FC<IProps> = ({ size }) => {
           width: 28,
           transform: transform,
           backgroundColor: "var(--theme-ui-colors-text)",
-          background: `url(${SearchIcon}) no-repeat`,
+          background: `url(${
+            colorMode === "light" ? BlackSearchIcon : WhiteSearchIcon
+          }) no-repeat`,
         },
         width: "100%",
         justifyContent: "center",
@@ -49,7 +53,9 @@ export const SearchBar: React.FC<IProps> = ({ size }) => {
         style={{ width: "100%", maxWidth: 1000 }}
         onSubmit={(e) => {
           const searchTerm = searchInput?.current.value;
-          history.push(`/search/${searchTerm}`);
+          if (searchTerm && searchTerm !== "") {
+            history.push(`/search/${searchTerm}`);
+          }
           e.preventDefault();
         }}
       >
