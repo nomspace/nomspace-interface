@@ -6,6 +6,7 @@ import { SearchDetail } from "src/pages/SearchDetail";
 import { Reserve } from "src/pages/Reserve";
 import { Header } from "src/components/Header";
 import Modal from "react-modal";
+import { Footer } from "src/components/Footer";
 
 const App: React.FC = () => {
   React.useEffect(() => {
@@ -31,6 +32,7 @@ const App: React.FC = () => {
           </Route>
         </Switch>
       </Container>
+      <Footer />
     </Container>
   );
 };
