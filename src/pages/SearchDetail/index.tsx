@@ -142,11 +142,20 @@ export const SearchDetail: React.FC = () => {
           </Button>
         )}
         <BlockText variant="primary">Expiration</BlockText>
-        <BlockText>
+        <BlockText mb={2}>
           {new Date(parseInt(nom.expiration) * 1000).toLocaleDateString(
             "en-US"
           )}
         </BlockText>
+        {nom.owner !== ZERO_ADDRESS && isOwner && (
+            <Button
+              onClick={() => {
+                history.push(`/search/${name}/extend`);
+              }}
+            >
+              Extend
+            </Button>
+          )}
         <Flex sx={{ justifyContent: "center", mt: 6 }}>
           {nom.owner === ZERO_ADDRESS ? (
             <Button
