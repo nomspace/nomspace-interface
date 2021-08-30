@@ -4,6 +4,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { Search } from "src/pages/Search";
 import { SearchDetail } from "src/pages/SearchDetail";
 import { Reserve } from "src/pages/Reserve";
+import { Extend } from "src/pages/Extend";
 import { Header } from "src/components/Header";
 import Modal from "react-modal";
 import { Footer } from "src/components/Footer";
@@ -29,6 +30,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/search/:name/reserve">
             <Reserve />
+          </Route>
+          <Route exact path="/search/:name/extend">
+            <Extend />
           </Route>
         </Switch>
       </Container>
