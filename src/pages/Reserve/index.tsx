@@ -96,7 +96,6 @@ export const Reserve: React.FC = () => {
             .send({
               from: kit.defaultAccount,
               gasPrice: DEFAULT_GAS_PRICE,
-              gas: 2e7,
             });
           toastTx(tx.transactionHash);
           refetchNom();

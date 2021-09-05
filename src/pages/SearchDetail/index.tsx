@@ -80,7 +80,6 @@ export const SearchDetail: React.FC = () => {
                   .send({
                     from: kit.defaultAccount,
                     gasPrice: DEFAULT_GAS_PRICE,
-                    gas: 2e7,
                   });
                 toastTx(tx.transactionHash);
                 refetchNom();
@@ -125,7 +124,6 @@ export const SearchDetail: React.FC = () => {
                   .send({
                     from: kit.defaultAccount,
                     gasPrice: DEFAULT_GAS_PRICE,
-                    gas: 2e7,
                   });
                 toastTx(tx.transactionHash);
                 refetchNom();
@@ -148,14 +146,14 @@ export const SearchDetail: React.FC = () => {
           )}
         </BlockText>
         {nom.owner !== ZERO_ADDRESS && isOwner && (
-            <Button
-              onClick={() => {
-                history.push(`/search/${name}/extend`);
-              }}
-            >
-              Extend
-            </Button>
-          )}
+          <Button
+            onClick={() => {
+              history.push(`/search/${name}/extend`);
+            }}
+          >
+            Extend
+          </Button>
+        )}
         <Flex sx={{ justifyContent: "center", mt: 6 }}>
           {nom.owner === ZERO_ADDRESS ? (
             <Button

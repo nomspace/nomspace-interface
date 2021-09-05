@@ -62,7 +62,6 @@ export const Extend: React.FC = () => {
             .send({
               from: kit.defaultAccount,
               gasPrice: DEFAULT_GAS_PRICE,
-              gas: 2e7,
             });
           toastTx(tx.transactionHash);
           refetchCUSD();
@@ -97,7 +96,6 @@ export const Extend: React.FC = () => {
             .send({
               from: kit.defaultAccount,
               gasPrice: DEFAULT_GAS_PRICE,
-              gas: 2e7,
             });
           toastTx(tx.transactionHash);
           refetchNom();
@@ -149,8 +147,11 @@ export const Extend: React.FC = () => {
             New Expiration
           </Heading>
           <Heading color="primaryText">
-            {new Date((parseInt(nom.expiration) + Math.floor(Number(years) * YEAR_IN_SECONDS)) * 1000).toLocaleDateString(
-            "en-US")}
+            {new Date(
+              (parseInt(nom.expiration) +
+                Math.floor(Number(years) * YEAR_IN_SECONDS)) *
+                1000
+            ).toLocaleDateString("en-US")}
           </Heading>
         </Flex>
         <Text variant="form">Years to extend</Text>
