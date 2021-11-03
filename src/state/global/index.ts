@@ -4,6 +4,7 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 export enum Page {
   SEARCH = "search",
   MANAGE = "manage",
+  STATS = "stats",
 }
 
 interface GlobalState {
