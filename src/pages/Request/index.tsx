@@ -45,7 +45,7 @@ export const Request: React.FC = () => {
       const cUSD = await kit.contracts.getStableToken(StableToken.cUSD);
       const tx = await cUSD
         .transfer(nom.resolution, toWei(amount))
-        .send({ from: kit.defaultAccount });
+        .send({ from: kit.defaultAccount, gasPrice: toWei("0.5", "gwei") });
       toastTx(await tx.getHash());
       history.push(`/${Page.SEARCH}/${name}`);
     },
