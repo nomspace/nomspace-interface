@@ -163,6 +163,8 @@ export const SearchDetail: React.FC = () => {
             >
               Reserve
             </Button>
+          ) : nom.owner === address ? (
+            <BlockText>You own this name!</BlockText>
           ) : (
             <BlockText>Name has already been reserved.</BlockText>
           )}
