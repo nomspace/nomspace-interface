@@ -2,8 +2,8 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 
 // Typings
 export enum Page {
-  SEARCH = "SEARCH",
-  MANAGE = "MANAGE",
+  SEARCH = "search",
+  MANAGE = "manage",
 }
 
 interface GlobalState {
