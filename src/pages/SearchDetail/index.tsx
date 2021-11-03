@@ -13,11 +13,12 @@ import { AbiItem } from "web3-utils";
 import { toastTx } from "src/utils/toastTx";
 import { toast } from "react-toastify";
 import { isAddress } from "ethers/lib/utils";
-import { QrCode } from "phosphor-react";
 import { QRNameModal } from "src/components/QRNameModal";
 import { SearchBar } from "src/components/SearchBar";
 import { ZERO_ADDRESS } from "src/constants";
 import { formatName } from "src/utils/name";
+import QRCode from "qrcode.react";
+import { BlockscoutAddressLink } from "src/components/BlockscoutAddressLink";
 
 export const SearchDetail: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -41,60 +42,59 @@ export const SearchDetail: React.FC = () => {
         <SearchBar size="small" />
       </Box>
       <Card sx={{ width: "100%", maxWidth: "800px" }} py={4} px={3}>
-        <Flex mb={4}>
-          <Heading as="h2" mr={2}>
-            {name}.nom
-          </Heading>
-          {nom.resolution !== ZERO_ADDRESS && (
-            <Box sx={{ cursor: "pointer" }} onClick={() => setShowQR(true)}>
-              <QrCode size={32} />
-            </Box>
-          )}
-        </Flex>
-        <BlockText variant="primary">Resolution</BlockText>
-        <BlockText mb={2}>{shortenAddress(nom.resolution, 5)}</BlockText>
-        {changeResLoading ? (
-          <Spinner />
-        ) : (
-          <Button
-            onClick={async () => {
-              const kit = await getConnectedKit();
-              // kit is connected to a wallet
-              const nom = new kit.web3.eth.Contract(
-                NomMetadata.abi as AbiItem[],
-                NOM[network.chainId]
-              ) as unknown as Nom;
-              const nextResolution = prompt("Enter new owner address");
-              if (!nextResolution || !isAddress(nextResolution)) {
-                alert("Invalid address. Please try again.");
-                return;
-              }
+        <Heading as="h2" mr={2}>
+          {name}.nom
+        </Heading>
+        <Flex sx={{ alignItems: "center", flexDirection: "column" }}>
+          <QRCode value={`celo://wallet/pay?address=${address}`} />
+          <Flex sx={{ alignItems: "center" }}>
+            <BlockscoutAddressLink address={nom.resolution}>
+              <BlockText mt={2}>{shortenAddress(nom.resolution, 5)}</BlockText>
+            </BlockscoutAddressLink>
+            {changeResLoading ? (
+              <Spinner />
+            ) : (
+              <Button
+                sx={{ p: 1, fontSize: 1, ml: 2, mt: 2 }}
+                onClick={async () => {
+                  const kit = await getConnectedKit();
+                  // kit is connected to a wallet
+                  const nom = new kit.web3.eth.Contract(
+                    NomMetadata.abi as AbiItem[],
+                    NOM[network.chainId]
+                  ) as unknown as Nom;
+                  const nextResolution = prompt("Enter new owner address");
+                  if (!nextResolution || !isAddress(nextResolution)) {
+                    alert("Invalid address. Please try again.");
+                    return;
+                  }
 
-              try {
-                setChangeResLoading(true);
-                const tx = await nom.methods
-                  .changeResolution(
-                    ethers.utils.formatBytes32String(nameFormatted),
-                    nextResolution
-                  )
-                  .send({
-                    from: kit.defaultAccount,
-                    gasPrice: DEFAULT_GAS_PRICE,
-                  });
-                toastTx(tx.transactionHash);
-                refetchNom();
-              } catch (e) {
-                toast(e.message);
-              } finally {
-                setChangeResLoading(false);
-              }
-            }}
-            mb={4}
-            disabled={!isOwner}
-          >
-            Change
-          </Button>
-        )}
+                  try {
+                    setChangeResLoading(true);
+                    const tx = await nom.methods
+                      .changeResolution(
+                        ethers.utils.formatBytes32String(nameFormatted),
+                        nextResolution
+                      )
+                      .send({
+                        from: kit.defaultAccount,
+                        gasPrice: DEFAULT_GAS_PRICE,
+                      });
+                    toastTx(tx.transactionHash);
+                    refetchNom();
+                  } catch (e: any) {
+                    toast(e.message);
+                  } finally {
+                    setChangeResLoading(false);
+                  }
+                }}
+                disabled={!isOwner}
+              >
+                Change
+              </Button>
+            )}
+          </Flex>
+        </Flex>
         <BlockText variant="primary">Owner</BlockText>
         <BlockText mb={2}>{shortenAddress(nom.owner, 5)}</BlockText>
         {changeOwnerLoading ? (
