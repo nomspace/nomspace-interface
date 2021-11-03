@@ -217,6 +217,15 @@ export const SearchDetail: React.FC = () => {
               mr={2}
               mb={1}
               onClick={async () => {
+                await sendCUSD("10");
+              }}
+            >
+              Tip 10 cUSD
+            </Button>
+            <Button
+              mr={2}
+              mb={1}
+              onClick={async () => {
                 const amount = prompt("Enter a custom tip amount");
                 if (
                   amount === null ||
