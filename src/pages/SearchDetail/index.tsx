@@ -57,7 +57,7 @@ export const SearchDetail: React.FC = () => {
         <SearchBar size="small" />
       </Box>
       <Card sx={{ width: "100%", maxWidth: "800px" }} py={4} px={3}>
-        <Heading as="h2" mr={2}>
+        <Heading as="h2" mb={4}>
           {name}.nom
         </Heading>
         <Flex sx={{ alignItems: "center", flexDirection: "column" }}>
@@ -110,106 +110,112 @@ export const SearchDetail: React.FC = () => {
             )}
           </Flex>
         </Flex>
-        <BlockText variant="primary">Owner</BlockText>
-        <BlockText mb={2}>{shortenAddress(nom.owner, 5)}</BlockText>
-        {changeOwnerLoading ? (
-          <Spinner />
-        ) : (
-          <Button
-            onClick={async () => {
-              const kit = await getConnectedKit();
-              // kit is connected to a wallet
-              const nom = new kit.web3.eth.Contract(
-                NomMetadata.abi as AbiItem[],
-                NOM[network.chainId]
-              ) as unknown as Nom;
-              const nextOwner = prompt("Enter new owner address");
-              if (!nextOwner || !isAddress(nextOwner)) {
-                alert("Invalid address. Please try again.");
-                return;
-              }
-
-              try {
-                setChangeOwnerLoading(true);
-                const tx = await nom.methods
-                  .changeNameOwner(
-                    ethers.utils.formatBytes32String(nameFormatted),
-                    nextOwner
-                  )
-                  .send({
-                    from: kit.defaultAccount,
-                    gasPrice: DEFAULT_GAS_PRICE,
-                  });
-                toastTx(tx.transactionHash);
-                refetchNom();
-              } catch (e) {
-                toast(e.message);
-              } finally {
-                setChangeOwnerLoading(false);
-              }
-            }}
-            mb={4}
-            disabled={!isOwner}
-          >
-            Transfer
-          </Button>
-        )}
-        <BlockText variant="primary">Expiration</BlockText>
-        <BlockText mb={2}>
-          {new Date(parseInt(nom.expiration) * 1000).toLocaleDateString(
-            "en-US"
-          )}
-        </BlockText>
         {nom.owner !== ZERO_ADDRESS && isOwner && (
-          <Button
-            onClick={() => {
-              history.push(`/search/${name}/extend`);
-            }}
-            mb={4}
-          >
-            Extend
-          </Button>
+          <>
+            <BlockText variant="primary">Owner</BlockText>
+            <BlockText mb={2}>{shortenAddress(nom.owner, 5)}</BlockText>
+            {changeOwnerLoading ? (
+              <Spinner />
+            ) : (
+              <Button
+                onClick={async () => {
+                  const kit = await getConnectedKit();
+                  // kit is connected to a wallet
+                  const nom = new kit.web3.eth.Contract(
+                    NomMetadata.abi as AbiItem[],
+                    NOM[network.chainId]
+                  ) as unknown as Nom;
+                  const nextOwner = prompt("Enter new owner address");
+                  if (!nextOwner || !isAddress(nextOwner)) {
+                    alert("Invalid address. Please try again.");
+                    return;
+                  }
+
+                  try {
+                    setChangeOwnerLoading(true);
+                    const tx = await nom.methods
+                      .changeNameOwner(
+                        ethers.utils.formatBytes32String(nameFormatted),
+                        nextOwner
+                      )
+                      .send({
+                        from: kit.defaultAccount,
+                        gasPrice: DEFAULT_GAS_PRICE,
+                      });
+                    toastTx(tx.transactionHash);
+                    refetchNom();
+                  } catch (e) {
+                    toast(e.message);
+                  } finally {
+                    setChangeOwnerLoading(false);
+                  }
+                }}
+                mb={4}
+                disabled={!isOwner}
+              >
+                Transfer
+              </Button>
+            )}
+          </>
+        )}
+        {nom.owner !== ZERO_ADDRESS && isOwner && (
+          <>
+            <BlockText variant="primary">Expiration</BlockText>
+            <BlockText mb={2}>
+              {new Date(parseInt(nom.expiration) * 1000).toLocaleDateString(
+                "en-US"
+              )}
+            </BlockText>
+            <Button
+              onClick={() => {
+                history.push(`/search/${name}/extend`);
+              }}
+              mb={4}
+            >
+              Extend
+            </Button>
+          </>
         )}
         <br />
         {nom.resolution !== ZERO_ADDRESS && (
-          <>
-            <BlockText variant="primary">Tips</BlockText>
-            <Flex mt={1}>
-              <Button
-                mr={2}
-                onClick={async () => {
-                  await sendCUSD("1");
-                }}
-              >
-                Tip 1 cUSD
-              </Button>
-              <Button
-                mr={2}
-                onClick={async () => {
-                  await sendCUSD("5");
-                }}
-              >
-                Tip 5 cUSD
-              </Button>
-              <Button
-                mr={2}
-                onClick={async () => {
-                  const amount = prompt("Enter a custom tip amount");
-                  if (
-                    amount === null ||
-                    isNaN(Number(amount)) ||
-                    Number(amount) <= 0
-                  ) {
-                    alert("Invalid amount specified");
-                    return;
-                  }
-                  await sendCUSD(amount);
-                }}
-              >
-                Custom tip
-              </Button>
-            </Flex>
-          </>
+          <Flex sx={{ mt: 1, justifyContent: "center", flexWrap: "wrap" }}>
+            <Button
+              mr={2}
+              mb={1}
+              onClick={async () => {
+                await sendCUSD("1");
+              }}
+            >
+              Tip 1 cUSD
+            </Button>
+            <Button
+              mr={2}
+              mb={1}
+              onClick={async () => {
+                await sendCUSD("5");
+              }}
+            >
+              Tip 5 cUSD
+            </Button>
+            <Button
+              mr={2}
+              mb={1}
+              onClick={async () => {
+                const amount = prompt("Enter a custom tip amount");
+                if (
+                  amount === null ||
+                  isNaN(Number(amount)) ||
+                  Number(amount) <= 0
+                ) {
+                  alert("Invalid amount specified");
+                  return;
+                }
+                await sendCUSD(amount);
+              }}
+            >
+              Custom tip
+            </Button>
+          </Flex>
         )}
         <Flex sx={{ justifyContent: "center", mt: 6 }}>
           {nom.owner === ZERO_ADDRESS ? (
