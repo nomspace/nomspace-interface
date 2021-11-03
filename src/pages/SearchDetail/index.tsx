@@ -3,7 +3,7 @@ import { useNom } from "src/hooks/useNom";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import { StableToken } from "@celo/contractkit";
 import { useParams, useHistory } from "react-router-dom";
-import { Box, Button, Card, Flex, Heading, Spinner } from "theme-ui";
+import { Box, Button, Card, Divider, Flex, Heading, Spinner } from "theme-ui";
 import { ethers } from "ethers";
 import { BlockText } from "src/components/BlockText";
 import { shortenAddress } from "src/utils/address";
@@ -52,7 +52,13 @@ export const SearchDetail: React.FC = () => {
   const isOwner = address && nom.owner.toLowerCase() === address.toLowerCase();
 
   return (
-    <Flex sx={{ alignItems: "center", flexDirection: "column" }}>
+    <Flex
+      sx={{
+        alignItems: "center",
+        flexDirection: "column",
+        textAlign: "center",
+      }}
+    >
       <Box sx={{ width: "100%", maxWidth: "800px" }} mb={4}>
         <SearchBar size="small" />
       </Box>
@@ -60,7 +66,7 @@ export const SearchDetail: React.FC = () => {
         <Heading as="h2" mb={4}>
           {name}.nom
         </Heading>
-        <Flex sx={{ alignItems: "center", flexDirection: "column" }}>
+        <Flex sx={{ alignItems: "center", flexDirection: "column", mb: 2 }}>
           <QRCode value={`celo://wallet/pay?address=${address}`} />
           <Flex sx={{ alignItems: "center" }}>
             <BlockscoutAddressLink address={nom.resolution}>
@@ -112,68 +118,78 @@ export const SearchDetail: React.FC = () => {
         </Flex>
         {nom.owner !== ZERO_ADDRESS && isOwner && (
           <>
+            <Divider />
             <BlockText variant="primary">Owner</BlockText>
-            <BlockText mb={2}>{shortenAddress(nom.owner, 5)}</BlockText>
-            {changeOwnerLoading ? (
-              <Spinner />
-            ) : (
-              <Button
-                onClick={async () => {
-                  const kit = await getConnectedKit();
-                  // kit is connected to a wallet
-                  const nom = new kit.web3.eth.Contract(
-                    NomMetadata.abi as AbiItem[],
-                    NOM[network.chainId]
-                  ) as unknown as Nom;
-                  const nextOwner = prompt("Enter new owner address");
-                  if (!nextOwner || !isAddress(nextOwner)) {
-                    alert("Invalid address. Please try again.");
-                    return;
-                  }
+            <Flex
+              sx={{ alignItems: "center", justifyContent: "center", mb: 2 }}
+            >
+              <BlockText>{shortenAddress(nom.owner, 5)}</BlockText>
+              {changeOwnerLoading ? (
+                <Spinner />
+              ) : (
+                <Button
+                  sx={{ p: 1, fontSize: 1, ml: 2 }}
+                  onClick={async () => {
+                    const kit = await getConnectedKit();
+                    // kit is connected to a wallet
+                    const nom = new kit.web3.eth.Contract(
+                      NomMetadata.abi as AbiItem[],
+                      NOM[network.chainId]
+                    ) as unknown as Nom;
+                    const nextOwner = prompt("Enter new owner address");
+                    if (!nextOwner || !isAddress(nextOwner)) {
+                      alert("Invalid address. Please try again.");
+                      return;
+                    }
 
-                  try {
-                    setChangeOwnerLoading(true);
-                    const tx = await nom.methods
-                      .changeNameOwner(
-                        ethers.utils.formatBytes32String(nameFormatted),
-                        nextOwner
-                      )
-                      .send({
-                        from: kit.defaultAccount,
-                        gasPrice: DEFAULT_GAS_PRICE,
-                      });
-                    toastTx(tx.transactionHash);
-                    refetchNom();
-                  } catch (e) {
-                    toast(e.message);
-                  } finally {
-                    setChangeOwnerLoading(false);
-                  }
-                }}
-                mb={4}
-                disabled={!isOwner}
-              >
-                Transfer
-              </Button>
-            )}
+                    try {
+                      setChangeOwnerLoading(true);
+                      const tx = await nom.methods
+                        .changeNameOwner(
+                          ethers.utils.formatBytes32String(nameFormatted),
+                          nextOwner
+                        )
+                        .send({
+                          from: kit.defaultAccount,
+                          gasPrice: DEFAULT_GAS_PRICE,
+                        });
+                      toastTx(tx.transactionHash);
+                      refetchNom();
+                    } catch (e) {
+                      toast(e.message);
+                    } finally {
+                      setChangeOwnerLoading(false);
+                    }
+                  }}
+                  disabled={!isOwner}
+                >
+                  Transfer
+                </Button>
+              )}
+            </Flex>
           </>
         )}
         {nom.owner !== ZERO_ADDRESS && isOwner && (
           <>
             <BlockText variant="primary">Expiration</BlockText>
-            <BlockText mb={2}>
-              {new Date(parseInt(nom.expiration) * 1000).toLocaleDateString(
-                "en-US"
-              )}
-            </BlockText>
-            <Button
-              onClick={() => {
-                history.push(`/search/${name}/extend`);
-              }}
-              mb={4}
+            <Flex
+              sx={{ alignItems: "center", justifyContent: "center", mb: 2 }}
             >
-              Extend
-            </Button>
+              <BlockText>
+                {new Date(parseInt(nom.expiration) * 1000).toLocaleDateString(
+                  "en-US"
+                )}
+              </BlockText>
+              <Button
+                sx={{ p: 1, fontSize: 1, ml: 2 }}
+                onClick={() => {
+                  history.push(`/search/${name}/extend`);
+                }}
+              >
+                Extend
+              </Button>
+            </Flex>
+            <Divider />
           </>
         )}
         <br />
