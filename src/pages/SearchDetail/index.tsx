@@ -56,79 +56,29 @@ export const SearchDetail: React.FC = () => {
       sx={{
         alignItems: "center",
         flexDirection: "column",
-        textAlign: "center",
       }}
     >
       <Box sx={{ width: "100%", maxWidth: "800px" }} mb={4}>
         <SearchBar size="small" />
       </Box>
-      <Card sx={{ width: "100%", maxWidth: "800px" }} py={4} px={3}>
-        <Heading as="h2" mb={4}>
-          {name}.nom
-        </Heading>
-        <Flex sx={{ alignItems: "center", flexDirection: "column", mb: 2 }}>
-          <QRCode value={`celo://wallet/pay?address=${address}`} />
-          <Flex sx={{ alignItems: "center" }}>
-            <BlockscoutAddressLink address={nom.resolution}>
-              <BlockText mt={2}>{shortenAddress(nom.resolution, 5)}</BlockText>
-            </BlockscoutAddressLink>
-            {changeResLoading ? (
-              <Spinner />
-            ) : (
-              <Button
-                sx={{ p: 1, fontSize: 1, ml: 2, mt: 2 }}
-                onClick={async () => {
-                  const kit = await getConnectedKit();
-                  // kit is connected to a wallet
-                  const nom = new kit.web3.eth.Contract(
-                    NomMetadata.abi as AbiItem[],
-                    NOM[network.chainId]
-                  ) as unknown as Nom;
-                  const nextResolution = prompt("Enter new resolution address");
-                  if (!nextResolution || !isAddress(nextResolution)) {
-                    alert("Invalid address. Please try again.");
-                    return;
-                  }
-
-                  try {
-                    setChangeResLoading(true);
-                    const tx = await nom.methods
-                      .changeResolution(
-                        ethers.utils.formatBytes32String(nameFormatted),
-                        nextResolution
-                      )
-                      .send({
-                        from: kit.defaultAccount,
-                        gasPrice: DEFAULT_GAS_PRICE,
-                      });
-                    toastTx(tx.transactionHash);
-                    refetchNom();
-                  } catch (e: any) {
-                    toast(e.message);
-                  } finally {
-                    setChangeResLoading(false);
-                  }
-                }}
-                disabled={!isOwner}
-              >
-                Change
-              </Button>
-            )}
-          </Flex>
-        </Flex>
-        {nom.owner !== ZERO_ADDRESS && isOwner && (
-          <>
-            <Divider />
-            <BlockText variant="primary">Owner</BlockText>
-            <Flex
-              sx={{ alignItems: "center", justifyContent: "center", mb: 2 }}
-            >
-              <BlockText>{shortenAddress(nom.owner, 5)}</BlockText>
-              {changeOwnerLoading ? (
+      <Box sx={{ textAlign: "center" }}>
+        <Card sx={{ width: "100%", maxWidth: "800px" }} py={4} px={3}>
+          <Heading as="h2" mb={4}>
+            {name}.nom
+          </Heading>
+          <Flex sx={{ alignItems: "center", flexDirection: "column", mb: 2 }}>
+            <QRCode value={`celo://wallet/pay?address=${address}`} />
+            <Flex sx={{ alignItems: "center" }}>
+              <BlockscoutAddressLink address={nom.resolution}>
+                <BlockText mt={2}>
+                  {shortenAddress(nom.resolution, 5)}
+                </BlockText>
+              </BlockscoutAddressLink>
+              {changeResLoading ? (
                 <Spinner />
               ) : (
                 <Button
-                  sx={{ p: 1, fontSize: 1, ml: 2 }}
+                  sx={{ p: 1, fontSize: 1, ml: 2, mt: 2 }}
                   onClick={async () => {
                     const kit = await getConnectedKit();
                     // kit is connected to a wallet
@@ -136,18 +86,20 @@ export const SearchDetail: React.FC = () => {
                       NomMetadata.abi as AbiItem[],
                       NOM[network.chainId]
                     ) as unknown as Nom;
-                    const nextOwner = prompt("Enter new owner address");
-                    if (!nextOwner || !isAddress(nextOwner)) {
+                    const nextResolution = prompt(
+                      "Enter new resolution address"
+                    );
+                    if (!nextResolution || !isAddress(nextResolution)) {
                       alert("Invalid address. Please try again.");
                       return;
                     }
 
                     try {
-                      setChangeOwnerLoading(true);
+                      setChangeResLoading(true);
                       const tx = await nom.methods
-                        .changeNameOwner(
+                        .changeResolution(
                           ethers.utils.formatBytes32String(nameFormatted),
-                          nextOwner
+                          nextResolution
                         )
                         .send({
                           from: kit.defaultAccount,
@@ -155,117 +107,170 @@ export const SearchDetail: React.FC = () => {
                         });
                       toastTx(tx.transactionHash);
                       refetchNom();
-                    } catch (e) {
+                    } catch (e: any) {
                       toast(e.message);
                     } finally {
-                      setChangeOwnerLoading(false);
+                      setChangeResLoading(false);
                     }
                   }}
                   disabled={!isOwner}
                 >
-                  Transfer
+                  Change
                 </Button>
               )}
             </Flex>
-          </>
-        )}
-        {nom.owner !== ZERO_ADDRESS && isOwner && (
-          <>
-            <BlockText variant="primary">Expiration</BlockText>
-            <Flex
-              sx={{ alignItems: "center", justifyContent: "center", mb: 2 }}
-            >
-              <BlockText>
-                {new Date(parseInt(nom.expiration) * 1000).toLocaleDateString(
-                  "en-US"
+          </Flex>
+          {nom.owner !== ZERO_ADDRESS && isOwner && (
+            <>
+              <Divider />
+              <BlockText variant="primary">Owner</BlockText>
+              <Flex
+                sx={{ alignItems: "center", justifyContent: "center", mb: 2 }}
+              >
+                <BlockText>{shortenAddress(nom.owner, 5)}</BlockText>
+                {changeOwnerLoading ? (
+                  <Spinner />
+                ) : (
+                  <Button
+                    sx={{ p: 1, fontSize: 1, ml: 2 }}
+                    onClick={async () => {
+                      const kit = await getConnectedKit();
+                      // kit is connected to a wallet
+                      const nom = new kit.web3.eth.Contract(
+                        NomMetadata.abi as AbiItem[],
+                        NOM[network.chainId]
+                      ) as unknown as Nom;
+                      const nextOwner = prompt("Enter new owner address");
+                      if (!nextOwner || !isAddress(nextOwner)) {
+                        alert("Invalid address. Please try again.");
+                        return;
+                      }
+
+                      try {
+                        setChangeOwnerLoading(true);
+                        const tx = await nom.methods
+                          .changeNameOwner(
+                            ethers.utils.formatBytes32String(nameFormatted),
+                            nextOwner
+                          )
+                          .send({
+                            from: kit.defaultAccount,
+                            gasPrice: DEFAULT_GAS_PRICE,
+                          });
+                        toastTx(tx.transactionHash);
+                        refetchNom();
+                      } catch (e) {
+                        toast(e.message);
+                      } finally {
+                        setChangeOwnerLoading(false);
+                      }
+                    }}
+                    disabled={!isOwner}
+                  >
+                    Transfer
+                  </Button>
                 )}
-              </BlockText>
+              </Flex>
+            </>
+          )}
+          {nom.owner !== ZERO_ADDRESS && isOwner && (
+            <>
+              <BlockText variant="primary">Expiration</BlockText>
+              <Flex
+                sx={{ alignItems: "center", justifyContent: "center", mb: 2 }}
+              >
+                <BlockText>
+                  {new Date(parseInt(nom.expiration) * 1000).toLocaleDateString(
+                    "en-US"
+                  )}
+                </BlockText>
+                <Button
+                  sx={{ p: 1, fontSize: 1, ml: 2 }}
+                  onClick={() => {
+                    history.push(`/search/${name}/extend`);
+                  }}
+                >
+                  Extend
+                </Button>
+              </Flex>
+              <Divider />
+            </>
+          )}
+          <br />
+          {nom.resolution !== ZERO_ADDRESS && (
+            <Flex sx={{ mt: 1, justifyContent: "center", flexWrap: "wrap" }}>
               <Button
-                sx={{ p: 1, fontSize: 1, ml: 2 }}
-                onClick={() => {
-                  history.push(`/search/${name}/extend`);
+                mr={2}
+                mb={1}
+                onClick={async () => {
+                  await sendCUSD("1");
                 }}
               >
-                Extend
+                Tip 1 cUSD
+              </Button>
+              <Button
+                mr={2}
+                mb={1}
+                onClick={async () => {
+                  await sendCUSD("5");
+                }}
+              >
+                Tip 5 cUSD
+              </Button>
+              <Button
+                mr={2}
+                mb={1}
+                onClick={async () => {
+                  await sendCUSD("10");
+                }}
+              >
+                Tip 10 cUSD
+              </Button>
+              <Button
+                mr={2}
+                mb={1}
+                onClick={async () => {
+                  const amount = prompt("Enter a custom tip amount");
+                  if (
+                    amount === null ||
+                    isNaN(Number(amount)) ||
+                    Number(amount) <= 0
+                  ) {
+                    alert("Invalid amount specified");
+                    return;
+                  }
+                  await sendCUSD(amount);
+                }}
+              >
+                Custom tip
               </Button>
             </Flex>
-            <Divider />
-          </>
-        )}
-        <br />
-        {nom.resolution !== ZERO_ADDRESS && (
-          <Flex sx={{ mt: 1, justifyContent: "center", flexWrap: "wrap" }}>
-            <Button
-              mr={2}
-              mb={1}
-              onClick={async () => {
-                await sendCUSD("1");
-              }}
-            >
-              Tip 1 cUSD
-            </Button>
-            <Button
-              mr={2}
-              mb={1}
-              onClick={async () => {
-                await sendCUSD("5");
-              }}
-            >
-              Tip 5 cUSD
-            </Button>
-            <Button
-              mr={2}
-              mb={1}
-              onClick={async () => {
-                await sendCUSD("10");
-              }}
-            >
-              Tip 10 cUSD
-            </Button>
-            <Button
-              mr={2}
-              mb={1}
-              onClick={async () => {
-                const amount = prompt("Enter a custom tip amount");
-                if (
-                  amount === null ||
-                  isNaN(Number(amount)) ||
-                  Number(amount) <= 0
-                ) {
-                  alert("Invalid amount specified");
-                  return;
-                }
-                await sendCUSD(amount);
-              }}
-            >
-              Custom tip
-            </Button>
-          </Flex>
-        )}
-        <Flex sx={{ justifyContent: "center", mt: 6 }}>
-          {nom.owner === ZERO_ADDRESS ? (
-            <Button
-              onClick={() => {
-                history.push(`/search/${name}/reserve`);
-              }}
-            >
-              Reserve
-            </Button>
-          ) : nom.owner === address ? (
-            <BlockText>You own this name!</BlockText>
-          ) : (
-            <BlockText>Name has already been reserved.</BlockText>
           )}
-        </Flex>
-      </Card>
-      {nom.resolution && nom.resolution !== ZERO_ADDRESS && (
-        <QRNameModal
-          name={name}
-          address={nom.resolution}
-          isOpen={showQR}
-          setIsOpen={setShowQR}
-        />
-      )}
+          <Flex sx={{ justifyContent: "center", mt: 6 }}>
+            {nom.owner === ZERO_ADDRESS ? (
+              <Button
+                onClick={() => {
+                  history.push(`/search/${name}/reserve`);
+                }}
+              >
+                Reserve
+              </Button>
+            ) : nom.owner === address ? (
+              <BlockText>You own this name!</BlockText>
+            ) : (
+              <BlockText>Name has already been reserved.</BlockText>
+            )}
+          </Flex>
+        </Card>
+        {nom.resolution && nom.resolution !== ZERO_ADDRESS && (
+          <QRNameModal
+            name={name}
+            address={nom.resolution}
+            isOpen={showQR}
+            setIsOpen={setShowQR}
+          />
+        )}
+      </Box>
     </Flex>
   );
 };
