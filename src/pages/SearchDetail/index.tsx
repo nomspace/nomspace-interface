@@ -78,7 +78,7 @@ export const SearchDetail: React.FC = () => {
                     NomMetadata.abi as AbiItem[],
                     NOM[network.chainId]
                   ) as unknown as Nom;
-                  const nextResolution = prompt("Enter new owner address");
+                  const nextResolution = prompt("Enter new resolution address");
                   if (!nextResolution || !isAddress(nextResolution)) {
                     alert("Invalid address. Please try again.");
                     return;
