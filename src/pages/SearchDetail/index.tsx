@@ -1,6 +1,7 @@
 import React from "react";
 import { useNom } from "src/hooks/useNom";
 import { useContractKit } from "@celo-tools/use-contractkit";
+import { StableToken } from "@celo/contractkit";
 import { useParams, useHistory } from "react-router-dom";
 import { Box, Button, Card, Flex, Heading, Spinner } from "theme-ui";
 import { ethers } from "ethers";
@@ -9,7 +10,7 @@ import { shortenAddress } from "src/utils/address";
 import NomMetadata from "src/abis/nomspace/Nom.json";
 import { Nom } from "src/generated/Nom";
 import { DEFAULT_GAS_PRICE, NOM } from "src/config";
-import { AbiItem } from "web3-utils";
+import { AbiItem, toWei } from "web3-utils";
 import { toastTx } from "src/utils/toastTx";
 import { toast } from "react-toastify";
 import { isAddress } from "ethers/lib/utils";
@@ -30,6 +31,20 @@ export const SearchDetail: React.FC = () => {
   const [changeOwnerLoading, setChangeOwnerLoading] = React.useState(false);
   const [showQR, setShowQR] = React.useState(false);
   const history = useHistory();
+  const sendCUSD = React.useCallback(
+    async (amount: string) => {
+      const kit = await getConnectedKit();
+      if (!kit || !nom) {
+        return;
+      }
+      const cUSD = await kit.contracts.getStableToken(StableToken.cUSD);
+      const tx = await cUSD
+        .transfer(nom.resolution, toWei(amount))
+        .send({ from: kit.defaultAccount });
+      toastTx(await tx.getHash());
+    },
+    [getConnectedKit, nom]
+  );
 
   if (nom == null) {
     return <Spinner />;
@@ -150,9 +165,59 @@ export const SearchDetail: React.FC = () => {
             onClick={() => {
               history.push(`/search/${name}/extend`);
             }}
+            mb={4}
           >
             Extend
           </Button>
+        )}
+        <br />
+        {nom.resolution !== ZERO_ADDRESS && (
+          <>
+            <BlockText variant="primary">Tips</BlockText>
+            <Flex mt={1}>
+              <Button
+                mr={2}
+                onClick={async () => {
+                  await sendCUSD("1");
+                }}
+              >
+                Tip 1 cUSD
+              </Button>
+              <Button
+                mr={2}
+                onClick={async () => {
+                  await sendCUSD("5");
+                }}
+              >
+                Tip 5 cUSD
+              </Button>
+              <Button
+                mr={2}
+                onClick={async () => {
+                  await sendCUSD("10");
+                }}
+              >
+                Tip 10 cUSD
+              </Button>
+              <Button
+                mr={2}
+                onClick={async () => {
+                  const amount = prompt("Enter a custom tip amount");
+                  if (
+                    amount === null ||
+                    isNaN(Number(amount)) ||
+                    Number(amount) <= 0
+                  ) {
+                    alert("Invalid amount specified");
+                    return;
+                  }
+                  await sendCUSD(amount);
+                }}
+              >
+                Custom tip
+              </Button>
+            </Flex>
+          </>
         )}
         <Flex sx={{ justifyContent: "center", mt: 6 }}>
           {nom.owner === ZERO_ADDRESS ? (
