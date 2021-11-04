@@ -11,3 +11,7 @@
 .tw-text-lg {
   color: black;
 }
+
+.toast-body {
+  background: var(--theme-ui-colors-box);
+}

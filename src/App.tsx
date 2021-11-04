@@ -10,6 +10,7 @@ import { Request } from "src/pages/Request";
 import { Header } from "src/components/Header";
 import Modal from "react-modal";
 import { Footer } from "src/components/Footer";
+import { ToastContainer } from "react-toastify";
 
 const App: React.FC = () => {
   React.useEffect(() => {
@@ -45,6 +46,11 @@ const App: React.FC = () => {
         </Switch>
       </Container>
       <Footer />
+      <ToastContainer
+        style={{ background: "var(--theme-ui-colors-background)" }}
+        toastClassName="toast-body"
+        bodyClassName="toast-body"
+      />
     </Container>
   );
 };
