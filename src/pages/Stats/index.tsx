@@ -8,6 +8,7 @@ import { Nom } from "src/generated/Nom";
 import { AbiItem } from "web3-utils";
 import { ZERO_ADDRESS } from "src/constants";
 import { BlockText } from "src/components/BlockText";
+import { ethers } from "ethers";
 
 const CREATION_BLOCK = 7240250;
 export const Stats: React.FC = () => {
@@ -25,6 +26,10 @@ export const Stats: React.FC = () => {
         previousOwner: ZERO_ADDRESS,
       },
     });
+
+    console.log(
+      reserveEvents.map((e) => ethers.utils.toUtf8String(e.returnValues.name))
+    );
 
     const totalReserved = reserveEvents.length;
     const numUniqueUsers = Object.keys(

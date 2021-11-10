@@ -1,13 +1,13 @@
 import React from "react";
 import { useNom } from "src/hooks/useNom";
 import { useContractKit } from "@celo-tools/use-contractkit";
-import { StableToken } from "@celo/contractkit";
 import { useParams, useHistory } from "react-router-dom";
 import { Box, Button, Card, Divider, Flex, Heading, Spinner } from "theme-ui";
 import { ethers } from "ethers";
 import { BlockText } from "src/components/BlockText";
 import { shortenAddress } from "src/utils/address";
 import NomMetadata from "src/abis/nomspace/Nom.json";
+import ERC20Metadata from "src/abis/nomspace/ERC20.json";
 import { Nom } from "src/generated/Nom";
 import { DEFAULT_GAS_PRICE, NOM } from "src/config";
 import { AbiItem, toWei } from "web3-utils";
@@ -20,6 +20,7 @@ import { ZERO_ADDRESS } from "src/constants";
 import { formatName } from "src/utils/name";
 import QRCode from "qrcode.react";
 import { BlockscoutAddressLink } from "src/components/BlockscoutAddressLink";
+import { ERC20 } from "src/generated/ERC20";
 
 export const SearchDetail: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -37,11 +38,14 @@ export const SearchDetail: React.FC = () => {
       if (!kit || !nom) {
         return;
       }
-      const cUSD = await kit.contracts.getStableToken(StableToken.cUSD);
-      const tx = await cUSD
+      const cUSD = new kit.web3.eth.Contract(
+        ERC20Metadata.abi as AbiItem[],
+        "0x765DE816845861e75A25fCA122bb6898B8B1282a"
+      ) as unknown as ERC20;
+      const tx = await cUSD.methods
         .transfer(nom.resolution, toWei(amount))
         .send({ from: kit.defaultAccount, gasPrice: toWei("0.5", "gwei") });
-      toastTx(await tx.getHash());
+      toastTx(tx.transactionHash);
     },
     [getConnectedKit, nom]
   );
@@ -258,7 +262,12 @@ export const SearchDetail: React.FC = () => {
             ) : nom.owner === address ? (
               <BlockText>You own this name!</BlockText>
             ) : (
-              <BlockText>Name has already been reserved.</BlockText>
+              <BlockText>
+                Name has already been reserved by{" "}
+                <BlockscoutAddressLink address={nom.owner}>
+                  {shortenAddress(nom.owner)}
+                </BlockscoutAddressLink>
+              </BlockText>
             )}
           </Flex>
         </Card>
