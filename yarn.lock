@@ -2530,10 +2530,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@nomspace/nomspace@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@nomspace/nomspace/-/nomspace-1.0.4.tgz#62ded6924ba8a9fbc5c86394c863ccd4f1a0047a"
-  integrity sha512-kGOjHBjfzalUSL7OdQqbHwDiLsIrimjdlrF8omLw6Ut8265/DTlltnioVIGzSVtl63xag2JMY1PQTW2NvxmqbQ==
+"@nomspace/nomspace@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@nomspace/nomspace/-/nomspace-1.0.5.tgz#673e86eca735bea6fa58ca07dde6893477ea22a5"
+  integrity sha512-i+X/jVAJZTASaMzu1X6Q3y8IqZIURs82h4EgKDLCJtD1B41fIV5IjAIdyaVCapyiA4YIFRFdd2j5wXJdv/WAKg==
   dependencies:
     "@celo/contractkit" "^1.2.0"
     "@openzeppelin/contracts" "^4.1.0"
