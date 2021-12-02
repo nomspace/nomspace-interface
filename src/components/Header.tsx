@@ -20,21 +20,24 @@ export const Header: React.FC = () => {
               alert(userNoms);
             }}
             sx={{
+              color: "var(--theme-ui-colors-text)",
               border: "1px solid var(--theme-ui-colors-text)",
               background: "transparent",
-              mr: 4,
+              px: [1, 2],
+              py: 1,
+              mr: [1, 4],
             }}
           >
             My Noms
           </Button>
         ) : (
-          <Spinner mr={4} />
+          <Spinner mr={[1, 4]} />
         )}
         <Flex
           sx={{
             alignItems: "center",
             backgroundColor: "secondaryBackground",
-            mr: 4,
+            mr: [1, 4],
             px: 2,
             cursor: "pointer",
             borderRadius: "6px",
