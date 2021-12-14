@@ -16,7 +16,7 @@ import { ethers } from "ethers";
 import { BlockText } from "src/components/BlockText";
 import NomMetadata from "src/abis/nomspace/Nom.json";
 import { Nom } from "src/generated/Nom";
-import { DEFAULT_GAS_PRICE, FEE_MODULE_V1, NOM } from "src/config";
+import { DEFAULT_GAS_PRICE, FEE_MODULE, NOM } from "src/config";
 import { AbiItem, toBN, toWei, fromWei } from "web3-utils";
 import { toastTx } from "src/utils/toastTx";
 import { toast } from "react-toastify";
@@ -58,7 +58,7 @@ export const Extend: React.FC = () => {
             StableToken.cUSD
           );
           const tx = await cUSD.methods
-            .approve(FEE_MODULE_V1, MaxUint256.toString())
+            .approve(FEE_MODULE[network.chainId], MaxUint256.toString())
             .send({
               from: kit.defaultAccount,
               gasPrice: DEFAULT_GAS_PRICE,
