@@ -1,32 +1,35 @@
 import React from "react";
-import { useNom } from "src/hooks/useNom";
-import { useContractKit } from "@celo-tools/use-contractkit";
+import { useNom } from "hooks/useNom";
+import {
+  useContractKit,
+  useGetConnectedSigner,
+  useProvider,
+} from "@celo-tools/use-contractkit";
 import { useParams, useHistory } from "react-router-dom";
 import { Box, Button, Card, Divider, Flex, Heading, Spinner } from "theme-ui";
 import { ethers } from "ethers";
-import { BlockText } from "src/components/BlockText";
-import { shortenAddress } from "src/utils/address";
-import NomMetadata from "src/abis/nomspace/Nom.json";
-import ERC20Metadata from "src/abis/nomspace/ERC20.json";
-import { Nom } from "src/generated/Nom";
-import { DEFAULT_GAS_PRICE, NOM } from "src/config";
-import { AbiItem, toWei } from "web3-utils";
-import { toastTx } from "src/utils/toastTx";
+import { BlockText } from "components/BlockText";
+import { shortenAddress } from "utils/address";
+import { Nom } from "generated/Nom";
+import { NOM, USD } from "config";
+import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
-import { isAddress } from "ethers/lib/utils";
-import { QRNameModal } from "src/components/QRNameModal";
-import { SearchBar } from "src/components/SearchBar";
-import { ZERO_ADDRESS } from "src/constants";
-import { formatName } from "src/utils/name";
+import { isAddress, parseUnits } from "ethers/lib/utils";
+import { QRNameModal } from "components/QRNameModal";
+import { SearchBar } from "components/SearchBar";
+import { ZERO_ADDRESS } from "utils/constants";
+import { formatName } from "utils/name";
 import QRCode from "qrcode.react";
-import { BlockscoutAddressLink } from "src/components/BlockscoutAddressLink";
-import { ERC20 } from "src/generated/ERC20";
+import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
+import { ERC20__factory, Nom__factory } from "generated";
 
 export const SearchDetail: React.FC = () => {
   const { name } = useParams<{ name: string }>();
   const nameFormatted = formatName(name);
 
-  const { address, getConnectedKit, network } = useContractKit();
+  const { address, network } = useContractKit();
+  const provider = useProvider();
+  const getConnectedSigner = useGetConnectedSigner();
   const [nom, refetchNom] = useNom(nameFormatted);
   const [changeResLoading, setChangeResLoading] = React.useState(false);
   const [changeOwnerLoading, setChangeOwnerLoading] = React.useState(false);
@@ -34,20 +37,20 @@ export const SearchDetail: React.FC = () => {
   const history = useHistory();
   const sendCUSD = React.useCallback(
     async (amount: string) => {
-      const kit = await getConnectedKit();
-      if (!kit || !nom) {
-        return;
-      }
-      const cUSD = new kit.web3.eth.Contract(
-        ERC20Metadata.abi as AbiItem[],
-        "0x765DE816845861e75A25fCA122bb6898B8B1282a"
-      ) as unknown as ERC20;
-      const tx = await cUSD.methods
-        .transfer(nom.resolution, toWei(amount))
-        .send({ from: kit.defaultAccount, gasPrice: toWei("0.5", "gwei") });
-      toastTx(tx.transactionHash);
+      const usdAddress = USD[network.chainId];
+      if (!usdAddress || !nom) return;
+      const signer = await getConnectedSigner();
+      const usd = ERC20__factory.connect(usdAddress, signer);
+      const decimals = await usd.decimals();
+      const gasPrice = await provider.getGasPrice();
+      const tx = await usd.transfer(
+        nom.resolution,
+        parseUnits(amount, decimals),
+        { gasPrice: gasPrice }
+      );
+      toastTx(tx.hash);
     },
-    [getConnectedKit, nom]
+    [getConnectedSigner, network.chainId, nom, provider]
   );
 
   if (nom == null) {
@@ -84,11 +87,12 @@ export const SearchDetail: React.FC = () => {
                 <Button
                   sx={{ p: 1, fontSize: 1, ml: 2, mt: 2 }}
                   onClick={async () => {
-                    const kit = await getConnectedKit();
-                    // kit is connected to a wallet
-                    const nom = new kit.web3.eth.Contract(
-                      NomMetadata.abi as AbiItem[],
-                      NOM[network.chainId]
+                    const nomAddress = NOM[network.chainId];
+                    if (!nomAddress) return;
+                    const signer = await getConnectedSigner();
+                    const nom = Nom__factory.connect(
+                      nomAddress,
+                      signer
                     ) as unknown as Nom;
                     const nextResolution = prompt(
                       "Enter new resolution address"
@@ -100,16 +104,13 @@ export const SearchDetail: React.FC = () => {
 
                     try {
                       setChangeResLoading(true);
-                      const tx = await nom.methods
-                        .changeResolution(
-                          ethers.utils.formatBytes32String(nameFormatted),
-                          nextResolution
-                        )
-                        .send({
-                          from: kit.defaultAccount,
-                          gasPrice: DEFAULT_GAS_PRICE,
-                        });
-                      toastTx(tx.transactionHash);
+                      const gasPrice = await provider.getGasPrice();
+                      const tx = await nom.changeResolution(
+                        ethers.utils.formatBytes32String(nameFormatted),
+                        nextResolution,
+                        { gasPrice }
+                      );
+                      toastTx(tx.hash);
                       refetchNom();
                     } catch (e: any) {
                       toast(e.message);
@@ -138,12 +139,10 @@ export const SearchDetail: React.FC = () => {
                   <Button
                     sx={{ p: 1, fontSize: 1, ml: 2 }}
                     onClick={async () => {
-                      const kit = await getConnectedKit();
-                      // kit is connected to a wallet
-                      const nom = new kit.web3.eth.Contract(
-                        NomMetadata.abi as AbiItem[],
-                        NOM[network.chainId]
-                      ) as unknown as Nom;
+                      const nomAddress = NOM[network.chainId];
+                      if (!nomAddress) return;
+                      const signer = await getConnectedSigner();
+                      const nom = Nom__factory.connect(nomAddress, signer);
                       const nextOwner = prompt("Enter new owner address");
                       if (!nextOwner || !isAddress(nextOwner)) {
                         alert("Invalid address. Please try again.");
@@ -152,18 +151,15 @@ export const SearchDetail: React.FC = () => {
 
                       try {
                         setChangeOwnerLoading(true);
-                        const tx = await nom.methods
-                          .changeNameOwner(
-                            ethers.utils.formatBytes32String(nameFormatted),
-                            nextOwner
-                          )
-                          .send({
-                            from: kit.defaultAccount,
-                            gasPrice: DEFAULT_GAS_PRICE,
-                          });
-                        toastTx(tx.transactionHash);
+                        const gasPrice = await provider.getGasPrice();
+                        const tx = await nom.changeNameOwner(
+                          ethers.utils.formatBytes32String(nameFormatted),
+                          nextOwner,
+                          { gasPrice }
+                        );
+                        toastTx(tx.hash);
                         refetchNom();
-                      } catch (e) {
+                      } catch (e: any) {
                         toast(e.message);
                       } finally {
                         setChangeOwnerLoading(false);
@@ -184,9 +180,9 @@ export const SearchDetail: React.FC = () => {
                 sx={{ alignItems: "center", justifyContent: "center", mb: 2 }}
               >
                 <BlockText>
-                  {new Date(parseInt(nom.expiration) * 1000).toLocaleDateString(
-                    "en-US"
-                  )}
+                  {new Date(
+                    nom.expiration.toNumber() * 1000
+                  ).toLocaleDateString("en-US")}
                 </BlockText>
                 <Button
                   sx={{ p: 1, fontSize: 1, ml: 2 }}

@@ -1,21 +1,20 @@
-import { useContractKit } from "@celo-tools/use-contractkit";
+import { useContractKit, useProvider } from "@celo-tools/use-contractkit";
 import React from "react";
 import { Flex, Heading } from "theme-ui";
-import NomMetadata from "src/abis/nomspace/Nom.json";
-import MulticallAbi from "src/abis/Multicall.json";
-import { NOM } from "src/config";
-import { useAsyncState } from "src/hooks/useAsyncState";
-import { Nom } from "src/generated/Nom";
-import { AbiItem } from "web3-utils";
-import { ZERO_ADDRESS } from "src/constants";
-import { BlockText } from "src/components/BlockText";
-import { ethers } from "ethers";
+import { NOM } from "config";
+import { useAsyncState } from "hooks/useAsyncState";
+import { BlockText } from "components/BlockText";
+import { Contract, ethers } from "ethers";
+import { Multicall__factory, Nom__factory } from "generated";
+import { ZERO_ADDRESS } from "utils/constants";
+
+// TODO: THIS IS BROKEN, NEEDS FIXING
 
 const CREATION_BLOCK = 7240250;
 const BUCKET_SIZE = 1000;
 
-export const getPastEvents = async (
-  contract: any,
+const getPastEvents = async (
+  contract: Contract,
   eventName: string,
   fromBlock: number,
   toBlock: number,
@@ -128,15 +127,15 @@ const getExpirations = async (multicall: any, nom: any, reserveEvents: any) => {
 };
 
 export const Stats: React.FC = () => {
-  const { kit, network } = useContractKit();
+  const { network, kit } = useContractKit();
+  const provider = useProvider();
   const call = React.useCallback(async () => {
-    const nom = new kit.web3.eth.Contract(
-      NomMetadata.abi as AbiItem[],
-      NOM[network.chainId]
-    ) as unknown as Nom;
-    const multicall = new kit.web3.eth.Contract(
-      MulticallAbi as AbiItem[],
-      "0x75f59534dd892c1f8a7b172d639fa854d529ada3"
+    const nomAddress = NOM[network.chainId];
+    if (!nomAddress) return;
+    const nom = Nom__factory.connect(nomAddress, provider);
+    const multicall = Multicall__factory.connect(
+      "0x75f59534dd892c1f8a7b172d639fa854d529ada3",
+      provider
     );
 
     const latestBlock = await kit.web3.eth.getBlockNumber();
@@ -157,7 +156,7 @@ export const Stats: React.FC = () => {
     const totalReserved = reserveEvents.length;
     const numUniqueUsers = Object.keys(
       reserveEvents.reduce(
-        (acc, curr) => ({ ...acc, [curr.returnValues.newOwner]: true }),
+        (acc, curr) => ({ ...acc, [curr.args.newOwner]: true }),
         {}
       )
     ).length;
@@ -177,7 +176,7 @@ export const Stats: React.FC = () => {
     console.log(zipped.join("\n"));
 
     return { totalReserved, numUniqueUsers };
-  }, [kit.web3.eth, network.chainId]);
+  }, [kit.web3.eth, network.chainId, provider]);
 
   const [stats] = useAsyncState(null, call);
 

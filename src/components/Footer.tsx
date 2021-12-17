@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 export const Footer: React.FC = () => {
   const location = useLocation();
 
-  if (location.pathname !== "/search") {
+  if (location.pathname !== "search") {
     return null;
   }
 
@@ -23,7 +23,7 @@ export const Footer: React.FC = () => {
         <Link
           target="_blank"
           rel="noopener noreferrer"
-          href="https://github.com/nomspace"
+          href="https://github.com/LaStabilite"
           style={{ textDecoration: "none" }}
           mr={2}
         >
@@ -32,7 +32,7 @@ export const Footer: React.FC = () => {
         <Link
           target="_blank"
           rel="noopener noreferrer"
-          href="https://twitter.com/nomspace_nom"
+          href="https://twitter.com/LaStabilite"
           style={{ textDecoration: "none" }}
           mr={2}
         >
@@ -41,7 +41,7 @@ export const Footer: React.FC = () => {
         <Link
           target="_blank"
           rel="noopener noreferrer"
-          href="https://discord.gg/WPYZC7ZTcY"
+          href="https://discord.gg/mE6ZWjxRsW"
           style={{ textDecoration: "none" }}
         >
           <DiscordLogo size={32} />

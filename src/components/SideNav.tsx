@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import React from "react";
-import { Logo } from "src/components/Logo";
+import { Logo } from "components/Logo";
 import { Box, Divider } from "theme-ui";
 import { Link } from "react-router-dom";
 

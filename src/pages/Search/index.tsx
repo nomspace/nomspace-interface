@@ -1,7 +1,7 @@
 import React from "react";
-import { Box, Flex, Heading } from "theme-ui";
-import { LogoIcon } from "src/icons/LogoIcon";
-import { SearchBar } from "src/components/SearchBar";
+import { Box, Flex } from "theme-ui";
+import { LogoIcon } from "icons/LogoIcon";
+import { SearchBar } from "components/SearchBar";
 
 export const Search: React.FC = () => {
   return (
@@ -13,12 +13,9 @@ export const Search: React.FC = () => {
         mt: ["33%", "10%"],
       }}
     >
-      <Box sx={{ fill: "text" }}>
+      <Box sx={{ fill: "textColor", mb: 4 }}>
         <LogoIcon size={128} />
       </Box>
-      <Heading as="h1" mb={4}>
-        Nomspace
-      </Heading>
       <SearchBar />
     </Flex>
   );

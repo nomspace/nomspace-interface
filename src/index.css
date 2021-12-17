@@ -3,13 +3,8 @@
 }
 
 /* HACK: Fix title color in wallet modal */
-.tw-font-medium {
-  color: black;
-}
-
-/* HACK: Fix title color in wallet modal */
-.tw-text-lg {
-  color: black;
+.dark:tw-text-gray-300 {
+  color: rgb(43, 43, 44);
 }
 
 .toast-body {

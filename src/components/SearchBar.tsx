@@ -1,8 +1,8 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Breakpoint, useBreakpoint } from "src/hooks/useBreakpoint";
-import WhiteSearchIcon from "src/icons/WhiteSearchIcon.svg";
-import BlackSearchIcon from "src/icons/BlackSearchIcon.svg";
+import { Breakpoint, useBreakpoint } from "hooks/useBreakpoint";
+import WhiteSearchIcon from "icons/WhiteSearchIcon.svg";
+import BlackSearchIcon from "icons/BlackSearchIcon.svg";
 import { Button, Flex, Input, useColorMode } from "theme-ui";
 
 const SEARCH_HEIGHT = [56, 90];
@@ -40,13 +40,15 @@ export const SearchBar: React.FC<IProps> = ({ size }) => {
           height: 28,
           width: 28,
           transform: transform,
-          backgroundColor: "var(--theme-ui-colors-text)",
+          backgroundColor: "var(--theme-ui-colors-textColor)",
           background: `url(${
             colorMode === "light" ? BlackSearchIcon : WhiteSearchIcon
           }) no-repeat`,
         },
         width: "100%",
         justifyContent: "center",
+        caretColor: "textColor",
+        color: "textColor",
       }}
     >
       <form

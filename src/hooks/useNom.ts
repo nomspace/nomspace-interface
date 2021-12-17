@@ -1,37 +1,35 @@
 import React from "react";
-import NomMetadata from "src/abis/nomspace/Nom.json";
-import { Nom } from "src/generated/Nom";
-import { useContractKit } from "@celo-tools/use-contractkit";
+import { Nom } from "generated/Nom";
 import { ethers } from "ethers";
-import { NOM } from "src/config";
-import { AbiItem } from "web3-utils";
+import { NOM } from "config";
 import { useAsyncState } from "./useAsyncState";
-import { formatName } from "src/utils/name";
+import { formatName } from "utils/name";
+import { useCeloProvider } from "hooks/useCeloProvider";
+import { Nom__factory } from "generated";
+import { utils } from "ethers";
 
 export const useNom = (name: string) => {
-  const { kit, network } = useContractKit();
+  const provider = useCeloProvider();
   const nameFormatted = formatName(name);
 
   const call = React.useCallback(async () => {
-    const nom = new kit.web3.eth.Contract(
-      NomMetadata.abi as AbiItem[],
-      NOM[network.chainId]
+    const nom = Nom__factory.connect(
+      NOM[44787]!, // TODO: HARDCODE
+      provider
     ) as unknown as Nom;
 
-    const resolution = await nom.methods
-      .resolve(ethers.utils.formatBytes32String(nameFormatted))
-      .call();
+    const resolution = await nom.resolve(
+      utils.formatBytes32String(nameFormatted)
+    );
 
-    const owner = await nom.methods
-      .nameOwner(ethers.utils.formatBytes32String(nameFormatted))
-      .call();
+    const owner = await nom.nameOwner(utils.formatBytes32String(nameFormatted));
 
-    const expiration = await nom.methods
-      .expirations(ethers.utils.formatBytes32String(nameFormatted))
-      .call();
+    const expiration = await nom.expirations(
+      ethers.utils.formatBytes32String(nameFormatted)
+    );
 
     return { resolution, owner, expiration };
-  }, [kit, network, nameFormatted]);
+  }, [provider, nameFormatted]);
 
   return useAsyncState(null, call);
 };

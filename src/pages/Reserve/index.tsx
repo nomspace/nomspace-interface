@@ -1,6 +1,10 @@
 import React from "react";
-import { useNom } from "src/hooks/useNom";
-import { useContractKit } from "@celo-tools/use-contractkit";
+import { useNom } from "hooks/useNom";
+import {
+  useContractKit,
+  useGetConnectedSigner,
+  useProvider,
+} from "@celo-tools/use-contractkit";
 import { useParams, useHistory } from "react-router-dom";
 import {
   Box,
@@ -13,34 +17,37 @@ import {
   Text,
 } from "theme-ui";
 import { ethers } from "ethers";
-import { BlockText } from "src/components/BlockText";
-import NomMetadata from "src/abis/nomspace/Nom.json";
-import { Nom } from "src/generated/Nom";
-import { DEFAULT_GAS_PRICE, FEE_MODULE, NOM } from "src/config";
-import { AbiItem, toBN, toWei, fromWei } from "web3-utils";
-import { toastTx } from "src/utils/toastTx";
+import { BlockText } from "components/BlockText";
+import { ReservePortal } from "generated/ReservePortal";
+import { USD, NOM, RESERVE_PORTAL, NOM_FEE } from "config";
+import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
 import { CaretLeft, ArrowDown } from "phosphor-react";
-import { SearchBar } from "src/components/SearchBar";
-import { YEAR_IN_SECONDS, ZERO_ADDRESS } from "src/constants";
-import { useCUSD } from "src/hooks/useCUSD";
-import { StableToken } from "@celo/contractkit";
+import { SearchBar } from "components/SearchBar";
+import { YEAR_IN_SECONDS, ZERO_ADDRESS } from "utils/constants";
+import { useUSD } from "hooks/useUSD";
 import { MaxUint256 } from "@ethersproject/constants";
-import { useNomFee } from "src/hooks/useNomFee";
-import { formatName } from "src/utils/name";
+import { formatName } from "utils/name";
+import {
+  ERC20__factory,
+  OperatorOwnedNomV1__factory,
+  ReservePortal__factory,
+} from "generated";
+import { formatUnits } from "ethers/lib/utils";
 
 export const Reserve: React.FC = () => {
   const { name } = useParams<{ name: string }>();
   const nameFormatted = formatName(name);
 
-  const { getConnectedKit, network } = useContractKit();
+  const { address, network } = useContractKit();
+  const getConnectedSigner = useGetConnectedSigner();
+  const provider = useProvider();
   const [nom, refetchNom] = useNom(nameFormatted);
   const [years, setYears] = React.useState("1");
   const [cost, setCost] = React.useState("5");
   const [approveLoading, setApproveLoading] = React.useState(false);
   const [reserveLoading, setReserveLoading] = React.useState(false);
-  const [cUSD, refetchCUSD] = useCUSD();
-  const [nomFee] = useNomFee();
+  const [usd, refetchUSD] = useUSD();
   const history = useHistory();
 
   if (nom == null) {
@@ -50,22 +57,24 @@ export const Reserve: React.FC = () => {
   const approveButton = (
     <Button
       onClick={async () => {
-        const kit = await getConnectedKit();
-        // kit is connected to a wallet
+        const reservePortalAddress = RESERVE_PORTAL[network.chainId];
+        const usdAddress = USD[network.chainId];
+        if (!reservePortalAddress || !usdAddress) {
+          return;
+        }
+        const signer = await getConnectedSigner();
         try {
           setApproveLoading(true);
-          const cUSD = await kit._web3Contracts.getStableToken(
-            StableToken.cUSD
+          const usd = ERC20__factory.connect(usdAddress, signer);
+          const gasPrice = await provider.getGasPrice();
+          const tx = await usd.approve(
+            reservePortalAddress,
+            MaxUint256.toString(), // TODO: don't do max
+            { gasPrice }
           );
-          const tx = await cUSD.methods
-            .approve(FEE_MODULE[network.chainId], MaxUint256.toString())
-            .send({
-              from: kit.defaultAccount,
-              gasPrice: DEFAULT_GAS_PRICE,
-            });
-          toastTx(tx.transactionHash);
-          refetchCUSD();
-        } catch (e) {
+          toastTx(tx.hash);
+          refetchUSD();
+        } catch (e: any) {
           toast(e.message);
         } finally {
           setApproveLoading(false);
@@ -79,27 +88,45 @@ export const Reserve: React.FC = () => {
   const reserveButton = (
     <Button
       onClick={async () => {
-        const kit = await getConnectedKit();
-        // kit is connected to a wallet
-        const nom = new kit.web3.eth.Contract(
-          NomMetadata.abi as AbiItem[],
-          NOM[network.chainId]
-        ) as unknown as Nom;
+        const usdAddress = USD[network.chainId];
+        const nomAddress = NOM[network.chainId];
+        const reservePortalAddress = RESERVE_PORTAL[network.chainId];
+        if (!usdAddress || !nomAddress || !reservePortalAddress || !address) {
+          return;
+        }
+        const signer = await getConnectedSigner();
+        const usd = ERC20__factory.connect(usdAddress, signer);
+        const nom = OperatorOwnedNomV1__factory.connect(nomAddress, signer);
+        const reservePortal = ReservePortal__factory.connect(
+          reservePortalAddress,
+          signer
+        ) as unknown as ReservePortal;
 
         try {
           setReserveLoading(true);
-          const tx = await nom.methods
-            .reserve(
-              ethers.utils.formatBytes32String(nameFormatted),
-              Math.floor(Number(years) * YEAR_IN_SECONDS)
-            )
-            .send({
-              from: kit.defaultAccount,
-              gasPrice: DEFAULT_GAS_PRICE,
-            });
-          toastTx(tx.transactionHash);
+          const { data } = await nom.populateTransaction.mintIn(
+            ethers.utils.formatBytes32String(nameFormatted),
+            Math.floor(Number(years) * YEAR_IN_SECONDS),
+            address
+          );
+          if (!data) return;
+          const gasPrice = await provider.getGasPrice();
+          // Reserve with 1 unit
+          const tx = await reservePortal.escrow(
+            usd.address,
+            formatUnits(1, await usd.decimals()).toString(),
+            44787,
+            nomAddress,
+            0,
+            data,
+            address,
+            {
+              gasPrice,
+            }
+          );
+          toastTx(tx.hash);
           refetchNom();
-        } catch (e) {
+        } catch (e: any) {
           toast(e.message);
         } finally {
           setReserveLoading(false);
@@ -112,12 +139,11 @@ export const Reserve: React.FC = () => {
 
   const loading = approveLoading || reserveLoading;
   let button = approveButton;
-  if (cUSD) {
-    const fmtCost = cost === "" ? "0" : cost;
-    const costBN = toBN(toWei(fmtCost));
-    if (cUSD.balance.lt(costBN)) {
+  if (usd) {
+    const fmtCost = Number(cost === "" ? "0" : cost);
+    if (Number(formatUnits(usd.balance, usd.decimals)) < fmtCost) {
       button = <Button disabled={true}>Insufficient funds</Button>;
-    } else if (cUSD.allowance.gt(costBN)) {
+    } else if (Number(formatUnits(usd.allowance, usd.decimals)) >= fmtCost) {
       button = reserveButton;
     }
   }
@@ -137,10 +163,9 @@ export const Reserve: React.FC = () => {
           <Text>Back</Text>
         </Flex>
         <Flex mb={4}>
-          <Heading as="h2" mr={2}>
-            Reserve
+          <Heading as="h2">
+            Reserve <Text color="primaryTextColor">{name}.nom</Text>
           </Heading>
-          <Heading color="primaryText">{name}.nom</Heading>
         </Flex>
         <Text variant="form">Years to reserve</Text>
         <Flex sx={{ alignItems: "center" }}>
@@ -150,43 +175,33 @@ export const Reserve: React.FC = () => {
             onChange={(e) => {
               const years = e.target.value;
               setYears(years);
-              setCost(
-                (
-                  Number(years) *
-                  YEAR_IN_SECONDS *
-                  Number(fromWei(nomFee))
-                ).toString()
-              );
+              setCost((Number(years) * YEAR_IN_SECONDS * NOM_FEE).toString());
             }}
             mr={2}
           />
           <Text>year(s)</Text>
         </Flex>
-        <Box mt={2} sx={{ textAlign: "center" }}>
+        <Flex mt={2} sx={{ justifyContent: "center" }}>
           <ArrowDown size={32} />
-        </Box>
+        </Flex>
         <Flex sx={{ alignItems: "center" }}>
           <Box sx={{ width: "100%" }} mr={2}>
             <Flex sx={{ justifyContent: "space-between", mb: 1 }}>
               <Text variant="form">Cost</Text>
               <Text
-                sx={{ color: "primaryText", cursor: "pointer" }}
+                sx={{ color: "primaryTextColor", cursor: "pointer" }}
                 variant="form"
                 onClick={() => {
-                  if (cUSD) {
-                    const cost = fromWei(cUSD.balance);
+                  if (usd) {
+                    const cost = formatUnits(usd.balance, usd.decimals);
                     setCost(cost);
                     setYears(
-                      (
-                        Number(cost) /
-                        YEAR_IN_SECONDS /
-                        Number(fromWei(nomFee))
-                      ).toString()
+                      (Number(cost) / YEAR_IN_SECONDS / NOM_FEE).toString()
                     );
                   }
                 }}
               >
-                max: {cUSD ? Number(fromWei(cUSD.balance)).toFixed(4) : "0"}
+                max: {usd ? formatUnits(usd.balance, usd.decimals) : "0"}
               </Text>
             </Flex>
             <Input
@@ -195,17 +210,11 @@ export const Reserve: React.FC = () => {
               onChange={(e) => {
                 const cost = e.target.value;
                 setCost(cost);
-                setYears(
-                  (
-                    Number(cost) /
-                    YEAR_IN_SECONDS /
-                    Number(fromWei(nomFee))
-                  ).toString()
-                );
+                setYears((Number(cost) / YEAR_IN_SECONDS / NOM_FEE).toString());
               }}
             />
           </Box>
-          <Text mt={3}>cUSD</Text>
+          <Text mt={3}>USD</Text>
         </Flex>
         <Flex sx={{ justifyContent: "center", mt: 6 }}>
           {nom.owner === ZERO_ADDRESS ? (

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNom } from "src/hooks/useNom";
+import { useNom } from "hooks/useNom";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import { useParams, useHistory, useLocation, Link } from "react-router-dom";
 import {
@@ -12,15 +12,15 @@ import {
   Spinner,
   Text,
 } from "theme-ui";
-import { BlockText } from "src/components/BlockText";
+import { BlockText } from "components/BlockText";
 import { toWei } from "web3-utils";
-import { toastTx } from "src/utils/toastTx";
+import { toastTx } from "utils/toastTx";
 import { CaretLeft } from "phosphor-react";
-import { SearchBar } from "src/components/SearchBar";
-import { ZERO_ADDRESS } from "src/constants";
+import { SearchBar } from "components/SearchBar";
+import { ZERO_ADDRESS } from "utils/constants";
 import { StableToken } from "@celo/contractkit";
-import { formatName } from "src/utils/name";
-import { Page } from "src/state/global";
+import { formatName } from "utils/name";
+import { Page } from "state/global";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -96,7 +96,7 @@ export const Request: React.FC = () => {
           <Heading as="h2" mr={2}>
             Fulfill request for
           </Heading>
-          <Heading color="primaryText">{name}.nom</Heading>
+          <Heading color="primaryTextColor">{name}.nom</Heading>
         </Flex>
         <Flex sx={{ alignItems: "center" }}>
           <Box sx={{ width: "100%" }} mr={2}>

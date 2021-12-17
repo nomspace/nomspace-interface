@@ -8,7 +8,7 @@ import { Extend } from "src/pages/Extend";
 import { Request } from "src/pages/Request";
 import { Header } from "src/components/Header";
 import Modal from "react-modal";
-import { Footer } from "src/components/Footer";
+import { Footer } from "components/Footer";
 import { ToastContainer } from "react-toastify";
 import { Stats } from "./pages/Stats";
 

@@ -1,42 +1,26 @@
 import "react-app-polyfill/stable";
 import "@celo-tools/use-contractkit/lib/styles.css";
 import "react-toastify/dist/ReactToastify.min.css";
-import "src/index.css";
+import "index.css";
 
-import { ContractKitProvider } from "@celo-tools/use-contractkit";
-import * as Sentry from "@sentry/react";
-import { Integrations } from "@sentry/tracing";
+import {
+  Alfajores,
+  Avalanche,
+  Celo,
+  ContractKitProvider,
+  Fuji,
+} from "@celo-tools/use-contractkit";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import store from "src/state";
-import theme from "src/theme";
+import store from "state";
+import theme from "theme";
 import { ThemeProvider } from "theme-ui";
 import { HashRouter as Router } from "react-router-dom";
+import { RecoilRoot } from "recoil";
 
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-
-if (process.env.REACT_APP_SENTRY_DSN) {
-  const sentryCfg = {
-    environment: `${process.env.REACT_APP_VERCEL_ENV ?? "unknown"}`,
-    release: `${
-      process.env.REACT_APP_VERCEL_GIT_COMMIT_REF?.replace(/\//g, "--") ??
-      "unknown"
-    }-${process.env.REACT_APP_VERCEL_GIT_COMMIT_SHA ?? "unknown"}`,
-  };
-  Sentry.init({
-    dsn: process.env.REACT_APP_SENTRY_DSN,
-    integrations: [new Integrations.BrowserTracing()],
-    tracesSampleRate: 0.2,
-    ...sentryCfg,
-  });
-  console.log(
-    `Initializing Sentry environment at release ${sentryCfg.release} in environment ${sentryCfg.environment}`
-  );
-} else {
-  console.warn(`REACT_APP_SENTRY_DSN not found. Sentry will not be loaded.`);
-}
 
 ReactDOM.render(
   <React.StrictMode>
@@ -46,12 +30,15 @@ ReactDOM.render(
         description: "Protocol for name registration",
         url: "https://app.nom.space",
         icon: "https://www.nom.space/favicon-32x32.png",
+        supportedNetworks: [Celo, Alfajores, Avalanche, Fuji],
       }}
     >
       <ThemeProvider theme={theme}>
         <Provider store={store}>
           <Router>
-            <App />
+            <RecoilRoot>
+              <App />
+            </RecoilRoot>
           </Router>
         </Provider>
       </ThemeProvider>

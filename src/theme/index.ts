@@ -8,12 +8,12 @@ export const preset = {
     purple400: "#5352FC",
     black800: "#363945",
 
-    primaryText: "#5352FC",
+    primaryTextColor: "#5352FC",
     secondaryBackground: "#F5F2FF",
     primary: "#5352FC",
 
-    text: "#333333",
-    primaryButtonText: "#FAFAFA",
+    textColor: "#333333",
+    primaryButtonTextColor: "#FAFAFA",
     accent: "#7C71FD",
     background: "#fff",
     secondary: "#bababa",
@@ -25,12 +25,12 @@ export const preset = {
     disabled: "#BDBDBD",
     modes: {
       dark: {
-        primaryText: "#CCC3FC",
+        primaryTextColor: "#CCC3FC",
         secondaryBackground: "#363945",
         primary: "#7C71FC",
 
-        text: "#FAFAFA",
-        primaryButtonText: "#FAFAFA",
+        textColor: "#FAFAFA",
+        primaryButtonTextColor: "#FAFAFA",
         accent: "#5352FC",
         background: "#212121",
         secondary: "#bababa",
@@ -65,22 +65,21 @@ export const preset = {
   },
   text: {
     default: {
-      color: "text",
+      color: "textColor",
       fontFamily: "body",
       fontWeight: "500",
       fontSize: [18],
       lineHeight: "20px",
     },
+    heading: {
+      color: "textColor",
+    },
     primary: {
       variant: "text.default",
-      color: "primaryText",
-    },
-    title: {
-      fontFamily: "body",
-      fontSize: [28],
-      lineHeight: "42px",
+      color: "primaryTextColor",
     },
     logo: {
+      color: "textColor",
       fontFamily: "body",
       fontSize: [20],
       lineHeight: "28px",
@@ -92,66 +91,11 @@ export const preset = {
       fontSize: [12],
       lineHeight: "16px",
     },
-    account: {
-      fontFamily: "body",
-      color: "primary",
-      fontSize: [12],
-      lineHeight: "16px",
-    },
-    regular: {
-      fontFamily: "body",
-      fontSize: [18],
-      lineHeight: "22px",
-      color: "text",
-    },
-    regularGray: {
-      fontFamily: "body",
-      fontSize: [18],
-      lineHeight: "22px",
-      color: "darkgray",
-    },
-    bold: {
-      fontFamily: "Bold",
-      fontSize: 18,
-      lineHeight: "20px",
-      color: "text",
-    },
     form: {
       fontStyle: "body",
       fontSize: [14],
       lineHeight: "16px",
-      color: "text",
-    },
-    subtitle: {
-      fontStyle: "body",
-      fontSize: [20, 18],
-      lineHeight: ["24px", "20px"],
-      letterSpacing: "-0.01rem",
-      color: "text",
-    },
-    tableHeader: {
-      color: "accent",
-      fontFamily: "body",
-      fontSize: [14],
-      lineHeight: "20px",
-    },
-    summaryTitle: {
-      color: "accent",
-      fontFamily: "body",
-      fontSize: [14],
-      lineHeight: "20px",
-    },
-    largeNumber: {
-      fontFamily: "body",
-      fontSize: 24,
-      lineHeight: "20px",
-      color: "text",
-    },
-    reallyBigNumber: {
-      fontFamily: "body",
-      fontSize: 32,
-      lineHeight: "20px",
-      color: "text",
+      color: "textColor",
     },
   },
   variants: {
@@ -177,6 +121,7 @@ export const preset = {
     borderWidth: "1.5px",
   },
   input: {
+    color: "textColor",
     borderColor: "gray",
     borderWidth: "1.5px",
   },
@@ -193,7 +138,7 @@ export const preset = {
       lineHeight: "20px",
       cursor: "pointer",
       borderRadius: "6px",
-      color: "primaryButtonText",
+      color: "primaryButtonTextColor",
       bg: "primary",
       px: 4,
       py: 2,
@@ -219,7 +164,7 @@ export const preset = {
       borderRadius: 0,
       fontFamily: "body",
       borderBottom: "2px solid transparent",
-      color: "text",
+      color: "textColor",
       ":focus": {
         outline: "none",
       },
@@ -231,7 +176,7 @@ export const preset = {
     switcherSelected: {
       variant: "buttons.switcher",
       borderBottom: "2px solid",
-      color: "primaryText",
+      color: "primaryTextColor",
     },
   },
   styles: {
@@ -246,9 +191,9 @@ export const preset = {
     },
     a: {
       ":visited": {
-        color: "primaryText",
+        color: "primaryTextColor",
       },
-      color: "primaryText",
+      color: "primaryTextColor",
       cursor: "pointer",
     },
     h1: {
@@ -257,6 +202,7 @@ export const preset = {
   },
   cards: {
     primary: {
+      color: "textColor",
       padding: 2,
       borderRadius: 4,
       boxShadow: "0 0 8px rgba(0, 0, 0, 0.125)",
@@ -271,7 +217,7 @@ export const preset = {
     warning: {
       backgroundColor: "secondaryBackground",
       borderRadius: 4,
-      color: "primaryText",
+      color: "primaryTextColor",
       px: 3,
       py: 2,
     },
