@@ -191,7 +191,7 @@ export const SearchDetail: React.FC = () => {
                 <Button
                   sx={{ p: 1, fontSize: 1, ml: 2 }}
                   onClick={() => {
-                    history.push(`/search/${name}/extend`);
+                    history.push(`/${name}/extend`);
                   }}
                 >
                   Extend
@@ -254,7 +254,7 @@ export const SearchDetail: React.FC = () => {
             {nom.owner === ZERO_ADDRESS ? (
               <Button
                 onClick={() => {
-                  history.push(`/search/${name}/reserve`);
+                  history.push(`/${name}/reserve`);
                 }}
               >
                 Reserve
