@@ -1,8 +1,7 @@
 import React from "react";
 import { Container } from "theme-ui";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { Search } from "src/pages/Search";
-import { Stats } from "src/pages/Stats";
 import { SearchDetail } from "src/pages/SearchDetail";
 import { Reserve } from "src/pages/Reserve";
 import { Extend } from "src/pages/Extend";
