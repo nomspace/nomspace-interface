@@ -54,7 +54,7 @@ export const SearchBar: React.FC<IProps> = ({ size }) => {
         onSubmit={(e) => {
           const searchTerm = searchInput?.current.value;
           if (searchTerm && searchTerm !== "") {
-            history.push(`/search/${searchTerm}`);
+            history.push(`/${searchTerm}`);
           }
           e.preventDefault();
         }}
