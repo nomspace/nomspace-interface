@@ -65,7 +65,7 @@ export const Reserve: React.FC = () => {
             });
           toastTx(tx.transactionHash);
           refetchCUSD();
-        } catch (e) {
+        } catch (e: any) {
           toast(e.message);
         } finally {
           setApproveLoading(false);
@@ -99,7 +99,7 @@ export const Reserve: React.FC = () => {
             });
           toastTx(tx.transactionHash);
           refetchNom();
-        } catch (e) {
+        } catch (e: any) {
           toast(e.message);
         } finally {
           setReserveLoading(false);
