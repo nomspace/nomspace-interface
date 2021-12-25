@@ -23,24 +23,18 @@ const App: React.FC = () => {
         <Header />
         <Switch>
           <Route exact path="/">
-            <Redirect to="/search" />
-          </Route>
-          <Route exact path="/search">
             <Search />
           </Route>
-          <Route exact path="/stats">
-            <Stats />
-          </Route>
-          <Route exact path="/search/:name">
+          <Route exact path="/:name">
             <SearchDetail />
           </Route>
-          <Route exact path="/search/:name/reserve">
+          <Route exact path="/:name/reserve">
             <Reserve />
           </Route>
-          <Route exact path="/search/:name/request">
+          <Route exact path="/:name/request">
             <Request />
           </Route>
-          <Route exact path="/search/:name/extend">
+          <Route exact path="/:name/extend">
             <Extend />
           </Route>
         </Switch>
