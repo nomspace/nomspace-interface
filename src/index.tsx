@@ -3,7 +3,11 @@ import "@celo-tools/use-contractkit/lib/styles.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import "src/index.css";
 
-import { ContractKitProvider } from "@celo-tools/use-contractkit";
+import {
+  Alfajores,
+  Celo,
+  ContractKitProvider,
+} from "@celo-tools/use-contractkit";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 import React from "react";
@@ -46,6 +50,7 @@ ReactDOM.render(
         description: "Protocol for name registration",
         url: "https://app.nom.space",
         icon: "https://www.nom.space/favicon-32x32.png",
+        supportedNetworks: [Celo, Alfajores],
       }}
     >
       <ThemeProvider theme={theme}>
