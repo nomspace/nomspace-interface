@@ -54,6 +54,7 @@
     "@celo-tools/use-contractkit": "npm:@poofcash/use-contractkit@^1.0.11",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
+    "@json-rpc-tools/ws-connection": "^2.0.0-beta.3",
     "@nomspace/nomspace": "^1.0.5",
     "@reduxjs/toolkit": "^1.6.0",
     "@sentry/react": "^6.7.2",
@@ -80,7 +81,7 @@
     "*.{html,md,graphql,json,yaml,yml}": "prettier --write"
   },
   "resolutions": {
-    "@celo/utils": "1.2.1"
+    "@celo/wallet-walletconnect": "1.2.0"
   },
   "eslintConfig": {
     "extends": [
