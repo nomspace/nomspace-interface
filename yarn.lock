@@ -1077,7 +1077,7 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@celo-tools/use-contractkit@npm:@poofcash/use-contractkit@^1.0.11":
+"@celo-tools/use-contractkit@npm:@poofcash/use-contractkit@^1.0.12":
   version "1.0.12"
   resolved "https://registry.yarnpkg.com/@poofcash/use-contractkit/-/use-contractkit-1.0.12.tgz#f2026010160281aabf1526348b5036bca32737ba"
   integrity sha512-6Tv/8yCaFqRs32A81Jk4KHgf1wwX1r7e0oAKQ5ndsINY55C6omVnvVULKeJ0EYVCEgVe7FOEX1Xon0bzKXL7kQ==
@@ -2012,13 +2012,6 @@
   dependencies:
     keyvaluestorage-interface "^1.0.0"
 
-"@json-rpc-tools/types@^2.0.0-beta.12":
-  version "2.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@json-rpc-tools/types/-/types-2.0.0-beta.12.tgz#358f77c48a844a3f55169c2db3b35c6af1cf4e8b"
-  integrity sha512-UM8w0RnD4DjYql/HlThe051ivW2Q8ulWarr7ux5Aas1UsOmcGQEg4slQo46p+BXgh1Nth7SHWS2tVnW/UUnCwQ==
-  dependencies:
-    keyvaluestorage-interface "^1.0.0"
-
 "@json-rpc-tools/utils@^1.4.0", "@json-rpc-tools/utils@^1.6.4", "@json-rpc-tools/utils@^1.7.6":
   version "1.7.6"
   resolved "https://registry.yarnpkg.com/@json-rpc-tools/utils/-/utils-1.7.6.tgz#67f04987dbaa2e7adb6adff1575367b75a9a9ba1"
@@ -2026,23 +2019,6 @@
   dependencies:
     "@json-rpc-tools/types" "^1.7.6"
     "@pedrouid/environment" "^1.0.1"
-
-"@json-rpc-tools/utils@^2.0.0-beta.3":
-  version "2.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@json-rpc-tools/utils/-/utils-2.0.0-beta.12.tgz#40be0f4c07e176d7fc14a441fbbf1bd1a0f9847f"
-  integrity sha512-7j3REzegFNXdgA0rjllNKz84ikIAXm4Yv3mO8Lx9D64hUOU2tUZfELtKEm2wr8FsP5if46Xl9ZH/Ch7JB4nXJQ==
-  dependencies:
-    "@json-rpc-tools/types" "^2.0.0-beta.12"
-    "@pedrouid/environment" "^1.0.1"
-
-"@json-rpc-tools/ws-connection@^2.0.0-beta.3":
-  version "2.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@json-rpc-tools/ws-connection/-/ws-connection-2.0.0-beta.3.tgz#383ae45c5a6c7765fe334a800c76a187b8cca065"
-  integrity sha512-cDAlcFTOZFI9y0TzgNFth1CJYqNG56+2v14+VrBflaWU89XhVmbzd3hEtwh0ejoHsmh3JLrETUlErMxfnR9xcg==
-  dependencies:
-    "@json-rpc-tools/utils" "^2.0.0-beta.3"
-    safe-json-utils "^1.1.1"
-    ws "^7.4.0"
 
 "@ledgerhq/devices@^5.11.0", "@ledgerhq/devices@^5.51.1":
   version "5.51.1"

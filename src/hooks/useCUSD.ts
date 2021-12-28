@@ -11,7 +11,9 @@ export const useCUSD = () => {
     if (!address) {
       return null;
     }
-    const cUSD = await kit._web3Contracts.getStableToken(StableToken.cUSD);
+    const cUSD = await kit._web3Contracts.getStableToken(
+      StableToken.cUSD as any
+    );
     const allowance = toBN(
       await cUSD.methods.allowance(address, FEE_MODULE_V1).call()
     );

@@ -55,7 +55,7 @@ export const Extend: React.FC = () => {
         try {
           setApproveLoading(true);
           const cUSD = await kit._web3Contracts.getStableToken(
-            StableToken.cUSD
+            StableToken.cUSD as any
           );
           const tx = await cUSD.methods
             .approve(FEE_MODULE_V1, MaxUint256.toString())
