@@ -32,10 +32,120 @@ import QRCode from "qrcode.react";
 import { BlockscoutAddressLink } from "src/components/BlockscoutAddressLink";
 import { ERC20 } from "src/generated/ERC20";
 
-// assets
+/* ASSETS */
 import pfp from "./assets/pfp.png";
 import banner from "./assets/banner.png";
+
+// connections
 import discord from "./assets/discord.png";
+import twitter from "./assets/twitter.png";
+import telegram from "./assets/telegram.png";
+
+/* DEMO PURPOSES, DELETE LATER */
+// nfts
+import nft1 from "./assets/nft1.png";
+import nft2 from "./assets/nft2.png";
+import nft3 from "./assets/nft3.png";
+
+// tokens
+import t1 from "./assets/t1.png";
+import t2 from "./assets/t2.png";
+import t3 from "./assets/t3.png";
+import t4 from "./assets/t4.png";
+import t5 from "./assets/t5.png";
+import t6 from "./assets/t6.png";
+import t7 from "./assets/t7.png";
+import t8 from "./assets/t8.png";
+
+// stats
+import life2 from "./assets/life1.png";
+import life1 from "./assets/life2.png";
+import networth from "./assets/networth.png";
+import whale from "./assets/whale.png";
+
+// sources
+import s1 from "./assets/s1.png";
+import s2 from "./assets/s2.png";
+import s3 from "./assets/s3.png";
+
+const connections = [
+  {
+    img: discord,
+    src: "aaaa",
+  },
+  {
+    img: twitter,
+    src: "bbbb",
+  },
+  {
+    img: telegram,
+    src: "cccc",
+  },
+];
+const tags = [
+  { name: "farmer", color: "green" },
+  { name: "lender", color: "blue" },
+  { name: "borrower", color: "red" },
+  { name: "staker", color: "yellow" },
+];
+const nfts = [
+  {
+    img: nft1,
+    name: "Alice Red or Blue Pill",
+    id: "00001",
+    os: "",
+  },
+  {
+    img: nft2,
+    name: "CeloPunk",
+    id: "00420",
+    os: "",
+  },
+  {
+    img: nft3,
+    name: "Zatoichi",
+    id: "003",
+    os: "",
+  },
+];
+const tokens = [
+  {
+    img: t1,
+    name: "",
+  },
+  {
+    img: t2,
+    name: "",
+  },
+  {
+    img: t3,
+    name: "",
+  },
+  {
+    img: t4,
+    name: "",
+  },
+  {
+    img: t5,
+    name: "",
+  },
+  {
+    img: t6,
+    name: "",
+  },
+  {
+    img: t7,
+    name: "",
+  },
+  {
+    img: t8,
+    name: "",
+  },
+];
+const stats = { life: 10300000, netWorth: 42690000, nomWhaleInd: "0.71" };
+const sources = [{ img: s1 }, { img: s2 }, { img: s3 }];
+
+/* DEMO PURPOSES, DELETE LATER */
 
 export const SearchDetail: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -87,71 +197,114 @@ export const SearchDetail: React.FC = () => {
         />
         <Image variant="search.bannerAvatar" src={pfp} />
       </Box>
+
       <Box variant="search.detailsContainer">
-        {/* Name */}
-        <Flex>
-          <Heading variant="search.heading">gza</Heading>
-          <Heading variant="search.heading" sx={{ color: "#D9D9D9" }}>
-            .nom
+        {/* Name & Description */}
+        <Box variant="search.name.container">
+          <Flex>
+            <Heading variant="search.name.heading">{name}</Heading>
+            <Heading variant="search.name.heading" sx={{ color: "#D9D9D9" }}>
+              .nom
+            </Heading>
+          </Flex>
+          <Heading variant="search.name.subHeading">
+            don't test my liquid swords
           </Heading>
-        </Flex>
-        {/* Description */}
-        <Heading variant="search.subHeading">
-          don't test my liquid swords
-        </Heading>
+        </Box>
         {/* Connections */}
-        <Flex>
-          <Box variant="search.connection">
-            <Box
-              variant="search.connectionImage"
-              sx={{
-                backgroundImage: `url(${discord})`,
-              }}
-            ></Box>
-          </Box>
-
-          <Box variant="search.connection">
-            <Box
-              variant="search.connectionImage"
-              sx={{
-                backgroundImage: `url(${discord})`,
-              }}
-            ></Box>
-          </Box>
-          <Box variant="search.connection">
-            <Box
-              variant="search.connectionImage"
-              sx={{
-                backgroundImage: `url(${discord})`,
-              }}
-            ></Box>
-          </Box>
-          <Box variant="search.connection">
-            <Box
-              variant="search.connectionImage"
-              sx={{
-                backgroundImage: `url(${discord})`,
-              }}
-            ></Box>
-          </Box>
+        <Flex variant="search.connection.container">
+          {connections.map((e) => {
+            return (
+              <Box variant="search.connection.imageContainer">
+                <Box
+                  variant="search.connection.image"
+                  sx={{
+                    backgroundImage: `url(${e.img})`,
+                  }}
+                ></Box>
+              </Box>
+            );
+          })}
         </Flex>
-
         {/* Tags */}
-        <Flex>
-          <Box variant="search.tag">farmer</Box>
-          <Box variant="search.tag">farmer</Box>
-          <Box variant="search.tag">farmer</Box>
-          <Box variant="search.tag">farmer</Box>
-        </Flex>
+        <Box variant="search.rowScrollContainer">
+          {tags.map((e) => {
+            return <Box variant={`search.tag.${e.color}`}>{e.name}</Box>;
+          })}
+        </Box>
         {/* NFTs */}
-        <Heading>NFTs</Heading>
+        <Heading variant="search.heading">NFTs</Heading>
+        <Box variant="search.rowScrollContainer">
+          {nfts.map((e) => {
+            return (
+              <Box variant="search.nft.imageContainer">
+                <Box
+                  variant="search.nft.image"
+                  sx={{
+                    backgroundImage: `url(${e.img})`,
+                  }}
+                ></Box>
+              </Box>
+            );
+          })}
+        </Box>
         {/* Tokens */}
-        <Heading>Tokens</Heading>
+        <Heading variant="search.heading">Tokens</Heading>
+        <Box variant="search.rowScrollContainer">
+          {tokens.map((e) => {
+            return (
+              <Box variant="search.token.imageContainer">
+                <Box
+                  variant="search.token.image"
+                  sx={{
+                    backgroundImage: `url(${e.img})`,
+                  }}
+                ></Box>
+              </Box>
+            );
+          })}
+        </Box>
         {/* Stats */}
-        <Heading>Stats</Heading>
-        <Heading>Life: Net Worth: Nom Whale Index:</Heading>
+        <Heading variant="search.heading">Stats</Heading>
+        <Box variant="search.stat.container">
+          <Flex variant="search.stat.row">
+            <Box variant="search.stat.icon">
+              <Image src={life1} variant="search.stat.life1Icon" />
+              <Image src={life2} variant="search.stat.life2Icon" />
+            </Box>
+            <Heading variant="search.stat.heading">Life:&nbsp;</Heading>
+            <Text variant="search.stat.text">{stats.life} Blocks</Text>
+          </Flex>
+          <Flex variant="search.stat.row">
+            <Image src={networth} variant="search.stat.icon" />
+            <Heading variant="search.stat.heading">Net Worth:&nbsp;</Heading>
+            <Text variant="search.stat.text">${stats.netWorth}</Text>
+          </Flex>
+          <Flex variant="search.stat.row">
+            <Image src={whale} variant="search.stat.icon" />
+            <Heading variant="search.stat.heading">
+              Nom Whale Index:&nbsp;
+            </Heading>
+            <Text variant="search.stat.text">{stats.nomWhaleInd}%</Text>
+          </Flex>
+        </Box>
         {/* Sources */}
-        <Heading>Sources</Heading>
+        <Heading variant="search.heading">Sources</Heading>
+        <Box variant="search.rowScrollContainer">
+          {sources.map((e) => {
+            return (
+              <Box variant="search.source.imageContainer">
+                <Box
+                  variant="search.source.image"
+                  sx={{
+                    backgroundImage: `url(${e.img})`,
+                  }}
+                ></Box>
+              </Box>
+            );
+          })}
+        </Box>
+        {/* Footer */}
       </Box>
     </Flex>
   );
