@@ -2,7 +2,17 @@ import React from "react";
 import { useNom } from "src/hooks/useNom";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import { useParams, useHistory } from "react-router-dom";
-import { Box, Button, Card, Divider, Flex, Heading, Spinner } from "theme-ui";
+import {
+  Box,
+  Button,
+  Card,
+  Divider,
+  Flex,
+  Heading,
+  Spinner,
+  Image,
+  Text,
+} from "theme-ui";
 import { ethers } from "ethers";
 import { BlockText } from "src/components/BlockText";
 import { shortenAddress } from "src/utils/address";
@@ -21,6 +31,11 @@ import { formatName } from "src/utils/name";
 import QRCode from "qrcode.react";
 import { BlockscoutAddressLink } from "src/components/BlockscoutAddressLink";
 import { ERC20 } from "src/generated/ERC20";
+
+// assets
+import pfp from "./assets/pfp.png";
+import banner from "./assets/banner.png";
+import discord from "./assets/discord.png";
 
 export const SearchDetail: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -56,6 +71,95 @@ export const SearchDetail: React.FC = () => {
   const isOwner = address && nom.owner.toLowerCase() === address.toLowerCase();
 
   return (
+    <Flex
+      sx={{
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      {/* Banner */}
+      <Box variant="search.bannerContainer">
+        <Box
+          variant="search.bannerImage"
+          sx={{
+            backgroundImage: `url(${banner})`,
+          }}
+        />
+        <Image variant="search.bannerAvatar" src={pfp} />
+      </Box>
+      <Box variant="search.detailsContainer">
+        {/* Name */}
+        <Flex>
+          <Heading variant="search.heading">gza</Heading>
+          <Heading variant="search.heading" sx={{ color: "#D9D9D9" }}>
+            .nom
+          </Heading>
+        </Flex>
+        {/* Description */}
+        <Heading variant="search.subHeading">
+          don't test my liquid swords
+        </Heading>
+        {/* Connections */}
+        <Flex>
+          <Box variant="search.connection">
+            <Box
+              variant="search.connectionImage"
+              sx={{
+                backgroundImage: `url(${discord})`,
+              }}
+            ></Box>
+          </Box>
+
+          <Box variant="search.connection">
+            <Box
+              variant="search.connectionImage"
+              sx={{
+                backgroundImage: `url(${discord})`,
+              }}
+            ></Box>
+          </Box>
+          <Box variant="search.connection">
+            <Box
+              variant="search.connectionImage"
+              sx={{
+                backgroundImage: `url(${discord})`,
+              }}
+            ></Box>
+          </Box>
+          <Box variant="search.connection">
+            <Box
+              variant="search.connectionImage"
+              sx={{
+                backgroundImage: `url(${discord})`,
+              }}
+            ></Box>
+          </Box>
+        </Flex>
+
+        {/* Tags */}
+        <Flex>
+          <Box variant="search.tag">farmer</Box>
+          <Box variant="search.tag">farmer</Box>
+          <Box variant="search.tag">farmer</Box>
+          <Box variant="search.tag">farmer</Box>
+        </Flex>
+        {/* NFTs */}
+        <Heading>NFTs</Heading>
+        {/* Tokens */}
+        <Heading>Tokens</Heading>
+        {/* Stats */}
+        <Heading>Stats</Heading>
+        <Heading>Life: Net Worth: Nom Whale Index:</Heading>
+        {/* Sources */}
+        <Heading>Sources</Heading>
+      </Box>
+    </Flex>
+  );
+};
+
+/**
+ * 
+ *   return (
     <Flex
       sx={{
         alignItems: "center",
@@ -282,4 +386,4 @@ export const SearchDetail: React.FC = () => {
       </Box>
     </Flex>
   );
-};
+ */

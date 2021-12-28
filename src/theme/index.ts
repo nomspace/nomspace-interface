@@ -44,9 +44,9 @@ export const preset = {
     },
   },
   fonts: {
-    body: "Roboto",
-    heading: "Roboto",
-    monospace: "Roboto",
+    body: "Avenir",
+    heading: "Avenir",
+    monospace: "Avenir",
   },
   fontSizes: [12, 14, 16, 18, 20, 24, 28, 32, 48, 64, 96],
   lineHeights: {
@@ -274,6 +274,66 @@ export const preset = {
       color: "primaryText",
       px: 3,
       py: 2,
+    },
+  },
+  images: {
+    banner: {
+      width: "100%",
+    },
+  },
+  search: {
+    bannerImage: {
+      width: "100%",
+      height: "100%",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+      position: "relative",
+    },
+    bannerContainer: {
+      position: "relative",
+      width: "100vw",
+      height: "103px",
+      marginBottom: "49px",
+    },
+    bannerAvatar: {
+      position: "absolute",
+      left: "23px",
+      bottom: "-40%",
+      height: "125px",
+      width: "125px",
+    },
+    detailsContainer: {
+      width: "100vw",
+      paddingLeft: "23px",
+      textAlign: "left",
+    },
+    heading: {
+      fontSize: "35px",
+    },
+    subHeading: {
+      fontFamily: "Avenir-Book",
+      fontSize: "20px",
+    },
+    connectionImage: {
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+    },
+    connection: {
+      borderRadius: "50%",
+      backgroundColor: "#5452FC",
+      filter: "drop-shadow(0px 3px 6px #5452FC)",
+      width: "46px",
+      height: "46px",
+      marginRight: "12px",
+    },
+    tag: {
+      borderRadius: "14px",
+      background: "rgba(51, 203, 23, .2)",
+      padding: "6px 15px",
+      color: "#5D9352",
+      marginRight: "9px",
     },
   },
 };

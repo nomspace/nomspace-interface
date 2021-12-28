@@ -12,7 +12,7 @@ export const Header: React.FC = () => {
   const [userNoms] = useUserNoms();
   return (
     <Flex sx={{ justifyContent: "space-between", alignItems: "center" }} mb={4}>
-      {location.pathname === "/search" ? <Box /> : <Logo />}
+      {location.pathname === "/" ? <Box /> : <Logo />}
       <Flex>
         {userNoms ? (
           <Button
