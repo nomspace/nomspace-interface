@@ -11,7 +11,7 @@ export const useUserNoms = () => {
     if (!address) {
       return null;
     }
-    const nomKit = new NomKit(kit as any, NOM[network.chainId]);
+    const nomKit = new NomKit(kit as any, NOM[network.chainId]!);
     return await nomKit.userNoms(address);
   }, [kit, network.chainId, address]);
 

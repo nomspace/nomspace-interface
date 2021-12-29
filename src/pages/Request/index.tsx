@@ -42,7 +42,7 @@ export const Request: React.FC = () => {
       if (!kit || !nom) {
         return;
       }
-      const cUSD = await kit.contracts.getStableToken(StableToken.cUSD);
+      const cUSD = await kit.contracts.getStableToken(StableToken.cUSD as any);
       const tx = await cUSD
         .transfer(nom.resolution, toWei(amount))
         .send({ from: kit.defaultAccount, gasPrice: toWei("0.5", "gwei") });

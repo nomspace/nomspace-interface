@@ -55,7 +55,7 @@ export const Reserve: React.FC = () => {
         try {
           setApproveLoading(true);
           const cUSD = await kit._web3Contracts.getStableToken(
-            StableToken.cUSD
+            StableToken.cUSD as any
           );
           const tx = await cUSD.methods
             .approve(FEE_MODULE_V1, MaxUint256.toString())
@@ -65,7 +65,7 @@ export const Reserve: React.FC = () => {
             });
           toastTx(tx.transactionHash);
           refetchCUSD();
-        } catch (e) {
+        } catch (e: any) {
           toast(e.message);
         } finally {
           setApproveLoading(false);
@@ -99,7 +99,7 @@ export const Reserve: React.FC = () => {
             });
           toastTx(tx.transactionHash);
           refetchNom();
-        } catch (e) {
+        } catch (e: any) {
           toast(e.message);
         } finally {
           setReserveLoading(false);

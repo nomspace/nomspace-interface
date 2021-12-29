@@ -163,7 +163,7 @@ export const SearchDetail: React.FC = () => {
                           });
                         toastTx(tx.transactionHash);
                         refetchNom();
-                      } catch (e) {
+                      } catch (e: any) {
                         toast(e.message);
                       } finally {
                         setChangeOwnerLoading(false);
