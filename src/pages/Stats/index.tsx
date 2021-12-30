@@ -149,10 +149,6 @@ export const Stats: React.FC = () => {
       }
     );
 
-    const names = reserveEvents.map((e) =>
-      ethers.utils.toUtf8String(e.returnValues.name)
-    );
-
     const totalReserved = reserveEvents.length;
     const numUniqueUsers = Object.keys(
       reserveEvents.reduce(

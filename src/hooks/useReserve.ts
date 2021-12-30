@@ -15,10 +15,9 @@ import {
 } from "generated";
 import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
-import { ethers } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
 import { YEAR_IN_SECONDS } from "utils/constants";
-import ENS, { namehash, labelhash } from "@ensdomains/ensjs";
+import ENS from "@ensdomains/ensjs";
 import { useCeloProvider } from "./useCeloProvider";
 
 export const useReserve = (name: string) => {

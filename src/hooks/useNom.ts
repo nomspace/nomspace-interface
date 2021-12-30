@@ -1,16 +1,10 @@
 import React from "react";
-import { Nom } from "generated/Nom";
-import { ethers } from "ethers";
-import { BASE_ADDR, ENS_ADDR, NOM } from "config";
+import { BASE_ADDR, ENS_ADDR } from "config";
 import { useAsyncState } from "./useAsyncState";
-import { formatName } from "utils/name";
 import { useCeloProvider } from "hooks/useCeloProvider";
 import { useCeloChainId } from "hooks/useCeloChainId";
-import { BaseRegistrarImplementation__factory, Nom__factory } from "generated";
-import { utils } from "ethers";
-import ENS, { namehash, labelhash } from "@ensdomains/ensjs";
-import { toBN } from "web3-utils";
-import { ZERO_ADDRESS } from "utils/constants";
+import { BaseRegistrarImplementation__factory } from "generated";
+import ENS, { labelhash } from "@ensdomains/ensjs";
 
 type NomResult = {
   resolution: string;
@@ -41,7 +35,6 @@ export const useNom = (name: string) => {
     const tokenId = labelhash(name);
     const owner = await base.ownerOf(tokenId);
     const expiration = (await base.nameExpires(tokenId)).toNumber();
-    console.log(expiration.toString());
 
     return { resolution, owner, expiration };
   }, [provider, celoChainId, name]);
