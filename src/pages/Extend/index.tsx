@@ -148,8 +148,7 @@ export const Extend: React.FC = () => {
           </Heading>
           <Heading color="primaryTextColor">
             {new Date(
-              (nom.expiration.toNumber() +
-                Math.floor(Number(years) * YEAR_IN_SECONDS)) *
+              (nom.expiration + Math.floor(Number(years) * YEAR_IN_SECONDS)) *
                 1000
             ).toLocaleDateString("en-US")}
           </Heading>

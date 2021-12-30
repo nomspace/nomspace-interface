@@ -3,7 +3,22 @@ import { YEAR_IN_SECONDS } from "utils/constants";
 
 export const NOM: Record<string, string> = {
   [ChainId.Celo]: "0xABf8faBbC071F320F222A526A2e1fBE26429344d",
-  [ChainId.Alfajores]: "0xb83e6f8BC9553Dd7AaECA86E96fa9B113563dfa3", // OperatorOwned
+  [ChainId.Alfajores]: "0x228624240Eac97c0df2060cd0a93372329D6246d", // OperatorOwnedV2
+  [ChainId.Baklava]: "",
+};
+export const NOM_REG_ADDR: Record<string, string> = {
+  [ChainId.Celo]: "",
+  [ChainId.Alfajores]: "0x0273373C357eF535C89b86ac7B98080DB885814c",
+  [ChainId.Baklava]: "",
+};
+export const BASE_ADDR: Record<string, string> = {
+  [ChainId.Celo]: "",
+  [ChainId.Alfajores]: "0xbf56d83A5D7C878D1a8264F278A1252D08F5A4d2",
+  [ChainId.Baklava]: "",
+};
+export const ENS_ADDR: Record<string, string> = {
+  [ChainId.Celo]: "",
+  [ChainId.Alfajores]: "0x2CD7A25F4B7C0c0519B961004175DC6Ab544ebCD",
   [ChainId.Baklava]: "",
 };
 export const USD: Record<string, string> = {

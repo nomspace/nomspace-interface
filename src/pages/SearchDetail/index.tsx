@@ -180,9 +180,7 @@ export const SearchDetail: React.FC = () => {
                 sx={{ alignItems: "center", justifyContent: "center", mb: 2 }}
               >
                 <BlockText>
-                  {new Date(
-                    nom.expiration.toNumber() * 1000
-                  ).toLocaleDateString("en-US")}
+                  {new Date(nom.expiration * 1000).toLocaleDateString("en-US")}
                 </BlockText>
                 <Button
                   sx={{ p: 1, fontSize: 1, ml: 2 }}

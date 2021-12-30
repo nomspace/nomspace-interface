@@ -54,6 +54,7 @@
     "@celo-tools/use-contractkit": "npm:@poofcash/use-contractkit@^1.0.11",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
+    "@ensdomains/ensjs": "^2.0.1",
     "@nomspace/nomspace": "^1.0.5",
     "@reduxjs/toolkit": "^1.6.0",
     "@sentry/react": "^6.7.2",
