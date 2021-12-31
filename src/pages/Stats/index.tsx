@@ -21,34 +21,36 @@ export const getPastEvents = async (
   toBlock: number,
   filter?: any
 ) => {
-  const events = [];
+  console.log("Fetching events");
   const startBlock = fromBlock || 0;
   const bucketSize = 50_000;
+  const promises = [];
   for (
     let i = Math.floor(startBlock / bucketSize);
     i < Math.ceil(toBlock / bucketSize);
     i++
   ) {
-    events.push(
-      ...(await contract.getPastEvents(eventName, {
+    promises.push(
+      contract.getPastEvents(eventName, {
         fromBlock: Math.max(i * bucketSize, startBlock),
         toBlock: Math.min((i + 1) * bucketSize, toBlock) - 1,
         filter,
-      }))
+      })
     );
   }
+  const events = await Promise.all(promises).then((es) => es.flat());
   console.info(`Fetched ${events.length} ${eventName} events`);
-
   return events;
 };
 
 const getResolutions = async (multicall: any, nom: any, reserveEvents: any) => {
-  const res = [];
+  console.log("Fetching resolutions");
   const total = reserveEvents.length;
   let i = 0;
+  const promises = [];
   while (i < total) {
-    res.push(
-      ...(await multicall.methods
+    promises.push(
+      multicall.methods
         .aggregate(
           reserveEvents
             .slice(i, i + BUCKET_SIZE)
@@ -62,21 +64,50 @@ const getResolutions = async (multicall: any, nom: any, reserveEvents: any) => {
           cr.returnData.map((address: string) =>
             address.replace("0x000000000000000000000000", "0x")
           )
-        ))
+        )
+    );
+    i += BUCKET_SIZE;
+  }
+  return await Promise.all(promises).then((es) => es.flat());
+};
+
+const getOwners = async (multicall: any, nom: any, reserveEvents: any) => {
+  console.log("Fetching owners");
+  const total = reserveEvents.length;
+  let i = 0;
+  const promises = [];
+  while (i < total) {
+    promises.push(
+      multicall.methods
+        .aggregate(
+          reserveEvents
+            .slice(i, i + BUCKET_SIZE)
+            .map((e: any) => [
+              nom.options.address,
+              nom.methods.nameOwner(e.returnValues.name).encodeABI(),
+            ])
+        )
+        .call()
+        .then((cr: any) =>
+          cr.returnData.map((address: string) =>
+            address.replace("0x000000000000000000000000", "0x")
+          )
+        )
     );
     i += BUCKET_SIZE;
   }
 
-  return res;
+  return await Promise.all(promises).then((es) => es.flat());
 };
 
 const getExpirations = async (multicall: any, nom: any, reserveEvents: any) => {
-  const res = [];
+  console.log("Fetching expirations");
   const total = reserveEvents.length;
   let i = 0;
+  const promises = [];
   while (i < total) {
-    res.push(
-      ...(await multicall.methods
+    promises.push(
+      multicall.methods
         .aggregate(
           reserveEvents
             .slice(i, i + BUCKET_SIZE)
@@ -88,12 +119,12 @@ const getExpirations = async (multicall: any, nom: any, reserveEvents: any) => {
         .call()
         .then((cr: any) =>
           cr.returnData.map((expiration: string) => parseInt(expiration, 16))
-        ))
+        )
     );
     i += BUCKET_SIZE;
   }
 
-  return res;
+  return await Promise.all(promises).then((es) => es.flat());
 };
 
 export const Stats: React.FC = () => {
@@ -122,7 +153,6 @@ export const Stats: React.FC = () => {
     const names = reserveEvents.map((e) =>
       ethers.utils.toUtf8String(e.returnValues.name)
     );
-    console.log("n", names);
 
     const totalReserved = reserveEvents.length;
     const numUniqueUsers = Object.keys(
@@ -132,14 +162,17 @@ export const Stats: React.FC = () => {
       )
     ).length;
 
-    const resolutions = await getResolutions(multicall, nom, reserveEvents);
-    console.log("r", resolutions);
-    const expirations = await getExpirations(multicall, nom, reserveEvents);
-    console.log("e", expirations);
+    const [resolutions, owners, expirations] = await Promise.all([
+      getResolutions(multicall, nom, reserveEvents),
+      getOwners(multicall, nom, reserveEvents),
+      getExpirations(multicall, nom, reserveEvents),
+    ]);
 
-    const zipped = [];
+    const zipped = ["name,owner,resolution,expiration"];
     for (let i = 0; i < names.length; i++) {
-      zipped.push([names[i], resolutions[i], expirations[i]].join(","));
+      zipped.push(
+        [names[i], owners[i], resolutions[i], expirations[i]].join(",")
+      );
     }
     console.log(zipped.join("\n"));
 
