@@ -10,6 +10,7 @@ import { Header } from "src/components/Header";
 import Modal from "react-modal";
 import { Footer } from "src/components/Footer";
 import { ToastContainer } from "react-toastify";
+import { Stats } from "./pages/Stats";
 
 const App: React.FC = () => {
   React.useEffect(() => {
@@ -23,6 +24,9 @@ const App: React.FC = () => {
         <Switch>
           <Route exact path="/">
             <Search />
+          </Route>
+          <Route exact path="/stats">
+            <Stats />
           </Route>
           <Route exact path="/:name">
             <SearchDetail />
