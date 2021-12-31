@@ -20,10 +20,14 @@ import { useUSD } from "hooks/useUSD";
 import { useReserve } from "hooks/useReserve";
 import { formatName } from "utils/name";
 import { formatUnits } from "ethers/lib/utils";
+import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
+import { shortenAddress } from "utils/address";
+import { useContractKit } from "@celo-tools/use-contractkit";
 
 export const Reserve: React.FC = () => {
   const { name } = useParams<{ name: string }>();
   const nameFormatted = formatName(name);
+  const { address } = useContractKit();
 
   const [nom, refetchNom] = useNom(nameFormatted);
   const [years, setYears] = React.useState(1);
@@ -124,14 +128,19 @@ export const Reserve: React.FC = () => {
           <Text mt={3}>USD</Text>
         </Flex>
         <Flex sx={{ justifyContent: "center", mt: 6 }}>
-          {nom.owner === ZERO_ADDRESS ? (
-            loading ? (
-              <Spinner />
-            ) : (
-              button
-            )
+          {loading ? (
+            <Spinner />
+          ) : nom.owner === ZERO_ADDRESS ? (
+            button
+          ) : nom.owner === address ? (
+            <BlockText>You own this name!</BlockText>
           ) : (
-            <BlockText>Name has already been reserved.</BlockText>
+            <BlockText>
+              Name has already been reserved by{" "}
+              <BlockscoutAddressLink address={nom.owner}>
+                {shortenAddress(nom.owner)}
+              </BlockscoutAddressLink>
+            </BlockText>
           )}
         </Flex>
       </Card>

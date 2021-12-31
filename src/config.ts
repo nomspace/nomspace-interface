@@ -1,41 +1,45 @@
 import { ChainId } from "@celo-tools/use-contractkit";
 import { YEAR_IN_SECONDS } from "utils/constants";
 
+export enum TextKey {
+  BIO = "bio",
+  WEBSITE = "website",
+  GITHUB = "github",
+  DISCORD = "discord",
+  TELEGRAM = "telegram",
+  TWITTER = "twitter",
+}
+
 export const NOM: Record<string, string> = {
   [ChainId.Celo]: "0xABf8faBbC071F320F222A526A2e1fBE26429344d",
-  [ChainId.Alfajores]: "0x228624240Eac97c0df2060cd0a93372329D6246d", // OperatorOwnedV2
-  [ChainId.Baklava]: "",
+  [ChainId.Alfajores]: "0x7cD4E8f88488FB82A80e6F86373384cf9b080dD5", // OperatorOwnedV2
 };
 export const NOM_REG_ADDR: Record<string, string> = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0x0273373C357eF535C89b86ac7B98080DB885814c",
-  [ChainId.Baklava]: "",
+  [ChainId.Alfajores]: "0x668551cDE8842F58c473744e5D0726a1fD596c24",
 };
 export const BASE_ADDR: Record<string, string> = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0xbf56d83A5D7C878D1a8264F278A1252D08F5A4d2",
-  [ChainId.Baklava]: "",
+  [ChainId.Alfajores]: "0xD1Ea80BaF9f35Bd56F26F3Ad75D6b65307a133ec",
 };
 export const ENS_ADDR: Record<string, string> = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0x2CD7A25F4B7C0c0519B961004175DC6Ab544ebCD",
-  [ChainId.Baklava]: "",
+  [ChainId.Alfajores]: "0x8cf6B72996ED33Bc7A95673eD945203C7E749BAe",
 };
 export const USD: Record<string, string> = {
   [ChainId.Celo]: "0x765DE816845861e75A25fCA122bb6898B8B1282a",
   [ChainId.Alfajores]: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
-  [ChainId.Baklava]: "",
   [ChainId.Fuji]: "0x45ea5d57ba80b5e3b0ed502e9a08d568c96278f9", // USDC.e
 };
+// TODO: REMOVE
 export const FEE_MODULE: Record<string, string> = {
   [ChainId.Celo]: "0x07DDCB69Bc2637A6c03d5523696E21B688b42d65",
   [ChainId.Alfajores]: "0xa41b00095C14Ff7c3697485136eE53C12B3a681A",
-  [ChainId.Baklava]: "",
 };
 export const RESERVE_PORTAL: Record<string, string> = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0xC3604Ae1EAeC5Ef06CBf8AF6D3aB060C488453A3",
-  [ChainId.Baklava]: "",
+  [ChainId.Alfajores]: "0x3E9e0d874C028fb84fE1CF314e4d4FF927457745",
+  [ChainId.Fuji]: "0x30b3BB80cBE514AE3A2e2316Da66B42f5a882247",
 };
 
 export type Network = {

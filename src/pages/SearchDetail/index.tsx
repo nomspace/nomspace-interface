@@ -10,7 +10,6 @@ import { Box, Button, Card, Divider, Flex, Heading, Spinner } from "theme-ui";
 import { ethers } from "ethers";
 import { BlockText } from "components/BlockText";
 import { shortenAddress } from "utils/address";
-import { Nom } from "generated/Nom";
 import { NOM, USD } from "config";
 import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
@@ -18,20 +17,22 @@ import { isAddress, parseUnits } from "ethers/lib/utils";
 import { QRNameModal } from "components/QRNameModal";
 import { SearchBar } from "components/SearchBar";
 import { ZERO_ADDRESS } from "utils/constants";
-import { formatName } from "utils/name";
 import QRCode from "qrcode.react";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
 import { ERC20__factory, Nom__factory } from "generated";
+import { useNomSetSetting } from "hooks/useNomSetSetting";
+import { normalize } from "eth-ens-namehash";
 
 export const SearchDetail: React.FC = () => {
-  const { name } = useParams<{ name: string }>();
-  const nameFormatted = formatName(name);
+  let { name } = useParams<{ name: string }>();
+  name = normalize(name);
 
   const { address, network } = useContractKit();
   const provider = useProvider();
   const getConnectedSigner = useGetConnectedSigner();
-  const [nom, refetchNom] = useNom(nameFormatted);
-  const [changeResLoading, setChangeResLoading] = React.useState(false);
+  const [nom, refetchNom] = useNom(name);
+  console.log("NOM", nom);
+  const { setNomSetting, loading } = useNomSetSetting(name);
   const [changeOwnerLoading, setChangeOwnerLoading] = React.useState(false);
   const [showQR, setShowQR] = React.useState(false);
   const history = useHistory();
@@ -53,10 +54,8 @@ export const SearchDetail: React.FC = () => {
     [getConnectedSigner, network.chainId, nom, provider]
   );
 
-  if (nom == null) {
-    return <Spinner />;
-  }
-  const isOwner = address && nom.owner.toLowerCase() === address.toLowerCase();
+  const isOwner =
+    address && nom && nom.owner.toLowerCase() === address.toLowerCase();
 
   return (
     <Flex
@@ -75,57 +74,40 @@ export const SearchDetail: React.FC = () => {
           </Heading>
           <Flex sx={{ alignItems: "center", flexDirection: "column", mb: 2 }}>
             <QRCode value={`celo://wallet/pay?address=${address}`} />
-            <Flex sx={{ alignItems: "center" }}>
-              <BlockscoutAddressLink address={nom.resolution}>
-                <BlockText mt={2}>
-                  {shortenAddress(nom.resolution, 5)}
-                </BlockText>
-              </BlockscoutAddressLink>
-              {changeResLoading ? (
-                <Spinner />
-              ) : (
-                <Button
-                  sx={{ p: 1, fontSize: 1, ml: 2, mt: 2 }}
-                  onClick={async () => {
-                    const nomAddress = NOM[network.chainId];
-                    if (!nomAddress) return;
-                    const signer = await getConnectedSigner();
-                    const nom = Nom__factory.connect(
-                      nomAddress,
-                      signer
-                    ) as unknown as Nom;
-                    const nextResolution = prompt(
-                      "Enter new resolution address"
-                    );
-                    if (!nextResolution || !isAddress(nextResolution)) {
-                      alert("Invalid address. Please try again.");
-                      return;
-                    }
-
-                    try {
-                      setChangeResLoading(true);
-                      const gasPrice = await provider.getGasPrice();
-                      const tx = await nom.changeResolution(
-                        ethers.utils.formatBytes32String(nameFormatted),
-                        nextResolution,
-                        { gasPrice }
-                      );
-                      toastTx(tx.hash);
-                      refetchNom();
-                    } catch (e: any) {
-                      toast(e.message);
-                    } finally {
-                      setChangeResLoading(false);
-                    }
-                  }}
-                  disabled={!isOwner}
-                >
-                  Change
-                </Button>
-              )}
-            </Flex>
+            {nom ? (
+              <Flex sx={{ alignItems: "center" }}>
+                <BlockscoutAddressLink address={nom.resolution}>
+                  <BlockText mt={2}>
+                    {shortenAddress(nom.resolution, 5)}
+                  </BlockText>
+                </BlockscoutAddressLink>
+                {loading ? (
+                  <Spinner />
+                ) : (
+                  <Button
+                    sx={{ p: 1, fontSize: 1, ml: 2, mt: 2 }}
+                    onClick={async () => {
+                      const newAddr = prompt("Enter a new resolution address");
+                      if (!newAddr || !isAddress(newAddr)) {
+                        toast("Not a valid address");
+                        return;
+                      }
+                      await setNomSetting("setAddr(string,address)", [
+                        name,
+                        newAddr,
+                      ]);
+                    }}
+                    disabled={!isOwner}
+                  >
+                    Change
+                  </Button>
+                )}
+              </Flex>
+            ) : (
+              <Spinner />
+            )}
           </Flex>
-          {nom.owner !== ZERO_ADDRESS && isOwner && (
+          {nom && nom.owner !== ZERO_ADDRESS && isOwner && (
             <>
               <Divider />
               <BlockText variant="primary">Owner</BlockText>
@@ -153,7 +135,7 @@ export const SearchDetail: React.FC = () => {
                         setChangeOwnerLoading(true);
                         const gasPrice = await provider.getGasPrice();
                         const tx = await nom.changeNameOwner(
-                          ethers.utils.formatBytes32String(nameFormatted),
+                          ethers.utils.formatBytes32String(name),
                           nextOwner,
                           { gasPrice }
                         );
@@ -173,7 +155,7 @@ export const SearchDetail: React.FC = () => {
               </Flex>
             </>
           )}
-          {nom.owner !== ZERO_ADDRESS && isOwner && (
+          {nom && nom.owner !== ZERO_ADDRESS && isOwner && (
             <>
               <BlockText variant="primary">Expiration</BlockText>
               <Flex
@@ -195,7 +177,7 @@ export const SearchDetail: React.FC = () => {
             </>
           )}
           <br />
-          {nom.resolution !== ZERO_ADDRESS && (
+          {nom && nom.resolution !== ZERO_ADDRESS && (
             <Flex sx={{ mt: 1, justifyContent: "center", flexWrap: "wrap" }}>
               <Button
                 mr={2}
@@ -245,27 +227,31 @@ export const SearchDetail: React.FC = () => {
             </Flex>
           )}
           <Flex sx={{ justifyContent: "center", mt: 6 }}>
-            {nom.owner === ZERO_ADDRESS ? (
-              <Button
-                onClick={() => {
-                  history.push(`/${name}/reserve`);
-                }}
-              >
-                Reserve
-              </Button>
-            ) : nom.owner === address ? (
-              <BlockText>You own this name!</BlockText>
+            {nom ? (
+              nom.owner === ZERO_ADDRESS ? (
+                <Button
+                  onClick={() => {
+                    history.push(`/${name}/reserve`);
+                  }}
+                >
+                  Reserve
+                </Button>
+              ) : nom.owner === address ? (
+                <BlockText>You own this name!</BlockText>
+              ) : (
+                <BlockText>
+                  Name has already been reserved by{" "}
+                  <BlockscoutAddressLink address={nom.owner}>
+                    {shortenAddress(nom.owner)}
+                  </BlockscoutAddressLink>
+                </BlockText>
+              )
             ) : (
-              <BlockText>
-                Name has already been reserved by{" "}
-                <BlockscoutAddressLink address={nom.owner}>
-                  {shortenAddress(nom.owner)}
-                </BlockscoutAddressLink>
-              </BlockText>
+              <Spinner />
             )}
           </Flex>
         </Card>
-        {nom.resolution && nom.resolution !== ZERO_ADDRESS && (
+        {nom && nom.resolution && nom.resolution !== ZERO_ADDRESS && (
           <QRNameModal
             name={name}
             address={nom.resolution}

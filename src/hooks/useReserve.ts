@@ -19,11 +19,13 @@ import { formatUnits } from "ethers/lib/utils";
 import { YEAR_IN_SECONDS } from "utils/constants";
 import ENS from "@ensdomains/ensjs";
 import { useCeloProvider } from "./useCeloProvider";
+import { useCeloChainId } from "./useCeloChainId";
 
 export const useReserve = (name: string) => {
   const { address, network } = useContractKit();
   const provider = useProvider();
   const celoProvider = useCeloProvider();
+  const celoChainId = useCeloChainId();
   const [loading, setLoading] = useState(false);
   const getConnectedSigner = useGetConnectedSigner();
 
@@ -43,6 +45,7 @@ export const useReserve = (name: string) => {
         MaxUint256.toString(), // TODO: don't do max
         { gasPrice }
       );
+      await tx.wait(2);
       toastTx(tx.hash);
       //   refetchUSD();
     } catch (e: any) {
@@ -101,15 +104,15 @@ export const useReserve = (name: string) => {
         const tx = await reservePortal.escrow(
           usd.address,
           formatUnits(cost, (await usd.decimals()) - 18), // Assume cost is in 18 decimals
-          44787, // TODO: Hardcode. Check testnet vs mainnet
+          celoChainId,
           nomAddress,
           0,
           data,
-          address,
           {
             gasPrice,
           }
         );
+        await tx.wait(2);
         toastTx(tx.hash);
       } catch (e: any) {
         toast(e.message);
@@ -118,7 +121,15 @@ export const useReserve = (name: string) => {
         setLoading(false);
       }
     },
-    [address, celoProvider, getConnectedSigner, name, network.chainId, provider]
+    [
+      address,
+      celoChainId,
+      celoProvider,
+      getConnectedSigner,
+      name,
+      network.chainId,
+      provider,
+    ]
   );
   return { approve, reserve, loading };
 };
