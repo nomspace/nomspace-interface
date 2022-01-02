@@ -21,6 +21,7 @@ import { formatName } from "src/utils/name";
 import QRCode from "qrcode.react";
 import { BlockscoutAddressLink } from "src/components/BlockscoutAddressLink";
 import { ERC20 } from "src/generated/ERC20";
+import { normalize } from "eth-ens-namehash";
 
 export const SearchDetail: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -49,6 +50,11 @@ export const SearchDetail: React.FC = () => {
     },
     [getConnectedKit, nom]
   );
+
+  let isNormal = false;
+  try {
+    isNormal = !!normalize(name);
+  } catch (e) {}
 
   if (nom == null) {
     return <Spinner />;
@@ -251,22 +257,28 @@ export const SearchDetail: React.FC = () => {
             </Flex>
           )}
           <Flex sx={{ justifyContent: "center", mt: 6 }}>
-            {nom.owner === ZERO_ADDRESS ? (
-              <Button
-                onClick={() => {
-                  history.push(`/${name}/reserve`);
-                }}
-              >
-                Reserve
-              </Button>
-            ) : nom.owner === address ? (
-              <BlockText>You own this name!</BlockText>
+            {isNormal ? (
+              nom.owner === ZERO_ADDRESS ? (
+                <Button
+                  onClick={() => {
+                    history.push(`/${name}/reserve`);
+                  }}
+                >
+                  Reserve
+                </Button>
+              ) : nom.owner === address ? (
+                <BlockText>You own this name!</BlockText>
+              ) : (
+                <BlockText>
+                  Name has already been reserved by{" "}
+                  <BlockscoutAddressLink address={nom.owner}>
+                    {shortenAddress(nom.owner)}
+                  </BlockscoutAddressLink>
+                </BlockText>
+              )
             ) : (
               <BlockText>
-                Name has already been reserved by{" "}
-                <BlockscoutAddressLink address={nom.owner}>
-                  {shortenAddress(nom.owner)}
-                </BlockscoutAddressLink>
+                This name is invalid and not available for reservation.
               </BlockText>
             )}
           </Flex>
