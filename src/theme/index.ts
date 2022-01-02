@@ -1,5 +1,6 @@
+// mobile, tablet, desktop
 export const preset = {
-  breakpoints: ["1080px", "1080px"],
+  breakpoints: ["768px", "1199px", "1200px"],
   colors: {
     purple25: "#F5F2FF",
     purple50: "#ECE6FE",
@@ -44,16 +45,20 @@ export const preset = {
     },
   },
   fonts: {
-    body: "Roboto",
-    heading: "Roboto",
-    monospace: "Roboto",
+    body: "Avenir",
+    heading: "Avenir",
+    monospace: "Avenir",
   },
   fontSizes: [12, 14, 16, 18, 20, 24, 28, 32, 48, 64, 96],
   lineHeights: {
     body: 1.5,
     heading: 1.25,
   },
-  space: [0, 4, 8, 16, 24, 32, 48, 64],
+  space: {
+    mobile: "5%",
+    tablet: "10%",
+    dekstop: "15%",
+  },
   letterSpacings: {
     small: "-0.05em",
   },
@@ -220,6 +225,224 @@ export const preset = {
       color: "primaryTextColor",
       px: 3,
       py: 2,
+    },
+  },
+  search: {
+    detailsContainer: {
+      width: "100vw",
+      overflowX: "visible",
+      textAlign: "left",
+      "& > div": {},
+    },
+    heading: {
+      fontSize: 25,
+      marginLeft: ["mobile", "tablet", "desktop"],
+      marginBottom: 18,
+    },
+    rowScrollContainer: {
+      overflowX: "scroll",
+      paddingLeft: ["mobile", "tablet", "desktop"],
+      paddingRight: ["mobile", "tablet", "desktop"],
+      display: "inline-flex",
+      maxWidth: "100%",
+      overflowY: "visible",
+      paddingBottom: 20,
+    },
+    banner: {
+      image: {
+        width: "100%",
+        height: "100%",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        position: "relative",
+      },
+      container: {
+        position: "relative",
+        width: "100vw",
+        height: 103,
+        marginBottom: 49,
+      },
+      avatar: {
+        position: "absolute",
+        left: ["mobile", "tablet", "desktop"],
+        bottom: "-40%",
+        height: 125,
+        width: 125,
+      },
+    },
+    nomstronautTip: {
+      container: {
+        marginRight: ["mobile", "tablet", "desktop"],
+        marginTop: 13,
+        justifyContent: "end",
+      },
+      imageContainer: { height: 37, width: 37 },
+      image: {
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "contain",
+        width: "100%",
+        height: "100%",
+      },
+      tip: {
+        marginLeft: 11,
+        borderRadius: "28px",
+        padding: "8px 28px",
+        filter: "drop-shadow(0px 3px 6px #00000029)",
+      },
+    },
+    name: {
+      container: {
+        marginLeft: ["mobile", "tablet", "desktop"],
+      },
+      heading: {
+        fontSize: 35,
+      },
+      subHeading: {
+        fontFamily: "Avenir-Book",
+        fontSize: 20,
+        fontWeight: 200,
+        marginBottom: 16,
+      },
+    },
+    connection: {
+      container: {
+        marginLeft: ["mobile", "tablet", "desktop"],
+        marginBottom: 16,
+      },
+      imageContainer: {
+        width: 46,
+        height: 46,
+        marginRight: 12,
+        padding: "7px",
+        backgroundColor: "#5452FC",
+        filter: "drop-shadow(0px 3px 6px #00000029)",
+        borderRadius: "50%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+      image: {
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "contain",
+        width: 31,
+        height: 22,
+      },
+    },
+    tag: {
+      default: {
+        borderRadius: 14,
+        padding: "6px 15px",
+        marginRight: 9,
+        fontFamily: "Avenir",
+        fontWeight: "600",
+        fontSize: 17,
+        flexShrink: "0",
+      },
+      green: {
+        variant: "search.tag.default",
+        background: "rgba(51, 203, 23, .2)",
+        color: "#5D9352",
+      },
+      blue: {
+        variant: "search.tag.default",
+        background: "rgba(91, 90, 216, .2)",
+        color: "#5B5AD8",
+      },
+      red: {
+        variant: "search.tag.default",
+        background: "rgba(188, 31, 31, .2)",
+        color: "#BC1F1F",
+      },
+      yellow: {
+        variant: "search.tag.default",
+        background: "rgba(188, 122, 31, .2)",
+        color: "#BC7A1F",
+      },
+    },
+    nft: {
+      imageContainer: {
+        minWidth: 133,
+        minHeight: 133,
+        marginRight: 18,
+        boxShadow: "0px 3px 6px #00000029",
+        overflow: "hidden",
+        borderRadius: "11px",
+      },
+      image: {
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        width: "100%",
+        height: "100%",
+      },
+    },
+    token: {
+      imageContainer: {
+        minWidth: 65,
+        minHeight: 65,
+        marginRight: 18,
+        filter: "drop-shadow(0px 3px 6px #00000029)",
+        overflow: "hidden",
+        borderRadius: "50%",
+        border: "solid",
+        borderWidth: "3px",
+        borderColor: "#FACC5C",
+      },
+      image: {
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        width: "100%",
+        height: "100%",
+      },
+    },
+    stat: {
+      container: {
+        marginLeft: ["mobile", "tablet", "desktop"],
+        marginBottom: 18,
+      },
+      row: {
+        alignItems: "center",
+      },
+      icon: {
+        height: 32,
+        width: 32,
+        position: "relative",
+        marginRight: 12,
+      },
+      life2Icon: {
+        top: 0,
+        left: 8,
+        position: "absolute",
+      },
+      heading: {
+        fontFamily: "Avenir-Book",
+        fontSize: 20,
+      },
+      text: {
+        fontFamily: "Avenir-Book",
+        fontWeight: "700",
+        fontSize: 20,
+      },
+    },
+    source: {
+      imageContainer: {
+        minWidth: 43,
+        minHeight: 43,
+        marginRight: 16,
+        filter: "drop-shadow(0px 3px 6px #00000029)",
+        overflow: "hidden",
+      },
+      image: {
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        width: "100%",
+        height: "100%",
+      },
     },
   },
 };
