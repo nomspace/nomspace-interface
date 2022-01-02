@@ -1,9 +1,8 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Breakpoint, useBreakpoint } from "hooks/useBreakpoint";
 import WhiteSearchIcon from "icons/WhiteSearchIcon.svg";
 import BlackSearchIcon from "icons/BlackSearchIcon.svg";
-import { Button, Flex, Input, useColorMode } from "theme-ui";
+import { Flex, Input, useColorMode } from "theme-ui";
 
 const SEARCH_HEIGHT = [56, 90];
 const TRANSFORM = ["translate(8px, 12px)", "translate(16px, 32px)"];
@@ -15,7 +14,6 @@ interface IProps {
 export const SearchBar: React.FC<IProps> = ({ size }) => {
   const searchInput = React.useRef<any>(null);
   const history = useHistory();
-  const breakpoint = useBreakpoint();
   const [colorMode] = useColorMode();
 
   let height;
@@ -65,23 +63,19 @@ export const SearchBar: React.FC<IProps> = ({ size }) => {
           <Input
             sx={{
               pl: [6, 7],
-              height: height,
-              width: "100%",
+              height,
               backgroundColor: "secondaryBackground",
-              border: "none",
-              borderRadius: "6px 0 0 6px",
+              border: "4px solid var(--theme-ui-colors-primary)",
+              borderRadius: "12px",
+              fontSize: "20px",
+              color: "var(--theme-ui-colors-primary)",
+              "::placeholder": {
+                color: "var(--theme-ui-colors-primary)",
+              },
             }}
             ref={searchInput}
-            placeholder="Search name"
+            placeholder="Find a nom"
           />
-          {breakpoint === Breakpoint.DESKTOP && (
-            <Button
-              sx={{ height: height, borderRadius: "0 6px 6px 0" }}
-              type="submit"
-            >
-              Search
-            </Button>
-          )}
         </Flex>
       </form>
     </Flex>

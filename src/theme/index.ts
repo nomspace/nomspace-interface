@@ -8,9 +8,9 @@ export const preset = {
     purple400: "#5352FC",
     black800: "#363945",
 
-    primaryTextColor: "#5352FC",
-    secondaryBackground: "#F5F2FF",
-    primary: "#5352FC",
+    primaryTextColor: "#5452FC",
+    secondaryBackground: "#E5E5FD",
+    primary: "#5452FC",
 
     textColor: "#333333",
     primaryButtonTextColor: "#FAFAFA",
