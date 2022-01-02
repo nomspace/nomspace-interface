@@ -23,6 +23,7 @@ import { formatUnits } from "ethers/lib/utils";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
 import { shortenAddress } from "utils/address";
 import { useContractKit } from "@celo-tools/use-contractkit";
+import { normalize } from "eth-ens-namehash";
 
 export const Reserve: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -35,6 +36,11 @@ export const Reserve: React.FC = () => {
   const [usd, refetchUSD] = useUSD();
   const history = useHistory();
   const { approve, reserve, loading } = useReserve(name);
+
+  let isNormal = false;
+  try {
+    isNormal = !!normalize(name);
+  } catch (e) {}
 
   if (nom == null) {
     return <Spinner />;
@@ -128,18 +134,24 @@ export const Reserve: React.FC = () => {
           <Text mt={3}>USD</Text>
         </Flex>
         <Flex sx={{ justifyContent: "center", mt: 6 }}>
-          {loading ? (
-            <Spinner />
-          ) : nom.owner === ZERO_ADDRESS ? (
-            button
-          ) : nom.owner === address ? (
-            <BlockText>You own this name!</BlockText>
+          {isNormal ? (
+            loading ? (
+              <Spinner />
+            ) : nom.owner === ZERO_ADDRESS ? (
+              button
+            ) : nom.owner === address ? (
+              <BlockText>You own this name!</BlockText>
+            ) : (
+              <BlockText>
+                Name has already been reserved by{" "}
+                <BlockscoutAddressLink address={nom.owner}>
+                  {shortenAddress(nom.owner)}
+                </BlockscoutAddressLink>
+              </BlockText>
+            )
           ) : (
             <BlockText>
-              Name has already been reserved by{" "}
-              <BlockscoutAddressLink address={nom.owner}>
-                {shortenAddress(nom.owner)}
-              </BlockscoutAddressLink>
+              This name is invalid and not available for reservation.
             </BlockText>
           )}
         </Flex>

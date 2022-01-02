@@ -54,8 +54,15 @@ export const SearchDetail: React.FC = () => {
     [getConnectedSigner, network.chainId, nom, provider]
   );
 
-  const isOwner =
-    address && nom && nom.owner.toLowerCase() === address.toLowerCase();
+  let isNormal = false;
+  try {
+    isNormal = !!normalize(name);
+  } catch (e) {}
+
+  if (nom == null) {
+    return <Spinner />;
+  }
+  const isOwner = address && nom.owner.toLowerCase() === address.toLowerCase();
 
   return (
     <Flex
@@ -227,27 +234,33 @@ export const SearchDetail: React.FC = () => {
             </Flex>
           )}
           <Flex sx={{ justifyContent: "center", mt: 6 }}>
-            {nom ? (
-              nom.owner === ZERO_ADDRESS ? (
-                <Button
-                  onClick={() => {
-                    history.push(`/${name}/reserve`);
-                  }}
-                >
-                  Reserve
-                </Button>
-              ) : nom.owner === address ? (
-                <BlockText>You own this name!</BlockText>
+            {isNormal ? (
+              nom ? (
+                nom.owner === ZERO_ADDRESS ? (
+                  <Button
+                    onClick={() => {
+                      history.push(`/${name}/reserve`);
+                    }}
+                  >
+                    Reserve
+                  </Button>
+                ) : nom.owner === address ? (
+                  <BlockText>You own this name!</BlockText>
+                ) : (
+                  <BlockText>
+                    Name has already been reserved by{" "}
+                    <BlockscoutAddressLink address={nom.owner}>
+                      {shortenAddress(nom.owner)}
+                    </BlockscoutAddressLink>
+                  </BlockText>
+                )
               ) : (
-                <BlockText>
-                  Name has already been reserved by{" "}
-                  <BlockscoutAddressLink address={nom.owner}>
-                    {shortenAddress(nom.owner)}
-                  </BlockscoutAddressLink>
-                </BlockText>
+                <Spinner />
               )
             ) : (
-              <Spinner />
+              <BlockText>
+                This name is invalid and not available for reservation.
+              </BlockText>
             )}
           </Flex>
         </Card>

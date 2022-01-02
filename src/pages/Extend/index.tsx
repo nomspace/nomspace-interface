@@ -29,6 +29,7 @@ import { MaxUint256 } from "@ethersproject/constants";
 import { formatName } from "utils/name";
 import { ERC20__factory, Nom__factory } from "generated";
 import { formatUnits } from "ethers/lib/utils";
+import { normalize } from "eth-ens-namehash";
 
 export const Extend: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -45,6 +46,10 @@ export const Extend: React.FC = () => {
   const [usd, refetchUSD] = useUSD();
   const history = useHistory();
 
+  let isNormal = false;
+  try {
+    isNormal = !!normalize(name);
+  } catch (e) {}
   if (nom == null) {
     return <Spinner />;
   }
@@ -206,14 +211,20 @@ export const Extend: React.FC = () => {
           <Text mt={3}>cUSD</Text>
         </Flex>
         <Flex sx={{ justifyContent: "center", mt: 6 }}>
-          {nom.owner !== ZERO_ADDRESS ? (
-            loading ? (
-              <Spinner />
+          {isNormal ? (
+            nom.owner !== ZERO_ADDRESS ? (
+              loading ? (
+                <Spinner />
+              ) : (
+                button
+              )
             ) : (
-              button
+              <BlockText>Name is not reserved.</BlockText>
             )
           ) : (
-            <BlockText>Name is not reserved.</BlockText>
+            <BlockText>
+              This name is invalid and not available for reservation.
+            </BlockText>
           )}
         </Flex>
       </Card>
