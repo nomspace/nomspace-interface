@@ -21,6 +21,7 @@ const Subtitle = styled(BlockText)({
 const Description = styled(Text)({
   fontSize: "28px",
   fontWeight: "lighter",
+  lineHeight: "28px",
 });
 
 const ColoredDescription = styled(Description)({
@@ -33,7 +34,7 @@ export const Search: React.FC = () => {
       sx={{
         flexDirection: "column",
         justifyContent: "center",
-        mt: ["33%", "20px"],
+        mt: "20px",
       }}
     >
       <Title as="h1">Nom 2.0</Title>
