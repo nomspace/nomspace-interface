@@ -4,7 +4,7 @@ import {
   useGetConnectedSigner,
   useProvider,
 } from "@celo-tools/use-contractkit";
-import { USD, RESERVE_PORTAL, NOM } from "config";
+import { USD, RESERVE_PORTAL, NOM_REG_ADDR } from "config";
 import {
   OperatorOwnedNomV2__factory,
   ReservePortal,
@@ -26,7 +26,7 @@ export const useNomSetSetting = (name: string) => {
   const setNomSetting = useCallback(
     async (functionFragment: any, values: any) => {
       const usdAddress = USD[network.chainId];
-      const nomAddress = NOM[celoChainId];
+      const nomAddress = NOM_REG_ADDR[celoChainId];
       const reservePortalAddress = RESERVE_PORTAL[network.chainId];
       if (!usdAddress || !nomAddress || !reservePortalAddress || !address) {
         return;

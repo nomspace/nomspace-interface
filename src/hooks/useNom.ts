@@ -45,7 +45,7 @@ export const useNom = (name: string) => {
     const tokenId = labelhash(name);
     // TODO: Promise.all or multicall
     const resolution = await nom.getAddress();
-    const bio = await nom.getText(TextKey.BIO);
+    const bio = await nom.getText(TextKey.DESCRIPTION);
     const github = await nom.getText(TextKey.GITHUB);
     const discord = await nom.getText(TextKey.DISCORD);
     const telegram = await nom.getText(TextKey.TELEGRAM);

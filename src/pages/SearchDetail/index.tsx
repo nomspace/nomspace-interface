@@ -10,7 +10,7 @@ import { Box, Button, Card, Divider, Flex, Heading, Spinner } from "theme-ui";
 import { ethers } from "ethers";
 import { BlockText } from "components/BlockText";
 import { shortenAddress } from "utils/address";
-import { NOM, USD } from "config";
+import { USD } from "config";
 import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
 import { isAddress, parseUnits } from "ethers/lib/utils";
@@ -128,31 +128,31 @@ export const SearchDetail: React.FC = () => {
                   <Button
                     sx={{ p: 1, fontSize: 1, ml: 2 }}
                     onClick={async () => {
-                      const nomAddress = NOM[network.chainId];
-                      if (!nomAddress) return;
-                      const signer = await getConnectedSigner();
-                      const nom = Nom__factory.connect(nomAddress, signer);
-                      const nextOwner = prompt("Enter new owner address");
-                      if (!nextOwner || !isAddress(nextOwner)) {
-                        alert("Invalid address. Please try again.");
-                        return;
-                      }
+                      // const nomAddress = NOM[network.chainId];
+                      // if (!nomAddress) return;
+                      // const signer = await getConnectedSigner();
+                      // const nom = Nom__factory.connect(nomAddress, signer);
+                      // const nextOwner = prompt("Enter new owner address");
+                      // if (!nextOwner || !isAddress(nextOwner)) {
+                      //   alert("Invalid address. Please try again.");
+                      //   return;
+                      // }
 
-                      try {
-                        setChangeOwnerLoading(true);
-                        const gasPrice = await provider.getGasPrice();
-                        const tx = await nom.changeNameOwner(
-                          ethers.utils.formatBytes32String(name),
-                          nextOwner,
-                          { gasPrice }
-                        );
-                        toastTx(tx.hash);
-                        refetchNom();
-                      } catch (e: any) {
-                        toast(e.message);
-                      } finally {
-                        setChangeOwnerLoading(false);
-                      }
+                      // try {
+                      //   setChangeOwnerLoading(true);
+                      //   const gasPrice = await provider.getGasPrice();
+                      //   const tx = await nom.changeNameOwner(
+                      //     ethers.utils.formatBytes32String(name),
+                      //     nextOwner,
+                      //     { gasPrice }
+                      //   );
+                      //   toastTx(tx.hash);
+                      //   refetchNom();
+                      // } catch (e: any) {
+                      //   toast(e.message);
+                      // } finally {
+                      //   setChangeOwnerLoading(false);
+                      // }
                     }}
                     disabled={!isOwner}
                   >

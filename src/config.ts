@@ -2,44 +2,44 @@ import { ChainId } from "@celo-tools/use-contractkit";
 import { YEAR_IN_SECONDS } from "utils/constants";
 
 export enum TextKey {
-  BIO = "bio",
-  WEBSITE = "website",
-  GITHUB = "github",
-  DISCORD = "discord",
-  TELEGRAM = "telegram",
-  TWITTER = "twitter",
+  EMAIL = "email",
+  URL = "url",
+  AVATAR = "avatar",
+  DESCRIPTION = "description",
+  NOTICE = "notice",
+  KEYWORDS = "keywords",
+  DISCORD = "com.discord",
+  GITHUB = "com.github",
+  REDDIT = "com.reddit",
+  TWITTER = "com.twitter",
+  TELEGRAM = "org.telegram",
 }
 
-export const NOM: Record<string, string> = {
-  [ChainId.Celo]: "0xABf8faBbC071F320F222A526A2e1fBE26429344d",
-  [ChainId.Alfajores]: "0x7cD4E8f88488FB82A80e6F86373384cf9b080dD5", // OperatorOwnedV2
-};
 export const NOM_REG_ADDR: Record<string, string> = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0x668551cDE8842F58c473744e5D0726a1fD596c24",
+  [ChainId.Alfajores]: "0x0922a1b101bF136ED352cE9714Da81f2fE75FD61",
 };
 export const BASE_ADDR: Record<string, string> = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0xD1Ea80BaF9f35Bd56F26F3Ad75D6b65307a133ec",
+  [ChainId.Alfajores]: "0xcD199D20ef01Af7056BEF844B0039CCf2BCD5A13",
 };
 export const ENS_ADDR: Record<string, string> = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0x8cf6B72996ED33Bc7A95673eD945203C7E749BAe",
+  [ChainId.Alfajores]: "0xD67a5414da6B1dcb64aBA3B06b3Be6Db29D832D7",
 };
 export const USD: Record<string, string> = {
   [ChainId.Celo]: "0x765DE816845861e75A25fCA122bb6898B8B1282a",
   [ChainId.Alfajores]: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
   [ChainId.Fuji]: "0x45ea5d57ba80b5e3b0ed502e9a08d568c96278f9", // USDC.e
 };
-// TODO: REMOVE
-export const FEE_MODULE: Record<string, string> = {
-  [ChainId.Celo]: "0x07DDCB69Bc2637A6c03d5523696E21B688b42d65",
-  [ChainId.Alfajores]: "0xa41b00095C14Ff7c3697485136eE53C12B3a681A",
+export const FORWARDER_ADDR: Record<string, string> = {
+  [ChainId.Celo]: "",
+  [ChainId.Alfajores]: "0xb14f85eCbb81A560016385A8fcdef709e6aaFbaf",
 };
 export const RESERVE_PORTAL: Record<string, string> = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0x3E9e0d874C028fb84fE1CF314e4d4FF927457745",
-  [ChainId.Fuji]: "0x30b3BB80cBE514AE3A2e2316Da66B42f5a882247",
+  [ChainId.Alfajores]: "0xE0e61BeF1AD40880F92e2bf7617A2BB538feA655",
+  [ChainId.Fuji]: "0x1c743749d0070091D964356E710CeFA07B00A58b",
 };
 
 export type Network = {
