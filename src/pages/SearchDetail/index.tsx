@@ -208,9 +208,6 @@ export const SearchDetail: React.FC = () => {
       {name ? (
         <Box sx={{ textAlign: "center", width: "100%" }}>
           <Card sx={{ width: "100%" }} py={4} px={3}>
-            <Heading as="h2" mb={4}>
-              {name}.nom
-            </Heading>
             {nom && nom.owner !== ZERO_ADDRESS && isOwner && (
               <>
                 {/* Modals */}
