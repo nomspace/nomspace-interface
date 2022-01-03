@@ -68,7 +68,7 @@ export const SearchBar: React.FC<IProps> = ({ size }) => {
               border: "4px solid var(--theme-ui-colors-primary)",
               borderRadius: "12px",
               fontSize: "20px",
-              color: "var(--theme-ui-colors-primary)",
+              textAlign: "center",
               "::placeholder": {
                 color: "var(--theme-ui-colors-primary)",
               },

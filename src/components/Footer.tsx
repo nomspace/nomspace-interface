@@ -23,7 +23,7 @@ export const Footer: React.FC = () => {
         <Link
           target="_blank"
           rel="noopener noreferrer"
-          href="https://github.com/LaStabilite"
+          href="https://github.com/Nomspace"
           style={{ textDecoration: "none" }}
           mr={2}
         >
@@ -32,7 +32,7 @@ export const Footer: React.FC = () => {
         <Link
           target="_blank"
           rel="noopener noreferrer"
-          href="https://twitter.com/LaStabilite"
+          href="https://twitter.com/Nomspace"
           style={{ textDecoration: "none" }}
           mr={2}
         >
@@ -41,7 +41,7 @@ export const Footer: React.FC = () => {
         <Link
           target="_blank"
           rel="noopener noreferrer"
-          href="https://discord.gg/mE6ZWjxRsW"
+          href=""
           style={{ textDecoration: "none" }}
         >
           <DiscordLogo size={32} />
