@@ -193,11 +193,21 @@ export const SearchDetail: React.FC = () => {
           <Box variant="search.sidebar.walletContainer"></Box>
           <Box variant="search.sidebar.noms.container">
             <Heading>My Noms</Heading>
-            <Box>pfp name date</Box>
+            <Flex>
+              <Box>
+                <Box>
+                  <Box>pic</Box>
+                </Box>
+                <Text>name</Text>
+              </Box>
+              <Text>date</Text>
+            </Flex>
           </Box>
           <Box variant="search.sidebar.settings.container">
             <Heading>Settings</Heading>
-            <Box>light / dark mode default currency language</Box>
+            <Text>Light / Dark Mode</Text>
+            <Text>Default Currency</Text>
+            <Text>Language</Text>
           </Box>
           <Box variant="search.sidebar.search"></Box>
         </Box>
@@ -227,6 +237,23 @@ export const SearchDetail: React.FC = () => {
                     backgroundImage: `url(${nomstronaut})`,
                   }}
                 ></Box>
+              </Box>
+              <Box variant="search.nomstronautTip.connectionsContainer">
+                {/* Connections */}
+                <Flex>
+                  {connections.map((e) => {
+                    return (
+                      <Box variant="search.connection.imageContainer">
+                        <Box
+                          variant="search.connection.image"
+                          sx={{
+                            backgroundImage: `url(${e.img})`,
+                          }}
+                        ></Box>
+                      </Box>
+                    );
+                  })}
+                </Flex>
               </Box>
               <Button variant="search.nomstronautTip.tip">TIP</Button>
             </Flex>

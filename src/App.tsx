@@ -20,7 +20,7 @@ const App: React.FC = () => {
   return (
     <Container sx={{ maxWidth: "100%", width: "auto" }}>
       <Container>
-        <Header />
+        {/* <Header /> */}
         <Switch>
           <Route exact path="/">
             <Search />

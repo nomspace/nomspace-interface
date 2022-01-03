@@ -1,6 +1,6 @@
 // mobile, tablet, laptop, desktop
 export const preset = {
-  breakpoints: ["768px", "1023px", "1199px", "1200px"],
+  breakpoints: ["768px", "1023px", "1499px", "1400px"],
   colors: {
     purple25: "#F5F2FF",
     purple50: "#ECE6FE",
@@ -57,7 +57,7 @@ export const preset = {
   space: {
     mobile: "5%",
     tablet: "10%",
-    dekstop: "15%",
+    desktop: "62px",
   },
   letterSpacings: {
     small: "-0.05em",
@@ -231,21 +231,24 @@ export const preset = {
     details: {
       container: {
         width: "100%",
-        overflowX: "visible",
+        overflowX: "hidden",
         textAlign: "left",
         "& > div": {},
       },
       heading: {
         flexDirection: ["column", null, null, "row"],
+        flexWrap: "wrap",
+        justifyContent: "space-between",
       },
     },
     heading: {
       fontSize: [25, null, null, 39],
       marginLeft: ["mobile", "tablet", "desktop"],
-      marginBottom: 18,
+      marginBottom: 9,
+      marginTop: 9,
     },
     rowScrollContainer: {
-      overflowX: "scroll",
+      overflowX: "auto",
       paddingLeft: ["mobile", "tablet", "desktop"],
       paddingRight: ["mobile", "tablet", "desktop"],
       display: "inline-flex",
@@ -265,24 +268,28 @@ export const preset = {
       container: {
         position: "relative",
         width: "100%",
-        height: 103,
-        marginBottom: 49,
+        height: [103, null, null, 298],
+        marginBottom: [49, null, null, 120],
       },
       avatar: {
         position: "absolute",
         left: ["mobile", "tablet", "desktop"],
         bottom: "-40%",
-        height: 125,
-        width: 125,
+        height: [125, null, null, 300],
+        width: [125, null, null, 300],
       },
     },
     nomstronautTip: {
       container: {
         marginRight: ["mobile", "tablet", "desktop"],
-        marginTop: 13,
+        marginTop: [13, null, null, 49],
         justifyContent: "end",
+        alignItems: "center",
       },
-      imageContainer: { height: 37, width: 37 },
+      imageContainer: {
+        height: [37, null, null, 70],
+        width: [37, null, null, 70],
+      },
       image: {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -292,9 +299,14 @@ export const preset = {
       },
       tip: {
         marginLeft: 11,
-        borderRadius: "28px",
-        padding: "8px 28px",
+        borderRadius: ["28px", null, null, "36px"],
+        fontSize: [17, null, null, 31],
+        padding: ["8px 28px", null, null, "14px 56px"],
         filter: "drop-shadow(0px 3px 6px #00000029)",
+      },
+      connectionsContainer: {
+        marginLeft: 11,
+        display: ["none", null, null, "block"],
       },
     },
     name: {
@@ -335,10 +347,12 @@ export const preset = {
       container: {
         marginLeft: ["mobile", "tablet", "desktop"],
         marginBottom: 16,
+        alignItems: "center",
+        display: ["block", null, null, "none"],
       },
       imageContainer: {
-        width: 46,
-        height: 46,
+        width: [46, null, null, 72],
+        height: [46, null, null, 72],
         marginRight: 12,
         padding: "7px",
         backgroundColor: "#5452FC",
@@ -352,18 +366,20 @@ export const preset = {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "contain",
-        width: 31,
-        height: 22,
+        width: "100%",
+        height: "100%",
+        margin: ["2px", null, null, "7px"],
       },
     },
     tag: {
       default: {
         borderRadius: 14,
-        padding: "6px 15px",
+        padding: ["6px 15px", null, null, "8px 25px"],
         marginRight: 9,
+        marginTop: [null, null, null, 39],
         fontFamily: "Avenir",
         fontWeight: "600",
-        fontSize: 17,
+        fontSize: [17, null, null, 26],
         flexShrink: "0",
       },
       green: {
@@ -464,12 +480,12 @@ export const preset = {
       },
       heading: {
         fontFamily: "Avenir-Book",
-        fontSize: 20,
+        fontSize: [20, null, null, 35],
       },
       text: {
         fontFamily: "Avenir-Book",
         fontWeight: "700",
-        fontSize: 20,
+        fontSize: [20, null, null, 35],
       },
     },
     source: {
