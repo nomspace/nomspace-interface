@@ -19,6 +19,45 @@
       rel="stylesheet"
     />
     <title>Nomspace</title>
+    <style type="text/css">
+      @font-face {
+        font-weight: normal;
+        font-style: normal;
+        font-family: Avenir;
+        src: url("fonts/AvenirLTStd-Black.otf") format("opentype");
+      }
+      @font-face {
+        font-weight: normal;
+        font-style: normal;
+        font-family: Avenir-Book;
+        src: url("fonts/AvenirLTStd-Book.otf") format("opentype");
+      }
+      #root {
+        height: 100%;
+      }
+      @media (min-width: 712px) {
+        ::-webkit-scrollbar {
+          width: 5px;
+          height: 5px;
+          background-color: transparent;
+        }
+
+        ::-webkit-scrollbar-corner {
+          background-color: transparent;
+          border-color: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          border-radius: 10px;
+          background-color: hsla(0, 0%, 0%, 0.1);
+        }
+
+        ::-webkit-scrollbar-track {
+          border-radius: 10px;
+          background-color: transparent;
+        }
+      }
+    </style>
 
     <style type="text/css">
       #root {
