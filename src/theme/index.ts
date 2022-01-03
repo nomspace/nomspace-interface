@@ -1,6 +1,6 @@
-// mobile, tablet, desktop
+// mobile, tablet, laptop, desktop
 export const preset = {
-  breakpoints: ["768px", "1199px", "1200px"],
+  breakpoints: ["768px", "1023px", "1199px", "1200px"],
   colors: {
     purple25: "#F5F2FF",
     purple50: "#ECE6FE",
@@ -228,14 +228,19 @@ export const preset = {
     },
   },
   search: {
-    detailsContainer: {
-      width: "100vw",
-      overflowX: "visible",
-      textAlign: "left",
-      "& > div": {},
+    details: {
+      container: {
+        width: "100%",
+        overflowX: "visible",
+        textAlign: "left",
+        "& > div": {},
+      },
+      heading: {
+        flexDirection: ["column", null, null, "row"],
+      },
     },
     heading: {
-      fontSize: 25,
+      fontSize: [25, null, null, 39],
       marginLeft: ["mobile", "tablet", "desktop"],
       marginBottom: 18,
     },
@@ -244,7 +249,7 @@ export const preset = {
       paddingLeft: ["mobile", "tablet", "desktop"],
       paddingRight: ["mobile", "tablet", "desktop"],
       display: "inline-flex",
-      maxWidth: "100%",
+      width: "100%",
       overflowY: "visible",
       paddingBottom: 20,
     },
@@ -259,7 +264,7 @@ export const preset = {
       },
       container: {
         position: "relative",
-        width: "100vw",
+        width: "100%",
         height: 103,
         marginBottom: 49,
       },
@@ -297,13 +302,33 @@ export const preset = {
         marginLeft: ["mobile", "tablet", "desktop"],
       },
       heading: {
-        fontSize: 35,
+        fontSize: [35, null, null, 64],
       },
       subHeading: {
         fontFamily: "Avenir-Book",
-        fontSize: 20,
+        fontSize: [20, null, null, 36],
         fontWeight: 200,
         marginBottom: 16,
+      },
+      nameContainer: {
+        alignItems: "center",
+      },
+      source: {
+        imageContainer: {
+          width: 43,
+          height: 43,
+          marginRight: 16,
+          display: ["none", null, null, "block"],
+          filter: "drop-shadow(0px 3px 6px #00000029)",
+          overflow: "hidden",
+        },
+        image: {
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          width: "100%",
+          height: "100%",
+        },
       },
     },
     connection: {
@@ -364,8 +389,8 @@ export const preset = {
     },
     nft: {
       imageContainer: {
-        minWidth: 133,
-        minHeight: 133,
+        minWidth: [133, null, null, 300],
+        minHeight: [133, null, null, 300],
         marginRight: 18,
         boxShadow: "0px 3px 6px #00000029",
         overflow: "hidden",
@@ -381,8 +406,8 @@ export const preset = {
     },
     token: {
       imageContainer: {
-        minWidth: 65,
-        minHeight: 65,
+        minWidth: [65, null, null, 100],
+        minHeight: [65, null, null, 100],
         marginRight: 18,
         filter: "drop-shadow(0px 3px 6px #00000029)",
         overflow: "hidden",
@@ -402,11 +427,30 @@ export const preset = {
     stat: {
       container: {
         marginLeft: ["mobile", "tablet", "desktop"],
+        marginRight: ["mobile", "tablet", "desktop"],
         marginBottom: 18,
+        backgroundColor: [null, null, null, "#F5F5F5"],
+        borderRadius: "22px",
+        display: [null, null, null, "flex"],
+        justifyContent: "space-around",
+        alignItems: "center",
+        justifyItems: "center",
       },
       row: {
         alignItems: "center",
+        padding: [null, null, null, "35px 10px"],
+
+        margin: "auto",
       },
+      divider: {
+        display: ["none", null, null, "block"],
+        height: "69px",
+        width: "1px",
+        margin: "auto",
+        backgroundColor: "#707070",
+        opacity: "24%",
+      },
+
       icon: {
         height: 32,
         width: 32,
@@ -430,8 +474,8 @@ export const preset = {
     },
     source: {
       imageContainer: {
-        minWidth: 43,
-        minHeight: 43,
+        width: [43, null, null, 65],
+        height: [43, null, null, 65],
         marginRight: 16,
         filter: "drop-shadow(0px 3px 6px #00000029)",
         overflow: "hidden",
@@ -442,6 +486,19 @@ export const preset = {
         backgroundSize: "cover",
         width: "100%",
         height: "100%",
+      },
+      text: {
+        fontFamily: "Avenir-Book",
+        display: ["none", null, null, "block"],
+        color: "#52D07F",
+        fontSize: "35px",
+      },
+    },
+    sidebar: {
+      container: {
+        display: ["none", "none", "block"],
+        backgroundColor: "#F5F5F5",
+        width: 498,
       },
     },
   },
