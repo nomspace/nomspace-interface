@@ -6,11 +6,32 @@ import {
   useProvider,
 } from "@celo-tools/use-contractkit";
 import { useParams, useHistory } from "react-router-dom";
-import { Box, Button, Flex, Heading, Image, Text } from "theme-ui";
-import { USD } from "config";
+import {
+  Box,
+  Button,
+  Card,
+  Divider,
+  Flex,
+  Heading,
+  Spinner,
+  Image,
+  Text,
+  Select,
+} from "theme-ui";
+import { ethers } from "ethers";
+import { BlockText } from "components/BlockText";
+import { shortenAddress } from "utils/address";
+import { NOM, USD } from "config";
 import { toastTx } from "utils/toastTx";
-import { parseUnits } from "ethers/lib/utils";
-import { ERC20__factory } from "generated";
+import { toast } from "react-toastify";
+import { isAddress, parseUnits } from "ethers/lib/utils";
+import { QRNameModal } from "components/QRNameModal";
+import { SearchBar } from "components/SearchBar";
+import { AccountProfile } from "components/AccountProfile";
+import { ZERO_ADDRESS } from "utils/constants";
+import QRCode from "qrcode.react";
+import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
+import { ERC20__factory, Nom__factory } from "generated";
 import { useNomSetSetting } from "hooks/useNomSetSetting";
 import { normalize } from "eth-ens-namehash";
 
@@ -52,6 +73,15 @@ import s3 from "./assets/s3.png";
 
 // nomstronaut
 import nomstronaut from "./assets/astro.png";
+
+//noms
+import nom1 from "./assets/nom1.png";
+import nom2 from "./assets/nom2.png";
+
+const noms = [
+  { img: nom1, name: "gza", date: "08/18/23" },
+  { img: nom2, name: "zatoichi", date: "12/03/22" },
+];
 
 const connections = [
   {
@@ -171,26 +201,57 @@ export const SearchDetail: React.FC = () => {
       <Flex>
         {/* Sidebar */}
         <Box variant="search.sidebar.container">
-          <Box variant="search.sidebar.walletContainer"></Box>
+          <Flex variant="search.sidebar.walletContainer">
+            <AccountProfile />{" "}
+            <select>
+              {sources.map((e) => {
+                return (
+                  <option value="celo">
+                    <b>basdf</b>
+                    {/* <Box sx={{ backgroundImage: `url(${e.img})` }}></Box> */}
+                  </option>
+                );
+              })}
+            </select>
+          </Flex>
           <Box variant="search.sidebar.noms.container">
-            <Heading>My Noms</Heading>
-            <Flex>
-              <Box>
-                <Box>
-                  <Box>pic</Box>
+            <Heading variant="search.sidebar.heading">My Noms</Heading>
+            {noms.map((e) => {
+              return (
+                <Box
+                  variant="search.sidebar.item"
+                  sx={{ "::before": { display: "none" } }}
+                >
+                  <Flex
+                    sx={{
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Flex sx={{ alignItems: "center" }}>
+                      <Box variant="search.sidebar.nom.container">
+                        <Box
+                          variant="search.sidebar.nom.image"
+                          sx={{ backgroundImage: `url(${e.img})` }}
+                        ></Box>
+                      </Box>
+                      <Text variant="search.sidebar.nom.name">{e.name}</Text>
+                    </Flex>
+                    <Text variant="search.sidebar.nom.date">{e.date}</Text>
+                  </Flex>
                 </Box>
-                <Text>name</Text>
-              </Box>
-              <Text>date</Text>
-            </Flex>
+              );
+            })}
           </Box>
           <Box variant="search.sidebar.settings.container">
-            <Heading>Settings</Heading>
-            <Text>Light / Dark Mode</Text>
-            <Text>Default Currency</Text>
-            <Text>Language</Text>
+            <Heading variant="search.sidebar.heading">Settings</Heading>
+            <Text variant="search.sidebar.item">Light / Dark Mode</Text>
+            <Text variant="search.sidebar.item">Default Currency</Text>
+            <Text variant="search.sidebar.item">Language</Text>
           </Box>
-          <Box variant="search.sidebar.search"></Box>
+          <Box variant="search.sidebar.search">
+            <SearchBar />
+          </Box>
         </Box>
         {/* Page */}
         <Flex
