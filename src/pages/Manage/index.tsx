@@ -10,7 +10,6 @@ import {
   Box,
   Button,
   Card,
-  Divider,
   Flex,
   Heading,
   Spinner,
@@ -21,17 +20,14 @@ import { BlockText } from "components/BlockText";
 import { shortenAddress } from "utils/address";
 import { USD } from "config";
 import { toastTx } from "utils/toastTx";
-import { toast } from "react-toastify";
-import { isAddress, parseUnits } from "ethers/lib/utils";
+import { parseUnits } from "ethers/lib/utils";
 import { QRNameModal } from "components/QRNameModal";
-import { SearchBar } from "components/SearchBar";
-import { AccountProfile } from "components/AccountProfile";
 import { ZERO_ADDRESS } from "utils/constants";
-import QRCode from "qrcode.react";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
 import { ERC20__factory } from "generated";
 import { useNomSetSetting } from "hooks/useNomSetSetting";
 import { useName } from "hooks/useName";
+import { Sidebar } from "components/Sidebar";
 
 import { useCeloPunks } from "hooks/useCeloPunks";
 
@@ -212,71 +208,7 @@ export const Manage: React.FC = () => {
                 {/* Modals */}
                 <Flex>
                   {/* Sidebar */}
-                  <Box variant="search.sidebar.container">
-                    <Flex variant="search.sidebar.walletContainer">
-                      <AccountProfile />{" "}
-                      <select>
-                        {sources.map((e) => {
-                          return (
-                            <option value="celo">
-                              <b>basdf</b>
-                              {/* <Box sx={{ backgroundImage: `url(${e.img})` }}></Box> */}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </Flex>
-                    <Box variant="search.sidebar.noms.container">
-                      <Heading variant="search.sidebar.heading">
-                        My Noms
-                      </Heading>
-                      {noms.map((e) => {
-                        return (
-                          <Box
-                            variant="search.sidebar.item"
-                            sx={{ "::before": { display: "none" } }}
-                          >
-                            <Flex
-                              sx={{
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                              }}
-                            >
-                              <Flex sx={{ alignItems: "center" }}>
-                                <Box variant="search.sidebar.nom.container">
-                                  <Box
-                                    variant="search.sidebar.nom.image"
-                                    sx={{ backgroundImage: `url(${e.img})` }}
-                                  ></Box>
-                                </Box>
-                                <Text variant="search.sidebar.nom.name">
-                                  {e.name}
-                                </Text>
-                              </Flex>
-                              <Text variant="search.sidebar.nom.date">
-                                {e.date}
-                              </Text>
-                            </Flex>
-                          </Box>
-                        );
-                      })}
-                    </Box>
-                    <Box variant="search.sidebar.settings.container">
-                      <Heading variant="search.sidebar.heading">
-                        Settings
-                      </Heading>
-                      <Text variant="search.sidebar.item">
-                        Light / Dark Mode
-                      </Text>
-                      <Text variant="search.sidebar.item">
-                        Default Currency
-                      </Text>
-                      <Text variant="search.sidebar.item">Language</Text>
-                    </Box>
-                    <Box variant="search.sidebar.search">
-                      <SearchBar />
-                    </Box>
-                  </Box>
+                  <Sidebar />
                   {/* Page */}
                   <Flex
                     sx={{

@@ -32,51 +32,52 @@ import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
 import { ERC20__factory } from "generated";
 import { useNomSetSetting } from "hooks/useNomSetSetting";
 import { useName } from "hooks/useName";
+import { Sidebar } from "components/Sidebar";
 
 import { useCeloPunks } from "hooks/useCeloPunks";
 
 /* ASSETS */
-import pfp from "./assets/pfp.png";
-import banner from "./assets/banner.png";
+import pfp from "pages/SearchDetail/assets/pfp.png";
+import banner from "pages/SearchDetail/assets/banner.png";
 
 // connections
-import discord from "./assets/discord.png";
-import twitter from "./assets/twitter.png";
-import telegram from "./assets/telegram.png";
+import discord from "pages/SearchDetail/assets/discord.png";
+import twitter from "pages/SearchDetail/assets/twitter.png";
+import telegram from "pages/SearchDetail/assets/telegram.png";
 
 /* DEMO PURPOSES, DELETE LATER */
 // nfts
-import nft1 from "./assets/nft1.png";
-import nft2 from "./assets/nft2.png";
-import nft3 from "./assets/nft3.png";
+import nft1 from "pages/SearchDetail/assets/nft1.png";
+import nft2 from "pages/SearchDetail/assets/nft2.png";
+import nft3 from "pages/SearchDetail/assets/nft3.png";
 
 // tokens
-import t1 from "./assets/t1.png";
-import t2 from "./assets/t2.png";
-import t3 from "./assets/t3.png";
-import t4 from "./assets/t4.png";
-import t5 from "./assets/t5.png";
-import t6 from "./assets/t6.png";
-import t7 from "./assets/t7.png";
-import t8 from "./assets/t8.png";
+import t1 from "pages/SearchDetail/assets/t1.png";
+import t2 from "pages/SearchDetail/assets/t2.png";
+import t3 from "pages/SearchDetail/assets/t3.png";
+import t4 from "pages/SearchDetail/assets/t4.png";
+import t5 from "pages/SearchDetail/assets/t5.png";
+import t6 from "pages/SearchDetail/assets/t6.png";
+import t7 from "pages/SearchDetail/assets/t7.png";
+import t8 from "pages/SearchDetail/assets/t8.png";
 
 // stats
-import life2 from "./assets/life1.png";
-import life1 from "./assets/life2.png";
-import networth from "./assets/networth.png";
-import whale from "./assets/whale.png";
+import life2 from "pages/SearchDetail/assets/life1.png";
+import life1 from "pages/SearchDetail/assets/life2.png";
+import networth from "pages/SearchDetail/assets/networth.png";
+import whale from "pages/SearchDetail/assets/whale.png";
 
 // sources
-import s1 from "./assets/s1.png";
-import s2 from "./assets/s2.png";
-import s3 from "./assets/s3.png";
+import s1 from "pages/SearchDetail/assets/s1.png";
+import s2 from "pages/SearchDetail/assets/s2.png";
+import s3 from "pages/SearchDetail/assets/s3.png";
 
 // nomstronaut
-import nomstronaut from "./assets/astro.png";
+import nomstronaut from "pages/SearchDetail/assets/astro.png";
 
 //noms
-import nom1 from "./assets/nom1.png";
-import nom2 from "./assets/nom2.png";
+import nom1 from "pages/SearchDetail/assets/nom1.png";
+import nom2 from "pages/SearchDetail/assets/nom2.png";
 
 const noms = [
   { img: nom1, name: "gza", date: "08/18/23" },
@@ -302,71 +303,7 @@ export const SearchDetail: React.FC = () => {
                 {/* Modals */}
                 <Flex>
                   {/* Sidebar */}
-                  <Box variant="search.sidebar.container">
-                    <Flex variant="search.sidebar.walletContainer">
-                      <AccountProfile />{" "}
-                      <select>
-                        {sources.map((e) => {
-                          return (
-                            <option value="celo">
-                              <b>basdf</b>
-                              {/* <Box sx={{ backgroundImage: `url(${e.img})` }}></Box> */}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </Flex>
-                    <Box variant="search.sidebar.noms.container">
-                      <Heading variant="search.sidebar.heading">
-                        My Noms
-                      </Heading>
-                      {noms.map((e) => {
-                        return (
-                          <Box
-                            variant="search.sidebar.item"
-                            sx={{ "::before": { display: "none" } }}
-                          >
-                            <Flex
-                              sx={{
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                              }}
-                            >
-                              <Flex sx={{ alignItems: "center" }}>
-                                <Box variant="search.sidebar.nom.container">
-                                  <Box
-                                    variant="search.sidebar.nom.image"
-                                    sx={{ backgroundImage: `url(${e.img})` }}
-                                  ></Box>
-                                </Box>
-                                <Text variant="search.sidebar.nom.name">
-                                  {e.name}
-                                </Text>
-                              </Flex>
-                              <Text variant="search.sidebar.nom.date">
-                                {e.date}
-                              </Text>
-                            </Flex>
-                          </Box>
-                        );
-                      })}
-                    </Box>
-                    <Box variant="search.sidebar.settings.container">
-                      <Heading variant="search.sidebar.heading">
-                        Settings
-                      </Heading>
-                      <Text variant="search.sidebar.item">
-                        Light / Dark Mode
-                      </Text>
-                      <Text variant="search.sidebar.item">
-                        Default Currency
-                      </Text>
-                      <Text variant="search.sidebar.item">Language</Text>
-                    </Box>
-                    <Box variant="search.sidebar.search">
-                      <SearchBar />
-                    </Box>
-                  </Box>
+                  <Sidebar />
                   {/* Page */}
                   <Flex
                     sx={{
