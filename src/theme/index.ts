@@ -313,8 +313,10 @@ export const preset = {
       container: {
         marginLeft: ["mobile", "tablet", "desktop"],
       },
+
       heading: {
         fontSize: [35, null, null, 64],
+        overflowWrap: "break-word",
       },
       subHeading: {
         fontFamily: "Avenir-Book",
@@ -324,6 +326,7 @@ export const preset = {
       },
       nameContainer: {
         alignItems: "center",
+        flexWrap: "wrap",
       },
       source: {
         imageContainer: {
@@ -514,7 +517,54 @@ export const preset = {
       container: {
         display: ["none", "none", "block"],
         backgroundColor: "#F5F5F5",
-        width: 498,
+        minWidth: [null, null, 398, 498],
+        padding: "0px 38px",
+      },
+      heading: {
+        variant: "search.sidebar.item",
+        fontFamily: "Avenir",
+        fontSize: 42,
+        marginTop: 100,
+      },
+      nom: {
+        container: {
+          minWidth: 83,
+          minHeight: 83,
+        },
+        image: {
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          minWidth: "83px",
+          minHeight: "83px",
+        },
+        name: {
+          fontSize: "36px",
+          marginLeft: "20px",
+        },
+        date: {
+          opacity: "50%",
+          fontSize: "28px",
+        },
+      },
+      item: {
+        fontFamily: "Avenir-Book",
+        fontSize: 30,
+        "::before": {
+          content: '"  "',
+          display: "inline-block",
+          width: "15px",
+          height: "10px",
+        },
+        "::after": {
+          content: '""',
+          display: "block",
+          width: "100%",
+          height: 1,
+          backgroundColor: "#707070",
+          opacity: "24%",
+          margin: "20px 0px",
+        },
       },
     },
   },

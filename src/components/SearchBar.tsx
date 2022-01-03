@@ -74,14 +74,14 @@ export const SearchBar: React.FC<IProps> = ({ size }) => {
             ref={searchInput}
             placeholder="Search name"
           />
-          {breakpoint === Breakpoint.DESKTOP && (
+          {/* {breakpoint === Breakpoint.DESKTOP && (
             <Button
               sx={{ height: height, borderRadius: "0 6px 6px 0" }}
               type="submit"
             >
               Search
             </Button>
-          )}
+          )} */}
         </Flex>
       </form>
     </Flex>
