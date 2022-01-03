@@ -11,6 +11,7 @@ import Modal from "react-modal";
 import { Footer } from "components/Footer";
 import { ToastContainer } from "react-toastify";
 import { Stats } from "./pages/Stats";
+import { Manage } from "pages/Manage";
 
 const App: React.FC = () => {
   React.useEffect(() => {
@@ -30,6 +31,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/:name">
             <SearchDetail />
+          </Route>
+          <Route exact path="/:name/manage">
+            <Manage />
           </Route>
           <Route exact path="/:name/reserve">
             <Reserve />
