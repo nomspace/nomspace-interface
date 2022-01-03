@@ -205,99 +205,12 @@ export const SearchDetail: React.FC = () => {
         flexDirection: "column",
       }}
     >
-      <Box sx={{ width: "100%", maxWidth: "800px" }} mb={4}>
-        <SearchBar size="small" />
-      </Box>
       {name ? (
-        <Box sx={{ textAlign: "center" }}>
-          <Card sx={{ width: "100%", maxWidth: "800px" }} py={4} px={3}>
+        <Box sx={{ textAlign: "center", width: "100%" }}>
+          <Card sx={{ width: "100%" }} py={4} px={3}>
             <Heading as="h2" mb={4}>
               {name}.nom
             </Heading>
-            <Flex sx={{ alignItems: "center", flexDirection: "column", mb: 2 }}>
-              <QRCode value={`celo://wallet/pay?address=${address}`} />
-              {nom ? (
-                <Flex sx={{ alignItems: "center" }}>
-                  <BlockscoutAddressLink address={nom.resolution}>
-                    <BlockText mt={2}>
-                      {shortenAddress(nom.resolution, 5)}
-                    </BlockText>
-                  </BlockscoutAddressLink>
-                  {loading ? (
-                    <Spinner />
-                  ) : (
-                    <Button
-                      sx={{ p: 1, fontSize: 1, ml: 2, mt: 2 }}
-                      onClick={async () => {
-                        const newAddr = prompt(
-                          "Enter a new resolution address"
-                        );
-                        if (!newAddr || !isAddress(newAddr)) {
-                          toast("Not a valid address");
-                          return;
-                        }
-                        await setNomSetting("setAddr(string,address)", [
-                          name,
-                          newAddr,
-                        ]);
-                      }}
-                      disabled={!isOwner}
-                    >
-                      Change
-                    </Button>
-                  )}
-                </Flex>
-              ) : (
-                <Spinner />
-              )}
-            </Flex>
-            {nom && nom.owner !== ZERO_ADDRESS && isOwner && (
-              <>
-                <Divider />
-                <BlockText variant="primary">Owner</BlockText>
-                <Flex
-                  sx={{ alignItems: "center", justifyContent: "center", mb: 2 }}
-                >
-                  <BlockText>{shortenAddress(nom.owner, 5)}</BlockText>
-                  {changeOwnerLoading ? (
-                    <Spinner />
-                  ) : (
-                    <Button
-                      sx={{ p: 1, fontSize: 1, ml: 2 }}
-                      onClick={async () => {
-                        // const nomAddress = NOM[network.chainId];
-                        // if (!nomAddress) return;
-                        // const signer = await getConnectedSigner();
-                        // const nom = Nom__factory.connect(nomAddress, signer);
-                        // const nextOwner = prompt("Enter new owner address");
-                        // if (!nextOwner || !isAddress(nextOwner)) {
-                        //   alert("Invalid address. Please try again.");
-                        //   return;
-                        // }
-                        // try {
-                        //   setChangeOwnerLoading(true);
-                        //   const gasPrice = await provider.getGasPrice();
-                        //   const tx = await nom.changeNameOwner(
-                        //     ethers.utils.formatBytes32String(name),
-                        //     nextOwner,
-                        //     { gasPrice }
-                        //   );
-                        //   toastTx(tx.hash);
-                        //   refetchNom();
-                        // } catch (e: any) {
-                        //   toast(e.message);
-                        // } finally {
-                        //   setChangeOwnerLoading(false);
-                        // }
-                      }}
-                      disabled={!isOwner}
-                    >
-                      Transfer
-                    </Button>
-                  )}
-                </Flex>
-              </>
-            )}
             {nom && nom.owner !== ZERO_ADDRESS && isOwner && (
               <>
                 {/* Modals */}

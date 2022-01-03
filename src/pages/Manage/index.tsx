@@ -201,8 +201,8 @@ export const Manage: React.FC = () => {
       }}
     >
       {name ? (
-        <Box sx={{ textAlign: "center" }}>
-          <Card sx={{ width: "100%", maxWidth: "800px" }} py={4} px={3}>
+        <Box sx={{ textAlign: "center", width: "100%" }}>
+          <Card sx={{ width: "100%" }} py={4} px={3}>
             {nom && nom.owner !== ZERO_ADDRESS && isOwner && (
               <>
                 {/* Modals */}

@@ -19,7 +19,7 @@ const App: React.FC = () => {
   });
 
   return (
-    <Container sx={{ maxWidth: "100%", width: "auto" }}>
+    <Container sx={{ maxWidth: "100%", width: "100%" }}>
       <Container>
         {/* <Header /> */}
         <Switch>
