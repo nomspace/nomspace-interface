@@ -1,24 +1,39 @@
 import React from "react";
-import { Box, Flex, Heading, Text, Image, Card } from "theme-ui";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Image,
+  Card,
+  useColorMode,
+  Link,
+} from "theme-ui";
 import { SearchBar } from "components/SearchBar";
 import styled from "@emotion/styled";
-import { BlockText } from "components/BlockText";
 import Illustration from "assets/SpaceDiscovery.svg";
 import CeloImage from "assets/Celo.png";
 import AvalancheImage from "assets/Avalanche.png";
 import PolygonImage from "assets/Polygon.png";
-import UbeswapImage from "assets/Ubeswap.png";
-import MobiusImage from "assets/Mobius.png";
+import UbeswapDarkImage from "assets/Ubeswap_dark.png";
+import MobiusDarkImage from "assets/Mobius_dark.png";
+import CelotrackerDarkImage from "assets/Celotracker_dark.png";
+import UbeswapLightImage from "assets/Ubeswap_light.png";
+import MobiusLightImage from "assets/Celotracker_light.png";
+import CelotrackerLightImage from "assets/Celotracker_light.png";
+import ProfilePreviewIllustration from "assets/ProfilePreviewIllustration.png";
+import CrossChainIllustration from "assets/CrossChainIllustration.png";
+import { GithubLogo, TwitterLogo, DiscordLogo } from "phosphor-react";
 
 const Title = styled(Heading)({
   fontSize: "40px",
-  fontWeight: "bold",
+  fontWeight: 600,
   marginBottom: "4px",
 });
 
-const Subtitle = styled(BlockText)({
+const Subtitle = styled(Heading)({
   fontSize: "28px",
-  fontWeight: "bold",
+  fontWeight: 600,
   lineHeight: "28px",
   color: "var(--theme-ui-colors-primaryTextColor)",
   marginBottom: "24px",
@@ -28,13 +43,13 @@ const Description = styled(Text)({
   fontSize: "28px",
   lineHeight: "28px",
 });
-
 const ColoredDescription = styled(Description)({
   color: "var(--theme-ui-colors-primaryTextColor)",
 });
 
 const Header = styled(Heading)({
   fontSize: "24px",
+  fontWeight: 600,
 });
 const ColoredHeader = styled(Header)({
   color: "var(--theme-ui-colors-primaryTextColor)",
@@ -46,6 +61,9 @@ const TokenLogo = styled(Image)({
 });
 
 const StyledCard = styled(Card)({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
   textAlign: "center",
   padding: "28px 24px",
   borderRadius: "20px",
@@ -55,19 +73,24 @@ const CardTitle = styled(Heading)({
   marginBottom: "12px",
 });
 const CardText = styled(Text)({
-  fontWeight: "bold",
   fontSize: "16px",
   color: "var(--theme-ui-colors-primaryTextColor)",
+  lineHeight: "24px",
+});
+const CardImage = styled(Image)({
+  marginTop: "20px",
 });
 
 export const Search: React.FC = () => {
+  const [colorMode] = useColorMode();
+
   return (
     <Flex
       sx={{
         flexDirection: "column",
         justifyContent: "center",
         mt: "42px",
-        mx: "28px",
+        mx: ["28px", "180px"],
       }}
     >
       <Title as="h1">Nom 2.0</Title>
@@ -100,9 +123,11 @@ export const Search: React.FC = () => {
         <CardTitle as="h3">A Cross-chain Name</CardTitle>
         <CardText>
           <strong>Reserve once and use everywhere.</strong>
+          <br />
           Why manage a different name service for every chain when you can use
           one?
         </CardText>
+        <CardImage src={CrossChainIllustration} />
       </StyledCard>
       <StyledCard mt="42px">
         <CardTitle as="h3">Show off a little</CardTitle>
@@ -117,14 +142,26 @@ export const Search: React.FC = () => {
           <strong>Put your coins where your mouth is.</strong> Use your .nom
           landing page to show your assets + favorite projects.
         </CardText>
+        <CardImage src={ProfilePreviewIllustration} />
       </StyledCard>
 
       <Header as="h2" mt="50px">
         Integrated with
       </Header>
-      <Flex sx={{ justifyContent: "space-evenly", mt: "30px" }}>
-        <Image src={UbeswapImage} />
-        <Image src={MobiusImage} />
+      <Flex
+        sx={{ justifyContent: "space-evenly", mt: "30px", flexWrap: "wrap" }}
+      >
+        <Image
+          src={colorMode === "dark" ? UbeswapDarkImage : UbeswapLightImage}
+        />
+        <Image
+          src={colorMode === "dark" ? MobiusDarkImage : MobiusLightImage}
+        />
+        <Image
+          src={
+            colorMode === "dark" ? CelotrackerDarkImage : CelotrackerLightImage
+          }
+        />
       </Flex>
 
       <Header as="h2" mt="64px">
@@ -135,6 +172,34 @@ export const Search: React.FC = () => {
         All .nom's are NFTs which means you can easily transfer and sell them.
       </Text>
       <SearchBar />
+      <Flex sx={{ justifyContent: "center", my: "42px" }}>
+        <Link
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/Nomspace"
+          style={{ textDecoration: "none" }}
+          mr={2}
+        >
+          <GithubLogo size={32} />
+        </Link>
+        <Link
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://twitter.com/Nomspace"
+          style={{ textDecoration: "none" }}
+          mr={2}
+        >
+          <TwitterLogo size={32} />
+        </Link>
+        <Link
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://discord.gg/3g9zRPRAPH"
+          style={{ textDecoration: "none" }}
+        >
+          <DiscordLogo size={32} />
+        </Link>
+      </Flex>
     </Flex>
   );
 };

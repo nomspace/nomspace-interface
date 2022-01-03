@@ -41,7 +41,7 @@ export const Footer: React.FC = () => {
         <Link
           target="_blank"
           rel="noopener noreferrer"
-          href=""
+          href="https://discord.gg/3g9zRPRAPH"
           style={{ textDecoration: "none" }}
         >
           <DiscordLogo size={32} />
