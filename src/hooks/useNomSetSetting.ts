@@ -25,44 +25,42 @@ export const useNomSetSetting = (name: string) => {
 
   const setNomSetting = useCallback(
     async (functionFragment: any, values: any) => {
-      const usdAddress = USD[network.chainId];
-      const nomAddress = NOM_REG_ADDR[celoChainId];
-      const reservePortalAddress = RESERVE_PORTAL[network.chainId];
-      if (!usdAddress || !nomAddress || !reservePortalAddress || !address) {
-        return;
-      }
-      const signer = await getConnectedSigner();
-      const nom = OperatorOwnedNomV2__factory.createInterface();
-      const reservePortal = ReservePortal__factory.connect(
-        reservePortalAddress,
-        signer
-      ) as unknown as ReservePortal;
-
-      try {
-        setLoading(true);
-        console.log(functionFragment, values);
-        const data = nom.encodeFunctionData(functionFragment, values);
-
-        if (!data) return;
-        const gasPrice = await provider.getGasPrice();
-        const tx = await reservePortal.escrow(
-          usdAddress,
-          0,
-          celoChainId,
-          nomAddress,
-          0,
-          data,
-          {
-            gasPrice,
-          }
-        );
-        toastTx(tx.hash);
-      } catch (e: any) {
-        toast(e.message);
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
+      // const usdAddress = USD[network.chainId];
+      // const nomAddress = NOM_REG_ADDR[celoChainId];
+      // const reservePortalAddress = RESERVE_PORTAL[network.chainId];
+      // if (!usdAddress || !nomAddress || !reservePortalAddress || !address) {
+      //   return;
+      // }
+      // const signer = await getConnectedSigner();
+      // const nom = OperatorOwnedNomV2__factory.createInterface();
+      // const reservePortal = ReservePortal__factory.connect(
+      //   reservePortalAddress,
+      //   signer
+      // ) as unknown as ReservePortal;
+      // try {
+      //   setLoading(true);
+      //   console.log(functionFragment, values);
+      //   const data = nom.encodeFunctionData(functionFragment, values);
+      //   if (!data) return;
+      //   const gasPrice = await provider.getGasPrice();
+      //   const tx = await reservePortal.escrow(
+      //     usdAddress,
+      //     0,
+      //     celoChainId,
+      //     nomAddress,
+      //     0,
+      //     data,
+      //     {
+      //       gasPrice,
+      //     }
+      //   );
+      //   toastTx(tx.hash);
+      // } catch (e: any) {
+      //   toast(e.message);
+      //   console.error(e);
+      // } finally {
+      //   setLoading(false);
+      // }
     },
     [address, celoChainId, getConnectedSigner, network.chainId, provider]
   );
