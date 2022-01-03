@@ -10,7 +10,6 @@ import {
   Box,
   Button,
   Card,
-  Divider,
   Flex,
   Heading,
   Spinner,
@@ -21,16 +20,12 @@ import { BlockText } from "components/BlockText";
 import { shortenAddress } from "utils/address";
 import { USD } from "config";
 import { toastTx } from "utils/toastTx";
-import { toast } from "react-toastify";
-import { isAddress, parseUnits } from "ethers/lib/utils";
+import { parseUnits } from "ethers/lib/utils";
 import { QRNameModal } from "components/QRNameModal";
-import { SearchBar } from "components/SearchBar";
-import { AccountProfile } from "components/AccountProfile";
 import { ZERO_ADDRESS } from "utils/constants";
-import QRCode from "qrcode.react";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
 import { ERC20__factory } from "generated";
-import { useNomSetSetting } from "hooks/useNomSetSetting";
+import { useSetNomSetting } from "hooks/useSetNomSetting";
 import { useName } from "hooks/useName";
 import { Sidebar } from "components/Sidebar";
 
@@ -164,13 +159,13 @@ const sources = [{ img: s1 }, { img: s2 }, { img: s3 }];
 /* DEMO PURPOSES, DELETE LATER */
 
 export const SearchDetail: React.FC = () => {
-  const name = useName();
+  const { name } = useName();
   const { address, network } = useContractKit();
   const provider = useProvider();
   const getConnectedSigner = useGetConnectedSigner();
   const [nom, refetchNom] = useNom(name);
   console.log("NOM", nom);
-  const { setNomSetting, loading } = useNomSetSetting(name);
+  const { setNomSetting, loading } = useSetNomSetting(name);
   const [changeOwnerLoading, setChangeOwnerLoading] = React.useState(false);
   const [showQR, setShowQR] = React.useState(false);
   const history = useHistory();
@@ -291,7 +286,7 @@ export const SearchDetail: React.FC = () => {
                             })}
                           </Flex>
                           <Heading variant="search.name.subHeading">
-                            don't test my liquid swords
+                            {nom.bio}
                           </Heading>
                         </Box>
                         <Box>

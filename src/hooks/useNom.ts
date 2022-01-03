@@ -5,7 +5,6 @@ import { useCeloProvider } from "hooks/useCeloProvider";
 import { useCeloChainId } from "hooks/useCeloChainId";
 import { BaseRegistrarImplementation__factory } from "generated";
 import ENS, { labelhash } from "@ensdomains/ensjs";
-import { normalize } from "eth-ens-namehash";
 import { ZERO_ADDRESS } from "utils/constants";
 import { ENSJS } from "types/ensjs";
 
@@ -14,17 +13,16 @@ type NomResult = {
   owner: string;
   expiration: number;
   bio: string;
+  website: string;
   github: string;
   discord: string;
   telegram: string;
   twitter: string;
 };
 
-export const useNom = (name: string) => {
-  const provider = useCeloProvider();
+export const useNom = (name?: string | null) => {
+  const celoProvider = useCeloProvider();
   const celoChainId = useCeloChainId();
-  // Normalize name
-  name = normalize(name);
 
   const call = React.useCallback(async (): Promise<NomResult | null> => {
     const baseAddress = BASE_ADDR[celoChainId];
@@ -33,19 +31,20 @@ export const useNom = (name: string) => {
       return null;
     }
     const ens: ENSJS = new ENS({
-      provider,
+      provider: celoProvider,
       ensAddress,
     });
     const nom = ens.name(`${name}.nom`);
     const base = BaseRegistrarImplementation__factory.connect(
       baseAddress,
-      provider
+      celoProvider
     );
 
     const tokenId = labelhash(name);
     // TODO: Promise.all or multicall
     const resolution = await nom.getAddress();
     const bio = await nom.getText(TextKey.DESCRIPTION);
+    const website = await nom.getText(TextKey.URL);
     const github = await nom.getText(TextKey.GITHUB);
     const discord = await nom.getText(TextKey.DISCORD);
     const telegram = await nom.getText(TextKey.TELEGRAM);
@@ -58,12 +57,13 @@ export const useNom = (name: string) => {
       owner,
       expiration,
       bio,
+      website,
       github,
       discord,
       telegram,
       twitter,
     };
-  }, [provider, celoChainId, name]);
+  }, [celoProvider, celoChainId, name]);
 
   return useAsyncState(null, call);
 };
