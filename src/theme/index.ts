@@ -516,7 +516,7 @@ export const preset = {
     sidebar: {
       container: {
         display: ["none", "none", "block"],
-        backgroundColor: "#F5F5F5",
+        backgroundColor: "secondary",
         minWidth: [null, null, 398, 498],
         padding: "0px 38px",
       },

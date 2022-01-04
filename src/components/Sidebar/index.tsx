@@ -44,90 +44,15 @@ const noms = [
   { img: nom2, name: "zatoichi", date: "12/03/22" },
 ];
 
-const connections = [
-  {
-    img: discord,
-    src: "aaaa",
-  },
-  {
-    img: twitter,
-    src: "bbbb",
-  },
-  {
-    img: telegram,
-    src: "cccc",
-  },
-];
-const tags = [
-  { name: "farmer", color: "green" },
-  { name: "lender", color: "blue" },
-  { name: "borrower", color: "red" },
-  { name: "staker", color: "yellow" },
-];
-const nfts = [
-  {
-    img: nft1,
-    name: "Alice Red or Blue Pill",
-    id: "00001",
-    os: "",
-  },
-  {
-    img: nft2,
-    name: "CeloPunk",
-    id: "00420",
-    os: "",
-  },
-  {
-    img: nft3,
-    name: "Zatoichi",
-    id: "003",
-    os: "",
-  },
-];
-const tokens = [
-  {
-    img: t1,
-    name: "",
-  },
-  {
-    img: t2,
-    name: "",
-  },
-  {
-    img: t3,
-    name: "",
-  },
-  {
-    img: t4,
-    name: "",
-  },
-  {
-    img: t5,
-    name: "",
-  },
-  {
-    img: t6,
-    name: "",
-  },
-  {
-    img: t7,
-    name: "",
-  },
-  {
-    img: t8,
-    name: "",
-  },
-];
-const stats = { life: 10.3, netWorth: 42.69, nomWhaleInd: "0.71" };
 const sources = [{ img: s1 }, { img: s2 }, { img: s3 }];
 
-export const Sidebar = () => {
+export const Sidebar: React.FC = () => {
   return (
     <Box variant="search.sidebar.container">
       <Flex variant="search.sidebar.walletContainer">
         <AccountProfile />{" "}
         <select>
-          {sources.map((e) => {
+          {sources.map(() => {
             return (
               <option value="celo">
                 <b>basdf</b>

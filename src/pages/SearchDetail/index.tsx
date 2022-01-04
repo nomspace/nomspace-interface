@@ -15,6 +15,7 @@ import {
   Spinner,
   Image,
   Text,
+  Link,
 } from "theme-ui";
 import { BlockText } from "components/BlockText";
 import { shortenAddress } from "utils/address";
@@ -28,6 +29,7 @@ import { ERC20__factory } from "generated";
 import { useSetNomSetting } from "hooks/useSetNomSetting";
 import { useName } from "hooks/useName";
 import { Sidebar } from "components/Sidebar";
+import { SocialIcons } from "components/SocialIcons";
 
 import { useCeloPunks } from "hooks/useCeloPunks";
 
@@ -36,9 +38,6 @@ import pfp from "pages/SearchDetail/assets/pfp.png";
 import banner from "pages/SearchDetail/assets/banner.png";
 
 // connections
-import discord from "pages/SearchDetail/assets/discord.png";
-import twitter from "pages/SearchDetail/assets/twitter.png";
-import telegram from "pages/SearchDetail/assets/telegram.png";
 
 /* DEMO PURPOSES, DELETE LATER */
 // nfts
@@ -73,26 +72,13 @@ import nomstronaut from "pages/SearchDetail/assets/astro.png";
 //noms
 import nom1 from "pages/SearchDetail/assets/nom1.png";
 import nom2 from "pages/SearchDetail/assets/nom2.png";
+import styled from "@emotion/styled";
 
 const noms = [
   { img: nom1, name: "gza", date: "08/18/23" },
   { img: nom2, name: "zatoichi", date: "12/03/22" },
 ];
 
-const connections = [
-  {
-    img: discord,
-    src: "aaaa",
-  },
-  {
-    img: twitter,
-    src: "bbbb",
-  },
-  {
-    img: telegram,
-    src: "cccc",
-  },
-];
 const tags = [
   { name: "farmer", color: "green" },
   { name: "lender", color: "blue" },
@@ -189,9 +175,10 @@ export const SearchDetail: React.FC = () => {
 
   const isOwner =
     address && nom && nom.owner.toLowerCase() === address.toLowerCase();
-  console.log("hook called");
-  const [balance, refetch] = useCeloPunks();
-  console.log(balance);
+
+  if (!nom) {
+    return <Spinner />;
+  }
 
   return (
     <Flex
@@ -237,21 +224,7 @@ export const SearchDetail: React.FC = () => {
                           ></Box>
                         </Box>
                         <Box variant="search.nomstronautTip.connectionsContainer">
-                          {/* Connections */}
-                          <Flex>
-                            {connections.map((e) => {
-                              return (
-                                <Box variant="search.connection.imageContainer">
-                                  <Box
-                                    variant="search.connection.image"
-                                    sx={{
-                                      backgroundImage: `url(${e.img})`,
-                                    }}
-                                  ></Box>
-                                </Box>
-                              );
-                            })}
-                          </Flex>
+                          <SocialIcons nom={nom} />
                         </Box>
                         <Button variant="search.nomstronautTip.tip">TIP</Button>
                       </Flex>
@@ -292,18 +265,7 @@ export const SearchDetail: React.FC = () => {
                         <Box>
                           {/* Connections */}
                           <Flex variant="search.connection.container">
-                            {connections.map((e) => {
-                              return (
-                                <Box variant="search.connection.imageContainer">
-                                  <Box
-                                    variant="search.connection.image"
-                                    sx={{
-                                      backgroundImage: `url(${e.img})`,
-                                    }}
-                                  ></Box>
-                                </Box>
-                              );
-                            })}
+                            <SocialIcons nom={nom} />
                           </Flex>
                           {/* Tags */}
                           <Box variant="search.rowScrollContainer">
@@ -424,89 +386,7 @@ export const SearchDetail: React.FC = () => {
                 </Flex>
               </>
             )}
-            <br />
-            {nom && nom.resolution !== ZERO_ADDRESS && (
-              <Flex sx={{ mt: 1, justifyContent: "center", flexWrap: "wrap" }}>
-                <Button
-                  mr={2}
-                  mb={1}
-                  onClick={async () => {
-                    await sendCUSD("1");
-                  }}
-                >
-                  Tip 1 cUSD
-                </Button>
-                <Button
-                  mr={2}
-                  mb={1}
-                  onClick={async () => {
-                    await sendCUSD("5");
-                  }}
-                >
-                  Tip 5 cUSD
-                </Button>
-                <Button
-                  mr={2}
-                  mb={1}
-                  onClick={async () => {
-                    await sendCUSD("10");
-                  }}
-                >
-                  Tip 10 cUSD
-                </Button>
-                <Button
-                  mr={2}
-                  mb={1}
-                  onClick={async () => {
-                    const amount = prompt("Enter a custom tip amount");
-                    if (
-                      amount === null ||
-                      isNaN(Number(amount)) ||
-                      Number(amount) <= 0
-                    ) {
-                      alert("Invalid amount specified");
-                      return;
-                    }
-                    await sendCUSD(amount);
-                  }}
-                >
-                  Custom tip
-                </Button>
-              </Flex>
-            )}
-            <Flex sx={{ justifyContent: "center", mt: 6 }}>
-              {nom ? (
-                nom.owner === ZERO_ADDRESS ? (
-                  <Button
-                    onClick={() => {
-                      history.push(`/${name}/reserve`);
-                    }}
-                  >
-                    Reserve
-                  </Button>
-                ) : nom.owner === address ? (
-                  <BlockText>You own this name!</BlockText>
-                ) : (
-                  <BlockText>
-                    Name has already been reserved by{" "}
-                    <BlockscoutAddressLink address={nom.owner}>
-                      {shortenAddress(nom.owner)}
-                    </BlockscoutAddressLink>
-                  </BlockText>
-                )
-              ) : (
-                <Spinner />
-              )}
-            </Flex>
           </Card>
-          {nom && nom.resolution && nom.resolution !== ZERO_ADDRESS && (
-            <QRNameModal
-              name={name}
-              address={nom.resolution}
-              isOpen={showQR}
-              setIsOpen={setShowQR}
-            />
-          )}
         </Box>
       ) : (
         <Text>Name is invalid. Try searching again.</Text>
