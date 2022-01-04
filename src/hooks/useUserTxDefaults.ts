@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useCeloChainId } from "hooks/useCeloChainId";
 import { useCeloProvider } from "hooks/useCeloProvider";
-import { FORWARDER_ADDR } from "config";
+import { FORWARDER_ADDR } from "addresses";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import { OwnableMinimalForwarder__factory } from "generated";
 import { useAsyncState } from "hooks/useAsyncState";

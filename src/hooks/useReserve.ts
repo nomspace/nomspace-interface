@@ -10,8 +10,8 @@ import {
   RESERVE_PORTAL,
   ENS_ADDR,
   NOM_REG_ADDR,
-  FORWARDER_ADDR,
-} from "config";
+  FORWARDER_ADDR
+} from "addresses";
 import {
   ERC20__factory,
   NomRegistrarController__factory,
@@ -57,7 +57,6 @@ export const useReserve = (name: string) => {
       );
       await tx.wait(2);
       toastTx(tx.hash);
-      //   refetchUSD();
     } catch (e: any) {
       toast(e.message);
     } finally {
@@ -124,7 +123,7 @@ export const useReserve = (name: string) => {
           address
         );
         const tx = await reservePortal.escrow(
-          usd.address,
+          usdAddress,
           formatUnits(cost, (await usd.decimals()) - 18), // Assume cost is in 18 decimals
           celoChainId,
           {

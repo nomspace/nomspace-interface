@@ -5,45 +5,32 @@ import {
   useGetConnectedSigner,
   useProvider,
 } from "@celo-tools/use-contractkit";
-import { useHistory } from "react-router-dom";
 import {
   Box,
   Button,
   Card,
-  Divider,
   Flex,
   Heading,
   Spinner,
   Image,
   Text,
 } from "theme-ui";
-import { BlockText } from "components/BlockText";
-import { shortenAddress } from "utils/address";
-import { USD } from "config";
-import { toastTx } from "utils/toastTx";
-import { toast } from "react-toastify";
-import { isAddress, parseUnits } from "ethers/lib/utils";
-import { QRNameModal } from "components/QRNameModal";
-import { SearchBar } from "components/SearchBar";
-import { AccountProfile } from "components/AccountProfile";
+import { NATIVE_CURRENCY } from "config";
 import { ZERO_ADDRESS } from "utils/constants";
-import QRCode from "qrcode.react";
-import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
-import { ERC20__factory } from "generated";
-import { useNomSetSetting } from "hooks/useNomSetSetting";
+import { useSetNomSetting } from "hooks/useSetNomSetting";
 import { useName } from "hooks/useName";
 import { Sidebar } from "components/Sidebar";
-
-import { useCeloPunks } from "hooks/useCeloPunks";
+import { SocialIcons } from "components/SocialIcons";
+import { useTokenBalances } from "hooks/useTokenBalances";
+import { useUserStats } from "hooks/useUserStats";
+import { ExplorerIcons } from "components/ExplorerIcons";
+import { UserTags } from "components/UserTags";
 
 /* ASSETS */
 import pfp from "pages/SearchDetail/assets/pfp.png";
 import banner from "pages/SearchDetail/assets/banner.png";
 
 // connections
-import discord from "pages/SearchDetail/assets/discord.png";
-import twitter from "pages/SearchDetail/assets/twitter.png";
-import telegram from "pages/SearchDetail/assets/telegram.png";
 
 /* DEMO PURPOSES, DELETE LATER */
 // nfts
@@ -52,58 +39,20 @@ import nft2 from "pages/SearchDetail/assets/nft2.png";
 import nft3 from "pages/SearchDetail/assets/nft3.png";
 
 // tokens
-import t1 from "pages/SearchDetail/assets/t1.png";
-import t2 from "pages/SearchDetail/assets/t2.png";
-import t3 from "pages/SearchDetail/assets/t3.png";
-import t4 from "pages/SearchDetail/assets/t4.png";
-import t5 from "pages/SearchDetail/assets/t5.png";
-import t6 from "pages/SearchDetail/assets/t6.png";
-import t7 from "pages/SearchDetail/assets/t7.png";
-import t8 from "pages/SearchDetail/assets/t8.png";
 
 // stats
 import life2 from "pages/SearchDetail/assets/life1.png";
 import life1 from "pages/SearchDetail/assets/life2.png";
 import networth from "pages/SearchDetail/assets/networth.png";
-import whale from "pages/SearchDetail/assets/whale.png";
 
 // sources
-import s1 from "pages/SearchDetail/assets/s1.png";
-import s2 from "pages/SearchDetail/assets/s2.png";
-import s3 from "pages/SearchDetail/assets/s3.png";
 
 // nomstronaut
 import nomstronaut from "pages/SearchDetail/assets/astro.png";
+import { useUserNoms } from "hooks/useUserNoms";
+import { Page } from "state/global";
+import { useHistory } from "react-router-dom";
 
-//noms
-import nom1 from "pages/SearchDetail/assets/nom1.png";
-import nom2 from "pages/SearchDetail/assets/nom2.png";
-
-const noms = [
-  { img: nom1, name: "gza", date: "08/18/23" },
-  { img: nom2, name: "zatoichi", date: "12/03/22" },
-];
-
-const connections = [
-  {
-    img: discord,
-    src: "aaaa",
-  },
-  {
-    img: twitter,
-    src: "bbbb",
-  },
-  {
-    img: telegram,
-    src: "cccc",
-  },
-];
-const tags = [
-  { name: "farmer", color: "green" },
-  { name: "lender", color: "blue" },
-  { name: "borrower", color: "red" },
-  { name: "staker", color: "yellow" },
-];
 const nfts = [
   {
     img: nft1,
@@ -124,79 +73,28 @@ const nfts = [
     os: "",
   },
 ];
-const tokens = [
-  {
-    img: t1,
-    name: "",
-  },
-  {
-    img: t2,
-    name: "",
-  },
-  {
-    img: t3,
-    name: "",
-  },
-  {
-    img: t4,
-    name: "",
-  },
-  {
-    img: t5,
-    name: "",
-  },
-  {
-    img: t6,
-    name: "",
-  },
-  {
-    img: t7,
-    name: "",
-  },
-  {
-    img: t8,
-    name: "",
-  },
-];
-const stats = { life: 10.3, netWorth: 42.69, nomWhaleInd: "0.71" };
-const sources = [{ img: s1 }, { img: s2 }, { img: s3 }];
 
 /* DEMO PURPOSES, DELETE LATER */
 
 export const SearchDetail: React.FC = () => {
-  const name = useName();
+  const { name } = useName();
   const { address, network } = useContractKit();
   const provider = useProvider();
   const getConnectedSigner = useGetConnectedSigner();
   const [nom, refetchNom] = useNom(name);
   console.log("NOM", nom);
-  const { setNomSetting, loading } = useNomSetSetting(name);
+  const { setNomSetting, loading } = useSetNomSetting(name);
   const [changeOwnerLoading, setChangeOwnerLoading] = React.useState(false);
   const [showQR, setShowQR] = React.useState(false);
+  const [tokens] = useTokenBalances(nom?.resolution);
+  const [userStats] = useUserStats(nom?.resolution);
+  const [userNoms] = useUserNoms();
   const history = useHistory();
-  const sendCUSD = React.useCallback(
-    async (amount: string) => {
-      const usdAddress = USD[network.chainId];
-      if (!usdAddress || !nom) return;
-      const signer = await getConnectedSigner();
-      const usd = ERC20__factory.connect(usdAddress, signer);
-      const decimals = await usd.decimals();
-      const gasPrice = await provider.getGasPrice();
-      const tx = await usd.transfer(
-        nom.resolution,
-        parseUnits(amount, decimals),
-        { gasPrice: gasPrice }
-      );
-      toastTx(tx.hash);
-    },
-    [getConnectedSigner, network.chainId, nom, provider]
-  );
 
   const isOwner =
     address && nom && nom.owner.toLowerCase() === address.toLowerCase();
-  console.log("hook called");
-  const [balance, refetch] = useCeloPunks();
-  console.log(balance);
+
+  if (!nom) return <Spinner />;
 
   return (
     <Flex
@@ -207,13 +105,13 @@ export const SearchDetail: React.FC = () => {
     >
       {name ? (
         <Box sx={{ textAlign: "center", width: "100%" }}>
-          {nom && nom.owner !== ZERO_ADDRESS && isOwner && (
-            <>
-              {/* Modals */}
-              <Flex>
-                {/* Sidebar */}
-                <Sidebar />
-                {/* Page */}
+          <Card sx={{ width: "100%" }} py={4} px={3}>
+            {/* Modals */}
+            <Flex>
+              {/* Sidebar */}
+              <Sidebar />
+              {/* Page */}
+              {nom && (
                 <Flex
                   sx={{
                     alignItems: "center",
@@ -241,23 +139,29 @@ export const SearchDetail: React.FC = () => {
                         ></Box>
                       </Box>
                       <Box variant="search.nomstronautTip.connectionsContainer">
-                        {/* Connections */}
-                        <Flex>
-                          {connections.map((e) => {
-                            return (
-                              <Box variant="search.connection.imageContainer">
-                                <Box
-                                  variant="search.connection.image"
-                                  sx={{
-                                    backgroundImage: `url(${e.img})`,
-                                  }}
-                                ></Box>
-                              </Box>
-                            );
-                          })}
-                        </Flex>
+                        <SocialIcons nom={nom} />
                       </Box>
-                      <Button variant="search.nomstronautTip.tip">TIP</Button>
+                      {isOwner && (
+                        <Button
+                          onClick={() => {
+                            history.push(`${name}/${Page.MANAGE}`);
+                          }}
+                          variant="search.nomstronautTip.edit"
+                        >
+                          EDIT
+                        </Button>
+                      )}
+                      <Button
+                        onClick={() => {
+                          if (nom.owner === ZERO_ADDRESS) {
+                            history.push(`${name}/${Page.RESERVE}`);
+                          }
+                          // TODO: TIP
+                        }}
+                        variant="search.nomstronautTip.tip"
+                      >
+                        {nom.owner === ZERO_ADDRESS ? "RESERVE" : "TIP"}
+                      </Button>
                     </Flex>
                   </Box>
 
@@ -276,49 +180,18 @@ export const SearchDetail: React.FC = () => {
                           >
                             .nom
                           </Heading>
-                          {sources.map((e) => {
-                            return (
-                              <Box variant="search.name.source.imageContainer">
-                                <Box
-                                  variant="search.name.source.image"
-                                  sx={{
-                                    backgroundImage: `url(${e.img})`,
-                                  }}
-                                ></Box>
-                              </Box>
-                            );
-                          })}
                         </Flex>
                         <Heading variant="search.name.subHeading">
-                          don't test my liquid swords
+                          {nom.bio}
                         </Heading>
                       </Box>
                       <Box>
                         {/* Connections */}
                         <Flex variant="search.connection.container">
-                          {connections.map((e) => {
-                            return (
-                              <Box variant="search.connection.imageContainer">
-                                <Box
-                                  variant="search.connection.image"
-                                  sx={{
-                                    backgroundImage: `url(${e.img})`,
-                                  }}
-                                ></Box>
-                              </Box>
-                            );
-                          })}
+                          <SocialIcons nom={nom} />
                         </Flex>
                         {/* Tags */}
-                        <Box variant="search.rowScrollContainer">
-                          {tags.map((e) => {
-                            return (
-                              <Box variant={`search.tag.${e.color}`}>
-                                {e.name}
-                              </Box>
-                            );
-                          })}
-                        </Box>
+                        <UserTags userAddress={nom.resolution} />
                       </Box>
                     </Flex>
                     {/* NFTs */}
@@ -340,13 +213,13 @@ export const SearchDetail: React.FC = () => {
                     {/* Tokens */}
                     <Heading variant="search.heading">Tokens</Heading>
                     <Box variant="search.rowScrollContainer">
-                      {tokens.map((e) => {
+                      {tokens?.map((t) => {
                         return (
                           <Box variant="search.token.imageContainer">
                             <Box
                               variant="search.token.image"
                               sx={{
-                                backgroundImage: `url(${e.img})`,
+                                backgroundImage: `url(${t.logoURI})`,
                               }}
                             ></Box>
                           </Box>
@@ -362,30 +235,35 @@ export const SearchDetail: React.FC = () => {
                           <Image src={life2} variant="search.stat.life2Icon" />
                         </Box>
                         <Heading variant="search.stat.heading">
-                          Life:&nbsp;
+                          Activity:&nbsp;
                         </Heading>
                         <Text variant="search.stat.text">
-                          {new Intl.NumberFormat().format(stats.life)} Blocks
+                          {userStats
+                            ? new Intl.NumberFormat().format(
+                                userStats?.transactionCount
+                              )
+                            : "-"}{" "}
+                          Transactions
                         </Text>
                       </Flex>
                       <Box variant="search.stat.divider"></Box>
                       <Flex variant="search.stat.row">
-                        <Image src={networth} variant="search.stat.icon" />
+                        <Image
+                          src={networth}
+                          variant="search.stat.icon"
+                          ml="4px"
+                          mr="6px"
+                        />
                         <Heading variant="search.stat.heading">
                           Net Worth:&nbsp;
                         </Heading>
                         <Text variant="search.stat.text">
-                          ${new Intl.NumberFormat().format(stats.netWorth)}
-                        </Text>
-                      </Flex>
-                      <Box variant="search.stat.divider"></Box>
-                      <Flex variant="search.stat.row">
-                        <Image src={whale} variant="search.stat.icon" />
-                        <Heading variant="search.stat.heading">
-                          Nom Whale Index:&nbsp;
-                        </Heading>
-                        <Text variant="search.stat.text">
-                          {stats.nomWhaleInd}%
+                          {userStats
+                            ? new Intl.NumberFormat().format(
+                                userStats.nativeBalance
+                              )
+                            : "0"}{" "}
+                          {NATIVE_CURRENCY[network.chainId]}
                         </Text>
                       </Flex>
                     </Box>
@@ -395,18 +273,7 @@ export const SearchDetail: React.FC = () => {
                       <Text variant="search.source.text">
                         View on Block Explorers: &nbsp;&nbsp;
                       </Text>
-                      {sources.map((e) => {
-                        return (
-                          <Box variant="search.source.imageContainer">
-                            <Box
-                              variant="search.source.image"
-                              sx={{
-                                backgroundImage: `url(${e.img})`,
-                              }}
-                            ></Box>
-                          </Box>
-                        );
-                      })}
+                      <ExplorerIcons userAddress={nom.resolution} />
                     </Box>
                     {/* Footer */}
                     {/* absolutely positioned */}
@@ -419,92 +286,9 @@ export const SearchDetail: React.FC = () => {
                     </Box>
                   </Box>
                 </Flex>
-              </Flex>
-            </>
-          )}
-          <br />
-          {/* {nom && nom.resolution !== ZERO_ADDRESS && (
-              <Flex sx={{ mt: 1, justifyContent: "center", flexWrap: "wrap" }}>
-                <Button
-                  mr={2}
-                  mb={1}
-                  onClick={async () => {
-                    await sendCUSD("1");
-                  }}
-                >
-                  Tip 1 cUSD
-                </Button>
-                <Button
-                  mr={2}
-                  mb={1}
-                  onClick={async () => {
-                    await sendCUSD("5");
-                  }}
-                >
-                  Tip 5 cUSD
-                </Button>
-                <Button
-                  mr={2}
-                  mb={1}
-                  onClick={async () => {
-                    await sendCUSD("10");
-                  }}
-                >
-                  Tip 10 cUSD
-                </Button>
-                <Button
-                  mr={2}
-                  mb={1}
-                  onClick={async () => {
-                    const amount = prompt("Enter a custom tip amount");
-                    if (
-                      amount === null ||
-                      isNaN(Number(amount)) ||
-                      Number(amount) <= 0
-                    ) {
-                      alert("Invalid amount specified");
-                      return;
-                    }
-                    await sendCUSD(amount);
-                  }}
-                >
-                  Custom tip
-                </Button>
-              </Flex>
-            )}
-            <Flex sx={{ justifyContent: "center", mt: 6 }}>
-              {nom ? (
-                nom.owner === ZERO_ADDRESS ? (
-                  <Button
-                    onClick={() => {
-                      history.push(`/${name}/reserve`);
-                    }}
-                  >
-                    Reserve
-                  </Button>
-                ) : nom.owner === address ? (
-                  <BlockText>You own this name!</BlockText>
-                ) : (
-                  <BlockText>
-                    Name has already been reserved by{" "}
-                    <BlockscoutAddressLink address={nom.owner}>
-                      {shortenAddress(nom.owner)}
-                    </BlockscoutAddressLink>
-                  </BlockText>
-                )
-              ) : (
-                <Spinner />
               )}
-            </Flex> */}
-
-          {nom && nom.resolution && nom.resolution !== ZERO_ADDRESS && (
-            <QRNameModal
-              name={name}
-              address={nom.resolution}
-              isOpen={showQR}
-              setIsOpen={setShowQR}
-            />
-          )}
+            </Flex>
+          </Card>
         </Box>
       ) : (
         <Text>Name is invalid. Try searching again.</Text>

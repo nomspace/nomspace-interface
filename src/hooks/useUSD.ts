@@ -1,7 +1,7 @@
 import React from "react";
 import { useContractKit, useProvider } from "@celo-tools/use-contractkit";
 import { useAsyncState } from "hooks/useAsyncState";
-import { RESERVE_PORTAL, USD } from "config";
+import { RESERVE_PORTAL, USD } from "addresses";
 import { ERC20__factory } from "generated";
 
 export const useUSD = () => {

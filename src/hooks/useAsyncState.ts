@@ -13,7 +13,7 @@ export function useAsyncState<T>(
         setDirty(false);
       })
       .catch(console.warn);
-  }, [dirty]);
+  }, [asyncGetter, dirty]);
 
   const refetch = () => {
     setDirty(true);
