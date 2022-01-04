@@ -5,7 +5,6 @@ import {
   useGetConnectedSigner,
   useProvider,
 } from "@celo-tools/use-contractkit";
-import { useHistory } from "react-router-dom";
 import {
   Box,
   Button,
@@ -15,17 +14,9 @@ import {
   Spinner,
   Image,
   Text,
-  Link,
 } from "theme-ui";
-import { BlockText } from "components/BlockText";
-import { shortenAddress } from "utils/address";
-import { NATIVE_CURRENCY, USD } from "addresses";
-import { toastTx } from "utils/toastTx";
-import { parseUnits } from "ethers/lib/utils";
-import { QRNameModal } from "components/QRNameModal";
+import { NATIVE_CURRENCY } from "addresses";
 import { ZERO_ADDRESS } from "utils/constants";
-import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
-import { ERC20__factory } from "generated";
 import { useSetNomSetting } from "hooks/useSetNomSetting";
 import { useName } from "hooks/useName";
 import { Sidebar } from "components/Sidebar";
@@ -33,7 +24,7 @@ import { SocialIcons } from "components/SocialIcons";
 import { useTokenBalances } from "hooks/useTokenBalances";
 import { useUserStats } from "hooks/useUserStats";
 import { ExplorerIcons } from "components/ExplorerIcons";
-import { useCeloPunks } from "hooks/useCeloPunks";
+import { UserTags } from "components/UserTags";
 
 /* ASSETS */
 import pfp from "pages/SearchDetail/assets/pfp.png";
@@ -48,44 +39,17 @@ import nft2 from "pages/SearchDetail/assets/nft2.png";
 import nft3 from "pages/SearchDetail/assets/nft3.png";
 
 // tokens
-import t1 from "pages/SearchDetail/assets/t1.png";
-import t2 from "pages/SearchDetail/assets/t2.png";
-import t3 from "pages/SearchDetail/assets/t3.png";
-import t4 from "pages/SearchDetail/assets/t4.png";
-import t5 from "pages/SearchDetail/assets/t5.png";
-import t6 from "pages/SearchDetail/assets/t6.png";
-import t7 from "pages/SearchDetail/assets/t7.png";
-import t8 from "pages/SearchDetail/assets/t8.png";
 
 // stats
 import life2 from "pages/SearchDetail/assets/life1.png";
 import life1 from "pages/SearchDetail/assets/life2.png";
 import networth from "pages/SearchDetail/assets/networth.png";
-import whale from "pages/SearchDetail/assets/whale.png";
 
 // sources
-import s1 from "pages/SearchDetail/assets/s1.png";
-import s2 from "pages/SearchDetail/assets/s2.png";
-import s3 from "pages/SearchDetail/assets/s3.png";
 
 // nomstronaut
 import nomstronaut from "pages/SearchDetail/assets/astro.png";
 
-//noms
-import nom1 from "pages/SearchDetail/assets/nom1.png";
-import nom2 from "pages/SearchDetail/assets/nom2.png";
-
-const noms = [
-  { img: nom1, name: "gza", date: "08/18/23" },
-  { img: nom2, name: "zatoichi", date: "12/03/22" },
-];
-
-const tags = [
-  { name: "farmer", color: "green" },
-  { name: "lender", color: "blue" },
-  { name: "borrower", color: "red" },
-  { name: "staker", color: "yellow" },
-];
 const nfts = [
   {
     img: nft1,
@@ -106,8 +70,6 @@ const nfts = [
     os: "",
   },
 ];
-const stats = { life: 10.3, netWorth: 42.69, nomWhaleInd: "0.71" };
-const sources = [{ img: s1 }, { img: s2 }, { img: s3 }];
 
 /* DEMO PURPOSES, DELETE LATER */
 
@@ -121,24 +83,6 @@ export const SearchDetail: React.FC = () => {
   const { setNomSetting, loading } = useSetNomSetting(name);
   const [changeOwnerLoading, setChangeOwnerLoading] = React.useState(false);
   const [showQR, setShowQR] = React.useState(false);
-  const history = useHistory();
-  const sendCUSD = React.useCallback(
-    async (amount: string) => {
-      const usdAddress = USD[network.chainId];
-      if (!usdAddress || !nom) return;
-      const signer = await getConnectedSigner();
-      const usd = ERC20__factory.connect(usdAddress, signer);
-      const decimals = await usd.decimals();
-      const gasPrice = await provider.getGasPrice();
-      const tx = await usd.transfer(
-        nom.resolution,
-        parseUnits(amount, decimals),
-        { gasPrice: gasPrice }
-      );
-      toastTx(tx.hash);
-    },
-    [getConnectedSigner, network.chainId, nom, provider]
-  );
   const [tokens] = useTokenBalances(nom?.resolution);
   const [userStats] = useUserStats(nom?.resolution);
 
@@ -225,15 +169,7 @@ export const SearchDetail: React.FC = () => {
                             <SocialIcons nom={nom} />
                           </Flex>
                           {/* Tags */}
-                          <Box variant="search.rowScrollContainer">
-                            {tags.map((e) => {
-                              return (
-                                <Box variant={`search.tag.${e.color}`}>
-                                  {e.name}
-                                </Box>
-                              );
-                            })}
-                          </Box>
+                          <UserTags userAddress={nom.resolution} />
                         </Box>
                       </Flex>
                       {/* NFTs */}
