@@ -32,6 +32,7 @@ import { Sidebar } from "components/Sidebar";
 import { SocialIcons } from "components/SocialIcons";
 import { useTokenBalances } from "hooks/useTokenBalances";
 import { useUserStats } from "hooks/useUserStats";
+import { ExplorerIcons } from "components/ExplorerIcons";
 import { useCeloPunks } from "hooks/useCeloPunks";
 
 /* ASSETS */
@@ -213,18 +214,6 @@ export const SearchDetail: React.FC = () => {
                             >
                               .nom
                             </Heading>
-                            {sources.map((e) => {
-                              return (
-                                <Box variant="search.name.source.imageContainer">
-                                  <Box
-                                    variant="search.name.source.image"
-                                    sx={{
-                                      backgroundImage: `url(${e.img})`,
-                                    }}
-                                  ></Box>
-                                </Box>
-                              );
-                            })}
                           </Flex>
                           <Heading variant="search.name.subHeading">
                             {nom.bio}
@@ -332,18 +321,7 @@ export const SearchDetail: React.FC = () => {
                         <Text variant="search.source.text">
                           View on Block Explorers: &nbsp;&nbsp;
                         </Text>
-                        {sources.map((e) => {
-                          return (
-                            <Box variant="search.source.imageContainer">
-                              <Box
-                                variant="search.source.image"
-                                sx={{
-                                  backgroundImage: `url(${e.img})`,
-                                }}
-                              ></Box>
-                            </Box>
-                          );
-                        })}
+                        <ExplorerIcons userAddress={nom.resolution} />
                       </Box>
                       {/* Footer */}
                       {/* absolutely positioned */}
