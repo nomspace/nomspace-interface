@@ -2,7 +2,7 @@ import { useContractKit, useProvider } from "@celo-tools/use-contractkit";
 import tokenList from "web3-token-list";
 import { useAsyncState } from "hooks/useAsyncState";
 import { useCallback } from "react";
-import { MULTICALL_ADDR } from "config";
+import { MULTICALL_ADDR } from "addresses";
 import { ERC20__factory, Multicall__factory } from "generated";
 import { BigNumber } from "ethers";
 

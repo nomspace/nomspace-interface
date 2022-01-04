@@ -1,5 +1,6 @@
 import React from "react";
-import { BASE_ADDR, ENS_ADDR, TextKey } from "config";
+import { TextKey } from "config";
+import { BASE_ADDR, ENS_ADDR } from "addresses";
 import { useAsyncState } from "./useAsyncState";
 import { useCeloProvider } from "hooks/useCeloProvider";
 import { useCeloChainId } from "hooks/useCeloChainId";

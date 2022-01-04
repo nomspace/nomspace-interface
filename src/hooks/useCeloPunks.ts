@@ -1,4 +1,4 @@
-import { MULTICALL_ADDR } from "config";
+import { MULTICALL_ADDR } from "addresses";
 import { providers } from "ethers";
 import { ERC721__factory } from "generated";
 import { Multicall__factory, Nom__factory } from "generated";

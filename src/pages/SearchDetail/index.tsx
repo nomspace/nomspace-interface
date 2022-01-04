@@ -19,7 +19,7 @@ import {
 } from "theme-ui";
 import { BlockText } from "components/BlockText";
 import { shortenAddress } from "utils/address";
-import { NATIVE_CURRENCY, USD } from "config";
+import { NATIVE_CURRENCY, USD } from "addresses";
 import { toastTx } from "utils/toastTx";
 import { parseUnits } from "ethers/lib/utils";
 import { QRNameModal } from "components/QRNameModal";

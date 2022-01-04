@@ -10,8 +10,8 @@ import {
   RESERVE_PORTAL,
   ENS_ADDR,
   NOM_REG_ADDR,
-  FORWARDER_ADDR,
-} from "config";
+  FORWARDER_ADDR
+} from "addresses";
 import {
   ERC20__factory,
   NomRegistrarController__factory,

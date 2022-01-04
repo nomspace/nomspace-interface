@@ -4,7 +4,7 @@ import {
   useGetConnectedSigner,
   useProvider,
 } from "@celo-tools/use-contractkit";
-import { USD, RESERVE_PORTAL, ENS_ADDR, FORWARDER_ADDR } from "config";
+import { USD, RESERVE_PORTAL, ENS_ADDR, FORWARDER_ADDR } from "addresses";
 import {
   ReservePortal,
   ReservePortal__factory,
