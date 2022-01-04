@@ -17,7 +17,7 @@ export const preset = {
     primaryButtonTextColor: "#FAFAFA",
     accent: "#7C71FD",
     background: "#fff",
-    secondary: "#bababa",
+    secondary: "#F5F5F5",
     muted: "#f6f6f9",
     gray: "#bababa",
     darkgray: "#8d8d8d",
