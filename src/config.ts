@@ -41,6 +41,10 @@ export const RESERVE_PORTAL: Record<string, string> = {
   [ChainId.Alfajores]: "0xE0e61BeF1AD40880F92e2bf7617A2BB538feA655",
   [ChainId.Fuji]: "0x1c743749d0070091D964356E710CeFA07B00A58b",
 };
+export const MULTICALL_ADDR: Record<string, string> = {
+  [ChainId.Celo]: "0x75f59534dd892c1f8a7b172d639fa854d529ada3",
+  [ChainId.Alfajores]: "0x387ce7960b5DA5381De08Ea4967b13a7c8cAB3f6",
+};
 
 export type Network = {
   chainId: number;

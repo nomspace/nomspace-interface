@@ -1,3 +1,4 @@
+import { MULTICALL_ADDR } from "config";
 import { providers } from "ethers";
 import { ERC721__factory } from "generated";
 import { Multicall__factory, Nom__factory } from "generated";
@@ -12,12 +13,11 @@ export const useCeloPunks = () => {
     "0x9f46B8290A6D41B28dA037aDE0C3eBe24a5D1160",
     provider
   );
-  const multicall = Multicall__factory.connect(
-    "0x75f59534dd892c1f8a7b172d639fa854d529ada3",
-    provider
-  );
 
   const call = useCallback(async () => {
+    const multicallAddress = MULTICALL_ADDR[provider.network.chainId];
+    if (!multicallAddress) return null;
+    const multicall = Multicall__factory.connect(multicallAddress, provider);
     const supply = (await nft.totalSupply()).toString();
     return await multicall.callStatic
       .aggregate(

@@ -30,7 +30,7 @@ import { useSetNomSetting } from "hooks/useSetNomSetting";
 import { useName } from "hooks/useName";
 import { Sidebar } from "components/Sidebar";
 import { SocialIcons } from "components/SocialIcons";
-
+import { useTokenBalances } from "hooks/useTokenBalances";
 import { useCeloPunks } from "hooks/useCeloPunks";
 
 /* ASSETS */
@@ -72,7 +72,6 @@ import nomstronaut from "pages/SearchDetail/assets/astro.png";
 //noms
 import nom1 from "pages/SearchDetail/assets/nom1.png";
 import nom2 from "pages/SearchDetail/assets/nom2.png";
-import styled from "@emotion/styled";
 
 const noms = [
   { img: nom1, name: "gza", date: "08/18/23" },
@@ -103,40 +102,6 @@ const nfts = [
     name: "Zatoichi",
     id: "003",
     os: "",
-  },
-];
-const tokens = [
-  {
-    img: t1,
-    name: "",
-  },
-  {
-    img: t2,
-    name: "",
-  },
-  {
-    img: t3,
-    name: "",
-  },
-  {
-    img: t4,
-    name: "",
-  },
-  {
-    img: t5,
-    name: "",
-  },
-  {
-    img: t6,
-    name: "",
-  },
-  {
-    img: t7,
-    name: "",
-  },
-  {
-    img: t8,
-    name: "",
   },
 ];
 const stats = { life: 10.3, netWorth: 42.69, nomWhaleInd: "0.71" };
@@ -172,6 +137,7 @@ export const SearchDetail: React.FC = () => {
     },
     [getConnectedSigner, network.chainId, nom, provider]
   );
+  const [tokens] = useTokenBalances(nom?.resolution);
 
   const isOwner =
     address && nom && nom.owner.toLowerCase() === address.toLowerCase();
@@ -298,13 +264,13 @@ export const SearchDetail: React.FC = () => {
                       {/* Tokens */}
                       <Heading variant="search.heading">Tokens</Heading>
                       <Box variant="search.rowScrollContainer">
-                        {tokens.map((e) => {
+                        {tokens?.map((t) => {
                           return (
                             <Box variant="search.token.imageContainer">
                               <Box
                                 variant="search.token.image"
                                 sx={{
-                                  backgroundImage: `url(${e.img})`,
+                                  backgroundImage: `url(${t.logoURI})`,
                                 }}
                               ></Box>
                             </Box>
