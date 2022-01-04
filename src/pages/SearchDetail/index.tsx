@@ -19,7 +19,7 @@ import {
 } from "theme-ui";
 import { BlockText } from "components/BlockText";
 import { shortenAddress } from "utils/address";
-import { USD } from "config";
+import { NATIVE_CURRENCY, USD } from "config";
 import { toastTx } from "utils/toastTx";
 import { parseUnits } from "ethers/lib/utils";
 import { QRNameModal } from "components/QRNameModal";
@@ -31,6 +31,7 @@ import { useName } from "hooks/useName";
 import { Sidebar } from "components/Sidebar";
 import { SocialIcons } from "components/SocialIcons";
 import { useTokenBalances } from "hooks/useTokenBalances";
+import { useUserStats } from "hooks/useUserStats";
 import { useCeloPunks } from "hooks/useCeloPunks";
 
 /* ASSETS */
@@ -138,6 +139,7 @@ export const SearchDetail: React.FC = () => {
     [getConnectedSigner, network.chainId, nom, provider]
   );
   const [tokens] = useTokenBalances(nom?.resolution);
+  const [userStats] = useUserStats(nom?.resolution);
 
   const isOwner =
     address && nom && nom.owner.toLowerCase() === address.toLowerCase();
@@ -292,30 +294,35 @@ export const SearchDetail: React.FC = () => {
                             />
                           </Box>
                           <Heading variant="search.stat.heading">
-                            Life:&nbsp;
+                            Activity:&nbsp;
                           </Heading>
                           <Text variant="search.stat.text">
-                            {new Intl.NumberFormat().format(stats.life)} Blocks
+                            {userStats
+                              ? new Intl.NumberFormat().format(
+                                  userStats?.transactionCount
+                                )
+                              : "-"}{" "}
+                            Transactions
                           </Text>
                         </Flex>
                         <Box variant="search.stat.divider"></Box>
                         <Flex variant="search.stat.row">
-                          <Image src={networth} variant="search.stat.icon" />
+                          <Image
+                            src={networth}
+                            variant="search.stat.icon"
+                            ml="4px"
+                            mr="6px"
+                          />
                           <Heading variant="search.stat.heading">
                             Net Worth:&nbsp;
                           </Heading>
                           <Text variant="search.stat.text">
-                            ${new Intl.NumberFormat().format(stats.netWorth)}
-                          </Text>
-                        </Flex>
-                        <Box variant="search.stat.divider"></Box>
-                        <Flex variant="search.stat.row">
-                          <Image src={whale} variant="search.stat.icon" />
-                          <Heading variant="search.stat.heading">
-                            Nom Whale Index:&nbsp;
-                          </Heading>
-                          <Text variant="search.stat.text">
-                            {stats.nomWhaleInd}%
+                            {userStats
+                              ? new Intl.NumberFormat().format(
+                                  userStats.nativeBalance
+                                )
+                              : "0"}{" "}
+                            {NATIVE_CURRENCY[network.chainId]}
                           </Text>
                         </Flex>
                       </Box>
