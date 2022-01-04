@@ -4,15 +4,19 @@ type AddressMap = Record<string, string>;
 
 export const NOM_REG_ADDR: AddressMap = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0x0922a1b101bF136ED352cE9714Da81f2fE75FD61",
+  [ChainId.Alfajores]: "0xBcCfE6d8A23A45149eF7f6Ffc9a794628dc88152",
 };
 export const BASE_ADDR: AddressMap = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0xcD199D20ef01Af7056BEF844B0039CCf2BCD5A13",
+  [ChainId.Alfajores]: "0x466193862999D163839a51B91Af366e46abF77fc",
 };
 export const ENS_ADDR: AddressMap = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0xD67a5414da6B1dcb64aBA3B06b3Be6Db29D832D7",
+  [ChainId.Alfajores]: "0xDa4A5d0eB2Ef6341D872803a8bb265d83b96f591",
+};
+export const RESOLVER_ADDR: AddressMap = {
+  [ChainId.Celo]: "",
+  [ChainId.Alfajores]: "0xB92E95162a81eAC95ec465DB518c7504c72B422D",
 };
 export const USD: AddressMap = {
   [ChainId.Celo]: "0x765DE816845861e75A25fCA122bb6898B8B1282a",
@@ -21,7 +25,7 @@ export const USD: AddressMap = {
 };
 export const FORWARDER_ADDR: AddressMap = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0xb14f85eCbb81A560016385A8fcdef709e6aaFbaf",
+  [ChainId.Alfajores]: "0x58288cCFEa81d6101f6100fCA970f80cF4E07948",
 };
 export const RESERVE_PORTAL: AddressMap = {
   [ChainId.Celo]: "",
@@ -31,12 +35,4 @@ export const RESERVE_PORTAL: AddressMap = {
 export const MULTICALL_ADDR: AddressMap = {
   [ChainId.Celo]: "0x75f59534dd892c1f8a7b172d639fa854d529ada3",
   [ChainId.Alfajores]: "0x387ce7960b5DA5381De08Ea4967b13a7c8cAB3f6",
-};
-export const NATIVE_CURRENCY: AddressMap = {
-  [ChainId.Celo]: "CELO",
-  [ChainId.Alfajores]: "CELO",
-  [ChainId.Fuji]: "AVAX",
-  [ChainId.Avalanche]: "AVAX",
-  [ChainId.Kovan]: "ETH",
-  [ChainId.Ethereum]: "ETH",
 };
