@@ -304,6 +304,15 @@ export const preset = {
         padding: ["8px 28px", null, null, "14px 56px"],
         filter: "drop-shadow(0px 3px 6px #00000029)",
       },
+      edit: {
+        marginLeft: 11,
+        borderRadius: ["28px", null, null, "36px"],
+        fontSize: [17, null, null, 31],
+        padding: ["8px 28px", null, null, "14px 56px"],
+        filter: "drop-shadow(0px 3px 6px #00000029)",
+        backgroundColor: "box",
+        border: "4px solid var(--theme-ui-colors-primary)",
+      },
       connectionsContainer: {
         marginLeft: 11,
         display: ["none", null, null, "block"],

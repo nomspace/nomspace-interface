@@ -50,6 +50,8 @@ import networth from "pages/SearchDetail/assets/networth.png";
 // nomstronaut
 import nomstronaut from "pages/SearchDetail/assets/astro.png";
 import { useUserNoms } from "hooks/useUserNoms";
+import { Page } from "state/global";
+import { useHistory } from "react-router-dom";
 
 const nfts = [
   {
@@ -87,9 +89,12 @@ export const SearchDetail: React.FC = () => {
   const [tokens] = useTokenBalances(nom?.resolution);
   const [userStats] = useUserStats(nom?.resolution);
   const [userNoms] = useUserNoms();
+  const history = useHistory();
 
   const isOwner =
     address && nom && nom.owner.toLowerCase() === address.toLowerCase();
+
+  if (!nom) return <Spinner />;
 
   return (
     <Flex
@@ -136,7 +141,27 @@ export const SearchDetail: React.FC = () => {
                       <Box variant="search.nomstronautTip.connectionsContainer">
                         <SocialIcons nom={nom} />
                       </Box>
-                      <Button variant="search.nomstronautTip.tip">TIP</Button>
+                      {isOwner && (
+                        <Button
+                          onClick={() => {
+                            history.push(`${name}/${Page.MANAGE}`);
+                          }}
+                          variant="search.nomstronautTip.edit"
+                        >
+                          EDIT
+                        </Button>
+                      )}
+                      <Button
+                        onClick={() => {
+                          if (nom.owner === ZERO_ADDRESS) {
+                            history.push(`${name}/${Page.RESERVE}`);
+                          }
+                          // TODO: TIP
+                        }}
+                        variant="search.nomstronautTip.tip"
+                      >
+                        {nom.owner === ZERO_ADDRESS ? "RESERVE" : "TIP"}
+                      </Button>
                     </Flex>
                   </Box>
 
