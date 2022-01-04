@@ -126,16 +126,6 @@ export const Sidebar = () => {
     <Box variant="search.sidebar.container">
       <Flex variant="search.sidebar.walletContainer">
         <AccountProfile />{" "}
-        <select>
-          {sources.map((e) => {
-            return (
-              <option value="celo">
-                <b>basdf</b>
-                {/* <Box sx={{ backgroundImage: `url(${e.img})` }}></Box> */}
-              </option>
-            );
-          })}
-        </select>
       </Flex>
       <Box variant="search.sidebar.noms.container">
         <Heading variant="search.sidebar.heading">My Noms</Heading>
