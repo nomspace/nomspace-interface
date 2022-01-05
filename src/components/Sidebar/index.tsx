@@ -11,9 +11,7 @@ export const Sidebar: React.FC = () => {
   const [colorMode, setColorMode] = useColorMode();
   return (
     <Box variant="search.sidebar.container">
-      <Flex variant="search.sidebar.walletContainer">
-        <AccountProfile />
-      </Flex>
+      <AccountProfile />
       <Box variant="search.sidebar.noms.container">
         <Heading variant="search.sidebar.heading">My Noms</Heading>
         {userNoms?.map((un, idx) => {

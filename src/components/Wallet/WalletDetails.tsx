@@ -36,7 +36,7 @@ export const WalletDetails: React.FC<Props> = ({ onClose }) => {
         <Flex>
           <CopyToClipboard
             text={address}
-            onCopy={() => toast("Copied wallet address to clipboard")}
+            onCopy={() => toast("Wallet address copied to clipboard")}
           >
             <BG
               colorMode={colorMode}
