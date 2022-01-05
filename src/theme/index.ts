@@ -548,12 +548,12 @@ export const preset = {
           minHeight: "83px",
         },
         name: {
-          fontSize: "36px",
+          fontSize: "20px",
           marginLeft: "20px",
         },
         date: {
           opacity: "50%",
-          fontSize: "28px",
+          fontSize: "20px",
         },
       },
       item: {

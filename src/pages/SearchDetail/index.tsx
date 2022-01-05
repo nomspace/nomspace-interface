@@ -49,7 +49,6 @@ import networth from "pages/SearchDetail/assets/networth.png";
 
 // nomstronaut
 import nomstronaut from "pages/SearchDetail/assets/astro.png";
-import { useUserNoms } from "hooks/useUserNoms";
 import { Page } from "state/global";
 import { useHistory } from "react-router-dom";
 
@@ -79,8 +78,6 @@ const nfts = [
 export const SearchDetail: React.FC = () => {
   const { name } = useName();
   const { address, network } = useContractKit();
-  const provider = useProvider();
-  const getConnectedSigner = useGetConnectedSigner();
   const [nom, refetchNom] = useNom(name);
   console.log("NOM", nom);
   const { setNomSetting, loading } = useSetNomSetting(name);
@@ -88,7 +85,6 @@ export const SearchDetail: React.FC = () => {
   const [showQR, setShowQR] = React.useState(false);
   const [tokens] = useTokenBalances(nom?.resolution);
   const [userStats] = useUserStats(nom?.resolution);
-  const [userNoms] = useUserNoms();
   const history = useHistory();
 
   const isOwner =
@@ -197,9 +193,9 @@ export const SearchDetail: React.FC = () => {
                     {/* NFTs */}
                     <Heading variant="search.heading">NFTs</Heading>
                     <Box variant="search.rowScrollContainer">
-                      {nfts.map((e) => {
+                      {nfts.map((e, idx) => {
                         return (
-                          <Box variant="search.nft.imageContainer">
+                          <Box key={idx} variant="search.nft.imageContainer">
                             <Box
                               variant="search.nft.image"
                               sx={{

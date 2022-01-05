@@ -10,7 +10,7 @@ import {
   RESERVE_PORTAL,
   ENS_ADDR,
   NOM_REG_ADDR,
-  FORWARDER_ADDR
+  FORWARDER_ADDR,
 } from "addresses";
 import {
   ERC20__factory,
@@ -28,6 +28,7 @@ import { useCeloChainId } from "./useCeloChainId";
 import { normalize } from "eth-ens-namehash";
 import { useUserTxDefaults } from "hooks/useUserTxDefaults";
 import { getSignature } from "utils/sig";
+import { UserNonce } from "./useUserNonce";
 
 export const useReserve = (name: string) => {
   name = normalize(name);
@@ -38,6 +39,7 @@ export const useReserve = (name: string) => {
   const [loading, setLoading] = useState(false);
   const getConnectedSigner = useGetConnectedSigner();
   const [userTxDefaults] = useUserTxDefaults();
+  const [nonce, setNonce] = UserNonce.useContainer();
 
   const approve = useCallback(async () => {
     const reservePortalAddress = RESERVE_PORTAL[network.chainId];
@@ -102,8 +104,8 @@ export const useReserve = (name: string) => {
           "registerWithConfig",
           [name, address, duration, resolver, address]
         );
-        if (!data) return;
-        const { from, nonce, gas, value } = userTxDefaults;
+        if (!data || !nonce) return;
+        const { from, gas, value } = userTxDefaults;
         const to = nomRegistrarController.address;
         const signature = await getSignature(
           signer,
@@ -138,6 +140,7 @@ export const useReserve = (name: string) => {
           { gasPrice }
         );
         await tx.wait(2);
+        setNonce(nonce + 1);
         toastTx(tx.hash);
       } catch (e: any) {
         toast(e.message);
@@ -153,7 +156,9 @@ export const useReserve = (name: string) => {
       getConnectedSigner,
       name,
       network.chainId,
+      nonce,
       provider,
+      setNonce,
       userTxDefaults,
     ]
   );

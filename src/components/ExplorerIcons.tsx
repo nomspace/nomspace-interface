@@ -40,9 +40,10 @@ export const ExplorerIcons: React.FC<Props> = ({ userAddress }) => {
 
   return (
     <>
-      {EXPLORERS.map((e) => {
+      {EXPLORERS.map((e, idx) => {
         return (
           <Link
+            key={idx}
             target="_blank"
             rel="noopener noreferrer"
             href={`${e.explorerUrl}/address/${userAddress}`}

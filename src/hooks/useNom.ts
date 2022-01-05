@@ -1,13 +1,13 @@
 import React from "react";
 import { TextKey } from "config";
-import { BASE_ADDR, ENS_ADDR } from "addresses";
+import { BASE_ADDR } from "addresses";
 import { useAsyncState } from "./useAsyncState";
 import { useCeloProvider } from "hooks/useCeloProvider";
 import { useCeloChainId } from "hooks/useCeloChainId";
 import { BaseRegistrarImplementation__factory } from "generated";
-import ENS, { labelhash } from "@ensdomains/ensjs";
+import { labelhash } from "@ensdomains/ensjs";
 import { ZERO_ADDRESS } from "utils/constants";
-import { ENSJS } from "types/ensjs";
+import { useENS } from "hooks/useENS";
 
 type NomResult = {
   resolution: string;
@@ -24,17 +24,13 @@ type NomResult = {
 export const useNom = (name?: string | null) => {
   const celoProvider = useCeloProvider();
   const celoChainId = useCeloChainId();
+  const ens = useENS();
 
   const call = React.useCallback(async (): Promise<NomResult | null> => {
     const baseAddress = BASE_ADDR[celoChainId];
-    const ensAddress = ENS_ADDR[celoChainId];
-    if (!baseAddress || !ensAddress) {
+    if (!baseAddress) {
       return null;
     }
-    const ens: ENSJS = new ENS({
-      provider: celoProvider,
-      ensAddress,
-    });
     const nom = ens.name(`${name}.nom`);
     const base = BaseRegistrarImplementation__factory.connect(
       baseAddress,

@@ -2,32 +2,11 @@ import React from "react";
 import { Box, Flex, Heading, Text } from "theme-ui";
 import { SearchBar } from "components/SearchBar";
 import { AccountProfile } from "components/AccountProfile";
+import moment from "moment";
 
 /* ASSETS */
 
-// connections
-import discord from "pages/SearchDetail/assets/discord.png";
-import twitter from "pages/SearchDetail/assets/twitter.png";
-import telegram from "pages/SearchDetail/assets/telegram.png";
-
 /* DEMO PURPOSES, DELETE LATER */
-// nfts
-import nft1 from "pages/SearchDetail/assets/nft1.png";
-import nft2 from "pages/SearchDetail/assets/nft2.png";
-import nft3 from "pages/SearchDetail/assets/nft3.png";
-
-// tokens
-import t1 from "pages/SearchDetail/assets/t1.png";
-import t2 from "pages/SearchDetail/assets/t2.png";
-import t3 from "pages/SearchDetail/assets/t3.png";
-import t4 from "pages/SearchDetail/assets/t4.png";
-import t5 from "pages/SearchDetail/assets/t5.png";
-import t6 from "pages/SearchDetail/assets/t6.png";
-import t7 from "pages/SearchDetail/assets/t7.png";
-import t8 from "pages/SearchDetail/assets/t8.png";
-
-// stats
-
 // sources
 import s1 from "pages/SearchDetail/assets/s1.png";
 import s2 from "pages/SearchDetail/assets/s2.png";
@@ -38,6 +17,8 @@ import s3 from "pages/SearchDetail/assets/s3.png";
 //noms
 import nom1 from "pages/SearchDetail/assets/nom1.png";
 import nom2 from "pages/SearchDetail/assets/nom2.png";
+import { useUserNoms } from "hooks/useUserNoms";
+import { Link } from "react-router-dom";
 
 const noms = [
   { img: nom1, name: "gza", date: "08/18/23" },
@@ -47,6 +28,7 @@ const noms = [
 const sources = [{ img: s1 }, { img: s2 }, { img: s3 }];
 
 export const Sidebar: React.FC = () => {
+  const [userNoms] = useUserNoms();
   return (
     <Box variant="search.sidebar.container">
       <Flex variant="search.sidebar.walletContainer">
@@ -64,29 +46,28 @@ export const Sidebar: React.FC = () => {
       </Flex>
       <Box variant="search.sidebar.noms.container">
         <Heading variant="search.sidebar.heading">My Noms</Heading>
-        {noms.map((e) => {
+        {userNoms?.map((un, idx) => {
           return (
             <Box
+              key={idx}
               variant="search.sidebar.item"
               sx={{ "::before": { display: "none" } }}
             >
-              <Flex
-                sx={{
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Flex sx={{ alignItems: "center" }}>
-                  <Box variant="search.sidebar.nom.container">
-                    <Box
-                      variant="search.sidebar.nom.image"
-                      sx={{ backgroundImage: `url(${e.img})` }}
-                    ></Box>
-                  </Box>
-                  <Text variant="search.sidebar.nom.name">{e.name}</Text>
+              <Link to={`/${un.name}`}>
+                <Flex
+                  sx={{
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Flex sx={{ alignItems: "center" }}>
+                    <Text variant="search.sidebar.nom.name">{un.name}.nom</Text>
+                  </Flex>
+                  <Text variant="search.sidebar.nom.date">
+                    {moment.unix(un.expiration).calendar()}
+                  </Text>
                 </Flex>
-                <Text variant="search.sidebar.nom.date">{e.date}</Text>
-              </Flex>
+              </Link>
             </Box>
           );
         })}

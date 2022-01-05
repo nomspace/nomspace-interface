@@ -11,6 +11,7 @@ export type Name = {
   // Useful
   getAddress: (coinId?: string) => Promise<string>;
   getName: () => Promise<string>;
+  namehash: string;
 
   // Probably not used
   getOwner: () => Promise<string>;
