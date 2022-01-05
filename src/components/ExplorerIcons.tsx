@@ -21,10 +21,10 @@ const MAINNET_EXPLORERS: Record<string, Explorer> = {
     imageUrl: Celo,
     explorerUrl: "https://explorer.celo.org",
   },
-  // [ChainId.Polygon]: {
-  //   imageUrl: Polygon,
-  //   explorerUrl: "https://polygonscan.com",
-  // },
+  [ChainId.Polygon]: {
+    imageUrl: Polygon,
+    explorerUrl: "https://polygonscan.com",
+  },
   [ChainId.Avalanche]: {
     imageUrl: Avalanche,
     explorerUrl: "https://snowtrace.io",

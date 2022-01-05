@@ -20,7 +20,7 @@ import {
 } from "generated";
 import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
-import { formatUnits, parseUnits } from "ethers/lib/utils";
+import { formatUnits } from "ethers/lib/utils";
 import { YEAR_IN_SECONDS } from "utils/constants";
 import ENS from "@ensdomains/ensjs";
 import { useCeloProvider } from "./useCeloProvider";
