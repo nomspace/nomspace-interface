@@ -78,7 +78,7 @@ export const Manage: React.FC = () => {
 
   // TODO: Text validation
   const onSave = useCallback(async () => {
-    if (!nonce) return;
+    if (nonce == null) return;
     const newBio = bioInput.current?.value;
     const newWebsite = websiteInput.current?.value;
     const newTwitter = twitterInput.current?.value;

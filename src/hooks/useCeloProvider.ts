@@ -1,15 +1,15 @@
 import { useMemo } from "react";
 import { providers } from "ethers";
-import { ChainId, useContractKit } from "@celo-tools/use-contractkit";
+import { useCeloChainId } from "./useCeloChainId";
 
 export const useCeloProvider = () => {
-  const { network } = useContractKit();
+  const celoChainId = useCeloChainId();
   return useMemo(() => {
-    if (network.chainId === ChainId.Alfajores) {
+    if (celoChainId === 44787) {
       return new providers.JsonRpcProvider(
         "https://alfajores-forno.celo-testnet.org"
       );
     }
     return new providers.JsonRpcProvider("https://forno.celo.org");
-  }, [network.chainId]);
+  }, [celoChainId]);
 };

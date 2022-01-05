@@ -20,7 +20,7 @@ import {
 } from "generated";
 import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
-import { formatUnits } from "ethers/lib/utils";
+import { formatUnits, parseUnits } from "ethers/lib/utils";
 import { YEAR_IN_SECONDS } from "utils/constants";
 import ENS from "@ensdomains/ensjs";
 import { useCeloProvider } from "./useCeloProvider";
@@ -33,6 +33,7 @@ import { UserNonce } from "./useUserNonce";
 export const useReserve = (name: string) => {
   name = normalize(name);
   const { address, network } = useContractKit();
+  const { chainId } = network;
   const provider = useProvider();
   const celoProvider = useCeloProvider();
   const celoChainId = useCeloChainId();
@@ -42,8 +43,8 @@ export const useReserve = (name: string) => {
   const [nonce, setNonce] = UserNonce.useContainer();
 
   const approve = useCallback(async () => {
-    const reservePortalAddress = RESERVE_PORTAL[network.chainId];
-    const usdAddress = USD[network.chainId];
+    const reservePortalAddress = RESERVE_PORTAL[chainId];
+    const usdAddress = USD[chainId];
     if (!reservePortalAddress || !usdAddress) {
       return;
     }
@@ -64,12 +65,12 @@ export const useReserve = (name: string) => {
     } finally {
       setLoading(false);
     }
-  }, [getConnectedSigner, network.chainId, provider]);
+  }, [getConnectedSigner, chainId, provider]);
 
   const reserve = useCallback(
     async (years: number) => {
       const usdAddress = USD[network.chainId];
-      const regAddress = NOM_REG_ADDR[network.chainId];
+      const regAddress = NOM_REG_ADDR[celoChainId];
       const reservePortalAddress = RESERVE_PORTAL[network.chainId];
       const forwarderAddr = FORWARDER_ADDR[celoChainId];
       if (
@@ -93,7 +94,7 @@ export const useReserve = (name: string) => {
         signer
       ) as unknown as ReservePortal;
       const ens = new ENS({
-        provider,
+        provider: celoProvider,
         ensAddress: ENS_ADDR[celoChainId],
       });
       const resolver = await ens.name("resolver").getAddress();
@@ -104,7 +105,7 @@ export const useReserve = (name: string) => {
           "registerWithConfig",
           [name, address, duration, resolver, address]
         );
-        if (!data || !nonce) return;
+        if (!data || nonce == null) return;
         const { from, gas, value } = userTxDefaults;
         const to = nomRegistrarController.address;
         const signature = await getSignature(
@@ -115,7 +116,7 @@ export const useReserve = (name: string) => {
           gas,
           nonce,
           data,
-          celoChainId,
+          chainId,
           forwarderAddr
         );
         const gasPrice = await provider.getGasPrice();
@@ -126,7 +127,7 @@ export const useReserve = (name: string) => {
         );
         const tx = await reservePortal.escrow(
           usdAddress,
-          formatUnits(cost, (await usd.decimals()) - 18), // Assume cost is in 18 decimals
+          Math.ceil(Number(formatUnits(cost, 18 - (await usd.decimals())))), // Assume cost is in 18 decimals
           celoChainId,
           {
             from,
@@ -134,6 +135,7 @@ export const useReserve = (name: string) => {
             gas,
             value,
             nonce,
+            chainId,
             data,
           },
           signature,
@@ -153,6 +155,7 @@ export const useReserve = (name: string) => {
       address,
       celoChainId,
       celoProvider,
+      chainId,
       getConnectedSigner,
       name,
       network.chainId,

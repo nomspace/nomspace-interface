@@ -21,6 +21,7 @@ import { getSignature } from "utils/sig";
 
 export const useSetNomSetting = (name?: string | null) => {
   const { address, network } = useContractKit();
+  const { chainId } = network;
   const provider = useProvider();
   const celoProvider = useCeloProvider();
   const celoChainId = useCeloChainId();
@@ -30,9 +31,9 @@ export const useSetNomSetting = (name?: string | null) => {
 
   const setNomSetting = useCallback(
     async (nonce: number, functionFragment: any, values: any) => {
-      const usdAddress = USD[network.chainId];
+      const usdAddress = USD[chainId];
       const ensAddress = ENS_ADDR[celoChainId];
-      const reservePortalAddress = RESERVE_PORTAL[network.chainId];
+      const reservePortalAddress = RESERVE_PORTAL[chainId];
       const forwarderAddr = FORWARDER_ADDR[celoChainId];
       if (
         !usdAddress ||
@@ -76,7 +77,7 @@ export const useSetNomSetting = (name?: string | null) => {
           gas,
           nonce,
           data,
-          celoChainId,
+          chainId,
           forwarderAddr
         );
         const gasPrice = await provider.getGasPrice();
@@ -90,6 +91,7 @@ export const useSetNomSetting = (name?: string | null) => {
             gas,
             value,
             nonce,
+            chainId,
             data,
           },
           signature,
@@ -107,9 +109,9 @@ export const useSetNomSetting = (name?: string | null) => {
       address,
       celoChainId,
       celoProvider,
+      chainId,
       getConnectedSigner,
       name,
-      network.chainId,
       provider,
       userTxDefaults,
     ]
