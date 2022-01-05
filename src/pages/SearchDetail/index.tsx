@@ -46,6 +46,7 @@ import networth from "pages/SearchDetail/assets/networth.png";
 import nomstronaut from "pages/SearchDetail/assets/astro.png";
 import { Page } from "state/global";
 import { useHistory } from "react-router-dom";
+import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
 
 const nfts = [
   {
@@ -117,6 +118,8 @@ export const SearchDetail: React.FC = () => {
                     <Image variant="search.banner.avatar" src={pfp} />
                     {/* nomstronaut + tip */}
                     <Flex variant="search.nomstronautTip.container">
+                      {/* 
+                      TODO: Nomstraunat tag
                       <Box variant="search.nomstronautTip.imageContainer">
                         <Box
                           variant="search.nomstronautTip.image"
@@ -124,7 +127,7 @@ export const SearchDetail: React.FC = () => {
                             backgroundImage: `url(${nomstronaut})`,
                           }}
                         ></Box>
-                      </Box>
+                      </Box> */}
                       <Box variant="search.nomstronautTip.connectionsContainer">
                         <SocialIcons nom={nom} />
                       </Box>
@@ -203,12 +206,14 @@ export const SearchDetail: React.FC = () => {
                       {tokens?.map((t) => {
                         return (
                           <Box variant="search.token.imageContainer">
-                            <Box
-                              variant="search.token.image"
-                              sx={{
-                                backgroundImage: `url(${t.logoURI})`,
-                              }}
-                            ></Box>
+                            <BlockscoutAddressLink address={t.address}>
+                              <Box
+                                variant="search.token.image"
+                                sx={{
+                                  backgroundImage: `url(${t.logoURI})`,
+                                }}
+                              ></Box>
+                            </BlockscoutAddressLink>
                           </Box>
                         );
                       })}

@@ -529,8 +529,6 @@ export const preset = {
         backgroundColor: "secondary",
         minWidth: [null, null, 398, 498],
         padding: "24px 38px",
-        height: "100vh",
-        overflowY: "auto",
       },
       walletContainer: { marginTop: 20 },
       heading: {
