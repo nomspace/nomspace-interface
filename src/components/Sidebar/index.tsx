@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex, Heading, Text } from "theme-ui";
+import { Box, Flex, Heading, Text, useColorMode } from "theme-ui";
 import { SearchBar } from "components/SearchBar";
 import { AccountProfile } from "components/AccountProfile";
 import moment from "moment";
@@ -29,6 +29,7 @@ const sources = [{ img: s1 }, { img: s2 }, { img: s3 }];
 
 export const Sidebar: React.FC = () => {
   const [userNoms] = useUserNoms();
+  const [colorMode, setColorMode] = useColorMode();
   return (
     <Box variant="search.sidebar.container">
       <Flex variant="search.sidebar.walletContainer">
@@ -74,9 +75,21 @@ export const Sidebar: React.FC = () => {
       </Box>
       <Box variant="search.sidebar.settings.container">
         <Heading variant="search.sidebar.heading">Settings</Heading>
-        <Text variant="search.sidebar.item">Light / Dark Mode</Text>
-        <Text variant="search.sidebar.item">Default Currency</Text>
-        <Text variant="search.sidebar.item">Language</Text>
+        <Text
+          variant="search.sidebar.item"
+          sx={{ cursor: "pointer" }}
+          onClick={() => {
+            if (colorMode === "light") {
+              setColorMode("dark");
+            } else {
+              setColorMode("light");
+            }
+          }}
+        >
+          Light / Dark Mode
+        </Text>
+        {/* <Text variant="search.sidebar.item">Default Currency</Text>
+        <Text variant="search.sidebar.item">Language</Text> */}
       </Box>
       <Box variant="search.sidebar.search">
         <SearchBar />

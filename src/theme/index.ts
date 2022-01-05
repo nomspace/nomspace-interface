@@ -312,6 +312,7 @@ export const preset = {
         filter: "drop-shadow(0px 3px 6px #00000029)",
         backgroundColor: "box",
         border: "4px solid var(--theme-ui-colors-primary)",
+        color: "var(--theme-ui-colors-text)",
       },
       connectionsContainer: {
         marginLeft: 11,
@@ -527,13 +528,15 @@ export const preset = {
         display: ["none", "none", "block"],
         backgroundColor: "secondary",
         minWidth: [null, null, 398, 498],
-        padding: "0px 38px",
+        padding: "24px 38px",
+        height: "100vh",
+        overflowY: "auto",
       },
       heading: {
         variant: "search.sidebar.item",
         fontFamily: "Avenir",
         fontSize: 42,
-        marginTop: 100,
+        marginTop: 80,
       },
       nom: {
         container: {
