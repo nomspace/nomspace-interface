@@ -42,6 +42,7 @@ import s3 from "pages/SearchDetail/assets/s3.png";
 import styled from "@emotion/styled";
 import { TextKey } from "config";
 import { useHistory } from "react-router-dom";
+import { UserNonce } from "hooks/useUserNonce";
 
 const sources = [{ img: s1 }, { img: s2 }, { img: s3 }];
 
@@ -70,40 +71,80 @@ export const Manage: React.FC = () => {
   const discordInput = useRef<HTMLInputElement>(null);
   const telegramInput = useRef<HTMLInputElement>(null);
   const history = useHistory();
+  const [nonce, setNonce] = UserNonce.useContainer();
 
   const isOwner =
     address && nom && nom.owner.toLowerCase() === address.toLowerCase();
 
   // TODO: Text validation
   const onSave = useCallback(async () => {
+    if (!nonce) return;
     const newBio = bioInput.current?.value;
     const newWebsite = websiteInput.current?.value;
     const newTwitter = twitterInput.current?.value;
     const newDiscord = discordInput.current?.value;
     const newTelegram = telegramInput.current?.value;
+    let currentNonce = nonce;
 
     if (nom?.bio !== newBio) {
-      await setNomSetting("setText", [namehash, TextKey.DESCRIPTION, newBio]);
+      await setNomSetting(currentNonce, "setText", [
+        namehash,
+        TextKey.DESCRIPTION,
+        newBio,
+      ]);
+      currentNonce += 1;
       refetchNom();
     }
     if (nom?.website !== newWebsite) {
-      await setNomSetting("setText", [namehash, TextKey.URL, newWebsite]);
+      await setNomSetting(currentNonce, "setText", [
+        namehash,
+        TextKey.URL,
+        newWebsite,
+      ]);
+      currentNonce += 1;
       refetchNom();
     }
     if (nom?.twitter !== newTwitter) {
-      await setNomSetting("setText", [namehash, TextKey.TWITTER, newTwitter]);
+      await setNomSetting(currentNonce, "setText", [
+        namehash,
+        TextKey.TWITTER,
+        newTwitter,
+      ]);
+      currentNonce += 1;
       refetchNom();
     }
     if (nom?.discord !== newDiscord) {
-      await setNomSetting("setText", [namehash, TextKey.DISCORD, newDiscord]);
+      await setNomSetting(currentNonce, "setText", [
+        namehash,
+        TextKey.DISCORD,
+        newDiscord,
+      ]);
+      currentNonce += 1;
       refetchNom();
     }
     if (nom?.telegram !== newTelegram) {
-      await setNomSetting("setText", [namehash, TextKey.DISCORD, newTelegram]);
+      await setNomSetting(currentNonce, "setText", [
+        namehash,
+        TextKey.DISCORD,
+        newTelegram,
+      ]);
+      currentNonce += 1;
       refetchNom();
     }
     history.push(`/${name}`);
-  }, [nom, history, name, setNomSetting, namehash, refetchNom]);
+  }, [
+    nonce,
+    nom?.bio,
+    nom?.website,
+    nom?.twitter,
+    nom?.discord,
+    nom?.telegram,
+    history,
+    name,
+    setNomSetting,
+    namehash,
+    refetchNom,
+  ]);
 
   return (
     <Flex

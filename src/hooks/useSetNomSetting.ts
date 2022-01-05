@@ -29,7 +29,7 @@ export const useSetNomSetting = (name?: string | null) => {
   const [userTxDefaults] = useUserTxDefaults();
 
   const setNomSetting = useCallback(
-    async (functionFragment: any, values: any) => {
+    async (nonce: number, functionFragment: any, values: any) => {
       const usdAddress = USD[network.chainId];
       const ensAddress = ENS_ADDR[celoChainId];
       const reservePortalAddress = RESERVE_PORTAL[network.chainId];
@@ -66,7 +66,7 @@ export const useSetNomSetting = (name?: string | null) => {
           values
         );
         if (!data) return;
-        const { from, nonce, gas, value } = userTxDefaults;
+        const { from, gas, value } = userTxDefaults;
         const to = resolver.address;
         const signature = await getSignature(
           signer,

@@ -42,17 +42,28 @@ export const useNom = (name?: string | null) => {
     );
 
     const tokenId = labelhash(name);
-    // TODO: Promise.all or multicall
-    const resolution = await nom.getAddress();
-    const bio = await nom.getText(TextKey.DESCRIPTION);
-    const website = await nom.getText(TextKey.URL);
-    const github = await nom.getText(TextKey.GITHUB);
-    const discord = await nom.getText(TextKey.DISCORD);
-    const telegram = await nom.getText(TextKey.TELEGRAM);
-    const twitter = await nom.getText(TextKey.TWITTER);
-    const owner = await base.ownerOf(tokenId).catch(() => ZERO_ADDRESS);
-    const expiration = (await base.nameExpires(tokenId)).toNumber();
-
+    // TODO: multicall
+    const [
+      resolution,
+      bio,
+      website,
+      github,
+      discord,
+      telegram,
+      twitter,
+      owner,
+      expiration,
+    ] = await Promise.all([
+      await nom.getAddress(),
+      await nom.getText(TextKey.DESCRIPTION),
+      await nom.getText(TextKey.URL),
+      await nom.getText(TextKey.GITHUB),
+      await nom.getText(TextKey.DISCORD),
+      await nom.getText(TextKey.TELEGRAM),
+      await nom.getText(TextKey.TWITTER),
+      await base.ownerOf(tokenId).catch(() => ZERO_ADDRESS),
+      await base.nameExpires(tokenId).then((e) => e.toNumber()),
+    ]);
     return {
       resolution,
       owner,

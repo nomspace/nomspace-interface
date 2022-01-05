@@ -18,6 +18,7 @@ import theme from "theme";
 import { ThemeProvider } from "theme-ui";
 import { HashRouter as Router } from "react-router-dom";
 import { RecoilRoot } from "recoil";
+import { UserNonce } from "hooks/useUserNonce";
 
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
@@ -37,7 +38,9 @@ ReactDOM.render(
         <Provider store={store}>
           <Router>
             <RecoilRoot>
-              <App />
+              <UserNonce.Provider>
+                <App />
+              </UserNonce.Provider>
             </RecoilRoot>
           </Router>
         </Provider>
