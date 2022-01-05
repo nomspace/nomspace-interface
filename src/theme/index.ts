@@ -579,6 +579,99 @@ export const preset = {
       },
     },
   },
+  modal: {
+    title: {
+      fontSize: "50px",
+      fontWeight: "800",
+    },
+    footer: {
+      fontSize: "35px",
+    },
+    container: {
+      minWidth: "100%",
+      margin: "50px 0px",
+      justifyContent: "space-evenly",
+    },
+    qrCode: {},
+    form: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+    },
+    formItem: {
+      width: 395,
+      height: 85,
+      fontSize: 32,
+    },
+  },
+  modals: {
+    // Modal components
+    backdrop: {
+      zIndex: `backdrop`,
+      position: `fixed`,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: `rgba(0,0,0,0.2)`,
+      backdropFilter: "blur(5px)",
+    },
+    content: {
+      px: "1rem",
+      flexGrow: 1,
+      overflowY: "scroll",
+    },
+    footer: {
+      minHeight: 16,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      px: "1rem",
+    },
+    title: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      minHeight: 16,
+      px: "1rem",
+    },
+
+    // Modal variants
+    default: {
+      backgroundColor: "rgba(255, 255, 255, 0.44)",
+      backdropFilter: "blur(50px) brightness(132%)",
+      padding: "90px 100px",
+      borderRadius: "30px",
+      boxShadow: `md`,
+      display: `flex`,
+      flexDirection: `column`,
+      justifyContent: "center",
+      maxHeight: `80vh`,
+      minHeight: "16rem",
+      minWidth: "16rem",
+      maxWidth: "90vw",
+      position: `absolute`,
+      top: [`25%`, `10%`, `10%`],
+      zIndex: `modal`,
+    },
+    defaultFullScreen: {
+      backgroundColor: "background",
+      borderRadius: 0,
+      display: `flex`,
+      flexDirection: `column`,
+      minHeight: "100vh",
+      maxHeight: "100vh",
+      height: `fill-available`,
+      position: `absolute`,
+      top: 0,
+      width: `100vw`,
+      zIndex: `modal`,
+    },
+  },
+  zIndices: {
+    backdrop: 100,
+    modal: 110,
+  },
 };
 
 export default preset;

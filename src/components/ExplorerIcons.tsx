@@ -14,20 +14,24 @@ interface Props {
 type Explorer = {
   imageUrl: string;
   explorerUrl: string;
+  name: string;
 };
 
 const MAINNET_EXPLORERS: Record<string, Explorer> = {
   [ChainId.Celo]: {
     imageUrl: Celo,
     explorerUrl: "https://explorer.celo.org",
+    name: "Celo",
   },
   // [ChainId.Polygon]: {
   //   imageUrl: Polygon,
   //   explorerUrl: "https://polygonscan.com",
+  //   name: "Polygon",
   // },
   [ChainId.Avalanche]: {
     imageUrl: Avalanche,
     explorerUrl: "https://snowtrace.io",
+    name: "Avalanche",
   },
 };
 
@@ -35,10 +39,12 @@ const TESTNET_EXPLORERS: Record<string, Explorer> = {
   [ChainId.Alfajores]: {
     imageUrl: Celo,
     explorerUrl: "https://alfajores-blockscout.celo-testnet.org",
+    name: "Celo",
   },
   [ChainId.Fuji]: {
     imageUrl: Avalanche,
     explorerUrl: "https://testnet.snowtrace.io",
+    name: "Avalanche",
   },
 };
 
@@ -76,4 +82,22 @@ export const ExplorerIcons: React.FC<Props> = ({ userAddress }) => {
       })}
     </>
   );
+};
+
+export const GetExplorerIconImages = (userAddress: string) => {
+  const celoChainId = useCeloChainId();
+  const explorers =
+    celoChainId === 44787 ? TESTNET_EXPLORERS : MAINNET_EXPLORERS;
+  if (!userAddress) return null;
+
+  return Object.values(explorers).map((e, idx) => {
+    return {
+      elm: (
+        <>
+          <ExplorerIcon src={e.imageUrl} key={e.name + idx} />
+        </>
+      ),
+      name: e.name,
+    };
+  });
 };

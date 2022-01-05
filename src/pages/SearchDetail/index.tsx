@@ -11,6 +11,9 @@ import {
   Image,
   Text,
 } from "theme-ui";
+import { Dialog } from "@mui/material";
+import { Modal, ThemeProvider, createTheme } from "@mui/material";
+
 import { NATIVE_CURRENCY } from "config";
 import { ZERO_ADDRESS } from "utils/constants";
 import { useName } from "hooks/useName";
@@ -85,40 +88,41 @@ export const SearchDetail: React.FC = () => {
   if (!nom) return <Spinner />;
 
   return (
-    <Flex
-      sx={{
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      {name ? (
-        <Box sx={{ textAlign: "center", width: "100%" }}>
-          <Card sx={{ width: "100%" }} py={4} px={3}>
-            {/* Modals */}
-            <Flex>
-              {/* Sidebar */}
-              <Sidebar />
-              {/* Page */}
-              {nom && (
-                <Flex
-                  sx={{
-                    alignItems: "center",
-                    flexDirection: "column",
-                    width: "100%",
-                  }}
-                >
-                  {/* Banner */}
-                  <Box variant="search.banner.container">
-                    <Box
-                      variant="search.banner.image"
-                      sx={{
-                        backgroundImage: `url(${banner})`,
-                      }}
-                    />
-                    <Image variant="search.banner.avatar" src={pfp} />
-                    {/* nomstronaut + tip */}
-                    <Flex variant="search.nomstronautTip.container">
-                      {/* 
+    <>
+      <Flex
+        sx={{
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        {name ? (
+          <Box sx={{ textAlign: "center", width: "100%" }}>
+            <Card sx={{ width: "100%" }} py={4} px={3}>
+              {/* Modals */}
+              <Flex>
+                {/* Sidebar */}
+                <Sidebar nom={nom} />
+                {/* Page */}
+                {nom && (
+                  <Flex
+                    sx={{
+                      alignItems: "center",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
+                    {/* Banner */}
+                    <Box variant="search.banner.container">
+                      <Box
+                        variant="search.banner.image"
+                        sx={{
+                          backgroundImage: `url(${banner})`,
+                        }}
+                      />
+                      <Image variant="search.banner.avatar" src={pfp} />
+                      {/* nomstronaut + tip */}
+                      <Flex variant="search.nomstronautTip.container">
+                        {/* 
                       TODO: Nomstraunat tag
                       <Box variant="search.nomstronautTip.imageContainer">
                         <Box
@@ -128,163 +132,170 @@ export const SearchDetail: React.FC = () => {
                           }}
                         ></Box>
                       </Box> */}
-                      <Box variant="search.nomstronautTip.connectionsContainer">
-                        <SocialIcons nom={nom} />
-                      </Box>
-                      {isOwner && (
+                        <Box variant="search.nomstronautTip.connectionsContainer">
+                          <SocialIcons nom={nom} />
+                        </Box>
+                        {isOwner && (
+                          <Button
+                            onClick={() => {
+                              history.push(`${name}/${Page.MANAGE}`);
+                            }}
+                            variant="search.nomstronautTip.edit"
+                          >
+                            EDIT
+                          </Button>
+                        )}
                         <Button
                           onClick={() => {
-                            history.push(`${name}/${Page.MANAGE}`);
+                            if (nom.owner === ZERO_ADDRESS) {
+                              history.push(`${name}/${Page.RESERVE}`);
+                            }
+                            // TODO: TIP
                           }}
-                          variant="search.nomstronautTip.edit"
+                          variant="search.nomstronautTip.tip"
                         >
-                          EDIT
+                          {nom.owner === ZERO_ADDRESS ? "RESERVE" : "TIP"}
                         </Button>
-                      )}
-                      <Button
-                        onClick={() => {
-                          if (nom.owner === ZERO_ADDRESS) {
-                            history.push(`${name}/${Page.RESERVE}`);
-                          }
-                          // TODO: TIP
-                        }}
-                        variant="search.nomstronautTip.tip"
-                      >
-                        {nom.owner === ZERO_ADDRESS ? "RESERVE" : "TIP"}
-                      </Button>
-                    </Flex>
-                  </Box>
-
-                  {/* Main Body */}
-                  <Box variant="search.details.container">
-                    <Flex variant="search.details.heading">
-                      {/* Name & Description */}
-                      <Box variant="search.name.container">
-                        <Flex variant="search.name.nameContainer">
-                          <Heading variant="search.name.heading">
-                            {name}
-                          </Heading>
-                          <Heading
-                            variant="search.name.heading"
-                            sx={{ color: "#D9D9D9" }}
-                          >
-                            .nom
-                          </Heading>
-                        </Flex>
-                        <Heading variant="search.name.subHeading">
-                          {nom.bio}
-                        </Heading>
-                      </Box>
-                      <Box>
-                        {/* Connections */}
-                        <Flex variant="search.connection.container">
-                          <SocialIcons nom={nom} />
-                        </Flex>
-                        {/* Tags */}
-                        <UserTags userAddress={nom.resolution} />
-                      </Box>
-                    </Flex>
-                    {/* NFTs */}
-                    <Heading variant="search.heading">NFTs</Heading>
-                    <Box variant="search.rowScrollContainer">
-                      {nfts.map((e, idx) => {
-                        return (
-                          <Box key={idx} variant="search.nft.imageContainer">
-                            <Box
-                              variant="search.nft.image"
-                              sx={{
-                                backgroundImage: `url(${e.img})`,
-                              }}
-                            ></Box>
-                          </Box>
-                        );
-                      })}
+                      </Flex>
                     </Box>
-                    {/* Tokens */}
-                    <Heading variant="search.heading">Tokens</Heading>
-                    <Box variant="search.rowScrollContainer">
-                      {tokens?.map((t) => {
-                        return (
-                          <Box variant="search.token.imageContainer">
-                            <BlockscoutAddressLink address={t.address}>
+
+                    {/* Main Body */}
+                    <Box variant="search.details.container">
+                      <Flex variant="search.details.heading">
+                        {/* Name & Description */}
+                        <Box variant="search.name.container">
+                          <Flex variant="search.name.nameContainer">
+                            <Heading variant="search.name.heading">
+                              {name}
+                            </Heading>
+                            <Heading
+                              variant="search.name.heading"
+                              sx={{ color: "#D9D9D9" }}
+                            >
+                              .nom
+                            </Heading>
+                          </Flex>
+                          <Heading variant="search.name.subHeading">
+                            {nom.bio}
+                          </Heading>
+                        </Box>
+                        <Box>
+                          {/* Connections */}
+                          <Flex variant="search.connection.container">
+                            <SocialIcons nom={nom} />
+                          </Flex>
+                          {/* Tags */}
+                          <UserTags userAddress={nom.resolution} />
+                        </Box>
+                      </Flex>
+                      {/* NFTs */}
+                      <Heading variant="search.heading">NFTs</Heading>
+                      <Box variant="search.rowScrollContainer">
+                        {nfts.map((e, idx) => {
+                          return (
+                            <Box key={idx} variant="search.nft.imageContainer">
                               <Box
-                                variant="search.token.image"
+                                variant="search.nft.image"
                                 sx={{
-                                  backgroundImage: `url(${t.logoURI})`,
+                                  backgroundImage: `url(${e.img})`,
                                 }}
                               ></Box>
-                            </BlockscoutAddressLink>
+                            </Box>
+                          );
+                        })}
+                      </Box>
+                      {/* Tokens */}
+                      <Heading variant="search.heading">Tokens</Heading>
+                      <Box variant="search.rowScrollContainer">
+                        {tokens?.map((t) => {
+                          return (
+                            <Box variant="search.token.imageContainer">
+                              <BlockscoutAddressLink address={t.address}>
+                                <Box
+                                  variant="search.token.image"
+                                  sx={{
+                                    backgroundImage: `url(${t.logoURI})`,
+                                  }}
+                                ></Box>
+                              </BlockscoutAddressLink>
+                            </Box>
+                          );
+                        })}
+                      </Box>
+                      {/* Stats */}
+                      <Heading variant="search.heading">Stats</Heading>
+                      <Box variant="search.stat.container">
+                        <Flex variant="search.stat.row">
+                          <Box variant="search.stat.icon">
+                            <Image
+                              src={life1}
+                              variant="search.stat.life1Icon"
+                            />
+                            <Image
+                              src={life2}
+                              variant="search.stat.life2Icon"
+                            />
                           </Box>
-                        );
-                      })}
-                    </Box>
-                    {/* Stats */}
-                    <Heading variant="search.heading">Stats</Heading>
-                    <Box variant="search.stat.container">
-                      <Flex variant="search.stat.row">
-                        <Box variant="search.stat.icon">
-                          <Image src={life1} variant="search.stat.life1Icon" />
-                          <Image src={life2} variant="search.stat.life2Icon" />
+                          <Heading variant="search.stat.heading">
+                            Activity:&nbsp;
+                          </Heading>
+                          <Text variant="search.stat.text">
+                            {userStats
+                              ? new Intl.NumberFormat().format(
+                                  userStats?.transactionCount
+                                )
+                              : "-"}{" "}
+                            Transactions
+                          </Text>
+                        </Flex>
+                        <Box variant="search.stat.divider"></Box>
+                        <Flex variant="search.stat.row">
+                          <Image
+                            src={networth}
+                            variant="search.stat.icon"
+                            ml="4px"
+                            mr="6px"
+                          />
+                          <Heading variant="search.stat.heading">
+                            Net Worth:&nbsp;
+                          </Heading>
+                          <Text variant="search.stat.text">
+                            {userStats
+                              ? new Intl.NumberFormat().format(
+                                  userStats.nativeBalance
+                                )
+                              : "0"}{" "}
+                            {NATIVE_CURRENCY[network.chainId]}
+                          </Text>
+                        </Flex>
+                      </Box>
+                      {/* Sources */}
+                      <Heading variant="search.heading">Sources</Heading>
+                      <Box variant="search.rowScrollContainer">
+                        <Text variant="search.source.text">
+                          View on Block Explorers: &nbsp;&nbsp;
+                        </Text>
+                        <ExplorerIcons userAddress={nom.resolution} />
+                      </Box>
+                      {/* Footer */}
+                      {/* absolutely positioned */}
+                      <Box variant="search.footer.container">
+                        <Box variant="search.footer.wallet"></Box>
+                        <Box variant="search.footer.moreContainer">
+                          <Box variant="search.footer.more"></Box>
+                          <Box variant="search.footer.search"></Box>
                         </Box>
-                        <Heading variant="search.stat.heading">
-                          Activity:&nbsp;
-                        </Heading>
-                        <Text variant="search.stat.text">
-                          {userStats
-                            ? new Intl.NumberFormat().format(
-                                userStats?.transactionCount
-                              )
-                            : "-"}{" "}
-                          Transactions
-                        </Text>
-                      </Flex>
-                      <Box variant="search.stat.divider"></Box>
-                      <Flex variant="search.stat.row">
-                        <Image
-                          src={networth}
-                          variant="search.stat.icon"
-                          ml="4px"
-                          mr="6px"
-                        />
-                        <Heading variant="search.stat.heading">
-                          Net Worth:&nbsp;
-                        </Heading>
-                        <Text variant="search.stat.text">
-                          {userStats
-                            ? new Intl.NumberFormat().format(
-                                userStats.nativeBalance
-                              )
-                            : "0"}{" "}
-                          {NATIVE_CURRENCY[network.chainId]}
-                        </Text>
-                      </Flex>
-                    </Box>
-                    {/* Sources */}
-                    <Heading variant="search.heading">Sources</Heading>
-                    <Box variant="search.rowScrollContainer">
-                      <Text variant="search.source.text">
-                        View on Block Explorers: &nbsp;&nbsp;
-                      </Text>
-                      <ExplorerIcons userAddress={nom.resolution} />
-                    </Box>
-                    {/* Footer */}
-                    {/* absolutely positioned */}
-                    <Box variant="search.footer.container">
-                      <Box variant="search.footer.wallet"></Box>
-                      <Box variant="search.footer.moreContainer">
-                        <Box variant="search.footer.more"></Box>
-                        <Box variant="search.footer.search"></Box>
                       </Box>
                     </Box>
-                  </Box>
-                </Flex>
-              )}
-            </Flex>
-          </Card>
-        </Box>
-      ) : (
-        <Text>Name is invalid. Try searching again.</Text>
-      )}
-    </Flex>
+                  </Flex>
+                )}
+              </Flex>
+            </Card>
+          </Box>
+        ) : (
+          <Text>Name is invalid. Try searching again.</Text>
+        )}
+      </Flex>
+    </>
   );
 };
