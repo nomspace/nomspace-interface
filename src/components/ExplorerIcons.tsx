@@ -36,6 +36,10 @@ const TESTNET_EXPLORERS: Record<string, Explorer> = {
     imageUrl: Celo,
     explorerUrl: "https://alfajores-blockscout.celo-testnet.org",
   },
+  [ChainId.Mumbai]: {
+    imageUrl: Polygon,
+    explorerUrl: "https://mumbai.polygonscan.com",
+  },
   [ChainId.Fuji]: {
     imageUrl: Avalanche,
     explorerUrl: "https://testnet.snowtrace.io",
