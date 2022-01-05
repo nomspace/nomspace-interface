@@ -1,10 +1,6 @@
 import React from "react";
 import { useNom } from "hooks/useNom";
-import {
-  useContractKit,
-  useGetConnectedSigner,
-  useProvider,
-} from "@celo-tools/use-contractkit";
+import { useContractKit } from "@celo-tools/use-contractkit";
 import {
   Box,
   Button,
@@ -17,7 +13,6 @@ import {
 } from "theme-ui";
 import { NATIVE_CURRENCY } from "config";
 import { ZERO_ADDRESS } from "utils/constants";
-import { useSetNomSetting } from "hooks/useSetNomSetting";
 import { useName } from "hooks/useName";
 import { Sidebar } from "components/Sidebar";
 import { SocialIcons } from "components/SocialIcons";
@@ -78,11 +73,7 @@ const nfts = [
 export const SearchDetail: React.FC = () => {
   const { name } = useName();
   const { address, network } = useContractKit();
-  const [nom, refetchNom] = useNom(name);
-  console.log("NOM", nom);
-  const { setNomSetting, loading } = useSetNomSetting(name);
-  const [changeOwnerLoading, setChangeOwnerLoading] = React.useState(false);
-  const [showQR, setShowQR] = React.useState(false);
+  const [nom] = useNom(name);
   const [tokens] = useTokenBalances(nom?.resolution);
   const [userStats] = useUserStats(nom?.resolution);
   const history = useHistory();

@@ -3,29 +3,8 @@ import { Box, Flex, Heading, Text, useColorMode } from "theme-ui";
 import { SearchBar } from "components/SearchBar";
 import { AccountProfile } from "components/AccountProfile";
 import moment from "moment";
-
-/* ASSETS */
-
-/* DEMO PURPOSES, DELETE LATER */
-// sources
-import s1 from "pages/SearchDetail/assets/s1.png";
-import s2 from "pages/SearchDetail/assets/s2.png";
-import s3 from "pages/SearchDetail/assets/s3.png";
-
-// nomstronaut
-
-//noms
-import nom1 from "pages/SearchDetail/assets/nom1.png";
-import nom2 from "pages/SearchDetail/assets/nom2.png";
 import { useUserNoms } from "hooks/useUserNoms";
 import { Link } from "react-router-dom";
-
-const noms = [
-  { img: nom1, name: "gza", date: "08/18/23" },
-  { img: nom2, name: "zatoichi", date: "12/03/22" },
-];
-
-const sources = [{ img: s1 }, { img: s2 }, { img: s3 }];
 
 export const Sidebar: React.FC = () => {
   const [userNoms] = useUserNoms();

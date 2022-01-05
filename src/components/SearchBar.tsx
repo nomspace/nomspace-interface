@@ -1,8 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import WhiteSearchIcon from "icons/WhiteSearchIcon.svg";
-import BlackSearchIcon from "icons/BlackSearchIcon.svg";
-import { Flex, Input, useColorMode } from "theme-ui";
+import { Flex, Input } from "theme-ui";
 
 const SEARCH_HEIGHT = [56, 90];
 const TRANSFORM = ["translate(8px, 12px)", "translate(16px, 32px)"];
@@ -14,7 +12,6 @@ interface IProps {
 export const SearchBar: React.FC<IProps> = ({ size }) => {
   const searchInput = React.useRef<any>(null);
   const history = useHistory();
-  const [colorMode] = useColorMode();
 
   let height;
   let transform;

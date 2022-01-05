@@ -71,7 +71,7 @@ export const useNom = (name?: string | null) => {
       telegram,
       twitter,
     };
-  }, [celoProvider, celoChainId, name]);
+  }, [celoChainId, ens, name, celoProvider]);
 
   return useAsyncState(null, call);
 };

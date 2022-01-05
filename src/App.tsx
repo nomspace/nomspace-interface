@@ -6,7 +6,6 @@ import { SearchDetail } from "pages/SearchDetail";
 import { Reserve } from "pages/Reserve";
 import { Extend } from "pages/Extend";
 import { Request } from "pages/Request";
-import { Header } from "components/Header";
 import Modal from "react-modal";
 import { Footer } from "components/Footer";
 import { ToastContainer } from "react-toastify";

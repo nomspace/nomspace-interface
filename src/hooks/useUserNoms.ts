@@ -9,15 +9,12 @@ import {
 import { useCeloProvider } from "./useCeloProvider";
 import {
   BASE_ADDR,
-  ENS_ADDR,
   MULTICALL_ADDR,
   NOM_REG_ADDR,
   RESOLVER_ADDR,
 } from "addresses";
 import { useCeloChainId } from "./useCeloChainId";
-import { PublicResolver__factory } from "generated/factories/PublicResolver__factory";
-import ENS, { labelhash } from "@ensdomains/ensjs";
-import { useENS } from "./useENS";
+import { labelhash } from "@ensdomains/ensjs";
 
 export const useUserNoms = () => {
   const { address } = useContractKit();

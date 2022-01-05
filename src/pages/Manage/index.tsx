@@ -131,6 +131,7 @@ export const Manage: React.FC = () => {
       currentNonce += 1;
       refetchNom();
     }
+    setNonce(currentNonce);
     history.push(`/${name}`);
   }, [
     nonce,
@@ -139,6 +140,7 @@ export const Manage: React.FC = () => {
     nom?.twitter,
     nom?.discord,
     nom?.telegram,
+    setNonce,
     history,
     name,
     setNomSetting,
