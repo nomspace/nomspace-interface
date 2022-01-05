@@ -4,8 +4,10 @@ type AddressMap = Record<string, string>;
 
 export const RESERVE_PORTAL: AddressMap = {
   [ChainId.Celo]: "",
+
   [ChainId.Alfajores]: "0xcE6863Bac168f47EF41404378Ce838ae14aAFAC8",
   [ChainId.Fuji]: "0xfB1243D603b21D9E1a9669b67998c5CF12F58c1B",
+  [ChainId.Mumbai]: "0xb83e6f8BC9553Dd7AaECA86E96fa9B113563dfa3",
 };
 export const FORWARDER_ADDR: AddressMap = {
   [ChainId.Celo]: "",
@@ -29,8 +31,10 @@ export const NOM_REG_ADDR: AddressMap = {
 };
 export const USD: AddressMap = {
   [ChainId.Celo]: "0x765DE816845861e75A25fCA122bb6898B8B1282a",
+
   [ChainId.Alfajores]: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
   [ChainId.Fuji]: "0x45ea5d57ba80b5e3b0ed502e9a08d568c96278f9", // USDC.e
+  [ChainId.Mumbai]: "0x3813e82e6f7098b9583fc0f33a962d02018b6803", // USDT
 };
 export const MULTICALL_ADDR: AddressMap = {
   [ChainId.Celo]: "0x75f59534dd892c1f8a7b172d639fa854d529ada3",

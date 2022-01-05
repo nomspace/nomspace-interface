@@ -22,6 +22,7 @@ import UbeswapLightImage from "assets/Ubeswap_light.png";
 import MobiusLightImage from "assets/Celotracker_light.png";
 import CelotrackerLightImage from "assets/Celotracker_light.png";
 import ProfilePreviewIllustration from "assets/ProfilePreviewIllustration.png";
+import NFTIllustration from "assets/NFTIllustration.png";
 import CrossChainIllustration from "assets/CrossChainIllustration.png";
 import { GithubLogo, TwitterLogo, DiscordLogo } from "phosphor-react";
 
@@ -135,6 +136,7 @@ export const Search: React.FC = () => {
           Every .nom comes with a domain to show off your growing art
           collection. <strong>Showcase more than just a PFP.</strong>
         </CardText>
+        <CardImage src={NFTIllustration} />
       </StyledCard>
       <StyledCard mt="42px">
         <CardTitle as="h3">You Are What You Do</CardTitle>
