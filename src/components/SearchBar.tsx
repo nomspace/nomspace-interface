@@ -38,10 +38,10 @@ export const SearchBar: React.FC<IProps> = ({ size }) => {
           height: 28,
           width: 28,
           transform: transform,
-          backgroundColor: "var(--theme-ui-colors-textColor)",
-          background: `url(${
-            colorMode === "light" ? BlackSearchIcon : WhiteSearchIcon
-          }) no-repeat`,
+          // backgroundColor: "var(--theme-ui-colors-textColor)",
+          // background: `url(${
+          //   colorMode === "light" ? BlackSearchIcon : WhiteSearchIcon
+          // }) no-repeat`,
         },
         width: "100%",
         justifyContent: "center",

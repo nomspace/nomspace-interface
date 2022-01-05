@@ -17,7 +17,7 @@ export const preset = {
     primaryButtonTextColor: "#FAFAFA",
     accent: "#7C71FD",
     background: "#fff",
-    secondary: "#bababa",
+    secondary: "#F5F5F5",
     muted: "#f6f6f9",
     gray: "#bababa",
     darkgray: "#8d8d8d",
@@ -45,9 +45,9 @@ export const preset = {
     },
   },
   fonts: {
-    body: "Avenir",
-    heading: "Avenir",
-    monospace: "Avenir",
+    body: "Sen",
+    heading: "Sen",
+    monospace: "Sen",
   },
   fontSizes: [12, 14, 16, 18, 20, 24, 28, 32, 48, 64, 96],
   lineHeights: {
@@ -329,7 +329,7 @@ export const preset = {
         overflowWrap: "break-word",
       },
       subHeading: {
-        fontFamily: "Avenir-Book",
+        fontFamily: "Sen",
         fontSize: [20, null, null, 36],
         fontWeight: 200,
         marginBottom: 16,
@@ -390,7 +390,7 @@ export const preset = {
         padding: ["6px 15px", null, null, "8px 25px"],
         marginRight: 9,
         marginTop: [null, null, null, 39],
-        fontFamily: "Avenir",
+        fontFamily: "Sen",
         fontWeight: "600",
         fontSize: [17, null, null, 26],
         flexShrink: "0",
@@ -492,11 +492,11 @@ export const preset = {
         position: "absolute",
       },
       heading: {
-        fontFamily: "Avenir-Book",
+        fontFamily: "Sen",
         fontSize: [20, null, null, 35],
       },
       text: {
-        fontFamily: "Avenir-Book",
+        fontFamily: "Sen",
         fontWeight: "700",
         fontSize: [20, null, null, 35],
       },
@@ -517,7 +517,7 @@ export const preset = {
         height: "100%",
       },
       text: {
-        fontFamily: "Avenir-Book",
+        fontFamily: "Sen",
         display: ["none", null, null, "block"],
         color: "#52D07F",
         fontSize: "35px",
@@ -532,9 +532,10 @@ export const preset = {
         height: "100vh",
         overflowY: "auto",
       },
+      walletContainer: { marginTop: 20 },
       heading: {
         variant: "search.sidebar.item",
-        fontFamily: "Avenir",
+        fontFamily: "Sen",
         fontSize: 42,
         marginTop: 80,
       },
@@ -560,7 +561,7 @@ export const preset = {
         },
       },
       item: {
-        fontFamily: "Avenir-Book",
+        fontFamily: "Sen",
         fontSize: 30,
         "::before": {
           content: '"  "',
