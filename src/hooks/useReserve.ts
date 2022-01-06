@@ -127,7 +127,7 @@ export const useReserve = (name: string) => {
         );
         const tx = await reservePortal.escrow(
           usdAddress,
-          Math.ceil(Number(formatUnits(cost, 18 - (await usd.decimals())))), // Assume cost is in 18 decimals
+          cost.shr(18).shl(await usd.decimals()),
           celoChainId,
           {
             from,
