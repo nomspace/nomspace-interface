@@ -2,14 +2,14 @@ import React from "react";
 import { Box, Card, Flex, Image, Link } from "theme-ui";
 import { Text } from "theme-ui";
 import { useContractKit } from "@celo-tools/use-contractkit";
-import { Wallet } from "phosphor-react";
+import { Wallet, X } from "phosphor-react";
 import { shortenAddress } from "utils/address";
 import { EXPLORERS } from "./ExplorerIcons";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
 
 export const AccountProfile: React.FC = () => {
-  const { address, connect, network } = useContractKit();
+  const { address, connect, network, destroy } = useContractKit();
 
   const [walletDetailsOpen, setWalletDetailsOpen] = React.useState(false);
 
@@ -30,22 +30,44 @@ export const AccountProfile: React.FC = () => {
             }
           }}
         >
-          <CopyToClipboard
-            text={address}
-            onCopy={() => toast("Wallet address copied to clipboard")}
+          <Flex
+            sx={{
+              alignItems: "center",
+              color: "primaryTextColor",
+            }}
           >
-            <Flex
-              sx={{
-                alignItems: "center",
-                color: "primaryTextColor",
-              }}
-            >
-              <Wallet size={32} />
+            <Wallet size={32} />
+            {address ? (
+              <>
+                <CopyToClipboard
+                  text={address}
+                  onCopy={() => toast("Wallet address copied to clipboard")}
+                >
+                  <Text variant="primary" ml={2} mt={1}>
+                    {shortenAddress(address)}
+                  </Text>
+                </CopyToClipboard>
+                <Box
+                  sx={{
+                    marginTop: "4px",
+                    marginLeft: "4px",
+                    padding: "1px",
+                    ":hover": {
+                      borderRadius: "36px",
+                      backgroundColor: "white",
+                    },
+                  }}
+                  onClick={destroy}
+                >
+                  <X size={12} />
+                </Box>
+              </>
+            ) : (
               <Text variant="primary" ml={2} mt={1}>
-                {address ? shortenAddress(address) : "Connect Wallet"}
+                Connect Wallet
               </Text>
-            </Flex>
-          </CopyToClipboard>
+            )}
+          </Flex>
         </Card>
       </Box>
       <Link
