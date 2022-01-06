@@ -68,18 +68,7 @@ export const Reserve: React.FC = () => {
 
   return (
     <Flex sx={{ alignItems: "center", flexDirection: "column" }}>
-      <Box sx={{ width: "100%", maxWidth: "800px" }} mb={4}>
-        <SearchBar size="small" />
-      </Box>
       <Card sx={{ width: "100%", maxWidth: "800px" }} py={4} px={3}>
-        <Flex
-          onClick={() => history.goBack()}
-          sx={{ alignItems: "center", cursor: "pointer" }}
-          mb={4}
-        >
-          <CaretLeft size={28} />
-          <Text>Back</Text>
-        </Flex>
         <Flex mb={4}>
           <Heading as="h2">
             Reserve <Text color="primaryTextColor">{name}.nom</Text>

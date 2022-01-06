@@ -12,6 +12,7 @@ import { useUserStats } from "hooks/useUserStats";
 import { ExplorerIcons } from "components/ExplorerIcons";
 import { UserTags } from "components/UserTags";
 import { TipModal } from "components/Modal/TipModal";
+import { ReserveModal } from "components/Modal/ReserveModal";
 
 /* ASSETS */
 import pfp from "pages/SearchDetail/assets/pfp.png";
@@ -71,6 +72,7 @@ export const SearchDetail: React.FC = () => {
   const [userStats] = useUserStats(nom?.resolution);
   const history = useHistory();
   const [tipModalOpen, setTipModalOpen] = useState(false);
+  const [reserveModalOpen, setReserveModalOpen] = useState(false);
 
   const isOwner =
     address && nom && nom.owner.toLowerCase() === address.toLowerCase();
@@ -83,6 +85,10 @@ export const SearchDetail: React.FC = () => {
         open={tipModalOpen}
         onClose={() => setTipModalOpen(false)}
         resolution={nom.resolution}
+      />
+      <ReserveModal
+        open={reserveModalOpen}
+        onClose={() => setReserveModalOpen(false)}
       />
       <Flex
         sx={{
@@ -142,7 +148,7 @@ export const SearchDetail: React.FC = () => {
                       <Button
                         onClick={() => {
                           if (nom.owner === ZERO_ADDRESS) {
-                            history.push(`${name}/${Page.RESERVE}`);
+                            setReserveModalOpen(true);
                           } else {
                             setTipModalOpen(true);
                           }
