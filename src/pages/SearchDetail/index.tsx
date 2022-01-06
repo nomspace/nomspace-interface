@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNom } from "hooks/useNom";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import { Box, Button, Flex, Heading, Spinner, Image, Text } from "theme-ui";
@@ -11,6 +11,7 @@ import { useTokenBalances } from "hooks/useTokenBalances";
 import { useUserStats } from "hooks/useUserStats";
 import { ExplorerIcons } from "components/ExplorerIcons";
 import { UserTags } from "components/UserTags";
+import { TipModal } from "components/Modal/TipModal";
 
 /* ASSETS */
 import pfp from "pages/SearchDetail/assets/pfp.png";
@@ -69,6 +70,7 @@ export const SearchDetail: React.FC = () => {
   const [tokens] = useTokenBalances(nom?.resolution);
   const [userStats] = useUserStats(nom?.resolution);
   const history = useHistory();
+  const [tipModalOpen, setTipModalOpen] = useState(false);
 
   const isOwner =
     address && nom && nom.owner.toLowerCase() === address.toLowerCase();
@@ -77,6 +79,11 @@ export const SearchDetail: React.FC = () => {
 
   return (
     <>
+      <TipModal
+        open={tipModalOpen}
+        onClose={() => setTipModalOpen(false)}
+        resolution={nom.resolution}
+      />
       <Flex
         sx={{
           alignItems: "center",
@@ -136,8 +143,9 @@ export const SearchDetail: React.FC = () => {
                         onClick={() => {
                           if (nom.owner === ZERO_ADDRESS) {
                             history.push(`${name}/${Page.RESERVE}`);
+                          } else {
+                            setTipModalOpen(true);
                           }
-                          // TODO: TIP
                         }}
                         variant="search.nomstronautTip.tip"
                       >
