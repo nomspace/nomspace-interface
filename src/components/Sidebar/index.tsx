@@ -13,27 +13,14 @@ import { AccountProfile } from "components/AccountProfile";
 import moment from "moment";
 import { useUserNoms } from "hooks/useUserNoms";
 import { Link } from "react-router-dom";
-import { AnimatedModalStack } from "@mattjennings/react-modal";
 import QRCode from "qrcode.react";
-
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { ThemeProvider, createTheme } from "@mui/material";
-
 import { GetExplorerIconImages } from "components/ExplorerIcons";
 import { ThemeProvider as ThemeUIThemeProvider } from "theme-ui";
 import theme from "theme";
-
-import styled from "@emotion/styled";
-
-import {
-  Modal,
-  ModalTitle,
-  ModalContent,
-  ModalFooter,
-} from "@mattjennings/react-modal";
-import { QrCode } from "phosphor-react";
+import { Modal, ModalContent } from "@mattjennings/react-modal";
 
 interface Props {
   nom: { resolution: string };
@@ -43,203 +30,9 @@ export const Sidebar: React.FC<Props> = ({ nom }) => {
   const [userNoms] = useUserNoms();
   const [colorMode, setColorMode] = useColorMode();
 
-  // const [openModal, setOpenModal, Dialog] = CustomAnimation();
-
   const [coin, setCoin] = React.useState("Celo");
   const [openTestDialog, setOpenTestDialog] = React.useState(false);
-  // let TestDialog = () => {
-  //   return (
-  //     <AnimatedModalStack>
-  //       <Modal
-  //         onClose={() => {
-  //           setOpenTestDialog(false);
-  //         }}
-  //         open={openTestDialog}
-  //         animations={{
-  //           default: {
-  //             enter: {
-  //               x: 550,
-  //               transition: {
-  //                 duration: 0.3,
-  //                 ease: "easeInOut",
-  //               },
-  //             },
-  //             exit: {
-  //               x: "-100vh",
-  //               transition: {
-  //                 duration: 3.3,
-  //                 ease: "easeInOut",
-  //               },
-  //             },
-  //           },
-  //         }}
-  //       >
-  //         {({ onClose }) => (
-  //           <>
-  //             <ModalTitle>
-  //               <Text
-  //                 sx={{
-  //                   fontSize: 2,
-  //                   fontWeight: "medium",
-  //                 }}
-  //               >
-  //                 Welcome!
-  //               </Text>
-  //             </ModalTitle>
-  //             <ModalContent>
-  //               <Text>This is the modal example</Text>
-  //             </ModalContent>
-  //             <ModalFooter>
-  //               <button onClick={onClose}>OK</button>
-  //             </ModalFooter>
-  //           </>
-  //         )}
-  //       </Modal>
-  //     </AnimatedModalStack>
-  //     // <ThemeProvider theme={createTheme()}>
-  //     //   <Dialog
-  //     //     onClose={() => {
-  //     //       setOpenTestDialog(false);
-  //     //     }}
-  //     //     open={openTestDialog}
-  //     //   >
-  //     //     asdf
-  //     //   </Dialog>
-  //     // </ThemeProvider>
-  //   );
-  // };
-
-  // const CustomAnimation = ({
-  //   open,
-  //   setOpen,
-  // }: {
-  //   open: boolean;
-  //   setOpen: (b: boolean) => any;
-  // }) => {
-  //   return (
-  //     <>
-  //       <Button onClick={() => setOpen(true)}>open</Button>
-  //       <Modal
-  //         open={open}
-  //         onClose={() => setOpen(false)}
-  //         animations={{
-  //           default: {
-  //             enter: {
-  //               y: 0,
-  //               transition: {
-  //                 duration: 0.3,
-  //                 ease: "easeInOut",
-  //               },
-  //             },
-  //             exit: {
-  //               y: "-100vh",
-  //               transition: {
-  //                 duration: 0.3,
-  //                 ease: "easeInOut",
-  //               },
-  //             },
-  //           },
-  //           fullScreen: {
-  //             enter: {
-  //               opacity: 1,
-  //             },
-  //             exit: {
-  //               opacity: 0,
-  //             },
-  //           },
-  //         }}
-  //       >
-  //         {({ onClose }) => (
-  //           <>
-  //             <ModalTitle>
-  //               <Text
-  //                 sx={{
-  //                   fontSize: 2,
-  //                   fontWeight: "medium",
-  //                 }}
-  //               >
-  //                 Welcome!
-  //               </Text>
-  //             </ModalTitle>
-  //             <ModalContent>
-  //               <Text>This is the modal example</Text>
-  //             </ModalContent>
-  //             <ModalFooter>
-  //               <Button variant="pill" onClick={onClose}>
-  //                 OK
-  //               </Button>
-  //             </ModalFooter>
-  //           </>
-  //         )}
-  //       </Modal>
-  //     </>
-  //   );
-  // };
-
-  const CustomAnimation = () => {
-    const [open, setOpen] = React.useState(false);
-    return (
-      <>
-        <Button onClick={() => setOpen(true)}>open</Button>
-        <Modal
-          open={open}
-          onClose={() => setOpen(false)}
-          animations={{
-            default: {
-              enter: {
-                y: 0,
-                transition: {
-                  duration: 0.3,
-                  ease: "easeInOut",
-                },
-              },
-              exit: {
-                y: "-100vh",
-                transition: {
-                  duration: 0.3,
-                  ease: "easeInOut",
-                },
-              },
-            },
-            fullScreen: {
-              enter: {
-                opacity: 1,
-              },
-              exit: {
-                opacity: 0,
-              },
-            },
-          }}
-        >
-          {({ onClose }) => (
-            <>
-              <ModalTitle>
-                <Text
-                  sx={{
-                    fontSize: 2,
-                    fontWeight: "medium",
-                  }}
-                >
-                  Welcome!
-                </Text>
-              </ModalTitle>
-              <ModalContent>
-                <Text>This is the modal example</Text>
-              </ModalContent>
-              <ModalFooter>
-                <Button variant="pill" onClick={onClose}>
-                  OK
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </Modal>
-      </>
-    );
-  };
-
   const coins = GetExplorerIconImages(nom.resolution);
-  console.log(coins);
 
   return (
     <>
