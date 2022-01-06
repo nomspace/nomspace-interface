@@ -1,35 +1,15 @@
 import React from "react";
-import styled from "@emotion/styled";
-import { Box, Card, Flex, useColorMode, Image, Link } from "theme-ui";
+import { Box, Card, Flex, Image, Link } from "theme-ui";
 import { Text } from "theme-ui";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import { Wallet } from "phosphor-react";
-import { WalletDetails } from "components/Wallet/WalletDetails";
-import { CloseOnClickaway } from "components/CloseOnClickaway";
 import { shortenAddress } from "utils/address";
 import { EXPLORERS } from "./ExplorerIcons";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
 
-const HoverDetails = styled(Box)<{ colorMode: string }>(({ colorMode }) => {
-  return {
-    position: "absolute",
-    backgroundColor:
-      colorMode === "dark"
-        ? "var(--theme-ui-colors-secondaryBackground)"
-        : "var(--theme-ui-colors-background)",
-    padding: "12px",
-    top: 60,
-    right: 0,
-    borderRadius: "6px",
-    color: "var(--theme-ui-colors-primaryTextColor)",
-    border: "1px solid",
-  };
-});
-
 export const AccountProfile: React.FC = () => {
   const { address, connect, network } = useContractKit();
-  const [colorMode] = useColorMode();
 
   const [walletDetailsOpen, setWalletDetailsOpen] = React.useState(false);
 

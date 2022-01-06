@@ -374,7 +374,7 @@ export const Sidebar: React.FC<Props> = ({ nom }) => {
                       </Text>
                     </Flex>
                     <Text variant="search.sidebar.nom.date">
-                      {moment.unix(un.expiration).calendar()}
+                      {moment.unix(un.expiration).format("MM/DD/YYYY")}
                     </Text>
                   </Flex>
                 </Link>

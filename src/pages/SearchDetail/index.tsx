@@ -46,7 +46,7 @@ import networth from "pages/SearchDetail/assets/networth.png";
 // sources
 
 // nomstronaut
-import nomstronaut from "pages/SearchDetail/assets/astro.png";
+// import nomstronaut from "pages/SearchDetail/assets/astro.png";
 import { Page } from "state/global";
 import { useHistory } from "react-router-dom";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";

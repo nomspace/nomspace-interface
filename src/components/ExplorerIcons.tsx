@@ -23,11 +23,11 @@ const MAINNET_EXPLORERS: Record<string, Explorer> = {
     explorerUrl: "https://explorer.celo.org",
     name: "Celo",
   },
-  // [ChainId.Polygon]: {
-  //   imageUrl: Polygon,
-  //   explorerUrl: "https://polygonscan.com",
-  //   name: "Polygon",
-  // },
+  [ChainId.Polygon]: {
+    imageUrl: Polygon,
+    explorerUrl: "https://polygonscan.com",
+    name: "Polygon",
+  },
   [ChainId.Avalanche]: {
     imageUrl: Avalanche,
     explorerUrl: "https://snowtrace.io",
@@ -40,6 +40,11 @@ const TESTNET_EXPLORERS: Record<string, Explorer> = {
     imageUrl: Celo,
     explorerUrl: "https://alfajores-blockscout.celo-testnet.org",
     name: "Celo",
+  },
+  [ChainId.Mumbai]: {
+    imageUrl: Polygon,
+    explorerUrl: "https://mumbai.polygonscan.com",
+    name: "Mumbai",
   },
   [ChainId.Fuji]: {
     imageUrl: Avalanche,

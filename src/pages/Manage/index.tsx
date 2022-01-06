@@ -78,7 +78,7 @@ export const Manage: React.FC = () => {
 
   // TODO: Text validation
   const onSave = useCallback(async () => {
-    if (!nonce) return;
+    if (nonce == null) return;
     const newBio = bioInput.current?.value;
     const newWebsite = websiteInput.current?.value;
     const newTwitter = twitterInput.current?.value;
@@ -209,9 +209,12 @@ export const Manage: React.FC = () => {
                             >
                               .nom
                             </Heading>
-                            {sources.map((e) => {
+                            {sources.map((e, idx) => {
                               return (
-                                <Box variant="search.name.source.imageContainer">
+                                <Box
+                                  variant="search.name.source.imageContainer"
+                                  key={idx}
+                                >
                                   <Box
                                     variant="search.name.source.image"
                                     sx={{
