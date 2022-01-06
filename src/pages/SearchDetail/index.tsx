@@ -1,19 +1,7 @@
 import React from "react";
 import { useNom } from "hooks/useNom";
 import { useContractKit } from "@celo-tools/use-contractkit";
-import {
-  Box,
-  Button,
-  Card,
-  Flex,
-  Heading,
-  Spinner,
-  Image,
-  Text,
-} from "theme-ui";
-import { Dialog } from "@mui/material";
-import { Modal, ThemeProvider, createTheme } from "@mui/material";
-
+import { Box, Button, Flex, Heading, Spinner, Image, Text } from "theme-ui";
 import { NATIVE_CURRENCY } from "config";
 import { ZERO_ADDRESS } from "utils/constants";
 import { useName } from "hooks/useName";

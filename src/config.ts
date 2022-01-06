@@ -22,6 +22,10 @@ export const NATIVE_CURRENCY: Record<string, string> = {
   [ChainId.Avalanche]: "AVAX",
   [ChainId.Kovan]: "ETH",
   [ChainId.Ethereum]: "AVAX",
+  [ChainId.FantomTestnet]: "FTM",
+  [ChainId.Fantom]: "FTM",
+  [ChainId.Mumbai]: "MATIC",
+  [ChainId.Polygon]: "MATIC",
 };
 
 export type Network = {
