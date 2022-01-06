@@ -209,9 +209,12 @@ export const Manage: React.FC = () => {
                             >
                               .nom
                             </Heading>
-                            {sources.map((e) => {
+                            {sources.map((e, idx) => {
                               return (
-                                <Box variant="search.name.source.imageContainer">
+                                <Box
+                                  variant="search.name.source.imageContainer"
+                                  key={idx}
+                                >
                                   <Box
                                     variant="search.name.source.image"
                                     sx={{
