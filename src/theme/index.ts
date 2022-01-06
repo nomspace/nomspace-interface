@@ -234,6 +234,7 @@ export const preset = {
         overflowX: "hidden",
         textAlign: "left",
         "& > div": {},
+        backgroundColor: "background",
       },
       heading: {
         flexDirection: ["column", null, null, "row"],
@@ -584,24 +585,60 @@ export const preset = {
       fontSize: "50px",
       fontWeight: "800",
     },
-    footer: {
-      fontSize: "35px",
+    wallet: {
+      desktop: {
+        fontSize: "35px",
+        display: ["none", null, null, "block"],
+      },
+      mobile: {
+        display: ["block", null, null, "none"],
+      },
     },
     container: {
       minWidth: "100%",
       margin: "50px 0px",
       justifyContent: "space-evenly",
+      flexDirection: ["column", null, null, "row"],
     },
     qrCode: {},
     form: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
-    },
-    formItem: {
-      width: 395,
-      height: 85,
-      fontSize: 32,
+      container: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      },
+      item: {
+        width: 395,
+        height: 85,
+        fontSize: 32,
+      },
+      input: {
+        variant: "modal.form.item",
+        textAlign: "right",
+        position: "relative",
+        paddingRight: 23,
+        borderRadius: 11,
+        backgroundColor: "white",
+        border: "none",
+        filter: "drop-shadow(0px 3px 6px #00000029)",
+      },
+      inputWrapper: {
+        position: "relative",
+        "::after": {
+          content: '"Amount:"',
+          fontWeight: "400",
+          display: "block",
+          position: "absolute",
+          width: 1,
+          left: 21,
+          top: "50%",
+          transform: "translateY(-50%)",
+          fontSize: 32,
+        },
+      },
+      submit: {
+        variant: "modal.form.item",
+      },
     },
   },
   modals: {

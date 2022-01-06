@@ -286,8 +286,9 @@ export const Sidebar: React.FC<Props> = ({ nom }) => {
                 size={300}
               />
             </Box>
-            <Box variant="modal.form">
-              <Box variant="modal.formItem">
+            <Text variant="modal.wallet.mobile">{nom.resolution}</Text>
+            <Box variant="modal.form.container">
+              <Box variant="modal.form.item">
                 <ThemeProvider theme={createTheme()}>
                   <Select
                     value={coin}
@@ -298,13 +299,30 @@ export const Sidebar: React.FC<Props> = ({ nom }) => {
                     MenuProps={{
                       disableScrollLock: true,
                     }}
+                    sx={{
+                      borderRadius: "11px",
+                      backgroundColor: "white",
+                      filter: "drop-shadow(0px 3px 6px #00000029)",
+                      border: "none",
+                      width: "100%",
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        border: "none",
+                      },
+                    }}
                   >
                     {coins &&
                       coins.map((e) => {
                         return (
                           <MenuItem value={e.name} key={e.name}>
                             <ThemeUIThemeProvider theme={theme}>
-                              <Flex>
+                              <Flex
+                                sx={{
+                                  alignItems: "center",
+                                  justifyContent: "space-between",
+                                  fontFamily: "sen",
+                                  fontSize: "33px",
+                                }}
+                              >
                                 {e.elm}
                                 {e.name}
                               </Flex>
@@ -315,18 +333,20 @@ export const Sidebar: React.FC<Props> = ({ nom }) => {
                   </Select>
                 </ThemeProvider>
               </Box>
-              <Input
-                variant="modal.formItem"
-                type="number"
-                placeholder="0.00"
-              />
-              <Button disabled={!!""} variant="modal.formItem">
+              <Box variant="modal.form.inputWrapper">
+                <Input
+                  variant="modal.form.input"
+                  type="number"
+                  placeholder="0.00"
+                />
+              </Box>
+              <Button disabled={!!""} variant="modal.form.submit">
                 Enter an Amount
               </Button>
             </Box>
           </Flex>
-          <Text variant="modal.footer">
-            <u>0x08b6601066zkzk1510b7546c5412e3AbB8e3a4434</u>
+          <Text variant="modal.wallet.desktop">
+            <u>{nom.resolution}</u>
           </Text>
         </ModalContent>
       </Modal>
@@ -384,7 +404,7 @@ export const Sidebar: React.FC<Props> = ({ nom }) => {
             }}
             sx={{ cursor: "pointer" }}
           >
-            Test Modal
+            Test Tip
           </Text>
           {/* <Text variant="search.sidebar.item">Default Currency</Text>
         <Text variant="search.sidebar.item">Language</Text> */}
