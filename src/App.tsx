@@ -11,6 +11,7 @@ import { Footer } from "components/Footer";
 import { ToastContainer } from "react-toastify";
 import { Stats } from "./pages/Stats";
 import { Manage } from "pages/Manage";
+import { Sidebar } from "components/Sidebar";
 
 const App: React.FC = () => {
   React.useEffect(() => {
