@@ -5,13 +5,11 @@ import { Search } from "pages/Search";
 import { SearchDetail } from "pages/SearchDetail";
 import { Reserve } from "pages/Reserve";
 import { Extend } from "pages/Extend";
-import { Request } from "pages/Request";
 import Modal from "react-modal";
 import { Footer } from "components/Footer";
 import { ToastContainer } from "react-toastify";
 import { Stats } from "./pages/Stats";
 import { Manage } from "pages/Manage";
-import { Sidebar } from "components/Sidebar";
 
 const App: React.FC = () => {
   React.useEffect(() => {
@@ -34,12 +32,6 @@ const App: React.FC = () => {
           </Route>
           <Route exact path="/:name/manage">
             <Manage />
-          </Route>
-          <Route exact path="/:name/reserve">
-            <Reserve />
-          </Route>
-          <Route exact path="/:name/request">
-            <Request />
           </Route>
           <Route exact path="/:name/extend">
             <Extend />

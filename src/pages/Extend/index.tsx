@@ -1,5 +1,5 @@
 import React from "react";
-// import { useNom } from "hooks/useNom";
+// import { GlobalNom } from "hooks/useNom";
 // import {
 //   useContractKit,
 //   useGetConnectedSigner,

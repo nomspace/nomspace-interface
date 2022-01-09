@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNom } from "hooks/useNom";
+import { GlobalNom } from "hooks/useNom";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import { Box, Button, Flex, Heading, Spinner, Image, Text } from "theme-ui";
 import { NATIVE_CURRENCY } from "config";
@@ -67,7 +67,7 @@ const nfts = [
 export const SearchDetail: React.FC = () => {
   const { name } = useName();
   const { address, network } = useContractKit();
-  const [nom] = useNom(name);
+  const [nom] = GlobalNom.useContainer();
   const [tokens] = useTokenBalances(nom?.resolution);
   const [userStats] = useUserStats(nom?.resolution);
   const history = useHistory();

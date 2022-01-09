@@ -20,7 +20,7 @@ import { TokenWithBalance, useTokens } from "hooks/useTokens";
 import { formatUnits, parseUnits } from "ethers/lib/utils";
 import { useGetConnectedSigner } from "@celo-tools/use-contractkit";
 import { ERC20__factory } from "generated";
-import { useNom } from "hooks/useNom";
+import { GlobalNom } from "hooks/useNom";
 import { useName } from "hooks/useName";
 import { toastTx } from "utils/toastTx";
 
@@ -32,7 +32,7 @@ interface Props {
 
 export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
   const { name } = useName();
-  const [nom] = useNom(name);
+  const [nom] = GlobalNom.useContainer();
   const [tokens] = useTokens();
   const [coin, setCoin] = React.useState<TokenWithBalance>();
   const getConnectedSigner = useGetConnectedSigner();

@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from "react";
-import { useNom } from "hooks/useNom";
+import { GlobalNom } from "hooks/useNom";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import {
   Box,
@@ -63,7 +63,7 @@ const EditSection = styled(Box)({
 export const Manage: React.FC = () => {
   const { name, namehash } = useName();
   const { address } = useContractKit();
-  const [nom, refetchNom] = useNom(name);
+  const [nom, refetchNom] = GlobalNom.useContainer();
   const { setNomSetting } = useSetNomSetting(name);
   const bioInput = useRef<HTMLInputElement>(null);
   const websiteInput = useRef<HTMLInputElement>(null);
