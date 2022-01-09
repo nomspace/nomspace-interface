@@ -70,13 +70,13 @@ export const SearchDetail: React.FC = () => {
   const { name } = useName();
   const { address, network } = useContractKit();
   const [nom] = useNom(name);
+  const [punks] = useCeloPunks(nom?.resolution);
   const [tokens] = useTokenBalances(nom?.resolution);
   const [userStats] = useUserStats(nom?.resolution);
   const history = useHistory();
   const [tipModalOpen, setTipModalOpen] = useState(false);
   const [reserveModalOpen, setReserveModalOpen] = useState(false);
   const [punkData, setPunkData] = useState([] as any[]);
-  const [punks] = useCeloPunks();
 
   // punks hook
   useEffect(() => {

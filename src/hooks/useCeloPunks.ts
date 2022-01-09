@@ -4,7 +4,6 @@ import { ERC721__factory } from "generated";
 import { Multicall__factory, Nom__factory } from "generated";
 import { useCallback } from "react";
 import { useAsyncState } from "./useAsyncState";
-import { Utils } from "web3-utils";
 
 const BUCKET_SIZE = 200;
 
@@ -13,7 +12,7 @@ const BUCKET_SIZE = 200;
  * @returns celopunks
  */
 
-export const useCeloPunks = () => {
+export const useCeloPunks = (user?: string) => {
   // required
   const provider = new providers.JsonRpcProvider("https://forno.celo.org");
   const nft = ERC721__factory.connect(
@@ -22,6 +21,7 @@ export const useCeloPunks = () => {
   );
 
   const call = useCallback(async () => {
+    if (!user) return null;
     // required
 
     // multicall address doesn't work
@@ -33,9 +33,7 @@ export const useCeloPunks = () => {
     );
 
     // get total supply of nft (total # of nfts that exist, starting from 1)
-    const total = parseInt(
-      (await nft.balanceOf("0x82356CF1eD7251c595fCEad73636E9e3DbE1940b"))._hex
-    );
+    const total = parseInt((await nft.balanceOf(user))._hex);
 
     let i = 0;
     const promises = [];
@@ -48,11 +46,12 @@ export const useCeloPunks = () => {
               .fill(0)
               .slice(i, i + BUCKET_SIZE)
               .map((_, j) => {
+                console.log(i + j);
                 return {
                   target: nft.address,
                   callData: nft.interface.encodeFunctionData(
                     "tokenOfOwnerByIndex",
-                    ["0x82356CF1eD7251c595fCEad73636E9e3DbE1940b", i + j]
+                    [user, i + j]
                   ),
                 };
               })
@@ -68,6 +67,6 @@ export const useCeloPunks = () => {
       i += BUCKET_SIZE;
     }
     return await Promise.all(promises).then((es) => es.flat());
-  }, []);
+  }, [user]);
   return useAsyncState(null, call);
 };
