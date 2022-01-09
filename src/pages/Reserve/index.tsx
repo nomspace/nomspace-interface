@@ -1,27 +1,11 @@
 import React from "react";
 import { useNom } from "hooks/useNom";
 import { useParams, useHistory } from "react-router-dom";
-import {
-  Box,
-  Button,
-  Card,
-  Flex,
-  Heading,
-  Input,
-  Spinner,
-  Text,
-} from "theme-ui";
-import { BlockText } from "components/BlockText";
-import { NOM_FEE } from "config";
-import { CaretLeft, ArrowDown } from "phosphor-react";
-import { SearchBar } from "components/SearchBar";
-import { YEAR_IN_SECONDS, ZERO_ADDRESS } from "utils/constants";
+import { Box, Button, Flex, Input, Spinner, Text } from "theme-ui";
 import { useUSD } from "hooks/useUSD";
 import { useReserve } from "hooks/useReserve";
 import { formatName } from "utils/name";
 import { formatUnits } from "ethers/lib/utils";
-import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
-import { shortenAddress } from "utils/address";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import { normalize } from "eth-ens-namehash";
 import { GetExplorerIconImages } from "components/ExplorerIcons";
@@ -30,25 +14,18 @@ import { ThemeProvider as ThemeUIThemeProvider } from "theme-ui";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import theme from "theme";
+import { useName } from "hooks/useName";
 
 export const Reserve: React.FC = () => {
-  const { name } = useParams<{ name: string }>();
-  const nameFormatted = formatName(name);
-  const { address } = useContractKit();
+  const { name } = useName();
 
-  const [nom, refetchNom] = useNom(nameFormatted);
+  const [nom, refetchNom] = useNom(name);
   const [years, setYears] = React.useState(1);
   const [cost, setCost] = React.useState("5");
   const [usd, refetchUSD] = useUSD();
-  const history = useHistory();
-  const { approve, reserve, loading } = useReserve(name);
+  const { approve, reserve } = useReserve(name);
   const [coin, setCoin] = React.useState("Celo");
   const coins = GetExplorerIconImages("");
-
-  let isNormal = false;
-  try {
-    isNormal = !!normalize(name);
-  } catch (e) {}
 
   if (nom == null) {
     return <Spinner />;

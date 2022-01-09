@@ -4,11 +4,20 @@ import { ModalContent } from "@mattjennings/react-modal";
 import QRCode from "qrcode.react";
 import MenuItem from "@mui/material/MenuItem";
 import theme from "theme";
-import { Flex, Box, Input, Button, Text } from "theme-ui";
 import { GetExplorerIconImages } from "components/ExplorerIcons";
 import { ThemeProvider, createTheme } from "@mui/material";
-import { ThemeProvider as ThemeUIThemeProvider } from "theme-ui";
+import {
+  ThemeProvider as ThemeUIThemeProvider,
+  Image,
+  Flex,
+  Box,
+  Input,
+  Button,
+  Text,
+} from "theme-ui";
 import Select from "@mui/material/Select";
+import tokenList from "web3-token-list";
+import { useContractKit } from "@celo-tools/use-contractkit";
 
 interface Props {
   open: boolean;
@@ -17,8 +26,9 @@ interface Props {
 }
 
 export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
-  const [coin, setCoin] = React.useState("Celo");
-  const coins = GetExplorerIconImages(resolution);
+  const { network } = useContractKit();
+  const networkTokens = tokenList[network.chainId];
+  const [coin, setCoin] = React.useState(networkTokens?.[0]?.symbol ?? "CELO");
 
   return (
     <CustomModal open={open} onClose={onClose}>
@@ -64,10 +74,10 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
                     },
                   }}
                 >
-                  {coins &&
-                    coins.map((e) => {
+                  {networkTokens &&
+                    networkTokens.map((t) => {
                       return (
-                        <MenuItem value={e.name} key={e.name}>
+                        <MenuItem value={t.symbol} key={t.address}>
                           <ThemeUIThemeProvider theme={theme}>
                             <Flex
                               sx={{
@@ -77,8 +87,11 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
                                 fontSize: ["25px", null, null, "33px"],
                               }}
                             >
-                              {e.elm}
-                              {e.name}
+                              <Image
+                                sx={{ height: 24, width: 24 }}
+                                src={t.logoURI}
+                              />
+                              {t.symbol}
                             </Flex>
                           </ThemeUIThemeProvider>
                         </MenuItem>

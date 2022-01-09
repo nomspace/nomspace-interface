@@ -25,13 +25,11 @@ import { YEAR_IN_SECONDS } from "utils/constants";
 import ENS from "@ensdomains/ensjs";
 import { useCeloProvider } from "./useCeloProvider";
 import { useCeloChainId } from "./useCeloChainId";
-import { normalize } from "eth-ens-namehash";
 import { useUserTxDefaults } from "hooks/useUserTxDefaults";
 import { getSignature } from "utils/sig";
 import { UserNonce } from "./useUserNonce";
 
-export const useReserve = (name: string) => {
-  name = normalize(name);
+export const useReserve = (name?: string) => {
   const { address, network } = useContractKit();
   const { chainId } = network;
   const provider = useProvider();
@@ -74,6 +72,7 @@ export const useReserve = (name: string) => {
       const reservePortalAddress = RESERVE_PORTAL[network.chainId];
       const forwarderAddr = FORWARDER_ADDR[celoChainId];
       if (
+        !name ||
         !usdAddress ||
         !reservePortalAddress ||
         !address ||
