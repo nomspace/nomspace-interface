@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNom } from "hooks/useNom";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import { Box, Button, Flex, Heading, Spinner, Image, Text } from "theme-ui";
@@ -41,6 +41,7 @@ import { Page } from "state/global";
 import { useHistory } from "react-router-dom";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
 import { useCeloPunks } from "hooks/useCeloPunks";
+const axios = require("axios");
 
 const nfts = [
   {
@@ -74,9 +75,31 @@ export const SearchDetail: React.FC = () => {
   const history = useHistory();
   const [tipModalOpen, setTipModalOpen] = useState(false);
   const [reserveModalOpen, setReserveModalOpen] = useState(false);
+  const [punkData, setPunkData] = useState([] as any[]);
   const [punks] = useCeloPunks();
-  console.log("punks", punks);
-  console.log(nom);
+
+  // punks hook
+  useEffect(() => {
+    if (!punks) return;
+    let imageArr: any[] = [];
+    Promise.all(
+      punks.map(async (e, idx) => {
+        imageArr[idx] = [];
+        return await axios.get(e).then(async (res: any) => {
+          imageArr[idx] = res.data;
+        });
+      })
+    ).then(() => {
+      setPunkData(imageArr);
+    });
+    axios
+      .get(
+        "https://ipfs.io/ipfs/QmdKZj1v7cVYuFPZjg5xCVGrsDzW4rB29SzZZahHBDi3dw/1.png"
+      )
+      .then((res: any) => {
+        console.log("image", res);
+      });
+  }, [punks]);
 
   const isOwner =
     address && nom && nom.owner.toLowerCase() === address.toLowerCase();
@@ -195,28 +218,35 @@ export const SearchDetail: React.FC = () => {
                     </Flex>
                     {/* NFTs */}
                     <Heading variant="search.heading">NFTs</Heading>
-                    <Box
-                      variant="search.rowScrollContainer"
-                      // sx={{
-                      //   height: 200,
-                      //   overflowY: "auto",
-                      //   flexDirection: "column",
-                      //   position: "fixed",
-                      //   zIndex: 110,
-                      // }}
-                    >
-                      {nfts.map((e, idx) => {
-                        return (
-                          <Box key={idx} variant="search.nft.imageContainer">
+                    <Box variant="search.rowScrollContainer">
+                      {punkData.length > 0 ? (
+                        punkData?.map((t, idx) => {
+                          return (
                             <Box
-                              variant="search.nft.image"
-                              sx={{
-                                backgroundImage: `url(${e.img})`,
-                              }}
-                            ></Box>
-                          </Box>
-                        );
-                      })}
+                              variant="search.nft.imageContainer"
+                              key={t.dna}
+                            >
+                              <Spinner />
+                              <Image
+                                variant="search.nft.image"
+                                src={t.image}
+                                sx={{ display: "none" }}
+                                onLoad={(e) => {
+                                  console.log("image loaded");
+                                  (
+                                    e.target as HTMLImageElement
+                                  ).previousSibling?.remove();
+                                  (e.target as HTMLImageElement).style.display =
+                                    "block";
+                                  console.log("image loader removed");
+                                }}
+                              ></Image>
+                            </Box>
+                          );
+                        })
+                      ) : (
+                        <Spinner />
+                      )}
                     </Box>
                     {/* Tokens */}
                     <Heading variant="search.heading">Tokens</Heading>

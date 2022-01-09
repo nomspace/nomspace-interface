@@ -425,6 +425,9 @@ export const preset = {
         boxShadow: "0px 3px 6px #00000029",
         overflow: "hidden",
         borderRadius: "11px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       },
       image: {
         backgroundPosition: "center",
