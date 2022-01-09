@@ -25,7 +25,6 @@ import { SearchBar } from "src/components/SearchBar";
 import { YEAR_IN_SECONDS, ZERO_ADDRESS } from "src/constants";
 import { useCUSD } from "src/hooks/useCUSD";
 import { StableToken } from "@celo/contractkit";
-import { MaxUint256 } from "@ethersproject/constants";
 import { useNomFee } from "src/hooks/useNomFee";
 import { formatName } from "src/utils/name";
 import { normalize } from "eth-ens-namehash";
@@ -36,10 +35,11 @@ export const Reserve: React.FC = () => {
 
   const { getConnectedKit, network } = useContractKit();
   const [nom, refetchNom] = useNom(nameFormatted);
-  const [years, setYears] = React.useState("1");
-  const [cost, setCost] = React.useState("5");
+  const [years, setYears] = React.useState(1);
+  const [cost, setCost] = React.useState(5);
   const [approveLoading, setApproveLoading] = React.useState(false);
   const [reserveLoading, setReserveLoading] = React.useState(false);
+  const [approved, setApproved] = React.useState(false);
   const [cUSD, refetchCUSD] = useCUSD();
   const [nomFee] = useNomFee();
   const history = useHistory();
@@ -64,13 +64,14 @@ export const Reserve: React.FC = () => {
             StableToken.cUSD
           );
           const tx = await cUSD.methods
-            .approve(FEE_MODULE_V1, MaxUint256.toString())
+            .approve(FEE_MODULE_V1, toWei((cost + 1).toFixed(18)))
             .send({
               from: kit.defaultAccount,
               gasPrice: DEFAULT_GAS_PRICE,
             });
           toastTx(tx.transactionHash);
           refetchCUSD();
+          setApproved(true);
         } catch (e) {
           toast(e.message);
         } finally {
@@ -105,6 +106,7 @@ export const Reserve: React.FC = () => {
             });
           toastTx(tx.transactionHash);
           refetchNom();
+          setApproved(false);
         } catch (e) {
           toast(e.message);
         } finally {
@@ -119,11 +121,10 @@ export const Reserve: React.FC = () => {
   const loading = approveLoading || reserveLoading;
   let button = approveButton;
   if (cUSD) {
-    const fmtCost = cost === "" ? "0" : cost;
-    const costBN = toBN(toWei(fmtCost));
+    const costBN = toBN(toWei(cost.toFixed(18)));
     if (cUSD.balance.lt(costBN)) {
       button = <Button disabled={true}>Insufficient funds</Button>;
-    } else if (cUSD.allowance.gt(costBN)) {
+    } else if (approved) {
       button = reserveButton;
     }
   }
@@ -154,14 +155,11 @@ export const Reserve: React.FC = () => {
             type="number"
             value={years}
             onChange={(e) => {
-              const years = e.target.value;
+              const years = Number(e.target.value);
+              if (isNaN(years)) return;
               setYears(years);
               setCost(
-                (
-                  Number(years) *
-                  YEAR_IN_SECONDS *
-                  Number(fromWei(nomFee))
-                ).toString()
+                Number(years) * YEAR_IN_SECONDS * Number(fromWei(nomFee))
               );
             }}
             mr={2}
@@ -180,15 +178,9 @@ export const Reserve: React.FC = () => {
                 variant="form"
                 onClick={() => {
                   if (cUSD) {
-                    const cost = fromWei(cUSD.balance);
+                    const cost = Number(fromWei(cUSD.balance));
                     setCost(cost);
-                    setYears(
-                      (
-                        Number(cost) /
-                        YEAR_IN_SECONDS /
-                        Number(fromWei(nomFee))
-                      ).toString()
-                    );
+                    setYears(cost / YEAR_IN_SECONDS / Number(fromWei(nomFee)));
                   }
                 }}
               >
@@ -199,14 +191,13 @@ export const Reserve: React.FC = () => {
               sx={{ width: "100%" }}
               value={cost}
               onChange={(e) => {
-                const cost = e.target.value;
+                const cost = Number(e.target.value);
+                if (isNaN(cost)) {
+                  return;
+                }
                 setCost(cost);
                 setYears(
-                  (
-                    Number(cost) /
-                    YEAR_IN_SECONDS /
-                    Number(fromWei(nomFee))
-                  ).toString()
+                  Number(cost) / YEAR_IN_SECONDS / Number(fromWei(nomFee))
                 );
               }}
             />
