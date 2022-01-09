@@ -9,6 +9,7 @@ import { Footer } from "components/Footer";
 import { ToastContainer } from "react-toastify";
 import { Stats } from "./pages/Stats";
 import { Manage } from "pages/Manage";
+import { GlobalNom } from "hooks/useNom";
 
 const App: React.FC = () => {
   React.useEffect(() => {
@@ -26,14 +27,20 @@ const App: React.FC = () => {
           <Route exact path="/stats">
             <Stats />
           </Route>
-          <Route exact path="/:name">
-            <SearchDetail />
-          </Route>
-          <Route exact path="/:name/manage">
-            <Manage />
-          </Route>
-          <Route exact path="/:name/extend">
-            <Extend />
+          <Route path="/:name">
+            <GlobalNom.Provider>
+              <Switch>
+                <Route exact path="/:name">
+                  <SearchDetail />
+                </Route>
+                <Route exact path="/:name/manage">
+                  <Manage />
+                </Route>
+                <Route exact path="/:name/extend">
+                  <Extend />
+                </Route>
+              </Switch>
+            </GlobalNom.Provider>
           </Route>
         </Switch>
       </Container>

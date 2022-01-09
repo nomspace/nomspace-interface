@@ -22,7 +22,6 @@ import { UserNonce } from "hooks/useUserNonce";
 
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { GlobalNom } from "hooks/useNom";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -40,9 +39,7 @@ ReactDOM.render(
           <Router>
             <RecoilRoot>
               <UserNonce.Provider>
-                <GlobalNom.Provider>
-                  <App />
-                </GlobalNom.Provider>
+                <App />
               </UserNonce.Provider>
             </RecoilRoot>
           </Router>

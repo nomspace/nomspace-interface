@@ -31,7 +31,7 @@ const useNom = () => {
 
   const call = React.useCallback(async (): Promise<NomResult | null> => {
     const baseAddress = BASE_ADDR[celoChainId];
-    if (!baseAddress) {
+    if (!baseAddress || !name) {
       return null;
     }
     const nom = ens.name(`${name}.nom`);
