@@ -40,6 +40,7 @@ import networth from "pages/SearchDetail/assets/networth.png";
 import { Page } from "state/global";
 import { useHistory } from "react-router-dom";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
+import { useCeloPunks } from "hooks/useCeloPunks";
 
 const nfts = [
   {
@@ -73,6 +74,9 @@ export const SearchDetail: React.FC = () => {
   const history = useHistory();
   const [tipModalOpen, setTipModalOpen] = useState(false);
   const [reserveModalOpen, setReserveModalOpen] = useState(false);
+  const [punks] = useCeloPunks();
+  console.log("punks", punks);
+  console.log(nom);
 
   const isOwner =
     address && nom && nom.owner.toLowerCase() === address.toLowerCase();
