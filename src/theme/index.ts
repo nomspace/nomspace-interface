@@ -660,7 +660,6 @@ export const preset = {
         fontSize: [25, null, null, 32],
         whiteSpace: ["wrap", "nowrap"],
       },
-
       submit: {
         variant: "modal.form.item",
         borderRadius: "11px",

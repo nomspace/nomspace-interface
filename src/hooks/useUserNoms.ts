@@ -15,6 +15,7 @@ import {
 } from "addresses";
 import { useCeloChainId } from "./useCeloChainId";
 import { labelhash } from "@ensdomains/ensjs";
+import { ZERO_ADDRESS } from "utils/constants";
 
 export const useUserNoms = () => {
   const { address } = useContractKit();
@@ -33,6 +34,7 @@ export const useUserNoms = () => {
       !resolverAddress
     )
       return null;
+    if (address == null || address === ZERO_ADDRESS) return [];
     const nomRegistrarController = NomRegistrarController__factory.connect(
       nomRegistrarAddress,
       celoProvider

@@ -4,7 +4,6 @@ import {
   useGetConnectedSigner,
   useProvider,
 } from "@celo-tools/use-contractkit";
-import { MaxUint256 } from "@ethersproject/constants";
 import {
   USD,
   RESERVE_PORTAL,
@@ -20,18 +19,16 @@ import {
 } from "generated";
 import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
-import { formatUnits } from "ethers/lib/utils";
+import { parseUnits } from "ethers/lib/utils";
 import { YEAR_IN_SECONDS } from "utils/constants";
 import ENS from "@ensdomains/ensjs";
 import { useCeloProvider } from "./useCeloProvider";
 import { useCeloChainId } from "./useCeloChainId";
-import { normalize } from "eth-ens-namehash";
 import { useUserTxDefaults } from "hooks/useUserTxDefaults";
 import { getSignature } from "utils/sig";
 import { UserNonce } from "./useUserNonce";
 
-export const useReserve = (name: string) => {
-  name = normalize(name);
+export const useReserve = (name?: string) => {
   const { address, network } = useContractKit();
   const { chainId } = network;
   const provider = useProvider();
@@ -42,30 +39,36 @@ export const useReserve = (name: string) => {
   const [userTxDefaults] = useUserTxDefaults();
   const [nonce, setNonce] = UserNonce.useContainer();
 
-  const approve = useCallback(async () => {
-    const reservePortalAddress = RESERVE_PORTAL[chainId];
-    const usdAddress = USD[chainId];
-    if (!reservePortalAddress || !usdAddress) {
-      return;
-    }
-    const signer = await getConnectedSigner();
-    try {
-      setLoading(true);
-      const usd = ERC20__factory.connect(usdAddress, signer);
-      const gasPrice = await provider.getGasPrice();
-      const tx = await usd.approve(
-        reservePortalAddress,
-        MaxUint256.toString(), // TODO: don't do max
-        { gasPrice }
-      );
-      await tx.wait(2);
-      toastTx(tx.hash);
-    } catch (e: any) {
-      toast(e.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [getConnectedSigner, chainId, provider]);
+  const approve = useCallback(
+    async (amount: number) => {
+      const reservePortalAddress = RESERVE_PORTAL[chainId];
+      const usdAddress = USD[chainId];
+      if (!reservePortalAddress || !usdAddress) {
+        return;
+      }
+      const signer = await getConnectedSigner();
+      try {
+        setLoading(true);
+        const usd = ERC20__factory.connect(usdAddress, signer);
+        const gasPrice = await provider.getGasPrice();
+        const decimals = await usd.decimals();
+        const tx = await usd.approve(
+          reservePortalAddress,
+          parseUnits(amount.toFixed(decimals), decimals),
+          {
+            gasPrice,
+          }
+        );
+        await tx.wait(2);
+        toastTx(tx.hash);
+      } catch (e: any) {
+        toast(e.message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [getConnectedSigner, chainId, provider]
+  );
 
   const reserve = useCallback(
     async (years: number) => {
@@ -74,6 +77,7 @@ export const useReserve = (name: string) => {
       const reservePortalAddress = RESERVE_PORTAL[network.chainId];
       const forwarderAddr = FORWARDER_ADDR[celoChainId];
       if (
+        !name ||
         !usdAddress ||
         !reservePortalAddress ||
         !address ||

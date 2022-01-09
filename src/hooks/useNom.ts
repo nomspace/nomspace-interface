@@ -8,6 +8,8 @@ import { BaseRegistrarImplementation__factory } from "generated";
 import { labelhash } from "@ensdomains/ensjs";
 import { ZERO_ADDRESS } from "utils/constants";
 import { useENS } from "hooks/useENS";
+import { useName } from "./useName";
+import { createContainer } from "unstated-next";
 
 type NomResult = {
   resolution: string;
@@ -21,14 +23,15 @@ type NomResult = {
   twitter: string;
 };
 
-export const useNom = (name?: string | null) => {
+const useNom = () => {
+  const { name } = useName();
   const celoProvider = useCeloProvider();
   const celoChainId = useCeloChainId();
   const ens = useENS();
 
   const call = React.useCallback(async (): Promise<NomResult | null> => {
     const baseAddress = BASE_ADDR[celoChainId];
-    if (!baseAddress) {
+    if (!baseAddress || !name) {
       return null;
     }
     const nom = ens.name(`${name}.nom`);
@@ -75,3 +78,5 @@ export const useNom = (name?: string | null) => {
 
   return useAsyncState(null, call);
 };
+
+export const GlobalNom = createContainer(useNom);

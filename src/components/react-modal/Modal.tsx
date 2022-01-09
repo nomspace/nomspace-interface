@@ -3,7 +3,7 @@ import { useModals } from "@mattjennings/react-modal-stack";
 import { useResponsiveValue } from "@theme-ui/match-media";
 import { AnimatePresence, motion, Variant } from "framer-motion";
 import { ModalContextValue, ModalContext } from "./ModalContext";
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 // @ts-ignore
 
 import { Box, BoxProps } from "theme-ui";
@@ -105,13 +105,13 @@ export default function Modal({
     modalAnimations.default,
   ]);
 
-  function handleClose() {
+  const handleClose = useCallback(() => {
     if (onClose) {
       onClose();
     } else if (closeModal) {
       closeModal();
     }
-  }
+  }, [closeModal, onClose]);
 
   useEffect(() => {
     if (closeOnEscKey) {
@@ -128,7 +128,7 @@ export default function Modal({
     }
 
     return () => {};
-  }, [closeOnEscKey]);
+  }, [closeOnEscKey, handleClose]);
 
   const contextValue = useMemo<ModalContextValue>(
     () => ({
