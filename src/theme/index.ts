@@ -425,6 +425,9 @@ export const preset = {
         boxShadow: "0px 3px 6px #00000029",
         overflow: "hidden",
         borderRadius: "11px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       },
       image: {
         backgroundPosition: "center",
@@ -592,7 +595,7 @@ export const preset = {
       },
       mobile: {
         fontSize: "20px",
-        margin: "17px 0px",
+        margin: "13px 0px",
         width: "80%",
         textAlign: "center",
         overflowWrap: "anywhere",
@@ -608,8 +611,8 @@ export const preset = {
       flexDirection: ["column", null, null, "row"],
     },
     qrCode: {
-      width: [150, null, null, 300],
-      height: [150, null, null, 300],
+      width: [130, null, null, 300],
+      height: [130, null, null, 300],
     },
     form: {
       container: {
@@ -624,8 +627,8 @@ export const preset = {
         fontSize: 32,
       },
       input: {
-        variant: "modal.form.item",
-        width: ["100%"],
+        // width: ["100%"],
+        height: ["100%"],
         position: "relative",
         paddingRight: 23,
         borderRadius: 11,
@@ -633,13 +636,17 @@ export const preset = {
         backgroundColor: "white",
         border: "none",
         filter: "drop-shadow(0px 3px 6px #00000029)",
+        ":focus": {
+          outline: "hsla(241, 97%, 65%, 1) solid",
+        },
       },
       selectWrapper: {
         variant: "modal.form.item",
-        marginBottom: "17px",
+        marginBottom: "10px",
       },
       inputWrapper: {
-        marginBottom: "27px",
+        variant: "modal.form.item",
+        marginBottom: "20px",
         position: "relative",
       },
       inputText: {
@@ -651,6 +658,7 @@ export const preset = {
         top: "50%",
         transform: "translateY(-50%)",
         fontSize: [25, null, null, 32],
+        whiteSpace: ["wrap", "nowrap"],
       },
       amountWrapper: {
         variant: "modal.form.inputWrapper",

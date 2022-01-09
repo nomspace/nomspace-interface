@@ -281,6 +281,25 @@
         "type": "function"
     },
     {
+        "type": "function",
+        "stateMutability": "view",
+        "outputs": [
+            {
+                "type": "string",
+                "name": "",
+                "internalType": "string"
+            }
+        ],
+        "name": "tokenURI",
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "tokenId",
+                "internalType": "uint256"
+            }
+        ]
+    },
+    {
         "inputs": [
             {
                 "internalType": "address",
