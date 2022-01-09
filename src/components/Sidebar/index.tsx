@@ -19,34 +19,38 @@ export const Sidebar: React.FC<Props> = ({ nom }) => {
       <Box variant="search.sidebar.container">
         <AccountProfile />
         <Box variant="search.sidebar.noms.container">
-          <Heading variant="search.sidebar.heading">My Noms</Heading>
-          {userNoms?.map((un, idx) => {
-            return (
-              <Box
-                key={idx}
-                variant="search.sidebar.item"
-                sx={{ "::before": { display: "none" } }}
-              >
-                <Link to={`/${un.name}`}>
-                  <Flex
-                    sx={{
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
+          {userNoms && userNoms.length > 0 && (
+            <>
+              <Heading variant="search.sidebar.heading">My Noms</Heading>
+              {userNoms.map((un, idx) => {
+                return (
+                  <Box
+                    key={idx}
+                    variant="search.sidebar.item"
+                    sx={{ "::before": { display: "none" } }}
                   >
-                    <Flex sx={{ alignItems: "center" }}>
-                      <Text variant="search.sidebar.nom.name">
-                        {un.name}.nom
-                      </Text>
-                    </Flex>
-                    <Text variant="search.sidebar.nom.date">
-                      {moment.unix(un.expiration).format("MM/DD/YYYY")}
-                    </Text>
-                  </Flex>
-                </Link>
-              </Box>
-            );
-          })}
+                    <Link to={`/${un.name}`}>
+                      <Flex
+                        sx={{
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Flex sx={{ alignItems: "center" }}>
+                          <Text variant="search.sidebar.nom.name">
+                            {un.name}.nom
+                          </Text>
+                        </Flex>
+                        <Text variant="search.sidebar.nom.date">
+                          {moment.unix(un.expiration).format("MM/DD/YYYY")}
+                        </Text>
+                      </Flex>
+                    </Link>
+                  </Box>
+                );
+              })}
+            </>
+          )}
         </Box>
         <Box variant="search.sidebar.settings.container">
           <Heading variant="search.sidebar.heading">Settings</Heading>

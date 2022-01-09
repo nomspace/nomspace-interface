@@ -1,63 +1,53 @@
 import React from "react";
 import { useNom } from "hooks/useNom";
-import { useParams, useHistory } from "react-router-dom";
 import { Box, Button, Flex, Input, Spinner, Text } from "theme-ui";
 import { useUSD } from "hooks/useUSD";
 import { useReserve } from "hooks/useReserve";
-import { formatName } from "utils/name";
 import { formatUnits } from "ethers/lib/utils";
-import { useContractKit } from "@celo-tools/use-contractkit";
-import { normalize } from "eth-ens-namehash";
-import { GetExplorerIconImages } from "components/ExplorerIcons";
-import { ThemeProvider, createTheme } from "@mui/material";
-import { ThemeProvider as ThemeUIThemeProvider } from "theme-ui";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import theme from "theme";
 import { useName } from "hooks/useName";
+import { useTokens } from "hooks/useTokens";
+import { getNomCost, getNomYears } from "utils/cost";
+import { ZERO_ADDRESS } from "utils/constants";
+import { useContractKit } from "@celo-tools/use-contractkit";
+import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
+import { BlockText } from "components/BlockText";
+import { shortenAddress } from "utils/address";
 
 export const Reserve: React.FC = () => {
   const { name } = useName();
+  const { address } = useContractKit();
 
-  const [nom, refetchNom] = useNom(name);
+  const [nom] = useNom(name);
   const [years, setYears] = React.useState(1);
-  const [cost, setCost] = React.useState("5");
+  const [cost, setCost] = React.useState(5);
   const [usd, refetchUSD] = useUSD();
-  const { approve, reserve } = useReserve(name);
-  const [coin, setCoin] = React.useState("Celo");
-  const coins = GetExplorerIconImages("");
+  const [tokens] = useTokens();
+  const { approve, reserve, loading } = useReserve(name);
 
   if (nom == null) {
     return <Spinner />;
   }
 
-  const approveButton = (
+  const confirmButton = (
     <Button
       variant="modal.form.submit"
-      onClick={() => approve().then(refetchUSD)}
+      onClick={async () => {
+        await approve(cost);
+        await reserve(years);
+        refetchUSD();
+      }}
     >
-      Approve
+      CONFIRM
     </Button>
   );
 
-  const reserveButton = (
-    <Button
-      variant="modal.form.submit"
-      onClick={() => reserve(years).then(refetchUSD).then(refetchNom)}
-    >
-      Reserve
-    </Button>
-  );
-
-  let button = approveButton;
+  let button = confirmButton;
   if (usd) {
-    const fmtCost = Number(cost === "" ? "0" : cost);
-    if (Number(formatUnits(usd.balance, usd.decimals)) < fmtCost) {
+    if (Number(formatUnits(usd.balance, usd.decimals)) < cost) {
       button = <Button disabled={true}>Insufficient funds</Button>;
-    } else if (Number(formatUnits(usd.allowance, usd.decimals)) >= fmtCost) {
-      button = reserveButton;
     }
   }
+  if (!name) return <Text>Invalid name</Text>;
   return (
     <>
       <Text variant="modal.title">
@@ -68,68 +58,75 @@ export const Reserve: React.FC = () => {
       </Text>
       <Flex variant="modal.container">
         <Box variant="modal.form.container">
-          <Box variant="modal.form.durationWrapper">
+          <Flex
+            variant="modal.form.durationWrapper"
+            sx={{ alignItems: "center" }}
+          >
             <Input
               variant="modal.form.input"
               type="number"
-              placeholder="0.00"
+              value={years}
+              onChange={(e) => {
+                const years = Number(e.target.value);
+                if (isNaN(years)) return;
+                setYears(years);
+                setCost(getNomCost(name, years));
+              }}
+              mr={2}
             />
-          </Box>
-          <Box variant="modal.form.selectWrapper">
-            <ThemeProvider theme={createTheme()}>
-              <Select
-                MenuProps={{
-                  disableScrollLock: true,
-                }}
-                value={coin}
-                onChange={(e) => {
-                  setCoin(e.target.value);
-                }}
-                autoWidth
-                sx={{
-                  borderRadius: "11px",
-                  backgroundColor: "white",
-                  filter: "drop-shadow(0px 3px 6px #00000029)",
-                  border: "none",
-                  width: "100%",
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    border: "none",
-                  },
-                }}
-              >
-                {coins &&
-                  coins.map((e) => {
-                    return (
-                      <MenuItem value={e.name} key={e.name}>
-                        <ThemeUIThemeProvider theme={theme}>
-                          <Flex
-                            sx={{
-                              alignItems: "center",
-                              justifyContent: "space-between",
-                              fontFamily: "sen",
-                              fontSize: ["25px", null, null, "33px"],
-                            }}
-                          >
-                            {e.elm}
-                            {e.name}
-                          </Flex>
-                        </ThemeUIThemeProvider>
-                      </MenuItem>
-                    );
-                  })}
-              </Select>
-            </ThemeProvider>
-          </Box>
-          <Box variant="modal.form.totalCostWrapper">
+            <Text sx={{ ml: 8 }}>year(s)</Text>
+          </Flex>
+          <Flex sx={{ justifyContent: "flex-end", width: "100%", mr: 120 }}>
+            <Text
+              sx={{ color: "primaryTextColor", cursor: "pointer" }}
+              variant="form"
+              onClick={() => {
+                if (usd) {
+                  const cost = Number(formatUnits(usd.balance, usd.decimals));
+                  setCost(cost);
+                  setYears(getNomYears(name, cost));
+                }
+              }}
+            >
+              max:{" "}
+              {usd
+                ? Number(formatUnits(usd.balance, usd.decimals)).toFixed(4)
+                : "0"}
+            </Text>
+          </Flex>
+          <Flex
+            variant="modal.form.totalCostWrapper"
+            sx={{ alignItems: "center" }}
+          >
             <Input
               variant="modal.form.input"
               type="number"
-              placeholder="0.00"
+              value={cost}
+              onChange={(e) => {
+                const cost = Number(e.target.value);
+                if (isNaN(cost)) return;
+                setCost(cost);
+                setYears(getNomYears(name, cost));
+              }}
             />
-          </Box>
-          <Button disabled={!!""} variant="modal.form.submit">
-            CONFIRM
-          </Button>
+            <Text sx={{ ml: 8 }}>
+              {tokens?.find((t) => t.address === usd?.address)?.symbol}
+            </Text>
+          </Flex>
+          {loading ? (
+            <Spinner />
+          ) : nom.owner === ZERO_ADDRESS ? (
+            button
+          ) : nom.owner === address ? (
+            <Text>You own this name!</Text>
+          ) : (
+            <Text>
+              Name has already been reserved by{" "}
+              <BlockscoutAddressLink address={nom.owner}>
+                {shortenAddress(nom.owner)}
+              </BlockscoutAddressLink>
+            </Text>
+          )}
         </Box>
       </Flex>
     </>

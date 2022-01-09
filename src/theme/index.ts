@@ -662,14 +662,14 @@ export const preset = {
       durationWrapper: {
         variant: "modal.form.inputWrapper",
         "::after": {
-          content: '"Duration (Years):"',
+          content: '"Duration"',
           variant: "modal.form.inputText",
         },
       },
       totalCostWrapper: {
         variant: "modal.form.inputWrapper",
         "::after": {
-          content: '"Total Cost:"',
+          content: '"Cost"',
           variant: "modal.form.inputText",
         },
       },

@@ -17,7 +17,7 @@ export const useUSD = () => {
     const allowance = await usd.allowance(address, reservePortalAddress);
     const balance = await usd.balanceOf(address);
     const decimals = await usd.decimals();
-    return { allowance, balance, decimals };
+    return { address: usdAddress, allowance, balance, decimals };
   }, [address, network.chainId, provider]);
   return useAsyncState(null, call);
 };
