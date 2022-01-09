@@ -33,7 +33,57 @@ export const useCeloPunks = () => {
     );
 
     // get total supply of nft (total # of nfts that exist, starting from 1)
-    const supply = (await nft.totalSupply()).toString();
+    const total = parseInt(
+      (await nft.balanceOf("0x82356CF1eD7251c595fCEad73636E9e3DbE1940b"))._hex
+    );
+    // let nextToken = true;
+    // let returnArray: any[] = [];
+    // let i = 0;
+    // while (nextToken) {
+    //   await nft
+    //     .tokenOfOwnerByIndex("0x29a6520a99656e5b17a34471d5d458efd3696695", i)
+    //     .then(async (res) => {
+    //       returnArray.push(await nft.tokenURI(res));
+    //     })
+    //     .catch((e) => {
+    //       nextToken = false;
+    //     });
+    //   i++;
+    // }
+    // console.log(returnArray);
+    // return returnArray;
+
+    let i = 0;
+    const promises = [];
+
+    while (i < total) {
+      promises.push(
+        multicall.callStatic
+          .aggregate(
+            new Array(total)
+              .fill(0)
+              .slice(i, i + BUCKET_SIZE)
+              .map((_, j) => {
+                return {
+                  target: nft.address,
+                  callData: nft.interface.encodeFunctionData(
+                    "tokenOfOwnerByIndex",
+                    ["0x82356CF1eD7251c595fCEad73636E9e3DbE1940b", i + j]
+                  ),
+                };
+              })
+          )
+          .then((res) => {
+            return Promise.all(
+              res.returnData.map((e) => {
+                return nft.tokenURI(e);
+              })
+            );
+          })
+      );
+      i += BUCKET_SIZE;
+    }
+    return await Promise.all(promises).then((es) => es.flat());
 
     // get owner of each nft
     return await multicall.callStatic

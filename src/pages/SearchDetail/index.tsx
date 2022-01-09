@@ -92,13 +92,6 @@ export const SearchDetail: React.FC = () => {
     ).then(() => {
       setPunkData(imageArr);
     });
-    axios
-      .get(
-        "https://ipfs.io/ipfs/QmdKZj1v7cVYuFPZjg5xCVGrsDzW4rB29SzZZahHBDi3dw/1.png"
-      )
-      .then((res: any) => {
-        console.log("image", res);
-      });
   }, [punks]);
 
   const isOwner =
