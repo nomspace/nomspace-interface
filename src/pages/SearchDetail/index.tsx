@@ -217,9 +217,9 @@ export const SearchDetail: React.FC = () => {
                     {/* Tokens */}
                     <Heading variant="search.heading">Tokens</Heading>
                     <Box variant="search.rowScrollContainer">
-                      {tokens?.map((t) => {
+                      {tokens?.map((t, idx) => {
                         return (
-                          <Box variant="search.token.imageContainer">
+                          <Box key={idx} variant="search.token.imageContainer">
                             <BlockscoutAddressLink address={t.address}>
                               <Box
                                 variant="search.token.image"

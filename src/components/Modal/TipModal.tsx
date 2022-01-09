@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { CustomModal } from "components/Modal/CustomModal";
 import { ModalContent } from "@mattjennings/react-modal";
 import QRCode from "qrcode.react";
 import MenuItem from "@mui/material/MenuItem";
 import theme from "theme";
-import { GetExplorerIconImages } from "components/ExplorerIcons";
 import { ThemeProvider, createTheme } from "@mui/material";
 import {
   ThemeProvider as ThemeUIThemeProvider,
@@ -16,8 +15,14 @@ import {
   Text,
 } from "theme-ui";
 import Select from "@mui/material/Select";
-import tokenList from "web3-token-list";
-import { useContractKit } from "@celo-tools/use-contractkit";
+import { Token } from "web3-token-list";
+import { TokenWithBalance, useTokens } from "hooks/useTokens";
+import { formatUnits, parseUnits } from "ethers/lib/utils";
+import { useGetConnectedSigner } from "@celo-tools/use-contractkit";
+import { ERC20__factory } from "generated";
+import { useNom } from "hooks/useNom";
+import { useName } from "hooks/useName";
+import { toastTx } from "utils/toastTx";
 
 interface Props {
   open: boolean;
@@ -26,9 +31,31 @@ interface Props {
 }
 
 export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
-  const { network } = useContractKit();
-  const networkTokens = tokenList[network.chainId];
-  const [coin, setCoin] = React.useState(networkTokens?.[0]?.symbol ?? "CELO");
+  const { name } = useName();
+  const [nom] = useNom(name);
+  const [tokens] = useTokens();
+  const [coin, setCoin] = React.useState<TokenWithBalance>();
+  const getConnectedSigner = useGetConnectedSigner();
+  useEffect(() => {
+    const initialToken =
+      tokens?.find((t) => t.symbol.includes("cUSD")) ||
+      tokens?.find((t) => t.symbol.includes("USD"));
+    setCoin(initialToken);
+  }, [tokens]);
+  const [amount, setAmount] = useState(5);
+  const send = useCallback(async () => {
+    if (!nom || !coin) return;
+    const erc20 = ERC20__factory.connect(
+      coin.address,
+      await getConnectedSigner()
+    );
+    const tx = await erc20.transfer(
+      nom.resolution,
+      parseUnits(amount.toString(), coin.decimals)
+    );
+    toastTx(tx.hash);
+    onClose();
+  }, [amount, coin, getConnectedSigner, nom, onClose]);
 
   return (
     <CustomModal open={open} onClose={onClose}>
@@ -58,9 +85,12 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
                   MenuProps={{
                     disableScrollLock: true,
                   }}
-                  value={coin}
+                  value={coin?.symbol}
                   onChange={(e) => {
-                    setCoin(e.target.value);
+                    const token = tokens?.find(
+                      (t) => t.symbol === e.target.value
+                    );
+                    setCoin(token);
                   }}
                   autoWidth
                   sx={{
@@ -74,24 +104,37 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
                     },
                   }}
                 >
-                  {networkTokens &&
-                    networkTokens.map((t) => {
+                  {tokens &&
+                    tokens.map((t) => {
                       return (
                         <MenuItem value={t.symbol} key={t.address}>
                           <ThemeUIThemeProvider theme={theme}>
                             <Flex
                               sx={{
-                                alignItems: "center",
                                 justifyContent: "space-between",
-                                fontFamily: "sen",
-                                fontSize: ["25px", null, null, "33px"],
+                                alignItems: "center",
+                                width: "100%",
                               }}
                             >
-                              <Image
-                                sx={{ height: 24, width: 24 }}
-                                src={t.logoURI}
-                              />
-                              {t.symbol}
+                              <Flex
+                                sx={{
+                                  alignItems: "center",
+                                  fontFamily: "sen",
+                                  fontSize: ["25px", null, null, "33px"],
+                                }}
+                              >
+                                <Image
+                                  sx={{ height: 24, width: 24 }}
+                                  mr={4}
+                                  src={t.logoURI}
+                                />
+                                {t.symbol}
+                              </Flex>
+                              <Text>
+                                {Number(
+                                  formatUnits(t.balance, t.decimals)
+                                ).toFixed(4)}
+                              </Text>
                             </Flex>
                           </ThemeUIThemeProvider>
                         </MenuItem>
@@ -104,11 +147,22 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
               <Input
                 variant="modal.form.input"
                 type="number"
-                placeholder="0.00"
+                value={amount}
+                onChange={(e) => {
+                  const amount = Number(e.target.value);
+                  if (isNaN(amount)) return;
+                  setAmount(amount);
+                }}
               />
             </Box>
-            <Button disabled={!!""} variant="modal.form.submit">
-              CONFIRM
+            <Button
+              onClick={send}
+              variant="modal.form.submit"
+              disabled={coin?.balance.lt(
+                parseUnits(amount.toString(), coin.decimals)
+              )}
+            >
+              SEND
             </Button>
           </Box>
         </Flex>
