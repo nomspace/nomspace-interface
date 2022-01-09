@@ -36,22 +36,6 @@ export const useCeloPunks = () => {
     const total = parseInt(
       (await nft.balanceOf("0x82356CF1eD7251c595fCEad73636E9e3DbE1940b"))._hex
     );
-    // let nextToken = true;
-    // let returnArray: any[] = [];
-    // let i = 0;
-    // while (nextToken) {
-    //   await nft
-    //     .tokenOfOwnerByIndex("0x29a6520a99656e5b17a34471d5d458efd3696695", i)
-    //     .then(async (res) => {
-    //       returnArray.push(await nft.tokenURI(res));
-    //     })
-    //     .catch((e) => {
-    //       nextToken = false;
-    //     });
-    //   i++;
-    // }
-    // console.log(returnArray);
-    // return returnArray;
 
     let i = 0;
     const promises = [];
@@ -84,27 +68,6 @@ export const useCeloPunks = () => {
       i += BUCKET_SIZE;
     }
     return await Promise.all(promises).then((es) => es.flat());
-
-    // get owner of each nft
-    return await multicall.callStatic
-      .aggregate(
-        new Array(10).fill(0).map((_, i) => {
-          return {
-            target: nft.address,
-            callData: nft.interface.encodeFunctionData("tokenOfOwnerByIndex", [
-              "0x29a6520a99656e5b17a34471d5d458efd3696695",
-              i,
-            ]),
-          };
-        })
-      )
-      .then((res) => {
-        return Promise.all(
-          res.returnData.map((e) => {
-            return nft.tokenURI(e);
-          })
-        );
-      });
   }, []);
   return useAsyncState(null, call);
 };
