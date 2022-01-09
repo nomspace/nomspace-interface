@@ -13,6 +13,11 @@ import { ExplorerIcons } from "components/ExplorerIcons";
 import { UserTags } from "components/UserTags";
 import { TipModal } from "components/Modal/TipModal";
 import { ReserveModal } from "components/Modal/ReserveModal";
+import { Page } from "state/global";
+import { useHistory } from "react-router-dom";
+import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
+import { useNFTs } from "hooks/useNFTs";
+import axios from "axios";
 
 /* ASSETS */
 import pfp from "pages/SearchDetail/assets/pfp.png";
@@ -21,48 +26,13 @@ import banner from "pages/SearchDetail/assets/banner.png";
 // connections
 
 /* DEMO PURPOSES, DELETE LATER */
-// nfts
-import nft1 from "pages/SearchDetail/assets/nft1.png";
-import nft2 from "pages/SearchDetail/assets/nft2.png";
-import nft3 from "pages/SearchDetail/assets/nft3.png";
-
-// tokens
 
 // stats
 import life2 from "pages/SearchDetail/assets/life1.png";
 import life1 from "pages/SearchDetail/assets/life2.png";
 import networth from "pages/SearchDetail/assets/networth.png";
 
-// sources
-
-// nomstronaut
 // import nomstronaut from "pages/SearchDetail/assets/astro.png";
-import { Page } from "state/global";
-import { useHistory } from "react-router-dom";
-import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
-import { useCeloPunks } from "hooks/useCeloPunks";
-const axios = require("axios");
-
-const nfts = [
-  {
-    img: nft1,
-    name: "Alice Red or Blue Pill",
-    id: "00001",
-    os: "",
-  },
-  {
-    img: nft2,
-    name: "CeloPunk",
-    id: "00420",
-    os: "",
-  },
-  {
-    img: nft3,
-    name: "Zatoichi",
-    id: "003",
-    os: "",
-  },
-];
 
 /* DEMO PURPOSES, DELETE LATER */
 
@@ -70,29 +40,28 @@ export const SearchDetail: React.FC = () => {
   const { name } = useName();
   const { address, network } = useContractKit();
   const [nom] = GlobalNom.useContainer();
-  const [punks] = useCeloPunks(nom?.resolution);
+  const [tokenURIs] = useNFTs(nom?.resolution);
   const [tokens] = useTokenBalances(nom?.resolution);
   const [userStats] = useUserStats(nom?.resolution);
   const history = useHistory();
   const [tipModalOpen, setTipModalOpen] = useState(false);
   const [reserveModalOpen, setReserveModalOpen] = useState(false);
-  const [punkData, setPunkData] = useState([] as any[]);
+  const [nftMetadata, setNFTMetadata] = useState([] as any[]);
 
   // punks hook
   useEffect(() => {
-    if (!punks) return;
-    let imageArr: any[] = [];
+    if (!tokenURIs) return;
     Promise.all(
-      punks.map(async (e, idx) => {
-        imageArr[idx] = [];
-        return await axios.get(e).then(async (res: any) => {
-          imageArr[idx] = res.data;
-        });
+      tokenURIs.map(async (uri) => {
+        if (!uri.endsWith("json")) {
+          uri = uri + ".json"; // TODO: Hardcode
+        }
+        return axios.get(uri).then(async (res) => res.data);
       })
-    ).then(() => {
-      setPunkData(imageArr);
+    ).then((metadata) => {
+      setNFTMetadata(metadata);
     });
-  }, [punks]);
+  }, [tokenURIs]);
 
   const isOwner =
     address && nom && nom.owner.toLowerCase() === address.toLowerCase();
@@ -212,13 +181,10 @@ export const SearchDetail: React.FC = () => {
                     {/* NFTs */}
                     <Heading variant="search.heading">NFTs</Heading>
                     <Box variant="search.rowScrollContainer">
-                      {punkData.length > 0 ? (
-                        punkData?.map((t, idx) => {
+                      {nftMetadata.length > 0 ? (
+                        nftMetadata?.map((t, idx) => {
                           return (
-                            <Box
-                              variant="search.nft.imageContainer"
-                              key={t.dna}
-                            >
+                            <Box variant="search.nft.imageContainer" key={idx}>
                               <Spinner />
                               <Image
                                 variant="search.nft.image"
