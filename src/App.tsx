@@ -3,7 +3,6 @@ import { Container } from "theme-ui";
 import { Route, Switch } from "react-router-dom";
 import { Search } from "pages/Search";
 import { SearchDetail } from "pages/SearchDetail";
-import { Reserve } from "pages/Reserve";
 import { Extend } from "pages/Extend";
 import Modal from "react-modal";
 import { Footer } from "components/Footer";

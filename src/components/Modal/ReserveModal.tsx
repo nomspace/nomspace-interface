@@ -1,9 +1,7 @@
 import { CustomModal } from "components/Modal/CustomModal";
 import { ModalContent } from "@mattjennings/react-modal";
-import { Flex, Text } from "theme-ui";
-import React, { useEffect } from "react";
-import { Reserve } from "pages/Reserve";
-import { useRef } from "react";
+import React from "react";
+import { ReserveView } from "components/Modal/ReserveView";
 
 interface Props {
   open: boolean;
@@ -21,7 +19,7 @@ export const ReserveModal: React.FC<Props> = ({ open, onClose }) => {
           overflowX: "hidden",
         }}
       >
-        <Reserve />
+        <ReserveView />
       </ModalContent>
     </CustomModal>
   );

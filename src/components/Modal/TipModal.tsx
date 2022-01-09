@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { CustomModal } from "components/Modal/CustomModal";
 import { ModalContent } from "@mattjennings/react-modal";
 import QRCode from "qrcode.react";
@@ -15,13 +15,11 @@ import {
   Text,
 } from "theme-ui";
 import Select from "@mui/material/Select";
-import { Token } from "web3-token-list";
 import { TokenWithBalance, useTokens } from "hooks/useTokens";
 import { formatUnits, parseUnits } from "ethers/lib/utils";
 import { useGetConnectedSigner } from "@celo-tools/use-contractkit";
 import { ERC20__factory } from "generated";
 import { GlobalNom } from "hooks/useNom";
-import { useName } from "hooks/useName";
 import { toastTx } from "utils/toastTx";
 
 interface Props {
@@ -31,7 +29,6 @@ interface Props {
 }
 
 export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
-  const { name } = useName();
   const [nom] = GlobalNom.useContainer();
   const [tokens] = useTokens();
   const [coin, setCoin] = React.useState<TokenWithBalance>();

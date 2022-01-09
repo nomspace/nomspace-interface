@@ -12,7 +12,7 @@ import { useContractKit } from "@celo-tools/use-contractkit";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
 import { shortenAddress } from "utils/address";
 
-export const Reserve: React.FC = () => {
+export const ReserveView: React.FC = () => {
   const { name } = useName();
   const { address } = useContractKit();
 
