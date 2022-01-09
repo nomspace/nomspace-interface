@@ -91,12 +91,35 @@ export const Reserve: React.FC = () => {
       </Text>
       <Flex variant="modal.container">
         <Box variant="modal.form.container">
-          <Box variant="modal.form.durationWrapper">
+          <Box variant="modal.form.inputWrapper">
             <Input
-              variant="modal.form.input"
               type="number"
-              placeholder="0.00"
+              value={years}
+              onChange={(e) => {
+                const years = e.target.value;
+                if (isNaN(Number(years))) return;
+                setYears(Number(years));
+                setCost((Number(years) * YEAR_IN_SECONDS * NOM_FEE).toString());
+              }}
+              variant="modal.form.input"
+              sx={{ paddingLeft: "230px", boxSizing: "border-box" }}
+              placeholder="0"
             />
+            <Text
+              sx={{
+                fontWeight: "400",
+                display: "block",
+                position: "absolute",
+                width: 80,
+                left: 21,
+                top: "50%",
+                transform: "translateY(-50%)",
+                fontSize: [25, null, null, 32],
+                whiteSpace: ["normal", "nowrap"],
+              }}
+            >
+              Duration (Years)
+            </Text>
           </Box>
           <Box variant="modal.form.selectWrapper">
             <ThemeProvider theme={createTheme()}>
@@ -143,100 +166,71 @@ export const Reserve: React.FC = () => {
               </Select>
             </ThemeProvider>
           </Box>
-          <Box variant="modal.form.totalCostWrapper">
+          <Text
+            sx={{ color: "primaryTextColor", cursor: "pointer" }}
+            variant="form"
+            onClick={() => {
+              if (usd) {
+                const cost = formatUnits(usd.balance, usd.decimals);
+                setCost(cost);
+                setYears(Number(cost) / YEAR_IN_SECONDS / NOM_FEE);
+              }
+            }}
+          >
+            max: {usd ? formatUnits(usd.balance, usd.decimals) : "0"}
+          </Text>
+
+          <Box variant="modal.form.inputWrapper">
             <Input
+              value={cost}
+              onChange={(e) => {
+                const cost = e.target.value;
+                setCost(cost);
+                setYears(Number(cost) / YEAR_IN_SECONDS / NOM_FEE);
+              }}
               variant="modal.form.input"
-              type="number"
               placeholder="0.00"
+              sx={{ paddingLeft: "150px" }}
             />
+            <Text
+              sx={{
+                fontWeight: "400",
+                display: "block",
+                position: "absolute",
+                width: 80,
+                left: 21,
+                top: "50%",
+                transform: "translateY(-50%)",
+                fontSize: [25, null, null, 32],
+                whiteSpace: ["normal", "nowrap"],
+              }}
+            >
+              Total Cost
+            </Text>
           </Box>
-          <Button disabled={!!""} variant="modal.form.submit">
-            CONFIRM
-          </Button>
+
+          {isNormal ? (
+            loading ? (
+              <Spinner />
+            ) : nom.owner === ZERO_ADDRESS ? (
+              button
+            ) : nom.owner === address ? (
+              <BlockText>You own this name!</BlockText>
+            ) : (
+              <BlockText>
+                Name has already been reserved by{" "}
+                <BlockscoutAddressLink address={nom.owner}>
+                  {shortenAddress(nom.owner)}
+                </BlockscoutAddressLink>
+              </BlockText>
+            )
+          ) : (
+            <BlockText>
+              This name is invalid and not available for reservation.
+            </BlockText>
+          )}
         </Box>
       </Flex>
     </>
   );
-
-  // return (
-  //   <Flex sx={{ alignItems: "center", flexDirection: "column" }}>
-  //     <Box sx={{ width: "100%", maxWidth: "800px" }} py={4} px={3}>
-  //       <Flex mb={4}>
-  //         <Heading as="h2">
-  //           Reserve <Text color="primaryTextColor">{name}.nom</Text>
-  //         </Heading>
-  //       </Flex>
-  //       <Text variant="form">Years to reserve</Text>
-  //       <Flex sx={{ alignItems: "center" }}>
-  //         <Input
-  //           type="number"
-  //           value={years}
-  //           onChange={(e) => {
-  //             const years = e.target.value;
-  //             if (isNaN(Number(years))) return;
-  //             setYears(Number(years));
-  //             setCost((Number(years) * YEAR_IN_SECONDS * NOM_FEE).toString());
-  //           }}
-  //           mr={2}
-  //         />
-  //         <Text>year(s)</Text>
-  //       </Flex>
-  //       <Flex mt={2} sx={{ justifyContent: "center" }}>
-  //         <ArrowDown size={32} />
-  //       </Flex>
-  //       <Flex sx={{ alignItems: "center" }}>
-  //         <Box sx={{ width: "100%" }} mr={2}>
-  //           <Flex sx={{ justifyContent: "space-between", mb: 1 }}>
-  //             <Text variant="form">Cost</Text>
-  //             <Text
-  //               sx={{ color: "primaryTextColor", cursor: "pointer" }}
-  //               variant="form"
-  //               onClick={() => {
-  //                 if (usd) {
-  //                   const cost = formatUnits(usd.balance, usd.decimals);
-  //                   setCost(cost);
-  //                   setYears(Number(cost) / YEAR_IN_SECONDS / NOM_FEE);
-  //                 }
-  //               }}
-  //             >
-  //               max: {usd ? formatUnits(usd.balance, usd.decimals) : "0"}
-  //             </Text>
-  //           </Flex>
-  //           <Input
-  //             sx={{ width: "100%" }}
-  //             value={cost}
-  //             onChange={(e) => {
-  //               const cost = e.target.value;
-  //               setCost(cost);
-  //               setYears(Number(cost) / YEAR_IN_SECONDS / NOM_FEE);
-  //             }}
-  //           />
-  //         </Box>
-  //         <Text mt={3}>USD</Text>
-  //       </Flex>
-  //       <Flex sx={{ justifyContent: "center", mt: 6 }}>
-  //         {isNormal ? (
-  //           loading ? (
-  //             <Spinner />
-  //           ) : nom.owner === ZERO_ADDRESS ? (
-  //             button
-  //           ) : nom.owner === address ? (
-  //             <BlockText>You own this name!</BlockText>
-  //           ) : (
-  //             <BlockText>
-  //               Name has already been reserved by{" "}
-  //               <BlockscoutAddressLink address={nom.owner}>
-  //                 {shortenAddress(nom.owner)}
-  //               </BlockscoutAddressLink>
-  //             </BlockText>
-  //           )
-  //         ) : (
-  //           <BlockText>
-  //             This name is invalid and not available for reservation.
-  //           </BlockText>
-  //         )}
-  //       </Flex>
-  //     </Box>
-  //   </Flex>
-  // );
 };

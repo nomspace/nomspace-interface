@@ -87,12 +87,28 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
                 </Select>
               </ThemeProvider>
             </Box>
-            <Box variant="modal.form.amountWrapper">
+            <Box variant="modal.form.inputWrapper">
               <Input
                 variant="modal.form.input"
                 type="number"
                 placeholder="0.00"
+                sx={{ paddingLeft: "130px" }}
               />
+              <Text
+                sx={{
+                  fontWeight: "400",
+                  display: "block",
+                  position: "absolute",
+                  width: 80,
+                  left: 21,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  fontSize: [25, null, null, 32],
+                  whiteSpace: ["normal", "nowrap"],
+                }}
+              >
+                Amount
+              </Text>
             </Box>
             <Button disabled={!!""} variant="modal.form.submit">
               CONFIRM
