@@ -191,7 +191,16 @@ export const SearchDetail: React.FC = () => {
                     </Flex>
                     {/* NFTs */}
                     <Heading variant="search.heading">NFTs</Heading>
-                    <Box variant="search.rowScrollContainer">
+                    <Box
+                      variant="search.rowScrollContainer"
+                      // sx={{
+                      //   height: 200,
+                      //   overflowY: "auto",
+                      //   flexDirection: "column",
+                      //   position: "fixed",
+                      //   zIndex: 110,
+                      // }}
+                    >
                       {nfts.map((e, idx) => {
                         return (
                           <Box key={idx} variant="search.nft.imageContainer">
@@ -224,6 +233,7 @@ export const SearchDetail: React.FC = () => {
                       })}
                     </Box>
                     {/* Stats */}
+
                     <Heading variant="search.heading">Stats</Heading>
                     <Box variant="search.stat.container">
                       <Flex variant="search.stat.row">

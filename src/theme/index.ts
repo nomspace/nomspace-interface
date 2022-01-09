@@ -284,7 +284,7 @@ export const preset = {
       container: {
         marginRight: ["mobile", "tablet", "desktop"],
         marginTop: [13, null, null, 49],
-        justifyContent: "end",
+        justifyContent: "flex-end",
         alignItems: "center",
       },
       imageContainer: {
@@ -591,53 +591,98 @@ export const preset = {
         display: ["none", null, null, "block"],
       },
       mobile: {
+        fontSize: "20px",
+        margin: "17px 0px",
+        width: "80%",
+        textAlign: "center",
+        overflowWrap: "anywhere",
         display: ["block", null, null, "none"],
       },
     },
     container: {
-      minWidth: "100%",
-      margin: "50px 0px",
+      minWidth: ["80%", null, null, "100%"],
+      width: "100%",
+      margin: ["10px", null, null, "50px 0px"],
       justifyContent: "space-evenly",
+      alignItems: "center",
       flexDirection: ["column", null, null, "row"],
     },
-    qrCode: {},
+    qrCode: {
+      width: [150, null, null, 300],
+      height: [150, null, null, 300],
+    },
     form: {
       container: {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+        alignItems: "center",
       },
       item: {
-        width: 395,
+        width: ["100%", 395],
         height: 85,
         fontSize: 32,
       },
       input: {
         variant: "modal.form.item",
-        textAlign: "right",
+        width: ["100%"],
         position: "relative",
         paddingRight: 23,
         borderRadius: 11,
+        textAlign: "right",
         backgroundColor: "white",
         border: "none",
         filter: "drop-shadow(0px 3px 6px #00000029)",
       },
+      selectWrapper: {
+        variant: "modal.form.item",
+        marginBottom: "17px",
+      },
       inputWrapper: {
+        marginBottom: "27px",
         position: "relative",
+      },
+      inputText: {
+        fontWeight: "400",
+        display: "block",
+        position: "absolute",
+        width: 1,
+        left: 21,
+        top: "50%",
+        transform: "translateY(-50%)",
+        fontSize: [25, null, null, 32],
+      },
+      amountWrapper: {
+        variant: "modal.form.inputWrapper",
         "::after": {
           content: '"Amount:"',
-          fontWeight: "400",
-          display: "block",
-          position: "absolute",
-          width: 1,
-          left: 21,
-          top: "50%",
-          transform: "translateY(-50%)",
-          fontSize: 32,
+          variant: "modal.form.inputText",
+        },
+      },
+      durationWrapper: {
+        variant: "modal.form.inputWrapper",
+        "::after": {
+          content: '"Duration (Years):"',
+          variant: "modal.form.inputText",
+        },
+      },
+      totalCostWrapper: {
+        variant: "modal.form.inputWrapper",
+        "::after": {
+          content: '"Total Cost:"',
+          variant: "modal.form.inputText",
         },
       },
       submit: {
         variant: "modal.form.item",
+        borderRadius: "11px",
+        backgroundColor: "hsla(145, 55%, 56%, 1)",
+        ":hover": {
+          backgroundColor: "hsla(145, 55%, 35%, 1)",
+        },
+        ":disabled": {
+          backgroundColor: "grey",
+        },
       },
     },
   },
@@ -645,7 +690,7 @@ export const preset = {
     // Modal components
     backdrop: {
       zIndex: `backdrop`,
-      position: `fixed`,
+      position: `absolute`,
       top: 0,
       left: 0,
       right: 0,
@@ -656,7 +701,6 @@ export const preset = {
     content: {
       px: "1rem",
       flexGrow: 1,
-      overflowY: "scroll",
     },
     footer: {
       minHeight: 16,
@@ -674,34 +718,23 @@ export const preset = {
     },
 
     // Modal variants
+
     default: {
       backgroundColor: "rgba(255, 255, 255, 0.44)",
       backdropFilter: "blur(50px) brightness(132%)",
-      padding: "90px 100px",
+      padding: ["5px", "10px", null, "90px 100px"],
       borderRadius: "30px",
       boxShadow: `md`,
       display: `flex`,
       flexDirection: `column`,
       justifyContent: "center",
       maxHeight: `80vh`,
+      // overflowY: "auto",
       minHeight: "16rem",
       minWidth: "16rem",
       maxWidth: "90vw",
-      position: `absolute`,
-      top: [`25%`, `10%`, `10%`],
-      zIndex: `modal`,
-    },
-    defaultFullScreen: {
-      backgroundColor: "background",
-      borderRadius: 0,
-      display: `flex`,
-      flexDirection: `column`,
-      minHeight: "100vh",
-      maxHeight: "100vh",
-      height: `fill-available`,
-      position: `absolute`,
-      top: 0,
-      width: `100vw`,
+      position: `relative`,
+      top: [`5%`, `10%`, `10%`],
       zIndex: `modal`,
     },
   },

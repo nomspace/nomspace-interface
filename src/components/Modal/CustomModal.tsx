@@ -1,4 +1,4 @@
-import { Modal } from "@mattjennings/react-modal";
+import { Modal } from "../react-modal";
 
 interface Props {
   open: boolean;
@@ -10,6 +10,7 @@ export const CustomModal: React.FC<Props> = ({ open, onClose, children }) => {
     <Modal
       open={open}
       onClose={onClose}
+      fullScreen={false}
       animations={{
         default: {
           enter: {
@@ -26,14 +27,6 @@ export const CustomModal: React.FC<Props> = ({ open, onClose, children }) => {
               duration: 0.3,
               ease: "easeInOut",
             },
-          },
-        },
-        fullScreen: {
-          enter: {
-            opacity: 1,
-          },
-          exit: {
-            opacity: 0,
           },
         },
       }}

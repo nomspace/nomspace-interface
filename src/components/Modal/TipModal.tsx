@@ -1,13 +1,13 @@
+import React from "react";
 import { CustomModal } from "components/Modal/CustomModal";
 import { ModalContent } from "@mattjennings/react-modal";
-import { Flex, Box, Input, Button, Text } from "theme-ui";
 import QRCode from "qrcode.react";
 import MenuItem from "@mui/material/MenuItem";
-import { ThemeProvider as ThemeUIThemeProvider } from "theme-ui";
 import theme from "theme";
-import { ThemeProvider, createTheme } from "@mui/material";
+import { Flex, Box, Input, Button, Text } from "theme-ui";
 import { GetExplorerIconImages } from "components/ExplorerIcons";
-import React from "react";
+import { ThemeProvider, createTheme } from "@mui/material";
+import { ThemeProvider as ThemeUIThemeProvider } from "theme-ui";
 import Select from "@mui/material/Select";
 
 interface Props {
@@ -22,30 +22,37 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
 
   return (
     <CustomModal open={open} onClose={onClose}>
-      <ModalContent>
-        <Text variant="modal.title">Send a Tip</Text>
+      <ModalContent
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          overflowX: "hidden",
+        }}
+      >
+        <Text variant="modal.title">Send Tip</Text>
         <Flex variant="modal.container">
           <Box variant="modal.qrCode">
             <QRCode
               value={`https://twitter.com/nomspace_nom`}
               bgColor={"rgba(0,0,0,0)"}
-              style={{ width: "300px", height: "300px" }}
+              style={{ width: "100%", height: "100%" }}
               size={300}
             />
           </Box>
           <Text variant="modal.wallet.mobile">{resolution}</Text>
           <Box variant="modal.form.container">
-            <Box variant="modal.form.item">
+            <Box variant="modal.form.selectWrapper">
               <ThemeProvider theme={createTheme()}>
                 <Select
+                  MenuProps={{
+                    disableScrollLock: true,
+                  }}
                   value={coin}
                   onChange={(e) => {
                     setCoin(e.target.value);
                   }}
                   autoWidth
-                  MenuProps={{
-                    disableScrollLock: true,
-                  }}
                   sx={{
                     borderRadius: "11px",
                     backgroundColor: "white",
@@ -67,7 +74,7 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
                                 alignItems: "center",
                                 justifyContent: "space-between",
                                 fontFamily: "sen",
-                                fontSize: "33px",
+                                fontSize: ["25px", null, null, "33px"],
                               }}
                             >
                               {e.elm}
@@ -80,7 +87,7 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
                 </Select>
               </ThemeProvider>
             </Box>
-            <Box variant="modal.form.inputWrapper">
+            <Box variant="modal.form.amountWrapper">
               <Input
                 variant="modal.form.input"
                 type="number"
@@ -88,7 +95,7 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
               />
             </Box>
             <Button disabled={!!""} variant="modal.form.submit">
-              Enter an Amount
+              CONFIRM
             </Button>
           </Box>
         </Flex>
