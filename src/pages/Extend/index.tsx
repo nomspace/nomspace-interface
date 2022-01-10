@@ -25,7 +25,6 @@ import { SearchBar } from "src/components/SearchBar";
 import { YEAR_IN_SECONDS, ZERO_ADDRESS } from "src/constants";
 import { useCUSD } from "src/hooks/useCUSD";
 import { StableToken } from "@celo/contractkit";
-import { MaxUint256 } from "@ethersproject/constants";
 import { useNomFee } from "src/hooks/useNomFee";
 import { formatName } from "src/utils/name";
 import { normalize } from "eth-ens-namehash";
