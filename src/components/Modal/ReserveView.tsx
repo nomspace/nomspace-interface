@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { GlobalNom } from "hooks/useNom";
 import { Box, Button, Flex, Input, Spinner, Text } from "theme-ui";
 import { useUSD } from "hooks/useUSD";
@@ -12,13 +12,16 @@ import { useContractKit } from "@celo-tools/use-contractkit";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
 import { shortenAddress } from "utils/address";
 
-export const ReserveView: React.FC = () => {
-  const { name } = useName();
+interface Props {
+  name: string;
+}
+
+export const ReserveView: React.FC<Props> = ({ name }) => {
   const { address } = useContractKit();
 
   const [nom] = GlobalNom.useContainer();
   const [years, setYears] = React.useState(1);
-  const [cost, setCost] = React.useState(5);
+  const [cost, setCost] = React.useState(name.length <= 3 ? 20 : 5);
   const [usd, refetchUSD] = useUSD();
   const [tokens] = useTokens();
   const { approve, reserve, loading } = useReserve(name);

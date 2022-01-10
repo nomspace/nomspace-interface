@@ -6,9 +6,10 @@ import { ReserveView } from "components/Modal/ReserveView";
 interface Props {
   open: boolean;
   onClose: () => void;
+  name: string;
 }
 
-export const ReserveModal: React.FC<Props> = ({ open, onClose }) => {
+export const ReserveModal: React.FC<Props> = ({ open, onClose, name }) => {
   return (
     <CustomModal open={open} onClose={onClose}>
       <ModalContent
@@ -19,7 +20,7 @@ export const ReserveModal: React.FC<Props> = ({ open, onClose }) => {
           overflowX: "hidden",
         }}
       >
-        <ReserveView />
+        <ReserveView name={name} />
       </ModalContent>
     </CustomModal>
   );

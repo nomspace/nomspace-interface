@@ -13,15 +13,15 @@ import { shortenAddress } from "utils/address";
 
 interface Props {
   onClose: () => void;
+  name: string;
 }
 
-export const ExtendView: React.FC<Props> = ({ onClose }) => {
-  const { name } = useName();
+export const ExtendView: React.FC<Props> = ({ onClose, name }) => {
   const { address } = useContractKit();
 
   const [nom] = GlobalNom.useContainer();
   const [years, setYears] = React.useState(1);
-  const [cost, setCost] = React.useState(5);
+  const [cost, setCost] = React.useState(name.length <= 3 ? 20 : 5);
   const [usd, refetchUSD] = useUSD();
   const [tokens] = useTokens();
   const { approve, extend, loading } = useReserve(name);

@@ -6,9 +6,10 @@ import { ExtendView } from "components/Modal/ExtendView";
 interface Props {
   open: boolean;
   onClose: () => void;
+  name: string;
 }
 
-export const ExtendModal: React.FC<Props> = ({ open, onClose }) => {
+export const ExtendModal: React.FC<Props> = ({ open, onClose, name }) => {
   return (
     <CustomModal open={open} onClose={onClose}>
       <ModalContent
@@ -19,7 +20,7 @@ export const ExtendModal: React.FC<Props> = ({ open, onClose }) => {
           overflowX: "hidden",
         }}
       >
-        <ExtendView onClose={onClose} />
+        <ExtendView onClose={onClose} name={name} />
       </ModalContent>
     </CustomModal>
   );

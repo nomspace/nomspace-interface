@@ -69,6 +69,7 @@ export const SearchDetail: React.FC = () => {
     address && nom && nom.owner.toLowerCase() === address.toLowerCase();
 
   if (!nom) return <Spinner />;
+  if (!name) return <Text>Name is invalid. Please try again.</Text>;
 
   return (
     <>
@@ -80,10 +81,12 @@ export const SearchDetail: React.FC = () => {
       <ReserveModal
         open={reserveModalOpen}
         onClose={() => setReserveModalOpen(false)}
+        name={name}
       />
       <ExtendModal
         open={extendModalOpen}
         onClose={() => setExtendModalOpen(false)}
+        name={name}
       />
       <Flex
         sx={{
@@ -197,7 +200,7 @@ export const SearchDetail: React.FC = () => {
                     {/* NFTs */}
                     <Heading variant="search.heading">NFTs</Heading>
                     <Box variant="search.rowScrollContainer">
-                      {nftMetadata.length > 0 ? (
+                      {nftMetadata != null ? (
                         nftMetadata?.map((t, idx) => {
                           return (
                             <Box variant="search.nft.imageContainer" key={idx}>
