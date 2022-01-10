@@ -17,36 +17,15 @@ import { ZERO_ADDRESS } from "utils/constants";
 import { useSetNomSetting } from "hooks/useSetNomSetting";
 import { useName } from "hooks/useName";
 import { Sidebar } from "components/Sidebar";
-
-/* ASSETS */
-import pfp from "pages/SearchDetail/assets/pfp.png";
-import banner from "pages/SearchDetail/assets/banner.png";
-
-// connections
-
-/* DEMO PURPOSES, DELETE LATER */
-// nfts
-
-// tokens
-
-// stats
-
-// sources
-import s1 from "pages/SearchDetail/assets/s1.png";
-import s2 from "pages/SearchDetail/assets/s2.png";
-import s3 from "pages/SearchDetail/assets/s3.png";
-
-// nomstronaut
+import defaultPFP from "assets/DefaultPFP.png";
+import defaultBanner from "assets/DefaultBanner.png";
 
 //noms
 import styled from "@emotion/styled";
 import { TextKey } from "config";
 import { useHistory } from "react-router-dom";
 import { UserNonce } from "hooks/useUserNonce";
-
-const sources = [{ img: s1 }, { img: s2 }, { img: s3 }];
-
-/* DEMO PURPOSES, DELETE LATER */
+import { ExplorerIcons } from "components/ExplorerIcons";
 
 const StyledLabel = styled(Label)({});
 const StyledInput = styled(Input)({
@@ -177,10 +156,14 @@ export const Manage: React.FC = () => {
                       <Box
                         variant="search.banner.image"
                         sx={{
-                          backgroundImage: `url(${banner})`,
+                          backgroundImage: `url(${defaultBanner})`,
                         }}
                       />
-                      <Image variant="search.banner.avatar" src={pfp} />
+                      <Image
+                        sx={{ clipPath: "circle(60px at center)" }}
+                        variant="search.banner.avatar"
+                        src={defaultPFP}
+                      />
                       {/* nomstronaut + tip */}
                       <Flex variant="search.nomstronautTip.container">
                         <Button
@@ -209,21 +192,7 @@ export const Manage: React.FC = () => {
                             >
                               .nom
                             </Heading>
-                            {sources.map((e, idx) => {
-                              return (
-                                <Box
-                                  variant="search.name.source.imageContainer"
-                                  key={idx}
-                                >
-                                  <Box
-                                    variant="search.name.source.image"
-                                    sx={{
-                                      backgroundImage: `url(${e.img})`,
-                                    }}
-                                  ></Box>
-                                </Box>
-                              );
-                            })}
+                            <ExplorerIcons userAddress={nom.resolution} />
                           </Flex>
                         </Box>
 

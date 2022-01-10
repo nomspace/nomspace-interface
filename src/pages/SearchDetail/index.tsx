@@ -19,10 +19,10 @@ import { useHistory } from "react-router-dom";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
 import { useNFTs } from "hooks/useNFTs";
 import axios from "axios";
+import defaultPFP from "assets/DefaultPFP.png";
+import defaultBanner from "assets/DefaultBanner.png";
 
 /* ASSETS */
-import pfp from "pages/SearchDetail/assets/pfp.png";
-import banner from "pages/SearchDetail/assets/banner.png";
 
 // connections
 
@@ -111,10 +111,14 @@ export const SearchDetail: React.FC = () => {
                     <Box
                       variant="search.banner.image"
                       sx={{
-                        backgroundImage: `url(${banner})`,
+                        backgroundImage: `url(${defaultBanner})`,
                       }}
                     />
-                    <Image variant="search.banner.avatar" src={pfp} />
+                    <Image
+                      sx={{ clipPath: "circle(60px at center)" }}
+                      variant="search.banner.avatar"
+                      src={defaultPFP}
+                    />
                     {/* nomstronaut + tip */}
                     <Flex variant="search.nomstronautTip.container">
                       {/* 
