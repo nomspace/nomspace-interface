@@ -26,7 +26,7 @@ import styled from "@emotion/styled";
 import { TextKey } from "config";
 import { useHistory } from "react-router-dom";
 import { UserNonce } from "hooks/useUserNonce";
-import { ExplorerIcons } from "components/ExplorerIcons";
+import { isAddress } from "web3-utils";
 
 const StyledLabel = styled(Label)({});
 const StyledInput = styled(Input)({
@@ -45,6 +45,7 @@ export const Manage: React.FC = () => {
   const { address } = useContractKit();
   const [nom, refetchNom] = GlobalNom.useContainer();
   const { setNomSetting } = useSetNomSetting(name);
+  const resolutionInput = useRef<HTMLInputElement>(null);
   const bioInput = useRef<HTMLInputElement>(null);
   const websiteInput = useRef<HTMLInputElement>(null);
   const twitterInput = useRef<HTMLInputElement>(null);
@@ -59,6 +60,7 @@ export const Manage: React.FC = () => {
   // TODO: Text validation
   const onSave = useCallback(async () => {
     if (nonce == null) return;
+    const newResolution = resolutionInput.current?.value;
     const newBio = bioInput.current?.value;
     const newWebsite = websiteInput.current?.value;
     const newTwitter = twitterInput.current?.value;
@@ -66,6 +68,18 @@ export const Manage: React.FC = () => {
     const newTelegram = telegramInput.current?.value;
     let currentNonce = nonce;
 
+    if (nom?.resolution !== newResolution) {
+      if (newResolution && isAddress(newResolution)) {
+        await setNomSetting(currentNonce, "setAddr(bytes32,address)", [
+          namehash,
+          newResolution,
+        ]);
+        currentNonce += 1;
+        refetchNom();
+      } else {
+        alert("Invalid address entered for resolution.");
+      }
+    }
     if (nom?.bio !== newBio) {
       await setNomSetting(currentNonce, "setText", [
         namehash,
@@ -202,12 +216,16 @@ export const Manage: React.FC = () => {
                               >
                                 .nom
                               </Heading>
-                              <ExplorerIcons userAddress={nom.resolution} />
                             </Flex>
                           </Box>
 
                           {/*Inputs*/}
                           <EditSection>
+                            <StyledLabel>Resolution</StyledLabel>
+                            <StyledInput
+                              ref={resolutionInput}
+                              defaultValue={nom?.resolution}
+                            />
                             <StyledLabel>Bio</StyledLabel>
                             <StyledInput
                               ref={bioInput}
