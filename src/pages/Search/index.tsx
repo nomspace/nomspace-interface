@@ -19,12 +19,13 @@ import UbeswapDarkImage from "assets/Ubeswap_dark.png";
 import MobiusDarkImage from "assets/Mobius_dark.png";
 import CelotrackerDarkImage from "assets/Celotracker_dark.png";
 import UbeswapLightImage from "assets/Ubeswap_light.png";
-import MobiusLightImage from "assets/Celotracker_light.png";
+import MobiusLightImage from "assets/Mobius_light.png";
 import CelotrackerLightImage from "assets/Celotracker_light.png";
 import ProfilePreviewIllustration from "assets/ProfilePreviewIllustration.png";
 import NFTIllustration from "assets/NFTIllustration.png";
 import CrossChainIllustration from "assets/CrossChainIllustration.png";
 import { GithubLogo, TwitterLogo, DiscordLogo } from "phosphor-react";
+import { NewTabLink } from "components/NewTabLink";
 
 const Title = styled(Heading)({
   fontSize: "40px",
@@ -153,17 +154,28 @@ export const Search: React.FC = () => {
       <Flex
         sx={{ justifyContent: "space-evenly", mt: "30px", flexWrap: "wrap" }}
       >
-        <Image
-          src={colorMode === "dark" ? UbeswapDarkImage : UbeswapLightImage}
-        />
-        <Image
-          src={colorMode === "dark" ? MobiusDarkImage : MobiusLightImage}
-        />
-        <Image
-          src={
-            colorMode === "dark" ? CelotrackerDarkImage : CelotrackerLightImage
-          }
-        />
+        <NewTabLink href="https://ubeswap.org">
+          <Image
+            sx={{ height: "40px" }}
+            src={colorMode === "dark" ? UbeswapDarkImage : UbeswapLightImage}
+          />
+        </NewTabLink>
+        <NewTabLink href="https://mobius.money">
+          <Image
+            sx={{ height: "40px" }}
+            src={colorMode === "dark" ? MobiusDarkImage : MobiusLightImage}
+          />
+        </NewTabLink>
+        <NewTabLink href="https://celotracker.com">
+          <Image
+            sx={{ height: "40px" }}
+            src={
+              colorMode === "dark"
+                ? CelotrackerDarkImage
+                : CelotrackerLightImage
+            }
+          />
+        </NewTabLink>
       </Flex>
 
       <Header as="h2" mt="64px">
