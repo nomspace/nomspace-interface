@@ -4,13 +4,7 @@ import {
   useGetConnectedSigner,
   useProvider,
 } from "@celo-tools/use-contractkit";
-import {
-  USD,
-  RESERVE_PORTAL,
-  ENS_ADDR,
-  BASE_ADDR,
-  FORWARDER_ADDR,
-} from "addresses";
+import { USD, RESERVE_PORTAL, BASE_ADDR, FORWARDER_ADDR } from "addresses";
 import {
   ERC20__factory,
   BaseRegistrarImplementation__factory,
@@ -19,8 +13,6 @@ import {
 } from "generated";
 import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
-import { parseUnits } from "ethers/lib/utils";
-import { YEAR_IN_SECONDS } from "utils/constants";
 import { labelhash } from "@ensdomains/ensjs";
 import { useCeloProvider } from "./useCeloProvider";
 import { useCeloChainId } from "./useCeloChainId";

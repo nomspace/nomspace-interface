@@ -129,6 +129,7 @@ export const Manage: React.FC = () => {
     history.push(`/${name}`);
   }, [
     nonce,
+    nom?.resolution,
     nom?.bio,
     nom?.website,
     nom?.twitter,
