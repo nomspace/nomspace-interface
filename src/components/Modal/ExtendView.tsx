@@ -4,7 +4,6 @@ import { Box, Button, Flex, Input, Spinner, Text } from "theme-ui";
 import { useUSD } from "hooks/useUSD";
 import { useReserve } from "hooks/useReserve";
 import { formatUnits } from "ethers/lib/utils";
-import { useName } from "hooks/useName";
 import { useTokens } from "hooks/useTokens";
 import { getNomCost, getNomYears } from "utils/cost";
 import { useContractKit } from "@celo-tools/use-contractkit";

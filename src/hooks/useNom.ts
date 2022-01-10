@@ -21,6 +21,7 @@ type NomResult = {
   discord: string;
   telegram: string;
   twitter: string;
+  avatar: string;
 };
 
 const useNom = () => {
@@ -50,6 +51,7 @@ const useNom = () => {
       discord,
       telegram,
       twitter,
+      avatar,
       owner,
       expiration,
     ] = await Promise.all([
@@ -60,6 +62,7 @@ const useNom = () => {
       await nom.getText(TextKey.DISCORD),
       await nom.getText(TextKey.TELEGRAM),
       await nom.getText(TextKey.TWITTER),
+      await nom.getText(TextKey.AVATAR),
       await base.ownerOf(tokenId).catch(() => ZERO_ADDRESS),
       await base.nameExpires(tokenId).then((e) => e.toNumber()),
     ]);
@@ -73,6 +76,7 @@ const useNom = () => {
       discord,
       telegram,
       twitter,
+      avatar,
     };
   }, [celoChainId, ens, name, celoProvider]);
 

@@ -1,5 +1,5 @@
 import { GlobalNom } from "hooks/useNom";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import { Box, Button, Flex, Heading, Spinner, Image, Text } from "theme-ui";
 import { NATIVE_CURRENCY } from "config";
@@ -18,52 +18,24 @@ import { Page } from "state/global";
 import { useHistory } from "react-router-dom";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
 import { useNFTs } from "hooks/useNFTs";
-import axios from "axios";
 import defaultPFP from "assets/DefaultPFP.png";
 import defaultBanner from "assets/DefaultBanner.png";
-
-/* ASSETS */
-
-// connections
-
-/* DEMO PURPOSES, DELETE LATER */
-
-// stats
 import life2 from "pages/SearchDetail/assets/life1.png";
 import life1 from "pages/SearchDetail/assets/life2.png";
 import networth from "pages/SearchDetail/assets/networth.png";
-
 // import nomstronaut from "pages/SearchDetail/assets/astro.png";
-
-/* DEMO PURPOSES, DELETE LATER */
 
 export const SearchDetail: React.FC = () => {
   const { name } = useName();
   const { address, network } = useContractKit();
   const [nom] = GlobalNom.useContainer();
-  const [tokenURIs] = useNFTs(nom?.resolution);
+  const [nftMetadata] = useNFTs(nom?.resolution);
   const [tokens] = useTokenBalances(nom?.resolution);
   const [userStats] = useUserStats(nom?.resolution);
   const history = useHistory();
   const [tipModalOpen, setTipModalOpen] = useState(false);
   const [reserveModalOpen, setReserveModalOpen] = useState(false);
   const [extendModalOpen, setExtendModalOpen] = useState(false);
-  const [nftMetadata, setNFTMetadata] = useState([] as any[]);
-
-  // punks hook
-  useEffect(() => {
-    if (!tokenURIs) return;
-    Promise.all(
-      tokenURIs.map(async (uri) => {
-        if (!uri.endsWith("json")) {
-          uri = uri + ".json"; // TODO: Hardcode
-        }
-        return axios.get(uri).then(async (res) => res.data);
-      })
-    ).then((metadata) => {
-      setNFTMetadata(metadata);
-    });
-  }, [tokenURIs]);
 
   const isOwner =
     address && nom && nom.owner.toLowerCase() === address.toLowerCase();
@@ -120,7 +92,7 @@ export const SearchDetail: React.FC = () => {
                     <Image
                       sx={{ clipPath: "circle(60px at center)" }}
                       variant="search.banner.avatar"
-                      src={defaultPFP}
+                      src={nom.avatar !== "" ? nom.avatar : defaultPFP}
                     />
                     {/* nomstronaut + tip */}
                     <Flex variant="search.nomstronautTip.container">

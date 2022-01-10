@@ -6,6 +6,7 @@ import { Multicall__factory } from "generated";
 import { useCallback } from "react";
 import { useAsyncState } from "./useAsyncState";
 import nftTokenList from "addresses/nft-token-list";
+import axios from "axios";
 
 export const useNFTs = (user?: string) => {
   const { network } = useContractKit();
@@ -18,13 +19,13 @@ export const useNFTs = (user?: string) => {
     const multicall = Multicall__factory.connect(multicallAddress, provider);
 
     const networkTokens = nftTokenList[network.chainId] ?? [];
-    const allTokenURIs = [];
+    const allTokenMetadata = [];
     for (const token of networkTokens) {
       const nft = ERC721__factory.connect(token.address, provider);
 
       const total = (await nft.balanceOf(user)).toNumber();
 
-      const tokenURIs = await multicall.callStatic
+      const tokenMetadata = await multicall.callStatic
         .aggregate(
           new Array(total).fill(0).map((_, idx) => {
             return {
@@ -59,11 +60,20 @@ export const useNFTs = (user?: string) => {
               r
             )[0] as string;
           });
+        })
+        .then((tokenURIs) => {
+          return Promise.all(
+            tokenURIs.map(async (uri) => {
+              if (!uri.endsWith("json")) {
+                uri = uri + ".json"; // TODO: Hardcode
+              }
+              return axios.get(uri).then(async (res) => res.data);
+            })
+          );
         });
-      allTokenURIs.push(...tokenURIs);
+      allTokenMetadata.push(...tokenMetadata);
     }
-    console.log(allTokenURIs);
-    return allTokenURIs;
+    return allTokenMetadata;
   }, [network.chainId, provider, user]);
   return useAsyncState(null, call);
 };
