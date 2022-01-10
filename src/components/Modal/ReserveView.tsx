@@ -124,12 +124,14 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
         ) : nom.owner === address ? (
           <Text>You own this name!</Text>
         ) : (
-          <Text>
-            Name has already been reserved by{" "}
-            <BlockscoutAddressLink address={nom.owner}>
-              {shortenAddress(nom.owner)}
-            </BlockscoutAddressLink>
-          </Text>
+          nom.owner && (
+            <Text>
+              Name has already been reserved by{" "}
+              <BlockscoutAddressLink address={nom.owner}>
+                {shortenAddress(nom.owner)}
+              </BlockscoutAddressLink>
+            </Text>
+          )
         )}
       </Box>
     </Flex>

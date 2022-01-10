@@ -120,12 +120,14 @@ export const ExtendView: React.FC<Props> = ({ onClose, name }) => {
           ) : nom.owner === address ? (
             button
           ) : (
-            <Text>
-              Name has already been reserved by{" "}
-              <BlockscoutAddressLink address={nom.owner}>
-                {shortenAddress(nom.owner)}
-              </BlockscoutAddressLink>
-            </Text>
+            nom.owner && (
+              <Text>
+                Name has already been reserved by{" "}
+                <BlockscoutAddressLink address={nom.owner}>
+                  {shortenAddress(nom.owner)}
+                </BlockscoutAddressLink>
+              </Text>
+            )
           )}
         </Box>
       </Flex>

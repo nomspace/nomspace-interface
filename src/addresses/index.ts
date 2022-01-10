@@ -15,19 +15,19 @@ export const FORWARDER_ADDR: AddressMap = {
 };
 export const ENS_ADDR: AddressMap = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0xd46B6669C8e50d0279E9aD3bb64a556786B6196B",
+  [ChainId.Alfajores]: "0x40cd4db228e9c172dA64513D0e874d009486A9a9",
 };
 export const RESOLVER_ADDR: AddressMap = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0x3c94b19597b2De1Cad7Ca2D214E859B454831455",
+  [ChainId.Alfajores]: "0x03E7C2ff868E9c5659863Ec4f2343B2cC3d2f70b",
 };
 export const BASE_ADDR: AddressMap = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0x98725B0e93D761F9095690f688a964AA1F584870",
+  [ChainId.Alfajores]: "0xb814Fe80D5f1cB29F177AC27ECD29D1f4F378C99",
 };
 export const NOM_REG_ADDR: AddressMap = {
   [ChainId.Celo]: "",
-  [ChainId.Alfajores]: "0xf3C07ee51b08B47a152d1917924101a7c9eA2769",
+  [ChainId.Alfajores]: "0x26AeE0de70C180f33190CD4f34C02C47C56b2665",
 };
 export const USD: AddressMap = {
   [ChainId.Celo]: "0x765DE816845861e75A25fCA122bb6898B8B1282a",

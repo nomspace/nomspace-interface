@@ -6,14 +6,14 @@ import { useCeloProvider } from "hooks/useCeloProvider";
 import { useCeloChainId } from "hooks/useCeloChainId";
 import { BaseRegistrarImplementation__factory } from "generated";
 import { labelhash } from "@ensdomains/ensjs";
-import { ZERO_ADDRESS } from "utils/constants";
 import { useENS } from "hooks/useENS";
 import { useName } from "./useName";
 import { createContainer } from "unstated-next";
 
 type NomResult = {
   resolution: string;
-  owner: string;
+  owner: string | null;
+  recordOwner: string;
   expiration: number;
   bio: string;
   website: string;
@@ -54,21 +54,24 @@ const useNom = () => {
       avatar,
       owner,
       expiration,
+      recordOwner,
     ] = await Promise.all([
-      await nom.getAddress(),
-      await nom.getText(TextKey.DESCRIPTION),
-      await nom.getText(TextKey.URL),
-      await nom.getText(TextKey.GITHUB),
-      await nom.getText(TextKey.DISCORD),
-      await nom.getText(TextKey.TELEGRAM),
-      await nom.getText(TextKey.TWITTER),
-      await nom.getText(TextKey.AVATAR),
-      await base.ownerOf(tokenId).catch(() => ZERO_ADDRESS),
-      await base.nameExpires(tokenId).then((e) => e.toNumber()),
+      nom.getAddress(),
+      nom.getText(TextKey.DESCRIPTION),
+      nom.getText(TextKey.URL),
+      nom.getText(TextKey.GITHUB),
+      nom.getText(TextKey.DISCORD),
+      nom.getText(TextKey.TELEGRAM),
+      nom.getText(TextKey.TWITTER),
+      nom.getText(TextKey.AVATAR),
+      base.ownerOf(tokenId).catch(() => null),
+      base.nameExpires(tokenId).then((e) => e.toNumber()),
+      nom.getOwner(),
     ]);
     return {
       resolution,
       owner,
+      recordOwner,
       expiration,
       bio,
       website,

@@ -54,8 +54,7 @@ export const Manage: React.FC = () => {
   const [nonce, setNonce] = UserNonce.useContainer();
   const [pfpModalOpen, setPfpModalOpen] = useState(false);
 
-  const isOwner =
-    address && nom && nom.owner.toLowerCase() === address.toLowerCase();
+  const isOwner = address && nom?.owner && nom.owner === address;
 
   // TODO: Text validation
   const onSave = useCallback(async () => {

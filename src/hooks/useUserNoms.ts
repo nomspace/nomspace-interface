@@ -14,8 +14,9 @@ import {
   RESOLVER_ADDR,
 } from "addresses";
 import { useCeloChainId } from "./useCeloChainId";
-import { labelhash } from "@ensdomains/ensjs";
 import { ZERO_ADDRESS } from "utils/constants";
+
+const now = Date.now() / 1000;
 
 export const useUserNoms = () => {
   const { address } = useContractKit();
@@ -43,46 +44,80 @@ export const useUserNoms = () => {
       multicallAddress,
       celoProvider
     );
-    const baseInterface =
-      BaseRegistrarImplementation__factory.createInterface();
+    const baseRegistrarImplementation =
+      BaseRegistrarImplementation__factory.connect(baseAddress, celoProvider);
 
-    const userNoms = await nomRegistrarController
+    const tokenIds = await baseRegistrarImplementation
       .queryFilter(
-        nomRegistrarController.filters[
-          "NameRegistered(string,bytes32,address,uint256,uint256)"
-        ](null, null, address, null, null)
+        baseRegistrarImplementation.filters[
+          "Transfer(address,address,uint256)"
+        ](null, address, null)
       )
       .then((events) => {
-        return events.map((event) => event.args.name);
+        return events.map((event) => event.args.tokenId);
       });
-    const expirations = await multicall.callStatic
+    const tokenIdOwners = await multicall.callStatic
       .aggregate(
-        userNoms.map((name) => {
+        tokenIds.map((tokenId) => {
           return {
             target: baseAddress,
-            callData: baseInterface.encodeFunctionData("nameExpires", [
-              labelhash(name),
-            ]),
+            callData: baseRegistrarImplementation.interface.encodeFunctionData(
+              "ownerOf",
+              [tokenId]
+            ),
           };
         })
       )
-      .then((results) => {
-        return results.returnData.map((value) =>
-          baseInterface.decodeFunctionResult("nameExpires", value)[0].toNumber()
-        );
-      });
-    const activeNoms = [];
-    for (let i = 0; i < userNoms.length; i++) {
-      const name = userNoms[i];
-      const expiration = expirations[i];
-      if (expiration > Date.now() / 1000) {
-        activeNoms.push({
-          name,
-          expiration,
+      .then((res) =>
+        res.returnData.map(
+          (value) =>
+            baseRegistrarImplementation.interface.decodeFunctionResult(
+              "ownerOf",
+              value
+            )[0]
+        )
+      );
+    const tokenIdExpirations = await multicall.callStatic
+      .aggregate(
+        tokenIds.map((tokenId) => {
+          return {
+            target: baseAddress,
+            callData: baseRegistrarImplementation.interface.encodeFunctionData(
+              "nameExpires",
+              [tokenId]
+            ),
+          };
+        })
+      )
+      .then((res) =>
+        res.returnData.map((value) =>
+          baseRegistrarImplementation.interface
+            .decodeFunctionResult("nameExpires", value)[0]
+            .toNumber()
+        )
+      );
+    const ownedTokens = tokenIds
+      .map((tokenId, idx) => ({
+        tokenId,
+        expiration: tokenIdExpirations[idx],
+        owner: tokenIdOwners[idx],
+      }))
+      .filter((t) => t.owner === address && t.expiration >= now);
+    const userNoms = [];
+    for (const token of ownedTokens) {
+      const events = await nomRegistrarController.queryFilter(
+        nomRegistrarController.filters[
+          "NameRegistered(string,bytes32,address,uint256,uint256)"
+        ](null, token.tokenId.toHexString(), null, null, null)
+      );
+      if (events.length > 0) {
+        userNoms.push({
+          ...token,
+          name: events[0]?.args.name,
         });
       }
     }
-    return activeNoms;
+    return userNoms;
   }, [celoChainId, celoProvider, address]);
 
   return useAsyncState(null, call);

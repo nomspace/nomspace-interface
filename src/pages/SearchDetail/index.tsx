@@ -13,9 +13,11 @@ import { ExplorerIcons } from "components/ExplorerIcons";
 import { UserTags } from "components/UserTags";
 import { TipModal } from "components/Modal/TipModal";
 import { ExtendModal } from "components/Modal/ExtendModal";
+import { ReclaimModal } from "components/Modal/ReclaimModal";
 import { Page } from "state/global";
 import { useHistory } from "react-router-dom";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
+import { useTransferOwnership } from "hooks/useTransferOwnership";
 import { useNFTs } from "hooks/useNFTs";
 import defaultPFP from "assets/DefaultPFP.png";
 import defaultBanner from "assets/DefaultBanner.png";
@@ -23,21 +25,23 @@ import life2 from "pages/SearchDetail/assets/life1.png";
 import life1 from "pages/SearchDetail/assets/life2.png";
 import networth from "pages/SearchDetail/assets/networth.png";
 import { ReserveView } from "components/Modal/ReserveView";
+import { isAddress } from "web3-utils";
 // import nomstronaut from "pages/SearchDetail/assets/astro.png";
 
 export const SearchDetail: React.FC = () => {
   const { name } = useName();
   const { address, network } = useContractKit();
   const [nom] = GlobalNom.useContainer();
+  console.log(nom?.owner, nom?.recordOwner);
   const [nftMetadata] = useNFTs(nom?.resolution);
   const [tokens] = useTokenBalances(nom?.resolution);
   const [userStats] = useUserStats(nom?.resolution);
   const history = useHistory();
   const [tipModalOpen, setTipModalOpen] = useState(false);
   const [extendModalOpen, setExtendModalOpen] = useState(false);
+  const { transferOwnership } = useTransferOwnership(name);
 
-  const isOwner =
-    address && nom && nom.owner.toLowerCase() === address.toLowerCase();
+  const isOwner = address && nom?.owner && nom.owner === address;
 
   if (!nom) return <Spinner />;
   if (!name) return <Text>Name is invalid. Please try again.</Text>;
@@ -54,6 +58,7 @@ export const SearchDetail: React.FC = () => {
         onClose={() => setExtendModalOpen(false)}
         name={name}
       />
+      <ReclaimModal />
       <Flex
         sx={{
           alignItems: "center",
@@ -103,14 +108,16 @@ export const SearchDetail: React.FC = () => {
                         <SocialIcons nom={nom} />
                       </Box>
                       {isOwner && (
-                        <Button
-                          onClick={() => {
-                            history.push(`${name}/${Page.MANAGE}`);
-                          }}
-                          variant="search.nomstronautTip.edit"
-                        >
-                          EDIT
-                        </Button>
+                        <>
+                          <Button
+                            onClick={() => {
+                              history.push(`${name}/${Page.MANAGE}`);
+                            }}
+                            variant="search.nomstronautTip.edit"
+                          >
+                            EDIT
+                          </Button>
+                        </>
                       )}
                       {nom.owner !== ZERO_ADDRESS && (
                         <Button
@@ -272,6 +279,27 @@ export const SearchDetail: React.FC = () => {
                           </Text>
                           <ExplorerIcons userAddress={nom.resolution} />
                         </Box>
+                        {nom.owner === address && (
+                          <Flex sx={{ py: 20, justifyContent: "center" }}>
+                            <Button
+                              sx={{ px: 16, py: 8, backgroundColor: "red" }}
+                              onClick={() => {
+                                const newOwner = prompt(
+                                  "Enter new owner address"
+                                );
+                                if (!newOwner || !isAddress(newOwner)) {
+                                  alert(
+                                    "Invalid address entered. Please try again"
+                                  );
+                                  return;
+                                }
+                                transferOwnership(newOwner);
+                              }}
+                            >
+                              Transfer Ownership
+                            </Button>
+                          </Flex>
+                        )}
                       </>
                     )}
                     {/* Footer */}
