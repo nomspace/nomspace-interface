@@ -12,7 +12,6 @@ import { useUserStats } from "hooks/useUserStats";
 import { ExplorerIcons } from "components/ExplorerIcons";
 import { UserTags } from "components/UserTags";
 import { TipModal } from "components/Modal/TipModal";
-import { ReserveModal } from "components/Modal/ReserveModal";
 import { ExtendModal } from "components/Modal/ExtendModal";
 import { Page } from "state/global";
 import { useHistory } from "react-router-dom";
@@ -23,6 +22,7 @@ import defaultBanner from "assets/DefaultBanner.png";
 import life2 from "pages/SearchDetail/assets/life1.png";
 import life1 from "pages/SearchDetail/assets/life2.png";
 import networth from "pages/SearchDetail/assets/networth.png";
+import { ReserveView } from "components/Modal/ReserveView";
 // import nomstronaut from "pages/SearchDetail/assets/astro.png";
 
 export const SearchDetail: React.FC = () => {
@@ -34,7 +34,6 @@ export const SearchDetail: React.FC = () => {
   const [userStats] = useUserStats(nom?.resolution);
   const history = useHistory();
   const [tipModalOpen, setTipModalOpen] = useState(false);
-  const [reserveModalOpen, setReserveModalOpen] = useState(false);
   const [extendModalOpen, setExtendModalOpen] = useState(false);
 
   const isOwner =
@@ -50,11 +49,6 @@ export const SearchDetail: React.FC = () => {
         onClose={() => setTipModalOpen(false)}
         resolution={nom.resolution}
       />
-      <ReserveModal
-        open={reserveModalOpen}
-        onClose={() => setReserveModalOpen(false)}
-        name={name}
-      />
       <ExtendModal
         open={extendModalOpen}
         onClose={() => setExtendModalOpen(false)}
@@ -68,7 +62,6 @@ export const SearchDetail: React.FC = () => {
       >
         {name ? (
           <Box sx={{ textAlign: "center", width: "100%" }}>
-            {/* Modals */}
             <Flex>
               {/* Sidebar */}
               <Sidebar nom={nom} />
@@ -119,24 +112,20 @@ export const SearchDetail: React.FC = () => {
                           EDIT
                         </Button>
                       )}
-                      <Button
-                        onClick={() => {
-                          if (nom.owner === ZERO_ADDRESS) {
-                            setReserveModalOpen(true);
-                          } else if (nom.owner === address) {
-                            setExtendModalOpen(true);
-                          } else {
-                            setTipModalOpen(true);
-                          }
-                        }}
-                        variant="search.nomstronautTip.tip"
-                      >
-                        {nom.owner === ZERO_ADDRESS
-                          ? "RESERVE"
-                          : nom.owner === address
-                          ? "EXTEND"
-                          : "TIP"}
-                      </Button>
+                      {nom.owner !== ZERO_ADDRESS && (
+                        <Button
+                          onClick={() => {
+                            if (nom.owner === address) {
+                              setExtendModalOpen(true);
+                            } else {
+                              setTipModalOpen(true);
+                            }
+                          }}
+                          variant="search.nomstronautTip.tip"
+                        >
+                          {nom.owner === address ? "EXTEND" : "TIP"}
+                        </Button>
+                      )}
                     </Flex>
                   </Box>
 
@@ -170,102 +159,121 @@ export const SearchDetail: React.FC = () => {
                       </Box>
                     </Flex>
                     {/* NFTs */}
-                    <Heading variant="search.heading">NFTs</Heading>
-                    <Box variant="search.rowScrollContainer">
-                      {nftMetadata != null ? (
-                        nftMetadata?.map((t, idx) => {
-                          return (
-                            <Box variant="search.nft.imageContainer" key={idx}>
-                              <Spinner />
-                              <Image
-                                variant="search.nft.image"
-                                src={t.image}
-                                sx={{ display: "none" }}
-                                onLoad={(e) => {
-                                  console.log("image loaded");
-                                  (
-                                    e.target as HTMLImageElement
-                                  ).previousSibling?.remove();
-                                  (e.target as HTMLImageElement).style.display =
-                                    "block";
-                                  console.log("image loader removed");
-                                }}
-                              ></Image>
-                            </Box>
-                          );
-                        })
-                      ) : (
-                        <Spinner />
-                      )}
-                    </Box>
-                    {/* Tokens */}
-                    <Heading variant="search.heading">Tokens</Heading>
-                    <Box variant="search.rowScrollContainer">
-                      {tokens?.map((t, idx) => {
-                        return (
-                          <Box key={idx} variant="search.token.imageContainer">
-                            <BlockscoutAddressLink address={t.address}>
-                              <Box
-                                variant="search.token.image"
-                                sx={{
-                                  backgroundImage: `url(${t.logoURI})`,
-                                }}
-                              ></Box>
-                            </BlockscoutAddressLink>
-                          </Box>
-                        );
-                      })}
-                    </Box>
-                    {/* Stats */}
-
-                    <Heading variant="search.heading">Stats</Heading>
-                    <Box variant="search.stat.container">
-                      <Flex variant="search.stat.row">
-                        <Box variant="search.stat.icon">
-                          <Image src={life1} variant="search.stat.life1Icon" />
-                          <Image src={life2} variant="search.stat.life2Icon" />
+                    {nom.owner === ZERO_ADDRESS ? (
+                      <ReserveView name={name} />
+                    ) : (
+                      <>
+                        <Heading variant="search.heading">NFTs</Heading>
+                        <Box variant="search.rowScrollContainer">
+                          {nftMetadata != null ? (
+                            nftMetadata?.map((t, idx) => {
+                              return (
+                                <Box
+                                  variant="search.nft.imageContainer"
+                                  key={idx}
+                                >
+                                  <Spinner />
+                                  <Image
+                                    variant="search.nft.image"
+                                    src={t.image}
+                                    sx={{ display: "none" }}
+                                    onLoad={(e) => {
+                                      console.log("image loaded");
+                                      (
+                                        e.target as HTMLImageElement
+                                      ).previousSibling?.remove();
+                                      (
+                                        e.target as HTMLImageElement
+                                      ).style.display = "block";
+                                      console.log("image loader removed");
+                                    }}
+                                  ></Image>
+                                </Box>
+                              );
+                            })
+                          ) : (
+                            <Spinner />
+                          )}
                         </Box>
-                        <Heading variant="search.stat.heading">
-                          Activity:&nbsp;
-                        </Heading>
-                        <Text variant="search.stat.text">
-                          {userStats
-                            ? new Intl.NumberFormat().format(
-                                userStats?.transactionCount
-                              )
-                            : "-"}{" "}
-                          Transactions
-                        </Text>
-                      </Flex>
-                      <Box variant="search.stat.divider"></Box>
-                      <Flex variant="search.stat.row">
-                        <Image
-                          src={networth}
-                          variant="search.stat.icon"
-                          ml="4px"
-                          mr="6px"
-                        />
-                        <Heading variant="search.stat.heading">
-                          Net Worth:&nbsp;
-                        </Heading>
-                        <Text variant="search.stat.text">
-                          {userStats
-                            ? new Intl.NumberFormat().format(
-                                userStats.nativeBalance
-                              )
-                            : "0"}{" "}
-                          {NATIVE_CURRENCY[network.chainId]}
-                        </Text>
-                      </Flex>
-                    </Box>
-                    {/* Sources */}
-                    <Heading variant="search.heading">Sources</Heading>
-                    <Box variant="search.rowScrollContainer">
-                      <Text variant="search.source.text">
-                        View on Block Explorers: &nbsp;&nbsp;
-                      </Text>
-                      <ExplorerIcons userAddress={nom.resolution} />
-                    </Box>
+                        {/* Tokens */}
+                        <Heading variant="search.heading">Tokens</Heading>
+                        <Box variant="search.rowScrollContainer">
+                          {tokens?.map((t, idx) => {
+                            return (
+                              <Box
+                                key={idx}
+                                variant="search.token.imageContainer"
+                              >
+                                <BlockscoutAddressLink address={t.address}>
+                                  <Box
+                                    variant="search.token.image"
+                                    sx={{
+                                      backgroundImage: `url(${t.logoURI})`,
+                                    }}
+                                  ></Box>
+                                </BlockscoutAddressLink>
+                              </Box>
+                            );
+                          })}
+                        </Box>
+                        {/* Stats */}
+
+                        <Heading variant="search.heading">Stats</Heading>
+                        <Box variant="search.stat.container">
+                          <Flex variant="search.stat.row">
+                            <Box variant="search.stat.icon">
+                              <Image
+                                src={life1}
+                                variant="search.stat.life1Icon"
+                              />
+                              <Image
+                                src={life2}
+                                variant="search.stat.life2Icon"
+                              />
+                            </Box>
+                            <Heading variant="search.stat.heading">
+                              Activity:&nbsp;
+                            </Heading>
+                            <Text variant="search.stat.text">
+                              {userStats
+                                ? new Intl.NumberFormat().format(
+                                    userStats?.transactionCount
+                                  )
+                                : "-"}{" "}
+                              Transactions
+                            </Text>
+                          </Flex>
+                          <Box variant="search.stat.divider"></Box>
+                          <Flex variant="search.stat.row">
+                            <Image
+                              src={networth}
+                              variant="search.stat.icon"
+                              ml="4px"
+                              mr="6px"
+                            />
+                            <Heading variant="search.stat.heading">
+                              Net Worth:&nbsp;
+                            </Heading>
+                            <Text variant="search.stat.text">
+                              {userStats
+                                ? new Intl.NumberFormat().format(
+                                    userStats.nativeBalance
+                                  )
+                                : "0"}{" "}
+                              {NATIVE_CURRENCY[network.chainId]}
+                            </Text>
+                          </Flex>
+                        </Box>
+                        {/* Sources */}
+                        <Heading variant="search.heading">Sources</Heading>
+                        <Box variant="search.rowScrollContainer">
+                          <Text variant="search.source.text">
+                            View on Block Explorers: &nbsp;&nbsp;
+                          </Text>
+                          <ExplorerIcons userAddress={nom.resolution} />
+                        </Box>
+                      </>
+                    )}
                     {/* Footer */}
                     {/* absolutely positioned */}
                     <Box variant="search.footer.container">

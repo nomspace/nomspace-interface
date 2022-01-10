@@ -45,91 +45,93 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
   let button = confirmButton;
   if (usd) {
     if (Number(formatUnits(usd.balance, usd.decimals)) < cost) {
-      button = <Button disabled={true}>Insufficient funds</Button>;
+      button = (
+        <Button variant="modal.form.submit" disabled={true}>
+          Insufficient funds
+        </Button>
+      );
     }
   }
   if (!name) return <Text>Invalid name</Text>;
   return (
-    <>
+    <Flex variant="modal.container">
       <Text variant="modal.title">
         Reserve{" "}
         <Text variant="modal.title" color="primaryTextColor">
           {name}.nom
         </Text>
       </Text>
-      <Flex variant="modal.container">
-        <Box variant="modal.form.container">
-          <Flex
-            variant="modal.form.durationWrapper"
-            sx={{ alignItems: "center" }}
-          >
-            <Input
-              variant="modal.form.input"
-              type="number"
-              value={years}
-              onChange={(e) => {
-                const years = Number(e.target.value);
-                if (isNaN(years)) return;
-                setYears(years);
-                setCost(getNomCost(name, years));
-              }}
-              mr={2}
-            />
-            <Text sx={{ ml: 8 }}>year(s)</Text>
-          </Flex>
-          <Flex sx={{ justifyContent: "flex-end", width: "100%", mr: 120 }}>
-            <Text
-              sx={{ color: "primaryTextColor", cursor: "pointer" }}
-              variant="form"
-              onClick={() => {
-                if (usd) {
-                  const cost = Number(formatUnits(usd.balance, usd.decimals));
-                  setCost(cost);
-                  setYears(getNomYears(name, cost));
-                }
-              }}
-            >
-              max:{" "}
-              {usd
-                ? Number(formatUnits(usd.balance, usd.decimals)).toFixed(4)
-                : "0"}
-            </Text>
-          </Flex>
-          <Flex
-            variant="modal.form.totalCostWrapper"
-            sx={{ alignItems: "center" }}
-          >
-            <Input
-              variant="modal.form.input"
-              type="number"
-              value={cost}
-              onChange={(e) => {
-                const cost = Number(e.target.value);
-                if (isNaN(cost)) return;
+      <Box variant="modal.form.container">
+        <Flex
+          variant="modal.form.durationWrapper"
+          sx={{ alignItems: "center" }}
+        >
+          <Input
+            variant="modal.form.input"
+            type="number"
+            value={years}
+            onChange={(e) => {
+              const years = Number(e.target.value);
+              if (isNaN(years)) return;
+              setYears(years);
+              setCost(getNomCost(name, years));
+            }}
+            mr={2}
+          />
+          <Text sx={{ ml: 8 }}>year(s)</Text>
+        </Flex>
+        <Flex sx={{ justifyContent: "flex-end", width: "100%", mr: 120 }}>
+          <Text
+            sx={{ color: "primaryTextColor", cursor: "pointer" }}
+            variant="form"
+            onClick={() => {
+              if (usd) {
+                const cost = Number(formatUnits(usd.balance, usd.decimals));
                 setCost(cost);
                 setYears(getNomYears(name, cost));
-              }}
-            />
-            <Text sx={{ ml: 8 }}>
-              {tokens?.find((t) => t.address === usd?.address)?.symbol}
-            </Text>
-          </Flex>
-          {loading ? (
-            <Spinner />
-          ) : nom.owner === ZERO_ADDRESS ? (
-            button
-          ) : nom.owner === address ? (
-            <Text>You own this name!</Text>
-          ) : (
-            <Text>
-              Name has already been reserved by{" "}
-              <BlockscoutAddressLink address={nom.owner}>
-                {shortenAddress(nom.owner)}
-              </BlockscoutAddressLink>
-            </Text>
-          )}
-        </Box>
-      </Flex>
-    </>
+              }
+            }}
+          >
+            max:{" "}
+            {usd
+              ? Number(formatUnits(usd.balance, usd.decimals)).toFixed(4)
+              : "0"}
+          </Text>
+        </Flex>
+        <Flex
+          variant="modal.form.totalCostWrapper"
+          sx={{ alignItems: "center" }}
+        >
+          <Input
+            variant="modal.form.input"
+            type="number"
+            value={cost}
+            onChange={(e) => {
+              const cost = Number(e.target.value);
+              if (isNaN(cost)) return;
+              setCost(cost);
+              setYears(getNomYears(name, cost));
+            }}
+          />
+          <Text sx={{ ml: 8 }}>
+            {tokens?.find((t) => t.address === usd?.address)?.symbol}
+          </Text>
+        </Flex>
+        {loading ? (
+          <Spinner />
+        ) : nom.owner === ZERO_ADDRESS ? (
+          button
+        ) : nom.owner === address ? (
+          <Text>You own this name!</Text>
+        ) : (
+          <Text>
+            Name has already been reserved by{" "}
+            <BlockscoutAddressLink address={nom.owner}>
+              {shortenAddress(nom.owner)}
+            </BlockscoutAddressLink>
+          </Text>
+        )}
+      </Box>
+    </Flex>
   );
 };
