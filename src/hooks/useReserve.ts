@@ -169,5 +169,100 @@ export const useReserve = (name?: string) => {
       userTxDefaults,
     ]
   );
-  return { approve, reserve, loading };
+
+  const extend = useCallback(
+    async (years: number) => {
+      const usdAddress = USD[network.chainId];
+      const regAddress = NOM_REG_ADDR[celoChainId];
+      const reservePortalAddress = RESERVE_PORTAL[network.chainId];
+      const forwarderAddr = FORWARDER_ADDR[celoChainId];
+      if (
+        !name ||
+        !usdAddress ||
+        !reservePortalAddress ||
+        !address ||
+        !regAddress ||
+        !forwarderAddr ||
+        !userTxDefaults
+      ) {
+        return;
+      }
+      const signer = await getConnectedSigner();
+      const usd = ERC20__factory.connect(usdAddress, signer);
+      const nomRegistrarController = NomRegistrarController__factory.connect(
+        regAddress,
+        celoProvider
+      );
+      const reservePortal = ReservePortal__factory.connect(
+        reservePortalAddress,
+        signer
+      ) as unknown as ReservePortal;
+      try {
+        setLoading(true);
+        const duration = Math.ceil(Number(years) * YEAR_IN_SECONDS);
+        const data = nomRegistrarController.interface.encodeFunctionData(
+          "renew",
+          [name, duration]
+        );
+        if (!data || nonce == null) return;
+        const { from, gas, value } = userTxDefaults;
+        const to = nomRegistrarController.address;
+        const signature = await getSignature(
+          signer,
+          from,
+          to,
+          value,
+          gas,
+          nonce,
+          data,
+          chainId,
+          forwarderAddr
+        );
+        const gasPrice = await provider.getGasPrice();
+        const cost = await nomRegistrarController.rentPrice(
+          name,
+          duration,
+          address
+        );
+        const tx = await reservePortal.escrow(
+          usdAddress,
+          cost.shr(18).shl(await usd.decimals()),
+          celoChainId,
+          {
+            from,
+            to,
+            gas,
+            value,
+            nonce,
+            chainId,
+            data,
+          },
+          signature,
+          { gasPrice }
+        );
+        await tx.wait(2);
+        setNonce(nonce + 1);
+        toastTx(tx.hash);
+      } catch (e: any) {
+        toast(e.message);
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [
+      address,
+      celoChainId,
+      celoProvider,
+      chainId,
+      getConnectedSigner,
+      name,
+      network.chainId,
+      nonce,
+      provider,
+      setNonce,
+      userTxDefaults,
+    ]
+  );
+  return { approve, reserve, extend, loading };
 };

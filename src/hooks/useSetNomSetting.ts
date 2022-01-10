@@ -51,7 +51,7 @@ export const useSetNomSetting = (name?: string | null) => {
         ensAddress,
       });
       const resolverAddr = await ens.name(`${name}.nom`).getResolverAddr();
-      const resolver = await PublicResolver__factory.connect(
+      const resolver = PublicResolver__factory.connect(
         resolverAddr,
         celoProvider
       );

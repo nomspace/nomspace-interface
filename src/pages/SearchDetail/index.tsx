@@ -13,6 +13,7 @@ import { ExplorerIcons } from "components/ExplorerIcons";
 import { UserTags } from "components/UserTags";
 import { TipModal } from "components/Modal/TipModal";
 import { ReserveModal } from "components/Modal/ReserveModal";
+import { ExtendModal } from "components/Modal/ExtendModal";
 import { Page } from "state/global";
 import { useHistory } from "react-router-dom";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
@@ -46,6 +47,7 @@ export const SearchDetail: React.FC = () => {
   const history = useHistory();
   const [tipModalOpen, setTipModalOpen] = useState(false);
   const [reserveModalOpen, setReserveModalOpen] = useState(false);
+  const [extendModalOpen, setExtendModalOpen] = useState(false);
   const [nftMetadata, setNFTMetadata] = useState([] as any[]);
 
   // punks hook
@@ -78,6 +80,10 @@ export const SearchDetail: React.FC = () => {
       <ReserveModal
         open={reserveModalOpen}
         onClose={() => setReserveModalOpen(false)}
+      />
+      <ExtendModal
+        open={extendModalOpen}
+        onClose={() => setExtendModalOpen(false)}
       />
       <Flex
         sx={{
@@ -138,13 +144,19 @@ export const SearchDetail: React.FC = () => {
                         onClick={() => {
                           if (nom.owner === ZERO_ADDRESS) {
                             setReserveModalOpen(true);
+                          } else if (nom.owner === address) {
+                            setExtendModalOpen(true);
                           } else {
                             setTipModalOpen(true);
                           }
                         }}
                         variant="search.nomstronautTip.tip"
                       >
-                        {nom.owner === ZERO_ADDRESS ? "RESERVE" : "TIP"}
+                        {nom.owner === ZERO_ADDRESS
+                          ? "RESERVE"
+                          : nom.owner === address
+                          ? "EXTEND"
+                          : "TIP"}
                       </Button>
                     </Flex>
                   </Box>
