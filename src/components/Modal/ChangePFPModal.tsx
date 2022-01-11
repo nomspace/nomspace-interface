@@ -16,8 +16,7 @@ interface Props {
 
 export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
   const { name, namehash } = useName();
-  const [nom, refetchNom] = GlobalNom.useContainer();
-  const [nftMetadata] = useNFTs(nom?.resolution);
+  const [nftMetadata] = useNFTs();
   const { setNomSetting } = useSetNomSetting(name);
   const [nonce, setNonce] = UserNonce.useContainer();
   const changePFP = React.useCallback(
@@ -29,10 +28,9 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
         avatarUrl,
       ]);
       setNonce(nonce + 1);
-      refetchNom();
       onClose();
     },
-    [namehash, nonce, onClose, refetchNom, setNomSetting, setNonce]
+    [namehash, nonce, onClose, setNomSetting, setNonce]
   );
 
   return (

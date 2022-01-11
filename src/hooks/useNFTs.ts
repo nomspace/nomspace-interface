@@ -7,15 +7,17 @@ import { useCallback } from "react";
 import { useAsyncState } from "./useAsyncState";
 import nftTokenList from "addresses/nft-token-list";
 import axios from "axios";
+import { GlobalNom } from "./useNom";
 
-export const useNFTs = (user?: string) => {
+export const useNFTs = () => {
+  const [nom] = GlobalNom.useContainer();
   const { network } = useContractKit();
   const provider = useProvider();
 
   const call = useCallback(async () => {
     // TODO: MULTICALL on other networks
     const multicallAddress = MULTICALL_ADDR[network.chainId];
-    if (!user || !multicallAddress) return null;
+    if (!nom?.resolution || !multicallAddress) return null;
     const multicall = Multicall__factory.connect(multicallAddress, provider);
 
     const networkTokens = nftTokenList[network.chainId] ?? [];
@@ -23,7 +25,7 @@ export const useNFTs = (user?: string) => {
     for (const token of networkTokens) {
       const nft = ERC721__factory.connect(token.address, provider);
 
-      const total = (await nft.balanceOf(user)).toNumber();
+      const total = (await nft.balanceOf(nom.resolution)).toNumber();
 
       const tokenMetadata = await multicall.callStatic
         .aggregate(
@@ -32,7 +34,7 @@ export const useNFTs = (user?: string) => {
               target: nft.address,
               callData: nft.interface.encodeFunctionData(
                 "tokenOfOwnerByIndex",
-                [user, idx]
+                [nom.resolution, idx]
               ),
             };
           })
@@ -74,6 +76,6 @@ export const useNFTs = (user?: string) => {
       allTokenMetadata.push(...tokenMetadata);
     }
     return allTokenMetadata;
-  }, [network.chainId, provider, user]);
+  }, [network.chainId, nom?.resolution, provider]);
   return useAsyncState(null, call);
 };

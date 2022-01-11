@@ -32,7 +32,7 @@ export const SearchDetail: React.FC = () => {
   const { name } = useName();
   const { address, network } = useContractKit();
   const [nom] = GlobalNom.useContainer();
-  const [nftMetadata] = useNFTs(nom?.resolution);
+  const [nftMetadata] = useNFTs();
   const [tokens] = useTokenBalances(nom?.resolution);
   const [userStats] = useUserStats(nom?.resolution);
   const history = useHistory();
