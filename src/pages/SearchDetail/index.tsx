@@ -26,6 +26,7 @@ import life1 from "pages/SearchDetail/assets/life2.png";
 import networth from "pages/SearchDetail/assets/networth.png";
 import { ReserveView } from "components/Modal/ReserveView";
 import { isAddress } from "web3-utils";
+import { NewTabLink } from "components/NewTabLink";
 // import nomstronaut from "pages/SearchDetail/assets/astro.png";
 
 export const SearchDetail: React.FC = () => {
@@ -166,21 +167,23 @@ export const SearchDetail: React.FC = () => {
                                     key={idx}
                                   >
                                     <Spinner />
-                                    <Image
-                                      variant="search.nft.image"
-                                      src={t.image}
-                                      sx={{ display: "none" }}
-                                      onLoad={(e) => {
-                                        console.log("image loaded");
-                                        (
-                                          e.target as HTMLImageElement
-                                        ).previousSibling?.remove();
-                                        (
-                                          e.target as HTMLImageElement
-                                        ).style.display = "block";
-                                        console.log("image loader removed");
-                                      }}
-                                    ></Image>
+                                    <NewTabLink href={t.image}>
+                                      <Image
+                                        variant="search.nft.image"
+                                        src={t.image}
+                                        sx={{ display: "none" }}
+                                        onLoad={(e) => {
+                                          console.log("image loaded");
+                                          (
+                                            e.target as HTMLImageElement
+                                          ).previousSibling?.remove();
+                                          (
+                                            e.target as HTMLImageElement
+                                          ).style.display = "block";
+                                          console.log("image loader removed");
+                                        }}
+                                      />
+                                    </NewTabLink>
                                   </Box>
                                 );
                               })}
