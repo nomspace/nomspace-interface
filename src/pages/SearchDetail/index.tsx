@@ -16,7 +16,7 @@ import { ExtendModal } from "components/Modal/ExtendModal";
 import { ReclaimModal } from "components/Modal/ReclaimModal";
 import { Page } from "state/global";
 import { useHistory } from "react-router-dom";
-import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
+import { BlockscoutTokenAddressLink } from "components/BlockscoutTokenAddressLink";
 import { useTransferOwnership } from "hooks/useTransferOwnership";
 import { useNFTs } from "hooks/useNFTs";
 import defaultPFP from "assets/DefaultPFP.png";
@@ -170,7 +170,6 @@ export const SearchDetail: React.FC = () => {
                                     variant="search.nft.imageContainer"
                                     key={idx}
                                   >
-                                    <Spinner />
                                     <NewTabLink href={t.image}>
                                       <Image
                                         variant="search.nft.image"
@@ -205,14 +204,17 @@ export const SearchDetail: React.FC = () => {
                                     key={idx}
                                     variant="search.token.imageContainer"
                                   >
-                                    <BlockscoutAddressLink address={t.address}>
+                                    <BlockscoutTokenAddressLink
+                                      address={address || ""}
+                                      tokenAddress={t.address}
+                                    >
                                       <Box
                                         variant="search.token.image"
                                         sx={{
                                           backgroundImage: `url(${t.logoURI})`,
                                         }}
                                       ></Box>
-                                    </BlockscoutAddressLink>
+                                    </BlockscoutTokenAddressLink>
                                   </Box>
                                 );
                               })}
