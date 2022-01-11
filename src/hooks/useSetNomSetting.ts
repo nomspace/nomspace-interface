@@ -9,6 +9,7 @@ import {
   ReservePortal,
   ReservePortal__factory,
   PublicResolver__factory,
+  ERC20__factory,
 } from "generated";
 import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
@@ -18,6 +19,11 @@ import { ENSJS } from "types/ensjs";
 import ENS from "@ensdomains/ensjs";
 import { useUserTxDefaults } from "./useUserTxDefaults";
 import { getSignature } from "utils/sig";
+import { useApprove } from "./useApprove";
+import { GAS_USD } from "config";
+import { useUSD } from "./useUSD";
+import { MaxUint256 } from "@ethersproject/constants";
+import { BigNumber } from "ethers";
 
 export const useSetNomSetting = (name?: string | null) => {
   const { address, network } = useContractKit();
@@ -28,6 +34,8 @@ export const useSetNomSetting = (name?: string | null) => {
   const [loading, setLoading] = useState(false);
   const getConnectedSigner = useGetConnectedSigner();
   const [userTxDefaults] = useUserTxDefaults();
+  const { approve } = useApprove();
+  const [usdRes] = useUSD();
 
   const setNomSetting = useCallback(
     async (nonce: number, functionFragment: any, values: any) => {
@@ -42,7 +50,8 @@ export const useSetNomSetting = (name?: string | null) => {
         !forwarderAddr ||
         !address ||
         !name ||
-        !userTxDefaults
+        !userTxDefaults ||
+        !usdRes
       ) {
         return;
       }
@@ -60,6 +69,7 @@ export const useSetNomSetting = (name?: string | null) => {
         reservePortalAddress,
         signer
       ) as unknown as ReservePortal;
+      const usd = ERC20__factory.connect(usdAddress, signer);
       try {
         setLoading(true);
         const data = resolver.interface.encodeFunctionData(
@@ -81,9 +91,16 @@ export const useSetNomSetting = (name?: string | null) => {
           forwarderAddr
         );
         const gasPrice = await provider.getGasPrice();
+        const decimals = await usd.decimals();
+        const cost = BigNumber.from(GAS_USD * 1000)
+          .shl(decimals)
+          .shr(3);
+        if (cost.gt(usdRes.allowance)) {
+          await approve(MaxUint256);
+        }
         const tx = await reservePortal.escrow(
           usdAddress,
-          0,
+          cost,
           celoChainId,
           {
             from,
@@ -107,12 +124,14 @@ export const useSetNomSetting = (name?: string | null) => {
     },
     [
       address,
+      approve,
       celoChainId,
       celoProvider,
       chainId,
       getConnectedSigner,
       name,
       provider,
+      usdRes,
       userTxDefaults,
     ]
   );

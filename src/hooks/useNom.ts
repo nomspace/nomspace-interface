@@ -1,7 +1,7 @@
 import React from "react";
 import { TextKey } from "config";
 import { BASE_ADDR } from "addresses";
-import { useAsyncState } from "./useAsyncState";
+import { usePollingAsyncState } from "./usePollingAsyncState";
 import { useCeloProvider } from "hooks/useCeloProvider";
 import { useCeloChainId } from "hooks/useCeloChainId";
 import { BaseRegistrarImplementation__factory } from "generated";
@@ -83,7 +83,7 @@ const useNom = () => {
     };
   }, [celoChainId, ens, name, celoProvider]);
 
-  return useAsyncState(null, call);
+  return usePollingAsyncState(null, 10000, call);
 };
 
 export const GlobalNom = createContainer(useNom);

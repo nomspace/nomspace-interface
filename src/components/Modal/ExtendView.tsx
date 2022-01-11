@@ -23,7 +23,7 @@ export const ExtendView: React.FC<Props> = ({ onClose, name }) => {
   const [cost, setCost] = React.useState(name.length <= 3 ? 20 : 5);
   const [usd, refetchUSD] = useUSD();
   const [tokens] = useTokens();
-  const { approve, extend, loading } = useReserve(name);
+  const { extend, loading } = useReserve(name);
 
   if (nom == null) {
     return <Spinner />;
@@ -33,7 +33,6 @@ export const ExtendView: React.FC<Props> = ({ onClose, name }) => {
     <Button
       variant="modal.form.submit"
       onClick={async () => {
-        await approve(cost);
         await extend(years);
         refetchUSD();
         onClose();

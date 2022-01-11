@@ -22,7 +22,7 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
   const [cost, setCost] = React.useState(name.length <= 3 ? 20 : 5);
   const [usd, refetchUSD] = useUSD();
   const [tokens] = useTokens();
-  const { approve, reserve, loading } = useReserve(name);
+  const { reserve, loading } = useReserve(name);
 
   if (nom == null) {
     return <Spinner />;
@@ -32,7 +32,6 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
     <Button
       variant="modal.form.submit"
       onClick={async () => {
-        await approve(cost);
         await reserve(years);
         refetchUSD();
       }}

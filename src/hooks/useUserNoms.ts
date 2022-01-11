@@ -1,6 +1,5 @@
 import React from "react";
 import { useContractKit } from "@celo-tools/use-contractkit";
-import { useAsyncState } from "./useAsyncState";
 import {
   BaseRegistrarImplementation__factory,
   Multicall__factory,
@@ -15,6 +14,7 @@ import {
 } from "addresses";
 import { useCeloChainId } from "./useCeloChainId";
 import { ZERO_ADDRESS } from "utils/constants";
+import { usePollingAsyncState } from "./usePollingAsyncState";
 
 const now = Date.now() / 1000;
 
@@ -120,5 +120,5 @@ export const useUserNoms = () => {
     return userNoms;
   }, [celoChainId, celoProvider, address]);
 
-  return useAsyncState(null, call);
+  return usePollingAsyncState(null, 15000, call);
 };

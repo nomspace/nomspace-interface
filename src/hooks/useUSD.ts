@@ -14,6 +14,7 @@ export const useUSD = () => {
       return null;
     }
     const usd = ERC20__factory.connect(usdAddress, provider);
+    // TODO: Multicall
     const allowance = await usd.allowance(address, reservePortalAddress);
     const balance = await usd.balanceOf(address);
     const decimals = await usd.decimals();

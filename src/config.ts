@@ -129,3 +129,5 @@ export const DECIMAL_PRECISION = 2; // Number of decimals to show
 export const localForageVersion = 1;
 
 export const NOM_FEE = 5 / YEAR_IN_SECONDS;
+
+export const GAS_USD = 0.01; // $0.01 cents per tx

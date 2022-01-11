@@ -19,7 +19,6 @@ import {
 } from "generated";
 import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
-import { parseUnits } from "ethers/lib/utils";
 import { YEAR_IN_SECONDS } from "utils/constants";
 import ENS from "@ensdomains/ensjs";
 import { useCeloProvider } from "./useCeloProvider";
@@ -27,6 +26,9 @@ import { useCeloChainId } from "./useCeloChainId";
 import { useUserTxDefaults } from "hooks/useUserTxDefaults";
 import { getSignature } from "utils/sig";
 import { UserNonce } from "./useUserNonce";
+import { useUSD } from "./useUSD";
+import { useApprove } from "./useApprove";
+import { MaxUint256 } from "@ethersproject/constants";
 
 export const useReserve = (name?: string) => {
   const { address, network } = useContractKit();
@@ -38,37 +40,8 @@ export const useReserve = (name?: string) => {
   const getConnectedSigner = useGetConnectedSigner();
   const [userTxDefaults] = useUserTxDefaults();
   const [nonce, setNonce] = UserNonce.useContainer();
-
-  const approve = useCallback(
-    async (amount: number) => {
-      const reservePortalAddress = RESERVE_PORTAL[chainId];
-      const usdAddress = USD[chainId];
-      if (!reservePortalAddress || !usdAddress) {
-        return;
-      }
-      const signer = await getConnectedSigner();
-      try {
-        setLoading(true);
-        const usd = ERC20__factory.connect(usdAddress, signer);
-        const gasPrice = await provider.getGasPrice();
-        const decimals = await usd.decimals();
-        const tx = await usd.approve(
-          reservePortalAddress,
-          parseUnits(amount.toFixed(decimals), decimals),
-          {
-            gasPrice,
-          }
-        );
-        await tx.wait(2);
-        toastTx(tx.hash);
-      } catch (e: any) {
-        toast(e.message);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [getConnectedSigner, chainId, provider]
-  );
+  const { approve } = useApprove();
+  const [usdRes] = useUSD();
 
   const reserve = useCallback(
     async (years: number) => {
@@ -83,7 +56,8 @@ export const useReserve = (name?: string) => {
         !address ||
         !regAddress ||
         !forwarderAddr ||
-        !userTxDefaults
+        !userTxDefaults ||
+        !usdRes
       ) {
         return;
       }
@@ -124,14 +98,18 @@ export const useReserve = (name?: string) => {
           forwarderAddr
         );
         const gasPrice = await provider.getGasPrice();
-        const cost = await nomRegistrarController.rentPrice(
-          name,
-          duration,
-          address
-        );
+        const decimals = await usd.decimals();
+        const cost = (
+          await nomRegistrarController.rentPrice(name, duration, address)
+        )
+          .shr(18)
+          .shl(decimals);
+        if (cost.gt(usdRes.allowance)) {
+          await approve(MaxUint256);
+        }
         const tx = await reservePortal.escrow(
           usdAddress,
-          cost.shr(18).shl(await usd.decimals()),
+          cost,
           celoChainId,
           {
             from,
@@ -157,6 +135,7 @@ export const useReserve = (name?: string) => {
     },
     [
       address,
+      approve,
       celoChainId,
       celoProvider,
       chainId,
@@ -166,6 +145,7 @@ export const useReserve = (name?: string) => {
       nonce,
       provider,
       setNonce,
+      usdRes,
       userTxDefaults,
     ]
   );
@@ -183,7 +163,8 @@ export const useReserve = (name?: string) => {
         !address ||
         !regAddress ||
         !forwarderAddr ||
-        !userTxDefaults
+        !userTxDefaults ||
+        !usdRes
       ) {
         return;
       }
@@ -219,14 +200,18 @@ export const useReserve = (name?: string) => {
           forwarderAddr
         );
         const gasPrice = await provider.getGasPrice();
-        const cost = await nomRegistrarController.rentPrice(
-          name,
-          duration,
-          address
-        );
+        const decimals = await usd.decimals();
+        const cost = (
+          await nomRegistrarController.rentPrice(name, duration, address)
+        )
+          .shr(18)
+          .shl(decimals);
+        if (cost.gt(usdRes.allowance)) {
+          await approve(MaxUint256);
+        }
         const tx = await reservePortal.escrow(
           usdAddress,
-          cost.shr(18).shl(await usd.decimals()),
+          cost,
           celoChainId,
           {
             from,
@@ -252,6 +237,7 @@ export const useReserve = (name?: string) => {
     },
     [
       address,
+      approve,
       celoChainId,
       celoProvider,
       chainId,
@@ -261,8 +247,9 @@ export const useReserve = (name?: string) => {
       nonce,
       provider,
       setNonce,
+      usdRes,
       userTxDefaults,
     ]
   );
-  return { approve, reserve, extend, loading };
+  return { reserve, extend, loading };
 };
