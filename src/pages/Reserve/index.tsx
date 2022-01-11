@@ -37,10 +37,8 @@ export const Reserve: React.FC = () => {
   const [nom, refetchNom] = useNom(nameFormatted);
   const [years, setYears] = React.useState(1);
   const [cost, setCost] = React.useState(5);
-  const [approveLoading, setApproveLoading] = React.useState(false);
   const [reserveLoading, setReserveLoading] = React.useState(false);
-  const [approved, setApproved] = React.useState(false);
-  const [cUSD, refetchCUSD] = useCUSD();
+  const [cUSD] = useCUSD();
   const [nomFee] = useNomFee();
   const history = useHistory();
 
@@ -52,36 +50,6 @@ export const Reserve: React.FC = () => {
   if (nom == null) {
     return <Spinner />;
   }
-
-  const approveButton = (
-    <Button
-      onClick={async () => {
-        const kit = await getConnectedKit();
-        // kit is connected to a wallet
-        try {
-          setApproveLoading(true);
-          const cUSD = await kit._web3Contracts.getStableToken(
-            StableToken.cUSD
-          );
-          const tx = await cUSD.methods
-            .approve(FEE_MODULE_V1, toWei((cost + 1).toFixed(18)))
-            .send({
-              from: kit.defaultAccount,
-              gasPrice: DEFAULT_GAS_PRICE,
-            });
-          toastTx(tx.transactionHash);
-          refetchCUSD();
-          setApproved(true);
-        } catch (e) {
-          toast(e.message);
-        } finally {
-          setApproveLoading(false);
-        }
-      }}
-    >
-      Approve
-    </Button>
-  );
 
   const reserveButton = (
     <Button
@@ -95,6 +63,15 @@ export const Reserve: React.FC = () => {
 
         try {
           setReserveLoading(true);
+          const cUSD = await kit._web3Contracts.getStableToken(
+            StableToken.cUSD
+          );
+          await cUSD.methods
+            .approve(FEE_MODULE_V1, toWei((cost + 1).toFixed(18)))
+            .send({
+              from: kit.defaultAccount,
+              gasPrice: DEFAULT_GAS_PRICE,
+            });
           const tx = await nom.methods
             .reserve(
               ethers.utils.formatBytes32String(nameFormatted),
@@ -106,7 +83,6 @@ export const Reserve: React.FC = () => {
             });
           toastTx(tx.transactionHash);
           refetchNom();
-          setApproved(false);
         } catch (e) {
           toast(e.message);
         } finally {
@@ -118,14 +94,12 @@ export const Reserve: React.FC = () => {
     </Button>
   );
 
-  const loading = approveLoading || reserveLoading;
-  let button = approveButton;
+  const loading = reserveLoading;
+  let button = reserveButton;
   if (cUSD) {
     const costBN = toBN(toWei(cost.toFixed(18)));
     if (cUSD.balance.lt(costBN)) {
       button = <Button disabled={true}>Insufficient funds</Button>;
-    } else if (approved) {
-      button = reserveButton;
     }
   }
 
