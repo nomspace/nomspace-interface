@@ -88,11 +88,15 @@ export const SearchDetail: React.FC = () => {
                         backgroundImage: `url(${defaultBanner})`,
                       }}
                     />
-                    <Image
-                      sx={{ clipPath: "circle(60px at center)" }}
-                      variant="search.banner.avatar"
-                      src={nom.avatar !== "" ? nom.avatar : defaultPFP}
-                    />
+                    <NewTabLink
+                      href={nom.avatar !== "" ? nom.avatar : defaultPFP}
+                    >
+                      <Image
+                        sx={{ clipPath: "circle(60px at center)" }}
+                        variant="search.banner.avatar"
+                        src={nom.avatar !== "" ? nom.avatar : defaultPFP}
+                      />
+                    </NewTabLink>
                     <Flex variant="search.nomstronautTip.container">
                       <Box variant="search.nomstronautTip.connectionsContainer">
                         <SocialIcons nom={nom} />
