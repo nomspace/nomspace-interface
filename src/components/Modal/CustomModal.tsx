@@ -2,7 +2,7 @@ import { Modal } from "../react-modal";
 
 interface Props {
   open: boolean;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export const CustomModal: React.FC<Props> = ({ open, onClose, children }) => {

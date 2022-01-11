@@ -6,11 +6,7 @@ import moment from "moment";
 import { useUserNoms } from "hooks/useUserNoms";
 import { Link } from "react-router-dom";
 
-interface Props {
-  nom: { resolution: string };
-}
-
-export const Sidebar: React.FC<Props> = ({ nom }) => {
+export const Sidebar: React.FC = () => {
   const [userNoms] = useUserNoms();
   const [colorMode, setColorMode] = useColorMode();
 

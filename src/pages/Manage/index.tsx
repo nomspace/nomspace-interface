@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { GlobalNom } from "hooks/useNom";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import {
@@ -17,36 +17,16 @@ import { ZERO_ADDRESS } from "utils/constants";
 import { useSetNomSetting } from "hooks/useSetNomSetting";
 import { useName } from "hooks/useName";
 import { Sidebar } from "components/Sidebar";
-
-/* ASSETS */
-import pfp from "pages/SearchDetail/assets/pfp.png";
-import banner from "pages/SearchDetail/assets/banner.png";
-
-// connections
-
-/* DEMO PURPOSES, DELETE LATER */
-// nfts
-
-// tokens
-
-// stats
-
-// sources
-import s1 from "pages/SearchDetail/assets/s1.png";
-import s2 from "pages/SearchDetail/assets/s2.png";
-import s3 from "pages/SearchDetail/assets/s3.png";
-
-// nomstronaut
+import defaultPFP from "assets/DefaultPFP.png";
+import defaultBanner from "assets/DefaultBanner.png";
+import { ChangePFPModal } from "components/Modal/ChangePFPModal";
 
 //noms
 import styled from "@emotion/styled";
 import { TextKey } from "config";
 import { useHistory } from "react-router-dom";
 import { UserNonce } from "hooks/useUserNonce";
-
-const sources = [{ img: s1 }, { img: s2 }, { img: s3 }];
-
-/* DEMO PURPOSES, DELETE LATER */
+import { isAddress } from "web3-utils";
 
 const StyledLabel = styled(Label)({});
 const StyledInput = styled(Input)({
@@ -65,6 +45,7 @@ export const Manage: React.FC = () => {
   const { address } = useContractKit();
   const [nom, refetchNom] = GlobalNom.useContainer();
   const { setNomSetting } = useSetNomSetting(name);
+  const resolutionInput = useRef<HTMLInputElement>(null);
   const bioInput = useRef<HTMLInputElement>(null);
   const websiteInput = useRef<HTMLInputElement>(null);
   const twitterInput = useRef<HTMLInputElement>(null);
@@ -72,13 +53,14 @@ export const Manage: React.FC = () => {
   const telegramInput = useRef<HTMLInputElement>(null);
   const history = useHistory();
   const [nonce, setNonce] = UserNonce.useContainer();
+  const [pfpModalOpen, setPfpModalOpen] = useState(false);
 
-  const isOwner =
-    address && nom && nom.owner.toLowerCase() === address.toLowerCase();
+  const isOwner = address && nom?.owner && nom.owner === address;
 
   // TODO: Text validation
   const onSave = useCallback(async () => {
     if (nonce == null) return;
+    const newResolution = resolutionInput.current?.value;
     const newBio = bioInput.current?.value;
     const newWebsite = websiteInput.current?.value;
     const newTwitter = twitterInput.current?.value;
@@ -86,6 +68,18 @@ export const Manage: React.FC = () => {
     const newTelegram = telegramInput.current?.value;
     let currentNonce = nonce;
 
+    if (nom?.resolution !== newResolution) {
+      if (newResolution && isAddress(newResolution)) {
+        await setNomSetting(currentNonce, "setAddr(bytes32,address)", [
+          namehash,
+          newResolution,
+        ]);
+        currentNonce += 1;
+        refetchNom();
+      } else {
+        alert("Invalid address entered for resolution.");
+      }
+    }
     if (nom?.bio !== newBio) {
       await setNomSetting(currentNonce, "setText", [
         namehash,
@@ -135,6 +129,7 @@ export const Manage: React.FC = () => {
     history.push(`/${name}`);
   }, [
     nonce,
+    nom?.resolution,
     nom?.bio,
     nom?.website,
     nom?.twitter,
@@ -149,131 +144,137 @@ export const Manage: React.FC = () => {
   ]);
 
   return (
-    <Flex
-      sx={{
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      {name ? (
-        <Box sx={{ textAlign: "center", width: "100%" }}>
-          <Card sx={{ width: "100%" }} py={4} px={3}>
-            {nom && nom.owner !== ZERO_ADDRESS && isOwner ? (
-              <>
-                {/* Modals */}
-                <Flex>
-                  {/* Sidebar */}
-                  <Sidebar nom={nom} />
-                  {/* Page */}
-                  <Flex
-                    sx={{
-                      alignItems: "center",
-                      flexDirection: "column",
-                      width: "100%",
-                    }}
-                  >
-                    {/* Banner */}
-                    <Box variant="search.banner.container">
-                      <Box
-                        variant="search.banner.image"
-                        sx={{
-                          backgroundImage: `url(${banner})`,
-                        }}
-                      />
-                      <Image variant="search.banner.avatar" src={pfp} />
-                      {/* nomstronaut + tip */}
-                      <Flex variant="search.nomstronautTip.container">
-                        <Button
-                          variant="search.nomstronautTip.tip"
-                          onClick={() => {
-                            onSave();
+    <>
+      <ChangePFPModal
+        open={pfpModalOpen}
+        onClose={() => setPfpModalOpen(false)}
+      />
+      <Flex
+        sx={{
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        {name ? (
+          <Box sx={{ textAlign: "center", width: "100%" }}>
+            <Card sx={{ width: "100%" }} py={4} px={3}>
+              {nom && nom.owner !== ZERO_ADDRESS && isOwner ? (
+                <>
+                  {/* Modals */}
+                  <Flex>
+                    <Sidebar />
+                    {/* Page */}
+                    <Flex
+                      sx={{
+                        alignItems: "center",
+                        flexDirection: "column",
+                        width: "100%",
+                      }}
+                    >
+                      {/* Banner */}
+                      <Box variant="search.banner.container">
+                        <Box
+                          variant="search.banner.image"
+                          sx={{
+                            backgroundImage: `url(${defaultBanner})`,
                           }}
-                        >
-                          DONE
-                        </Button>
-                      </Flex>
-                    </Box>
+                        />
+                        <Image
+                          sx={{
+                            clipPath: "circle(60px at center)",
+                            cursor: "pointer",
+                          }}
+                          variant="search.banner.avatar"
+                          src={nom.avatar !== "" ? nom.avatar : defaultPFP}
+                          onClick={() => setPfpModalOpen(true)}
+                        />
+                        {/* nomstronaut + tip */}
+                        <Flex variant="search.nomstronautTip.container">
+                          <Button
+                            variant="search.nomstronautTip.tip"
+                            onClick={() => {
+                              onSave();
+                            }}
+                          >
+                            DONE
+                          </Button>
+                        </Flex>
+                      </Box>
 
-                    {/* Main Body */}
-                    <Box variant="search.details.container">
-                      <Flex variant="search.details.heading">
-                        {/* Name & Heading */}
-                        <Box variant="search.name.container">
-                          <Flex variant="search.name.nameContainer">
-                            <Heading variant="search.name.heading">
-                              {name}
-                            </Heading>
-                            <Heading
-                              variant="search.name.heading"
-                              sx={{ color: "#D9D9D9" }}
-                            >
-                              .nom
-                            </Heading>
-                            {sources.map((e, idx) => {
-                              return (
-                                <Box
-                                  variant="search.name.source.imageContainer"
-                                  key={idx}
-                                >
-                                  <Box
-                                    variant="search.name.source.image"
-                                    sx={{
-                                      backgroundImage: `url(${e.img})`,
-                                    }}
-                                  ></Box>
-                                </Box>
-                              );
-                            })}
-                          </Flex>
-                        </Box>
+                      {/* Main Body */}
+                      <Box variant="search.details.container">
+                        <Flex variant="search.details.heading">
+                          {/* Name & Heading */}
+                          <Box variant="search.name.container">
+                            <Flex variant="search.name.nameContainer">
+                              <Heading variant="search.name.heading">
+                                {name}
+                              </Heading>
+                              <Heading
+                                variant="search.name.heading"
+                                sx={{ color: "#D9D9D9" }}
+                              >
+                                .nom
+                              </Heading>
+                            </Flex>
+                          </Box>
 
-                        {/*Inputs*/}
-                        <EditSection>
-                          <StyledLabel>Bio</StyledLabel>
-                          <StyledInput ref={bioInput} defaultValue={nom?.bio} />
-                          <StyledLabel>Website</StyledLabel>
-                          <StyledInput
-                            ref={websiteInput}
-                            defaultValue={nom?.website}
-                          />
-                          <StyledLabel>Twitter</StyledLabel>
-                          <StyledInput
-                            ref={twitterInput}
-                            defaultValue={nom?.twitter}
-                          />
-                          <StyledLabel>Discord</StyledLabel>
-                          <StyledInput
-                            ref={discordInput}
-                            defaultValue={nom?.discord}
-                          />
-                          <StyledLabel>Telegram</StyledLabel>
-                          <StyledInput
-                            ref={telegramInput}
-                            defaultValue={nom?.telegram}
-                          />
-                        </EditSection>
-                      </Flex>
-                      {/* Footer */}
-                      {/* absolutely positioned */}
-                      <Box variant="search.footer.container">
-                        <Box variant="search.footer.wallet"></Box>
-                        <Box variant="search.footer.moreContainer">
-                          <Box variant="search.footer.more"></Box>
-                          <Box variant="search.footer.search"></Box>
+                          {/*Inputs*/}
+                          <EditSection>
+                            <StyledLabel>Resolution</StyledLabel>
+                            <StyledInput
+                              ref={resolutionInput}
+                              defaultValue={nom?.resolution}
+                            />
+                            <StyledLabel>Bio</StyledLabel>
+                            <StyledInput
+                              ref={bioInput}
+                              defaultValue={nom?.bio}
+                            />
+                            <StyledLabel>Website</StyledLabel>
+                            <StyledInput
+                              ref={websiteInput}
+                              defaultValue={nom?.website}
+                            />
+                            <StyledLabel>Twitter</StyledLabel>
+                            <StyledInput
+                              ref={twitterInput}
+                              defaultValue={nom?.twitter}
+                            />
+                            <StyledLabel>Discord</StyledLabel>
+                            <StyledInput
+                              ref={discordInput}
+                              defaultValue={nom?.discord}
+                            />
+                            <StyledLabel>Telegram</StyledLabel>
+                            <StyledInput
+                              ref={telegramInput}
+                              defaultValue={nom?.telegram}
+                            />
+                          </EditSection>
+                        </Flex>
+                        {/* Footer */}
+                        {/* absolutely positioned */}
+                        <Box variant="search.footer.container">
+                          <Box variant="search.footer.wallet"></Box>
+                          <Box variant="search.footer.moreContainer">
+                            <Box variant="search.footer.more"></Box>
+                            <Box variant="search.footer.search"></Box>
+                          </Box>
                         </Box>
                       </Box>
-                    </Box>
+                    </Flex>
                   </Flex>
-                </Flex>
-              </>
-            ) : (
-              <Spinner />
-            )}
-          </Card>
-        </Box>
-      ) : (
-        <Text>Name is invalid. Try searching again.</Text>
-      )}
-    </Flex>
+                </>
+              ) : (
+                <Spinner />
+              )}
+            </Card>
+          </Box>
+        ) : (
+          <Text>Name is invalid. Try searching again.</Text>
+        )}
+      </Flex>
+    </>
   );
 };

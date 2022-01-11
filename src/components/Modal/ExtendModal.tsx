@@ -1,7 +1,7 @@
 import { CustomModal } from "components/Modal/CustomModal";
 import { ModalContent } from "@mattjennings/react-modal";
 import React from "react";
-import { ReserveView } from "components/Modal/ReserveView";
+import { ExtendView } from "components/Modal/ExtendView";
 
 interface Props {
   open: boolean;
@@ -9,7 +9,7 @@ interface Props {
   name: string;
 }
 
-export const ReserveModal: React.FC<Props> = ({ open, onClose, name }) => {
+export const ExtendModal: React.FC<Props> = ({ open, onClose, name }) => {
   return (
     <CustomModal open={open} onClose={onClose}>
       <ModalContent
@@ -20,7 +20,7 @@ export const ReserveModal: React.FC<Props> = ({ open, onClose, name }) => {
           overflowX: "hidden",
         }}
       >
-        <ReserveView name={name} />
+        <ExtendView onClose={onClose} name={name} />
       </ModalContent>
     </CustomModal>
   );

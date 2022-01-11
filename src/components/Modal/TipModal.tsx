@@ -144,14 +144,14 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
               <Input
                 variant="modal.form.input"
                 type="number"
-                placeholder="0.00"
-                sx={{ paddingLeft: "130px" }}
                 value={amount}
                 onChange={(e) => {
                   const amount = Number(e.target.value);
                   if (isNaN(amount)) return;
                   setAmount(amount);
                 }}
+                placeholder="0.00"
+                sx={{ paddingLeft: "130px" }}
               />
               <Text
                 sx={{

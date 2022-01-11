@@ -4,28 +4,22 @@ import {
   useGetConnectedSigner,
   useProvider,
 } from "@celo-tools/use-contractkit";
-import { USD, RESERVE_PORTAL, ENS_ADDR, FORWARDER_ADDR } from "addresses";
+import { USD, RESERVE_PORTAL, FORWARDER_ADDR, BASE_ADDR } from "addresses";
 import {
+  BaseRegistrarImplementation__factory,
   ReservePortal,
   ReservePortal__factory,
-  PublicResolver__factory,
-  ERC20__factory,
 } from "generated";
 import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
-import { useCeloChainId } from "./useCeloChainId";
+import { labelhash } from "@ensdomains/ensjs";
 import { useCeloProvider } from "./useCeloProvider";
-import { ENSJS } from "types/ensjs";
-import ENS from "@ensdomains/ensjs";
-import { useUserTxDefaults } from "./useUserTxDefaults";
+import { useCeloChainId } from "./useCeloChainId";
+import { useUserTxDefaults } from "hooks/useUserTxDefaults";
 import { getSignature } from "utils/sig";
-import { useApprove } from "./useApprove";
-import { GAS_USD } from "config";
-import { useUSD } from "./useUSD";
-import { MaxUint256 } from "@ethersproject/constants";
-import { BigNumber } from "ethers";
+import { UserNonce } from "./useUserNonce";
 
-export const useSetNomSetting = (name?: string | null) => {
+export const useTransferOwnership = (name?: string) => {
   const { address, network } = useContractKit();
   const { chainId } = network;
   const provider = useProvider();
@@ -34,51 +28,42 @@ export const useSetNomSetting = (name?: string | null) => {
   const [loading, setLoading] = useState(false);
   const getConnectedSigner = useGetConnectedSigner();
   const [userTxDefaults] = useUserTxDefaults();
-  const { approve } = useApprove();
-  const [usdRes] = useUSD();
+  const [nonce, setNonce] = UserNonce.useContainer();
 
-  const setNomSetting = useCallback(
-    async (nonce: number, functionFragment: any, values: any) => {
-      const usdAddress = USD[chainId];
-      const ensAddress = ENS_ADDR[celoChainId];
-      const reservePortalAddress = RESERVE_PORTAL[chainId];
+  const transferOwnership = useCallback(
+    async (newOwner: string) => {
+      const usdAddress = USD[network.chainId];
+      const baseAddress = BASE_ADDR[celoChainId];
+      const reservePortalAddress = RESERVE_PORTAL[network.chainId];
       const forwarderAddr = FORWARDER_ADDR[celoChainId];
       if (
-        !usdAddress ||
-        !ensAddress ||
-        !reservePortalAddress ||
-        !forwarderAddr ||
-        !address ||
         !name ||
-        !userTxDefaults ||
-        !usdRes
+        !usdAddress ||
+        !reservePortalAddress ||
+        !address ||
+        !baseAddress ||
+        !forwarderAddr ||
+        !userTxDefaults
       ) {
         return;
       }
-      const ens: ENSJS = new ENS({
-        provider: celoProvider,
-        ensAddress,
-      });
-      const resolverAddr = await ens.name(`${name}.nom`).getResolverAddr();
-      const resolver = PublicResolver__factory.connect(
-        resolverAddr,
-        celoProvider
-      );
       const signer = await getConnectedSigner();
+      const baseRegistrarImplementation =
+        BaseRegistrarImplementation__factory.connect(baseAddress, celoProvider);
       const reservePortal = ReservePortal__factory.connect(
         reservePortalAddress,
         signer
       ) as unknown as ReservePortal;
-      const usd = ERC20__factory.connect(usdAddress, signer);
       try {
         setLoading(true);
-        const data = resolver.interface.encodeFunctionData(
-          functionFragment,
-          values
+        const tokenId = labelhash(name);
+        const data = baseRegistrarImplementation.interface.encodeFunctionData(
+          "safeTransferFrom(address,address,uint256)" as any,
+          [address, newOwner, tokenId]
         );
-        if (!data) return;
+        if (!data || nonce == null) return;
         const { from, gas, value } = userTxDefaults;
-        const to = resolver.address;
+        const to = baseRegistrarImplementation.address;
         const signature = await getSignature(
           signer,
           from,
@@ -91,16 +76,9 @@ export const useSetNomSetting = (name?: string | null) => {
           forwarderAddr
         );
         const gasPrice = await provider.getGasPrice();
-        const decimals = await usd.decimals();
-        const cost = BigNumber.from(GAS_USD * 1000)
-          .shl(decimals)
-          .shr(3);
-        if (cost.gt(usdRes.allowance)) {
-          await approve(MaxUint256);
-        }
         const tx = await reservePortal.escrow(
           usdAddress,
-          cost,
+          0,
           celoChainId,
           {
             from,
@@ -114,6 +92,8 @@ export const useSetNomSetting = (name?: string | null) => {
           signature,
           { gasPrice }
         );
+        await tx.wait(2);
+        setNonce(nonce + 1);
         toastTx(tx.hash);
       } catch (e: any) {
         toast(e.message);
@@ -124,16 +104,18 @@ export const useSetNomSetting = (name?: string | null) => {
     },
     [
       address,
-      approve,
       celoChainId,
       celoProvider,
       chainId,
       getConnectedSigner,
       name,
+      network.chainId,
+      nonce,
       provider,
-      usdRes,
+      setNonce,
       userTxDefaults,
     ]
   );
-  return { setNomSetting, loading };
+
+  return { transferOwnership, loading };
 };
