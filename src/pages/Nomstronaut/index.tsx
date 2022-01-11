@@ -1,7 +1,7 @@
 import React from "react";
 import { useNom } from "src/hooks/useNom";
 import { useContractKit } from "@celo-tools/use-contractkit";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { Box, Button, Card, Divider, Flex, Heading, Spinner } from "theme-ui";
 import { ethers } from "ethers";
 import { BlockText } from "src/components/BlockText";
@@ -24,6 +24,7 @@ import { ERC20 } from "src/generated/ERC20";
 import { normalize } from "eth-ens-namehash";
 import styled from "@emotion/styled";
 import gif from "src/images/gif.gif";
+import background from "src/images/stars.jpeg";
 
 export const StyledImg = styled.img`
   width: 200px;
