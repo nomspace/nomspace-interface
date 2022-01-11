@@ -34,7 +34,7 @@ export const preset = {
         primaryButtonTextColor: "#FAFAFA",
         accent: "#5352FC",
         background: "#212121",
-        secondary: "#bababa",
+        secondary: "#121212",
         muted: "#757575",
         gray: "#bababa",
         darkgray: "#BDBDBD",
@@ -231,10 +231,12 @@ export const preset = {
     details: {
       container: {
         width: "100%",
+        // height: "100%",
         overflowX: "hidden",
         textAlign: "left",
         "& > div": {},
         backgroundColor: "background",
+        color: "textColor",
       },
       heading: {
         flexDirection: ["column", null, null, "row"],
@@ -278,6 +280,7 @@ export const preset = {
         bottom: "-40%",
         height: [125, null, null, 300],
         width: [125, null, null, 300],
+        borderRadius: "50%",
       },
     },
     nomstronautTip: {
@@ -313,7 +316,7 @@ export const preset = {
         filter: "drop-shadow(0px 3px 6px #00000029)",
         backgroundColor: "box",
         border: "4px solid var(--theme-ui-colors-primary)",
-        color: "var(--theme-ui-colors-text)",
+        color: "textColor",
       },
       connectionsContainer: {
         marginLeft: 11,
@@ -462,7 +465,7 @@ export const preset = {
         marginLeft: ["mobile", "tablet", "desktop"],
         marginRight: ["mobile", "tablet", "desktop"],
         marginBottom: 18,
-        backgroundColor: [null, null, null, "#F5F5F5"],
+        backgroundColor: [null, null, null, "secondary"],
         borderRadius: "22px",
         display: [null, null, null, "flex"],
         justifyContent: "space-around",
@@ -531,6 +534,7 @@ export const preset = {
       container: {
         display: ["none", "none", "block"],
         backgroundColor: "secondary",
+        color: "textColor",
         minWidth: [null, null, 398, 498],
         padding: "24px 38px",
       },
@@ -545,6 +549,10 @@ export const preset = {
         container: {
           minWidth: 83,
           minHeight: 83,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
         },
         image: {
           backgroundPosition: "center",
@@ -565,6 +573,7 @@ export const preset = {
       item: {
         fontFamily: "Sen",
         fontSize: 30,
+        width: "100%",
         "::before": {
           content: '"  "',
           display: "inline-block",
@@ -648,6 +657,27 @@ export const preset = {
         variant: "modal.form.item",
         marginBottom: "20px",
         position: "relative",
+      },
+      amountWrapper: {
+        variant: "modal.form.inputWrapper",
+        "::after": {
+          content: '"Amount:"',
+          variant: "modal.form.inputText",
+        },
+      },
+      durationWrapper: {
+        variant: "modal.form.inputWrapper",
+        "::after": {
+          content: '"Duration"',
+          variant: "modal.form.inputText",
+        },
+      },
+      totalCostWrapper: {
+        variant: "modal.form.inputWrapper",
+        "::after": {
+          content: '"Cost"',
+          variant: "modal.form.inputText",
+        },
       },
       inputText: {
         fontWeight: "400",

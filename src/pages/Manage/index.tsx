@@ -157,7 +157,15 @@ export const Manage: React.FC = () => {
       >
         {name ? (
           <Box sx={{ textAlign: "center", width: "100%" }}>
-            <Card sx={{ width: "100%" }} py={4} px={3}>
+            <Card
+              sx={{
+                width: "100%",
+                backgroundColor: "background",
+                boxShadow: "0 0 0px rgba(0, 0, 0, 0.125)",
+              }}
+              py={4}
+              px={3}
+            >
               {nom && nom.owner !== ZERO_ADDRESS && isOwner ? (
                 <>
                   {/* Modals */}
@@ -181,7 +189,6 @@ export const Manage: React.FC = () => {
                         />
                         <Image
                           sx={{
-                            clipPath: "circle(60px at center)",
                             cursor: "pointer",
                           }}
                           variant="search.banner.avatar"

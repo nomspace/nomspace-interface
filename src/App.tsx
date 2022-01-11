@@ -17,8 +17,8 @@ const App: React.FC = () => {
   });
 
   return (
-    <Container sx={{ maxWidth: "100%", width: "100%" }}>
-      <Container>
+    <Container sx={{ maxWidth: "100%", width: "100%", height: "100vh" }}>
+      <Container sx={{ height: "100%" }}>
         {/* <Header /> */}
         <Switch>
           <Route exact path="/">

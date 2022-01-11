@@ -1,7 +1,16 @@
 import { GlobalNom } from "hooks/useNom";
 import React, { useState } from "react";
 import { useContractKit } from "@celo-tools/use-contractkit";
-import { Box, Button, Flex, Heading, Spinner, Image, Text } from "theme-ui";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Spinner,
+  Image,
+  Text,
+  useColorMode,
+} from "theme-ui";
 import { NATIVE_CURRENCY } from "config";
 import { ZERO_ADDRESS } from "utils/constants";
 import { useName } from "hooks/useName";
@@ -41,6 +50,7 @@ export const SearchDetail: React.FC = () => {
   const [tipModalOpen, setTipModalOpen] = useState(false);
   const [extendModalOpen, setExtendModalOpen] = useState(false);
   const { transferOwnership } = useTransferOwnership(name);
+  const [colorMode] = useColorMode();
 
   const isOwner = address && nom?.owner && nom.owner === address;
 
@@ -65,11 +75,12 @@ export const SearchDetail: React.FC = () => {
         sx={{
           alignItems: "center",
           flexDirection: "column",
+          height: "100%",
         }}
       >
         {name ? (
-          <Box sx={{ textAlign: "center", width: "100%" }}>
-            <Flex>
+          <Box sx={{ textAlign: "center", width: "100%", height: "100%" }}>
+            <Flex sx={{}}>
               {/* Sidebar */}
               <Sidebar />
               {/* Page */}
@@ -93,7 +104,6 @@ export const SearchDetail: React.FC = () => {
                       href={nom.avatar !== "" ? nom.avatar : defaultPFP}
                     >
                       <Image
-                        sx={{ clipPath: "circle(60px at center)" }}
                         variant="search.banner.avatar"
                         src={nom.avatar !== "" ? nom.avatar : defaultPFP}
                       />
@@ -142,7 +152,11 @@ export const SearchDetail: React.FC = () => {
                           </Heading>
                           <Heading
                             variant="search.name.heading"
-                            sx={{ color: "#D9D9D9" }}
+                            sx={{
+                              color: `${
+                                colorMode == "light" ? "#D9D9D9" : "#5e5e5e"
+                              }`,
+                            }}
                           >
                             .nom
                           </Heading>

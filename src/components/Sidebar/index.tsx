@@ -5,6 +5,7 @@ import { AccountProfile } from "components/AccountProfile";
 import moment from "moment";
 import { useUserNoms } from "hooks/useUserNoms";
 import { Link } from "react-router-dom";
+import { Spinner } from "theme-ui";
 
 export const Sidebar: React.FC = () => {
   const [userNoms] = useUserNoms();
@@ -14,8 +15,8 @@ export const Sidebar: React.FC = () => {
     <>
       <Box variant="search.sidebar.container">
         <AccountProfile />
-        <Box variant="search.sidebar.noms.container">
-          {userNoms && userNoms.length > 0 && (
+        <Box variant="search.sidebar.nom.container">
+          {userNoms && userNoms.length > 0 ? (
             <>
               <Heading variant="search.sidebar.heading">My Noms</Heading>
               {userNoms.map((un, idx) => {
@@ -46,6 +47,8 @@ export const Sidebar: React.FC = () => {
                 );
               })}
             </>
+          ) : (
+            <Spinner />
           )}
         </Box>
         <Box variant="search.sidebar.settings.container">
