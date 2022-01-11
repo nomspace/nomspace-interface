@@ -42,9 +42,6 @@ export const SearchDetail: React.FC = () => {
 
   const isOwner = address && nom?.owner && nom.owner === address;
 
-  // if (!nom) return <Spinner />;
-  // if (!name) return <Text>Name is invalid. Please try again.</Text>;
-
   return (
     <>
       {nom && name && (
