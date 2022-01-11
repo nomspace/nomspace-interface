@@ -1,18 +1,36 @@
-import React from "react";
-import { Box, Flex, Heading, Text, useColorMode } from "theme-ui";
+import React, { useState } from "react";
+import {
+  ThemeProvider as ThemeUIThemeProvider,
+  Box,
+  Flex,
+  Heading,
+  Text,
+  useColorMode,
+} from "theme-ui";
 import { SearchBar } from "components/SearchBar";
 import { AccountProfile } from "components/AccountProfile";
 import moment from "moment";
 import { useUserNoms } from "hooks/useUserNoms";
 import { Link } from "react-router-dom";
 import { Spinner } from "theme-ui";
+import { Drawer, ThemeProvider, createTheme } from "@mui/material";
+import theme from "theme";
+import { Breakpoint, useBreakpoint } from "hooks/useBreakpoint";
 
 export const Sidebar: React.FC = () => {
   const [userNoms] = useUserNoms();
   const [colorMode, setColorMode] = useColorMode();
 
-  return (
+  const [open, setOpen] = useState(true);
+  const breakpoint = useBreakpoint();
+
+  const handleSidebarToggle = () => {
+    setOpen(!open);
+  };
+
+  const sidebarContent = (
     <>
+      {" "}
       <Box variant="search.sidebar.container">
         <AccountProfile />
         <Box variant="search.sidebar.nom.container">
@@ -73,6 +91,38 @@ export const Sidebar: React.FC = () => {
           <SearchBar />
         </Box>
       </Box>
+    </>
+  );
+
+  return (
+    <>
+      <ThemeProvider theme={createTheme()}>
+        {breakpoint === Breakpoint.DESKTOP ? (
+          // desktop
+          <Drawer
+            variant="permanent"
+            anchor="left"
+            open={open}
+            onClose={handleSidebarToggle}
+          >
+            <ThemeUIThemeProvider theme={theme}>
+              {sidebarContent}
+            </ThemeUIThemeProvider>
+          </Drawer>
+        ) : (
+          // mobile
+          <Drawer
+            variant="temporary"
+            anchor="left"
+            open={open}
+            onClose={handleSidebarToggle}
+          >
+            <ThemeUIThemeProvider theme={theme}>
+              {sidebarContent}
+            </ThemeUIThemeProvider>
+          </Drawer>
+        )}
+      </ThemeProvider>
     </>
   );
 };
