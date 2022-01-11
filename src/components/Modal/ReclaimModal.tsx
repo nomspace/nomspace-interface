@@ -16,7 +16,13 @@ export const ReclaimModal: React.FC = () => {
   if (!nom) return null;
 
   return (
-    <CustomModal open={nom.owner === address && nom.owner !== nom.recordOwner}>
+    <CustomModal
+      open={
+        nom.owner !== null &&
+        nom.owner === address &&
+        nom.owner !== nom.recordOwner
+      }
+    >
       <ModalContent
         sx={{
           display: "flex",

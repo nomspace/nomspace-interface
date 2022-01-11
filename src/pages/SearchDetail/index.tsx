@@ -32,7 +32,6 @@ export const SearchDetail: React.FC = () => {
   const { name } = useName();
   const { address, network } = useContractKit();
   const [nom] = GlobalNom.useContainer();
-  console.log(nom?.owner, nom?.recordOwner);
   const [nftMetadata] = useNFTs(nom?.resolution);
   const [tokens] = useTokenBalances(nom?.resolution);
   const [userStats] = useUserStats(nom?.resolution);
@@ -43,22 +42,26 @@ export const SearchDetail: React.FC = () => {
 
   const isOwner = address && nom?.owner && nom.owner === address;
 
-  if (!nom) return <Spinner />;
-  if (!name) return <Text>Name is invalid. Please try again.</Text>;
+  // if (!nom) return <Spinner />;
+  // if (!name) return <Text>Name is invalid. Please try again.</Text>;
 
   return (
     <>
-      <TipModal
-        open={tipModalOpen}
-        onClose={() => setTipModalOpen(false)}
-        resolution={nom.resolution}
-      />
-      <ExtendModal
-        open={extendModalOpen}
-        onClose={() => setExtendModalOpen(false)}
-        name={name}
-      />
-      <ReclaimModal />
+      {nom && name && (
+        <>
+          <TipModal
+            open={tipModalOpen}
+            onClose={() => setTipModalOpen(false)}
+            resolution={nom.resolution}
+          />
+          <ExtendModal
+            open={extendModalOpen}
+            onClose={() => setExtendModalOpen(false)}
+            name={name}
+          />
+          <ReclaimModal />
+        </>
+      )}
       <Flex
         sx={{
           alignItems: "center",
@@ -69,7 +72,7 @@ export const SearchDetail: React.FC = () => {
           <Box sx={{ textAlign: "center", width: "100%" }}>
             <Flex>
               {/* Sidebar */}
-              <Sidebar nom={nom} />
+              <Sidebar />
               {/* Page */}
               {nom && (
                 <Flex
@@ -92,18 +95,7 @@ export const SearchDetail: React.FC = () => {
                       variant="search.banner.avatar"
                       src={nom.avatar !== "" ? nom.avatar : defaultPFP}
                     />
-                    {/* nomstronaut + tip */}
                     <Flex variant="search.nomstronautTip.container">
-                      {/* 
-                      TODO: Nomstraunat tag
-                      <Box variant="search.nomstronautTip.imageContainer">
-                        <Box
-                          variant="search.nomstronautTip.image"
-                          sx={{
-                            backgroundImage: `url(${nomstronaut})`,
-                          }}
-                        ></Box>
-                      </Box> */}
                       <Box variant="search.nomstronautTip.connectionsContainer">
                         <SocialIcons nom={nom} />
                       </Box>
@@ -157,72 +149,72 @@ export const SearchDetail: React.FC = () => {
                         </Heading>
                       </Box>
                       <Box>
-                        {/* Connections */}
-                        <Flex variant="search.connection.container">
-                          <SocialIcons nom={nom} />
-                        </Flex>
-                        {/* Tags */}
+                        <SocialIcons nom={nom} />
                         <UserTags userAddress={nom.resolution} />
                       </Box>
                     </Flex>
                     {/* NFTs */}
-                    {nom.owner === ZERO_ADDRESS ? (
+                    {nom.owner == null ? (
                       <ReserveView name={name} />
                     ) : (
                       <>
-                        <Heading variant="search.heading">NFTs</Heading>
-                        <Box variant="search.rowScrollContainer">
-                          {nftMetadata != null ? (
-                            nftMetadata?.map((t, idx) => {
-                              return (
-                                <Box
-                                  variant="search.nft.imageContainer"
-                                  key={idx}
-                                >
-                                  <Spinner />
-                                  <Image
-                                    variant="search.nft.image"
-                                    src={t.image}
-                                    sx={{ display: "none" }}
-                                    onLoad={(e) => {
-                                      console.log("image loaded");
-                                      (
-                                        e.target as HTMLImageElement
-                                      ).previousSibling?.remove();
-                                      (
-                                        e.target as HTMLImageElement
-                                      ).style.display = "block";
-                                      console.log("image loader removed");
-                                    }}
-                                  ></Image>
-                                </Box>
-                              );
-                            })
-                          ) : (
-                            <Spinner />
-                          )}
-                        </Box>
-                        {/* Tokens */}
-                        <Heading variant="search.heading">Tokens</Heading>
-                        <Box variant="search.rowScrollContainer">
-                          {tokens?.map((t, idx) => {
-                            return (
-                              <Box
-                                key={idx}
-                                variant="search.token.imageContainer"
-                              >
-                                <BlockscoutAddressLink address={t.address}>
+                        {nftMetadata != null && nftMetadata?.length > 0 && (
+                          <>
+                            <Heading variant="search.heading">NFTs</Heading>
+                            <Box variant="search.rowScrollContainer">
+                              {nftMetadata?.map((t, idx) => {
+                                return (
                                   <Box
-                                    variant="search.token.image"
-                                    sx={{
-                                      backgroundImage: `url(${t.logoURI})`,
-                                    }}
-                                  ></Box>
-                                </BlockscoutAddressLink>
-                              </Box>
-                            );
-                          })}
-                        </Box>
+                                    variant="search.nft.imageContainer"
+                                    key={idx}
+                                  >
+                                    <Spinner />
+                                    <Image
+                                      variant="search.nft.image"
+                                      src={t.image}
+                                      sx={{ display: "none" }}
+                                      onLoad={(e) => {
+                                        console.log("image loaded");
+                                        (
+                                          e.target as HTMLImageElement
+                                        ).previousSibling?.remove();
+                                        (
+                                          e.target as HTMLImageElement
+                                        ).style.display = "block";
+                                        console.log("image loader removed");
+                                      }}
+                                    ></Image>
+                                  </Box>
+                                );
+                              })}
+                            </Box>
+                          </>
+                        )}
+                        {/* Tokens */}
+                        {tokens && tokens.length > 0 && (
+                          <>
+                            <Heading variant="search.heading">Tokens</Heading>
+                            <Box variant="search.rowScrollContainer">
+                              {tokens.map((t, idx) => {
+                                return (
+                                  <Box
+                                    key={idx}
+                                    variant="search.token.imageContainer"
+                                  >
+                                    <BlockscoutAddressLink address={t.address}>
+                                      <Box
+                                        variant="search.token.image"
+                                        sx={{
+                                          backgroundImage: `url(${t.logoURI})`,
+                                        }}
+                                      ></Box>
+                                    </BlockscoutAddressLink>
+                                  </Box>
+                                );
+                              })}
+                            </Box>
+                          </>
+                        )}
                         {/* Stats */}
 
                         <Heading variant="search.heading">Stats</Heading>

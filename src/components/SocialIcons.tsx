@@ -42,8 +42,11 @@ interface Props {
 }
 
 export const SocialIcons: React.FC<Props> = ({ nom }) => {
+  if (!nom.website && !nom.discord && !nom.twitter && !nom.telegram) {
+    return null;
+  }
   return (
-    <Flex>
+    <Flex variant="search.connection.container">
       {nom.website && (
         <NewTabLink href={nom.website}>
           <Website>WWW</Website>

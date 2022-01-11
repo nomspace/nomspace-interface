@@ -162,8 +162,7 @@ export const Manage: React.FC = () => {
                 <>
                   {/* Modals */}
                   <Flex>
-                    {/* Sidebar */}
-                    <Sidebar nom={nom} />
+                    <Sidebar />
                     {/* Page */}
                     <Flex
                       sx={{

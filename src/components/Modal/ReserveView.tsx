@@ -6,7 +6,6 @@ import { useReserve } from "hooks/useReserve";
 import { formatUnits } from "ethers/lib/utils";
 import { useTokens } from "hooks/useTokens";
 import { getNomCost, getNomYears } from "utils/cost";
-import { ZERO_ADDRESS } from "utils/constants";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
 import { shortenAddress } from "utils/address";
@@ -114,12 +113,12 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
             }}
           />
           <Text sx={{ ml: 8 }}>
-            {tokens?.find((t) => t.address === usd?.address)?.symbol}
+            {tokens?.find((t) => t.address === usd?.address)?.symbol ?? "USD"}
           </Text>
         </Flex>
         {loading ? (
           <Spinner />
-        ) : nom.owner === ZERO_ADDRESS ? (
+        ) : nom.owner == null ? (
           button
         ) : nom.owner === address ? (
           <Text>You own this name!</Text>
