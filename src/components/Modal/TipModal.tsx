@@ -80,7 +80,13 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
           <Text variant="modal.wallet.mobile">{resolution}</Text>
           <Box variant="modal.form.container">
             <Box variant="modal.form.selectWrapper">
-              <ThemeProvider theme={createTheme()}>
+              <ThemeProvider
+                theme={createTheme({
+                  palette: {
+                    mode: `${colorMode == "light" ? "light" : "dark"}`,
+                  },
+                })}
+              >
                 <Select
                   MenuProps={{
                     disableScrollLock: true,
@@ -95,9 +101,11 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
                   autoWidth
                   sx={{
                     borderRadius: "11px",
-                    backgroundColor: "white",
+                    backgroundColor:
+                      "var(--theme-ui-colors-secondaryBackground)",
+                    border: "4px solid var(--theme-ui-colors-primary)",
+                    // backgroundColor: "white",
                     filter: "drop-shadow(0px 3px 6px #00000029)",
-                    border: "none",
                     width: "100%",
                     "& .MuiOutlinedInput-notchedOutline": {
                       border: "none",
@@ -130,7 +138,11 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
                                 />
                                 {t.symbol}
                               </Flex>
-                              <Text>
+                              <Text
+                                sx={{
+                                  color: `var(--theme-ui-colors-textColor)`,
+                                }}
+                              >
                                 {Number(
                                   formatUnits(t.balance, t.decimals)
                                 ).toFixed(4)}

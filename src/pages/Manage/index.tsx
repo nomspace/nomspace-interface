@@ -12,6 +12,7 @@ import {
   Input,
   Label,
   Spinner,
+  useColorMode,
 } from "theme-ui";
 import { ZERO_ADDRESS } from "utils/constants";
 import { useSetNomSetting } from "hooks/useSetNomSetting";
@@ -54,6 +55,7 @@ export const Manage: React.FC = () => {
   const history = useHistory();
   const [nonce, setNonce] = UserNonce.useContainer();
   const [pfpModalOpen, setPfpModalOpen] = useState(false);
+  const [colorMode] = useColorMode();
 
   const isOwner = address && nom?.owner && nom.owner === address;
 
@@ -219,7 +221,11 @@ export const Manage: React.FC = () => {
                               </Heading>
                               <Heading
                                 variant="search.name.heading"
-                                sx={{ color: "#D9D9D9" }}
+                                sx={{
+                                  color: `${
+                                    colorMode == "light" ? "#D9D9D9" : "#5e5e5e"
+                                  }`,
+                                }}
                               >
                                 .nom
                               </Heading>
