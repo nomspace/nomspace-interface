@@ -79,7 +79,7 @@ export const SearchDetail: React.FC = () => {
       >
         {name ? (
           <Box sx={{ textAlign: "center", width: "100%", height: "100%" }}>
-            <Flex sx={{}}>
+            <Flex sx={{ height: "100%" }}>
               {/* Sidebar */}
               <Sidebar />
               {/* Page */}
