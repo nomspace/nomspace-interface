@@ -72,7 +72,7 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
             <QRCode
               value={`https://twitter.com/nomspace_nom`}
               bgColor={"rgba(0,0,0,0)"}
-              fgColor={`${colorMode == "light" ? "black" : "white"}`}
+              fgColor={`${colorMode === "light" ? "black" : "white"}`}
               style={{ width: "100%", height: "100%" }}
               size={300}
             />
@@ -83,7 +83,7 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
               <ThemeProvider
                 theme={createTheme({
                   palette: {
-                    mode: `${colorMode == "light" ? "light" : "dark"}`,
+                    mode: `${colorMode === "light" ? "light" : "dark"}`,
                   },
                 })}
               >

@@ -6,7 +6,6 @@ import {
   Button,
   Flex,
   Heading,
-  Spinner,
   Image,
   Text,
   useColorMode,
@@ -154,7 +153,7 @@ export const SearchDetail: React.FC = () => {
                             variant="search.name.heading"
                             sx={{
                               color: `${
-                                colorMode == "light" ? "#D9D9D9" : "#5e5e5e"
+                                colorMode === "light" ? "#D9D9D9" : "#5e5e5e"
                               }`,
                             }}
                           >

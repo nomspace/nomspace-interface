@@ -1,5 +1,4 @@
 import React from "react";
-import { GlobalNom } from "hooks/useNom";
 import { CustomModal } from "components/Modal/CustomModal";
 import { ModalContent } from "@mattjennings/react-modal";
 import { useNFTs } from "hooks/useNFTs";
