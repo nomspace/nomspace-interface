@@ -13,6 +13,7 @@ import {
   Input,
   Button,
   Text,
+  useColorMode,
 } from "theme-ui";
 import Select from "@mui/material/Select";
 import { TokenWithBalance, useTokens } from "hooks/useTokens";
@@ -32,6 +33,7 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
   const [nom] = GlobalNom.useContainer();
   const [tokens] = useTokens();
   const [coin, setCoin] = React.useState<TokenWithBalance>();
+  const [colorMode] = useColorMode();
   const getConnectedSigner = useGetConnectedSigner();
   useEffect(() => {
     const initialToken =
@@ -70,6 +72,7 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
             <QRCode
               value={`https://twitter.com/nomspace_nom`}
               bgColor={"rgba(0,0,0,0)"}
+              fgColor={`${colorMode == "light" ? "black" : "white"}`}
               style={{ width: "100%", height: "100%" }}
               size={300}
             />

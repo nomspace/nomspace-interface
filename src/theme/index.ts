@@ -2,6 +2,7 @@
 export const preset = {
   breakpoints: ["768px", "1023px", "1499px", "1400px"],
   colors: {
+    // defaults
     purple25: "#F5F2FF",
     purple50: "#ECE6FE",
     purple100: "#CCC3FC",
@@ -24,6 +25,9 @@ export const preset = {
     highlight: "hsla(205, 100%, 40%, 0.125)",
     box: "#F1F4F4",
     disabled: "#BDBDBD",
+
+    // custom components
+    modalBackground: "rgba(255, 255, 255, 0.44)",
     modes: {
       dark: {
         primaryTextColor: "#CCC3FC",
@@ -41,6 +45,8 @@ export const preset = {
         highlight: "hsla(205, 100%, 40%, 0.125)",
         box: "#363945",
         disabled: "#BDBDBD",
+        // custom components
+        modalBackground: "rgba(0,0,0,0.44)",
       },
     },
   },
@@ -640,11 +646,17 @@ export const preset = {
         height: ["100%"],
         position: "relative",
         paddingRight: 23,
-        borderRadius: 11,
+        // borderRadius: 11,
         textAlign: "right",
-        backgroundColor: "white",
-        border: "none",
+        // backgroundColor: "white",
+        // border: "none",
         filter: "drop-shadow(0px 3px 6px #00000029)",
+
+        //themed
+        backgroundColor: "secondaryBackground",
+        border: "4px solid var(--theme-ui-colors-primary)",
+        borderRadius: "12px",
+
         ":focus": {
           outline: "hsla(241, 97%, 65%, 1) solid",
         },
@@ -737,7 +749,8 @@ export const preset = {
     // Modal variants
 
     default: {
-      backgroundColor: "rgba(255, 255, 255, 0.44)",
+      backgroundColor: "modalBackground",
+      color: "textColor",
       backdropFilter: "blur(50px) brightness(132%)",
       padding: ["5px", "10px", null, "90px 100px"],
       borderRadius: "30px",
@@ -746,7 +759,6 @@ export const preset = {
       flexDirection: `column`,
       justifyContent: "center",
       maxHeight: `80vh`,
-      // overflowY: "auto",
       minHeight: "16rem",
       minWidth: "16rem",
       maxWidth: "90vw",
