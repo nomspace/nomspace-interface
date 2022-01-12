@@ -11,7 +11,7 @@ import Modal from "react-modal";
 import { Footer } from "src/components/Footer";
 import { ToastContainer } from "react-toastify";
 import { Stats } from "./pages/Stats";
-import { Nomstronaut } from "./pages/Nomstronaut";
+import { NomstronautView } from "./pages/Nomstronaut";
 import background from "src/images/stars.jpeg";
 
 const App: React.FC = () => {
@@ -38,7 +38,7 @@ const App: React.FC = () => {
             <SearchDetail />
           </Route>
           <Route exact path="/nomstronaut/nomstronaut">
-            <Nomstronaut />
+            <NomstronautView />
           </Route>
           <Route exact path="/:name/reserve">
             <Reserve />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, Flex, Spinner, useColorMode } from "theme-ui";
 import { Logo } from "src/components/Logo";
 import { ConnectWallet } from "src/components/ConnectWallet";
@@ -11,13 +11,17 @@ export const Header: React.FC = () => {
   const [colorMode, setColorMode] = useColorMode();
   const [userNoms] = useUserNoms();
   const history = useHistory();
+
   return (
     <Flex sx={{ justifyContent: "space-between", alignItems: "center" }} mb={4}>
       {location.pathname === "/search" ? <Box /> : <Logo />}
       <Flex>
+        {location.pathname !== '/nomstronaut/nomstronaut' && (
+          <>
       <Button
         onClick={() => {
           history.push('/nomstronaut/nomstronaut');
+          setColorMode("dark")
         }}
         sx={{
           color: "var(--theme-ui-colors-text)",
@@ -49,6 +53,7 @@ export const Header: React.FC = () => {
         ) : (
           <Spinner mr={[1, 4]} />
         )}
+        
         <Flex
           sx={{
             alignItems: "center",
@@ -68,6 +73,8 @@ export const Header: React.FC = () => {
         >
           {colorMode === "light" ? <Sun size={28} /> : <Moon size={28} />}
         </Flex>
+        </>
+      )}
         <ConnectWallet />
       </Flex>
     </Flex>
