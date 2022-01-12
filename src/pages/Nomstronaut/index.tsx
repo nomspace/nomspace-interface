@@ -8,10 +8,12 @@ import { toastTx } from "src/utils/toastTx";
 import { BlockscoutAddressLink } from "src/components/BlockscoutAddressLink";
 import styled from "@emotion/styled";
 import gif from "src/images/gif.gif";
-import { NomstronautAddress } from "src/config";
+import { NomstronautAddress, MintTime } from "src/config";
 import NOMSTONAUT_ABI from "src/abis/nomspace/Nomstronaut.json";
 import { Nomstronaut } from "src/generated/Nomstronaut";
 import { useAsyncState } from "src/hooks/useAsyncState";
+import { useUserNoms } from "src/hooks/useUserNoms";
+
 
 export const StyledImg = styled.img`
   width: 200px;
@@ -25,6 +27,7 @@ export const StyledImg = styled.img`
 `;
 
 export const NomstronautView: React.FC = () => {
+  const [userNoms] = useUserNoms();
   const { address, getConnectedKit, kit } = useContractKit();
   const call = React.useCallback(async () => {
     const NomContract = new kit.web3.eth.Contract(
@@ -39,6 +42,16 @@ export const NomstronautView: React.FC = () => {
   }, [kit]);
 
   const [numMinted, resetNumMinted] = useAsyncState(null, call);
+
+  console.log((new Date()).valueOf()/1000)
+
+  const currentTime = (new Date()).valueOf()/1000
+
+  const firstLaunch = currentTime > MintTime;
+  const secondLaunch = currentTime > MintTime + 3600;
+  const walletConnect = address !== null;
+  const hasNoms = userNoms?.length !== 0 && walletConnect;
+  
 
   const mintNom = React.useCallback(
     async (amount: string) => {
@@ -78,11 +91,19 @@ export const NomstronautView: React.FC = () => {
             <StyledImg alt={"CeloPunk"} src={gif} />
             <Flex sx={{ alignItems: "center" }}>
               <BlockText mt={5}>
-                Total minted: {numMinted}/6000
+                Total minted: {firstLaunch ? numMinted : '0'}/6000
               </BlockText>
             </Flex>
           </Flex>
-          {
+          {!firstLaunch ? (
+            <BlockText mt={3}>
+              Mint for Nom holders starts in {Number((MintTime - currentTime)/ 3600).toFixed(2)} hours
+            </BlockText>
+          ) : (!secondLaunch && !hasNoms) ? (
+            <BlockText mt={3}>
+              Mint for non-Nom holders starts in {Number((MintTime + 3600 - currentTime)/ 3600).toFixed(2)} hours
+            </BlockText>
+          ) : (
             <Flex sx={{ mt: 3, justifyContent: "center", flexWrap: "wrap" }}>
               <Button
                 mr={2}
@@ -112,7 +133,7 @@ export const NomstronautView: React.FC = () => {
                 Mint 10 Nomstronauts
               </Button>
             </Flex>
-          }
+          )}
           <Flex sx={{ justifyContent: "center", mt: 3 }}>
             <BlockText>
               3 Celo each | Contract Address{" "}
