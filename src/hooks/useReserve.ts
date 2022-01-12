@@ -31,7 +31,7 @@ import { useApprove } from "./useApprove";
 import { MaxUint256 } from "@ethersproject/constants";
 
 export const useReserve = (name?: string) => {
-  const { address, network } = useContractKit();
+  const { address, network, connect } = useContractKit();
   const { chainId } = network;
   const provider = useProvider();
   const celoProvider = useCeloProvider();
@@ -45,6 +45,7 @@ export const useReserve = (name?: string) => {
 
   const reserve = useCallback(
     async (years: number) => {
+      if (!address) await connect();
       const usdAddress = USD[network.chainId];
       const regAddress = NOM_REG_ADDR[celoChainId];
       const reservePortalAddress = RESERVE_PORTAL[network.chainId];
