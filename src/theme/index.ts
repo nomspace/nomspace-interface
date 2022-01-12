@@ -238,7 +238,7 @@ export const preset = {
       container: {
         width: "100%",
         // height: "100%",
-        overflowX: "hidden",
+
         textAlign: "left",
         "& > div": {},
         backgroundColor: "background",
@@ -538,10 +538,10 @@ export const preset = {
     },
     sidebar: {
       container: {
-        display: ["none", "none", "block"],
+        display: ["block"],
         backgroundColor: "secondary",
         color: "textColor",
-        minWidth: [null, null, 398, 498],
+        minWidth: [200, 300, 430],
         padding: "24px 38px",
       },
       walletContainer: { marginTop: 20 },
