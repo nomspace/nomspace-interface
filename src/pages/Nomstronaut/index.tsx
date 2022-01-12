@@ -1,6 +1,6 @@
 import React from "react";
 import { useContractKit } from "@celo-tools/use-contractkit";
-import { Box, Button, Card, Divider, Flex, Heading, Spinner } from "theme-ui";
+import { Box, Button, Card, Flex, Heading } from "theme-ui";
 import { BlockText } from "src/components/BlockText";
 import { shortenAddress } from "src/utils/address";
 import { AbiItem, toBN, toWei } from "web3-utils";
@@ -13,7 +13,6 @@ import NOMSTONAUT_ABI from "src/abis/nomspace/Nomstronaut.json";
 import { Nomstronaut } from "src/generated/Nomstronaut";
 import { useAsyncState } from "src/hooks/useAsyncState";
 import { useUserNoms } from "src/hooks/useUserNoms";
-
 
 export const StyledImg = styled.img`
   width: 200px;
@@ -35,23 +34,21 @@ export const NomstronautView: React.FC = () => {
       NomstronautAddress
     ) as unknown as Nomstronaut;
 
-    const numMinted = await NomContract
-      .methods.totalSupply().call();
+    const numMinted = await NomContract.methods.totalSupply().call();
 
     return numMinted;
   }, [kit]);
 
   const [numMinted, resetNumMinted] = useAsyncState(null, call);
 
-  console.log((new Date()).valueOf()/1000)
+  console.log(new Date().valueOf() / 1000);
 
-  const currentTime = (new Date()).valueOf()/1000
+  const currentTime = new Date().valueOf() / 1000;
 
   const firstLaunch = currentTime > MintTime;
   const secondLaunch = currentTime > MintTime + 3600;
   const walletConnect = address !== null;
   const hasNoms = userNoms?.length !== 0 && walletConnect;
-  
 
   const mintNom = React.useCallback(
     async (amount: string) => {
@@ -63,12 +60,16 @@ export const NomstronautView: React.FC = () => {
         NOMSTONAUT_ABI.abi as AbiItem[],
         NomstronautAddress
       ) as unknown as Nomstronaut;
-      const amountBN = toBN(amount)
-      const priceEach = toBN(toWei('.03'))
-      const price = amountBN.mul(priceEach)
+      const amountBN = toBN(amount);
+      const priceEach = toBN(toWei(".03"));
+      const price = amountBN.mul(priceEach);
       const tx = await NomContract.methods
         .mint(address, amount)
-        .send({ from: kit.defaultAccount, gasPrice: toWei("0.5", "gwei"), value: price});
+        .send({
+          from: kit.defaultAccount,
+          gasPrice: toWei("0.5", "gwei"),
+          value: price,
+        });
       toastTx(tx.transactionHash);
       resetNumMinted();
     },
@@ -91,17 +92,19 @@ export const NomstronautView: React.FC = () => {
             <StyledImg alt={"CeloPunk"} src={gif} />
             <Flex sx={{ alignItems: "center" }}>
               <BlockText mt={5}>
-                Total minted: {firstLaunch ? numMinted : '0'}/6000
+                Total minted: {firstLaunch ? numMinted : "0"}/6000
               </BlockText>
             </Flex>
           </Flex>
           {!firstLaunch ? (
             <BlockText mt={3}>
-              Mint for Nom holders starts in {Number((MintTime - currentTime)/ 3600).toFixed(2)} hours
+              Mint for Nom holders starts in{" "}
+              {Number((MintTime - currentTime) / 3600).toFixed(2)} hours
             </BlockText>
-          ) : (!secondLaunch && !hasNoms) ? (
+          ) : !secondLaunch && !hasNoms ? (
             <BlockText mt={3}>
-              Mint for non-Nom holders starts in {Number((MintTime + 3600 - currentTime)/ 3600).toFixed(2)} hours
+              Mint for non-Nom holders starts in{" "}
+              {Number((MintTime + 3600 - currentTime) / 3600).toFixed(2)} hours
             </BlockText>
           ) : (
             <Flex sx={{ mt: 3, justifyContent: "center", flexWrap: "wrap" }}>
