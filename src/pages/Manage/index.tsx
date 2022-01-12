@@ -21,6 +21,7 @@ import { Sidebar } from "components/Sidebar";
 import defaultPFP from "assets/DefaultPFP.png";
 import defaultBanner from "assets/DefaultBanner.png";
 import { ChangePFPModal } from "components/Modal/ChangePFPModal";
+import { isValidHttpUrl } from "utils/url";
 
 //noms
 import styled from "@emotion/styled";
@@ -91,25 +92,41 @@ export const Manage: React.FC = () => {
       currentNonce += 1;
       refetchNom();
     }
-    if (nom?.website !== newWebsite) {
-      await setNomSetting(currentNonce, "setText", [
-        namehash,
-        TextKey.URL,
-        newWebsite,
-      ]);
-      currentNonce += 1;
-      refetchNom();
+    if (nom?.website !== newWebsite && newWebsite) {
+      const edited = `https://${newWebsite}`;
+      if (isValidHttpUrl(newWebsite)) {
+        await setNomSetting(currentNonce, "setText", [
+          namehash,
+          TextKey.URL,
+          newWebsite,
+        ]);
+        currentNonce += 1;
+        refetchNom();
+      } else if (isValidHttpUrl(edited)) {
+        await setNomSetting(currentNonce, "setText", [
+          namehash,
+          TextKey.URL,
+          edited,
+        ]);
+        currentNonce += 1;
+        refetchNom();
+      } else {
+        alert(
+          "Invalid website URL. Please add http:// or https:// to the beginning"
+        );
+        return;
+      }
     }
-    if (nom?.twitter !== newTwitter) {
+    if (nom?.twitter !== newTwitter && newTwitter) {
       await setNomSetting(currentNonce, "setText", [
         namehash,
         TextKey.TWITTER,
-        newTwitter,
+        newTwitter.replaceAll("@", ""),
       ]);
       currentNonce += 1;
       refetchNom();
     }
-    if (nom?.discord !== newDiscord) {
+    if (nom?.discord !== newDiscord && newDiscord) {
       await setNomSetting(currentNonce, "setText", [
         namehash,
         TextKey.DISCORD,
@@ -118,11 +135,11 @@ export const Manage: React.FC = () => {
       currentNonce += 1;
       refetchNom();
     }
-    if (nom?.telegram !== newTelegram) {
+    if (nom?.telegram !== newTelegram && newTelegram) {
       await setNomSetting(currentNonce, "setText", [
         namehash,
         TextKey.DISCORD,
-        newTelegram,
+        newTelegram.replaceAll("@", ""),
       ]);
       currentNonce += 1;
       refetchNom();
@@ -251,17 +268,17 @@ export const Manage: React.FC = () => {
                               ref={websiteInput}
                               defaultValue={nom?.website}
                             />
-                            <StyledLabel>Twitter</StyledLabel>
+                            <StyledLabel>Twitter Username</StyledLabel>
                             <StyledInput
                               ref={twitterInput}
                               defaultValue={nom?.twitter}
                             />
-                            <StyledLabel>Discord</StyledLabel>
+                            <StyledLabel>Discord Username</StyledLabel>
                             <StyledInput
                               ref={discordInput}
                               defaultValue={nom?.discord}
                             />
-                            <StyledLabel>Telegram</StyledLabel>
+                            <StyledLabel>Telegram Username</StyledLabel>
                             <StyledInput
                               ref={telegramInput}
                               defaultValue={nom?.telegram}

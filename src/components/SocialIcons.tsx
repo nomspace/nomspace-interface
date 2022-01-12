@@ -53,17 +53,17 @@ export const SocialIcons: React.FC<Props> = ({ nom }) => {
         </NewTabLink>
       )}
       {nom.discord && (
-        <NewTabLink href={nom.discord}>
+        <NewTabLink href={`https://discordapp.com/users/${nom.discord}`}>
           <Icon src={DiscordIcon} />
         </NewTabLink>
       )}
       {nom.twitter && (
-        <NewTabLink href={nom.twitter}>
+        <NewTabLink href={`https://twitter.com/${nom.twitter}`}>
           <Icon src={TwitterIcon} />
         </NewTabLink>
       )}
       {nom.telegram && (
-        <NewTabLink href={nom.telegram}>
+        <NewTabLink href={`https://t.me/${nom.telegram}`}>
           <Icon src={TelegramIcon} />
         </NewTabLink>
       )}
