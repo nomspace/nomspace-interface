@@ -277,7 +277,7 @@ export const preset = {
       container: {
         position: "relative",
         width: "100%",
-        height: [103, null, null, 298],
+        minHeight: [103, null, null, 298],
         marginBottom: [49, null, null, 120],
       },
       avatar: {
