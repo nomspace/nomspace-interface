@@ -4,7 +4,6 @@ import { ModalContent } from "@mattjennings/react-modal";
 import { useNFTs } from "hooks/useNFTs";
 import { Box, Spinner, Image, Text } from "theme-ui";
 import { useSetNomSetting } from "hooks/useSetNomSetting";
-import { UserNonce } from "hooks/useUserNonce";
 import { TextKey } from "config";
 import { useName } from "hooks/useName";
 
@@ -17,19 +16,12 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
   const { name, namehash } = useName();
   const [nftMetadata] = useNFTs();
   const { setNomSetting } = useSetNomSetting(name);
-  const [nonce, setNonce] = UserNonce.useContainer();
   const changePFP = React.useCallback(
     async (avatarUrl: string) => {
-      if (!nonce) return;
-      await setNomSetting(nonce, "setText", [
-        namehash,
-        TextKey.AVATAR,
-        avatarUrl,
-      ]);
-      setNonce(nonce + 1);
+      await setNomSetting(["setText"], [[namehash, TextKey.AVATAR, avatarUrl]]);
       onClose();
     },
-    [namehash, nonce, onClose, setNomSetting, setNonce]
+    [namehash, onClose, setNomSetting]
   );
 
   return (

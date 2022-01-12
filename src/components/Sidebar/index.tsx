@@ -15,8 +15,6 @@ import { useUserNoms } from "hooks/useUserNoms";
 import { Link } from "react-router-dom";
 import { Spinner } from "theme-ui";
 import { Drawer, ThemeProvider, createTheme } from "@mui/material";
-// import theme from "theme";
-import { Breakpoint, useBreakpoint } from "hooks/useBreakpoint";
 import { List, CaretLeft } from "phosphor-react";
 
 export const Sidebar: React.FC = () => {
@@ -25,17 +23,12 @@ export const Sidebar: React.FC = () => {
   const { theme } = useThemeUI();
 
   const [open, setOpen] = useState(false);
-  const breakpoint = useBreakpoint();
 
   const closeSidebar = () => {
     setOpen(false);
   };
   const openSidebar = () => {
     setOpen(true);
-  };
-
-  const toggleSidebar = () => {
-    setOpen(!open);
   };
 
   const sidebarContent = (
@@ -124,7 +117,10 @@ export const Sidebar: React.FC = () => {
           openSidebar();
         }}
       >
-        <List size={32} color={`${colorMode == "light" ? "white" : "white"}`} />
+        <List
+          size={32}
+          color={`${colorMode === "light" ? "white" : "white"}`}
+        />
       </Box>
       <Box
         sx={{
@@ -145,7 +141,7 @@ export const Sidebar: React.FC = () => {
       >
         <CaretLeft
           size={32}
-          color={`${colorMode == "light" ? "white" : "white"}`}
+          color={`${colorMode === "light" ? "white" : "white"}`}
         />
       </Box>
       <ThemeProvider theme={createTheme()}>

@@ -5,9 +5,9 @@ type AddressMap = Record<string, string>;
 export const RESERVE_PORTAL: AddressMap = {
   [ChainId.Celo]: "",
 
-  [ChainId.Alfajores]: "0xcE6863Bac168f47EF41404378Ce838ae14aAFAC8",
-  [ChainId.Fuji]: "0xfB1243D603b21D9E1a9669b67998c5CF12F58c1B",
-  [ChainId.Mumbai]: "0xb83e6f8BC9553Dd7AaECA86E96fa9B113563dfa3",
+  [ChainId.Alfajores]: "0x032307BFAa0BB0C787E5544425c74cBcBd0d0438",
+  [ChainId.Fuji]: "0x4F4dac4180dAC08dc0AF38aE8f439C3A58F296A7",
+  [ChainId.Mumbai]: "0xF545610f2eD7dBAE5c793F23684A38877A953aD1",
 };
 export const FORWARDER_ADDR: AddressMap = {
   [ChainId.Celo]: "",

@@ -27,7 +27,6 @@ import { isValidHttpUrl } from "utils/url";
 import styled from "@emotion/styled";
 import { TextKey } from "config";
 import { useHistory } from "react-router-dom";
-import { UserNonce } from "hooks/useUserNonce";
 import { isAddress } from "web3-utils";
 
 const StyledLabel = styled(Label)({});
@@ -54,7 +53,6 @@ export const Manage: React.FC = () => {
   const discordInput = useRef<HTMLInputElement>(null);
   const telegramInput = useRef<HTMLInputElement>(null);
   const history = useHistory();
-  const [nonce, setNonce] = UserNonce.useContainer();
   const [pfpModalOpen, setPfpModalOpen] = useState(false);
   const [colorMode] = useColorMode();
 
@@ -62,54 +60,36 @@ export const Manage: React.FC = () => {
 
   // TODO: Text validation
   const onSave = useCallback(async () => {
-    if (nonce == null) return;
     const newResolution = resolutionInput.current?.value;
     const newBio = bioInput.current?.value;
     const newWebsite = websiteInput.current?.value;
     const newTwitter = twitterInput.current?.value;
     const newDiscord = discordInput.current?.value;
     const newTelegram = telegramInput.current?.value;
-    let currentNonce = nonce;
+
+    const fragments = [];
+    const values = [];
 
     if (nom?.resolution !== newResolution) {
       if (newResolution && isAddress(newResolution)) {
-        await setNomSetting(currentNonce, "setAddr(bytes32,address)", [
-          namehash,
-          newResolution,
-        ]);
-        currentNonce += 1;
-        refetchNom();
+        fragments.push("setAddr(bytes32,address)");
+        values.push([namehash, newResolution]);
       } else {
         alert("Invalid address entered for resolution.");
       }
     }
     if (nom?.bio !== newBio) {
-      await setNomSetting(currentNonce, "setText", [
-        namehash,
-        TextKey.DESCRIPTION,
-        newBio,
-      ]);
-      currentNonce += 1;
-      refetchNom();
+      fragments.push("setText");
+      values.push([namehash, TextKey.DESCRIPTION, newBio]);
     }
     if (nom?.website !== newWebsite && newWebsite) {
       const edited = `https://${newWebsite}`;
       if (isValidHttpUrl(newWebsite)) {
-        await setNomSetting(currentNonce, "setText", [
-          namehash,
-          TextKey.URL,
-          newWebsite,
-        ]);
-        currentNonce += 1;
-        refetchNom();
+        fragments.push("setText");
+        values.push([namehash, TextKey.URL, newWebsite]);
       } else if (isValidHttpUrl(edited)) {
-        await setNomSetting(currentNonce, "setText", [
-          namehash,
-          TextKey.URL,
-          edited,
-        ]);
-        currentNonce += 1;
-        refetchNom();
+        fragments.push("setText");
+        values.push([namehash, TextKey.URL, edited]);
       } else {
         alert(
           "Invalid website URL. Please add http:// or https:// to the beginning"
@@ -118,48 +98,32 @@ export const Manage: React.FC = () => {
       }
     }
     if (nom?.twitter !== newTwitter && newTwitter) {
-      await setNomSetting(currentNonce, "setText", [
-        namehash,
-        TextKey.TWITTER,
-        newTwitter.replaceAll("@", ""),
-      ]);
-      currentNonce += 1;
-      refetchNom();
+      fragments.push("setText");
+      values.push([namehash, TextKey.TWITTER, newTwitter.replaceAll("@", "")]);
     }
     if (nom?.discord !== newDiscord && newDiscord) {
-      await setNomSetting(currentNonce, "setText", [
-        namehash,
-        TextKey.DISCORD,
-        newDiscord,
-      ]);
-      currentNonce += 1;
-      refetchNom();
+      fragments.push("setText");
+      values.push([namehash, TextKey.DISCORD, newDiscord]);
     }
     if (nom?.telegram !== newTelegram && newTelegram) {
-      await setNomSetting(currentNonce, "setText", [
-        namehash,
-        TextKey.DISCORD,
-        newTelegram.replaceAll("@", ""),
-      ]);
-      currentNonce += 1;
-      refetchNom();
+      fragments.push("setText");
+      values.push([namehash, TextKey.DISCORD, newTelegram.replaceAll("@", "")]);
     }
-    setNonce(currentNonce);
+    await setNomSetting(fragments, values);
+    refetchNom();
     history.push(`/${name}`);
   }, [
-    nonce,
     nom?.resolution,
     nom?.bio,
     nom?.website,
     nom?.twitter,
     nom?.discord,
     nom?.telegram,
-    setNonce,
+    setNomSetting,
+    refetchNom,
     history,
     name,
-    setNomSetting,
     namehash,
-    refetchNom,
   ]);
 
   return (

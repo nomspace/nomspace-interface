@@ -24,6 +24,7 @@ import { GAS_USD } from "config";
 import { useUSD } from "./useUSD";
 import { MaxUint256 } from "@ethersproject/constants";
 import { BigNumber } from "ethers";
+import { UserNonce } from "./useUserNonce";
 
 export const useSetNomSetting = (name?: string | null) => {
   const { address, network } = useContractKit();
@@ -36,14 +37,16 @@ export const useSetNomSetting = (name?: string | null) => {
   const [userTxDefaults] = useUserTxDefaults();
   const { approve } = useApprove();
   const [usdRes] = useUSD();
+  const [nonce, setNonce] = UserNonce.useContainer();
 
   const setNomSetting = useCallback(
-    async (nonce: number, functionFragment: any, values: any) => {
+    async (functionFragments: any[], values: any[]) => {
       const usdAddress = USD[chainId];
       const ensAddress = ENS_ADDR[celoChainId];
       const reservePortalAddress = RESERVE_PORTAL[chainId];
       const forwarderAddr = FORWARDER_ADDR[celoChainId];
       if (
+        nonce == null ||
         !usdAddress ||
         !ensAddress ||
         !reservePortalAddress ||
@@ -70,50 +73,63 @@ export const useSetNomSetting = (name?: string | null) => {
         signer
       ) as unknown as ReservePortal;
       const usd = ERC20__factory.connect(usdAddress, signer);
+      const currencies = [];
+      const amounts = [];
+      const chainIds = [];
+      const requests = [];
+      const signatures = [];
       try {
         setLoading(true);
-        const data = resolver.interface.encodeFunctionData(
-          functionFragment,
-          values
-        );
-        if (!data) return;
-        const { from, gas, value } = userTxDefaults;
-        const to = resolver.address;
-        const signature = await getSignature(
-          signer,
-          from,
-          to,
-          value,
-          gas,
-          nonce,
-          data,
-          chainId,
-          forwarderAddr
-        );
-        const gasPrice = await provider.getGasPrice();
-        const decimals = await usd.decimals();
-        const cost = BigNumber.from(GAS_USD * 1000)
-          .shl(decimals)
-          .shr(3);
-        if (cost.gt(usdRes.allowance)) {
-          await approve(MaxUint256);
-        }
-        const tx = await reservePortal.escrow(
-          usdAddress,
-          cost,
-          celoChainId,
-          {
+        for (let i = 0; i < functionFragments.length; i++) {
+          const data = resolver.interface.encodeFunctionData(
+            functionFragments[i],
+            values[i]
+          );
+          if (!data) return;
+          const { from, gas, value } = userTxDefaults;
+          const to = resolver.address;
+          const signature = await getSignature(
+            signer,
+            from,
+            to,
+            value,
+            gas,
+            nonce + i,
+            data,
+            chainId,
+            forwarderAddr
+          );
+          const decimals = await usd.decimals();
+          const cost = BigNumber.from(GAS_USD * 1000)
+            .shl(decimals)
+            .shr(3);
+          if (cost.gt(usdRes.allowance)) {
+            await approve(MaxUint256);
+          }
+          currencies.push(usdAddress);
+          amounts.push(cost);
+          chainIds.push(celoChainId);
+          requests.push({
             from,
             to,
             gas,
             value,
-            nonce,
+            nonce: nonce + i,
             chainId,
             data,
-          },
-          signature,
+          });
+          signatures.push(signature);
+        }
+        const gasPrice = await provider.getGasPrice();
+        const tx = await reservePortal.batchEscrow(
+          currencies,
+          amounts,
+          chainIds,
+          requests,
+          signatures,
           { gasPrice }
         );
+        setNonce(nonce + functionFragments.length);
         toastTx(tx.hash);
       } catch (e: any) {
         toast(e.message);
@@ -130,7 +146,9 @@ export const useSetNomSetting = (name?: string | null) => {
       chainId,
       getConnectedSigner,
       name,
+      nonce,
       provider,
+      setNonce,
       usdRes,
       userTxDefaults,
     ]

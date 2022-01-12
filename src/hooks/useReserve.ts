@@ -140,6 +140,7 @@ export const useReserve = (name?: string) => {
       celoChainId,
       celoProvider,
       chainId,
+      connect,
       getConnectedSigner,
       name,
       network.chainId,
