@@ -103,9 +103,6 @@ export const useSetNomSetting = (name?: string | null) => {
           const cost = BigNumber.from(GAS_USD * 1000)
             .shl(decimals)
             .shr(3);
-          if (cost.gt(usdRes.allowance)) {
-            await approve(MaxUint256);
-          }
           currencies.push(usdAddress);
           amounts.push(cost);
           chainIds.push(celoChainId);
@@ -119,6 +116,13 @@ export const useSetNomSetting = (name?: string | null) => {
             data,
           });
           signatures.push(signature);
+        }
+        const totalCost = amounts.reduce(
+          (acc, curr) => acc.add(curr),
+          BigNumber.from(0)
+        );
+        if (totalCost.gt(usdRes.allowance)) {
+          await approve(MaxUint256);
         }
         const gasPrice = await provider.getGasPrice();
         const tx = await reservePortal.batchEscrow(

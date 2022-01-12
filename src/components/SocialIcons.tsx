@@ -30,6 +30,7 @@ const Website = styled(Text)({
   justifyContent: "center",
   alignItems: "center",
   fontSize: "12px",
+  color: "white",
 });
 
 interface Props {
