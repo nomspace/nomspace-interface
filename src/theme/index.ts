@@ -543,7 +543,8 @@ export const preset = {
         color: "textColor",
         minWidth: [200, 300, 430],
         padding: "24px 38px",
-        minHeight: "fit-content",
+        height: "fit-content",
+        minHeight: "100%",
       },
       walletContainer: { marginTop: 20 },
       heading: {
