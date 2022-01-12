@@ -9,7 +9,7 @@ export enum Breakpoint {
 export const useBreakpoint = () => {
   const { theme } = useThemeUI();
   const [breakpoint, setBreakpoint] = useState(Breakpoint.MOBILE);
-  const desktopBreakpoint = parseInt(theme.breakpoints![1] as string);
+  const desktopBreakpoint = parseInt(theme.breakpoints![2] as string);
 
   useLayoutEffect(() => {
     const listener = () => {

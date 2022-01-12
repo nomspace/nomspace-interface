@@ -1,19 +1,46 @@
-import React from "react";
-import { Box, Flex, Heading, Text, useColorMode } from "theme-ui";
+import React, { useState } from "react";
+import {
+  ThemeProvider as ThemeUIThemeProvider,
+  Box,
+  Flex,
+  Heading,
+  Text,
+  useColorMode,
+  useThemeUI,
+} from "theme-ui";
 import { SearchBar } from "components/SearchBar";
 import { AccountProfile } from "components/AccountProfile";
 import moment from "moment";
 import { useUserNoms } from "hooks/useUserNoms";
 import { Link } from "react-router-dom";
 import { Spinner } from "theme-ui";
+import { Drawer, ThemeProvider, createTheme } from "@mui/material";
+// import theme from "theme";
+import { Breakpoint, useBreakpoint } from "hooks/useBreakpoint";
+import { List, CaretLeft } from "phosphor-react";
 
 export const Sidebar: React.FC = () => {
   const [userNoms] = useUserNoms();
   const [colorMode, setColorMode] = useColorMode();
+  const { theme } = useThemeUI();
 
-  return (
+  const [open, setOpen] = useState(false);
+  const breakpoint = useBreakpoint();
+
+  const closeSidebar = () => {
+    setOpen(false);
+  };
+  const openSidebar = () => {
+    setOpen(true);
+  };
+
+  const toggleSidebar = () => {
+    setOpen(!open);
+  };
+
+  const sidebarContent = (
     <>
-      <Box variant="search.sidebar.container">
+      <Box variant="search.sidebar.container" sx={{ height: "100%" }}>
         <AccountProfile />
         <Box variant="search.sidebar.nom.container">
           {userNoms ? (
@@ -75,6 +102,98 @@ export const Sidebar: React.FC = () => {
           <SearchBar />
         </Box>
       </Box>
+    </>
+  );
+
+  return (
+    <>
+      <Box
+        sx={{
+          position: "absolute",
+          top: 10,
+          left: 10,
+          zIndex: open ? 99 : 10000,
+          backgroundColor: "rgba(0,0,0,0.3)",
+          padding: "10px",
+          borderRadius: "50%",
+          cursor: "pointer",
+          transition: "opacity 0.3s ease-in",
+          opacity: open ? 0 : 1,
+        }}
+        onClick={() => {
+          openSidebar();
+        }}
+      >
+        <List size={32} color={`${colorMode == "light" ? "white" : "white"}`} />
+      </Box>
+      <Box
+        sx={{
+          position: "absolute",
+          top: 10,
+          left: 10,
+          zIndex: !open ? 99 : 10000,
+          backgroundColor: "rgba(0,0,0,0.3)",
+          padding: "10px",
+          borderRadius: "50%",
+          cursor: "pointer",
+          transition: "opacity 0.3s ease-in",
+          opacity: !open ? 0 : 1,
+        }}
+        onClick={() => {
+          closeSidebar();
+        }}
+      >
+        <CaretLeft
+          size={32}
+          color={`${colorMode == "light" ? "white" : "white"}`}
+        />
+      </Box>
+      <ThemeProvider theme={createTheme()}>
+        {/* breakpoint === Breakpoint.DESKTOP
+          leaving here to come back to later,
+          for some reason MUI persistent drawer is being a pain 
+          in the ass.
+          reference links:
+
+        */}
+        {false ? (
+          // desktop
+          <Drawer
+            variant="persistent"
+            anchor="left"
+            open={open}
+            onClose={() => {
+              console.log("close sidebar");
+              closeSidebar();
+            }}
+            sx={{
+              position: "relative",
+              width: "auto",
+              ".MuiPaper-root": {
+                position: "absolute",
+              },
+            }}
+          >
+            <ThemeUIThemeProvider theme={theme}>
+              {/* add sidebar close button here */}
+              {sidebarContent}
+            </ThemeUIThemeProvider>
+          </Drawer>
+        ) : (
+          // mobile
+          <Drawer
+            variant="temporary"
+            anchor="left"
+            open={open}
+            onClose={closeSidebar}
+            sx={{}}
+          >
+            <ThemeUIThemeProvider theme={theme}>
+              {sidebarContent}
+            </ThemeUIThemeProvider>
+          </Drawer>
+        )}
+      </ThemeProvider>
     </>
   );
 };
