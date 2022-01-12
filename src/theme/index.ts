@@ -543,13 +543,14 @@ export const preset = {
         color: "textColor",
         minWidth: [200, 300, 430],
         padding: "24px 38px",
+        minHeight: "fit-content",
       },
       walletContainer: { marginTop: 20 },
       heading: {
         variant: "search.sidebar.item",
         fontFamily: "Sen",
         fontSize: 42,
-        marginTop: 80,
+        marginTop: 48,
       },
       nom: {
         container: {

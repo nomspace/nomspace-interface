@@ -95,7 +95,7 @@ export const Search: React.FC = () => {
         mx: ["28px", "180px"],
       }}
     >
-      <Title as="h1">Nom 2.0</Title>
+      <Title as="h1">Nomspace</Title>
       <Subtitle>One Nom to rule them all.</Subtitle>
       <Description>
         Wallet addresses are hard to remember.{" "}

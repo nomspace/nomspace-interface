@@ -32,70 +32,68 @@ export const Sidebar: React.FC = () => {
   };
 
   const sidebarContent = (
-    <>
-      <Box variant="search.sidebar.container" sx={{ height: "100%" }}>
-        <AccountProfile />
-        <Box variant="search.sidebar.nom.container">
-          {userNoms ? (
-            userNoms.length > 0 && (
-              <>
-                <Heading variant="search.sidebar.heading">My Noms</Heading>
-                {userNoms.map((un, idx) => {
-                  return (
-                    <Box
-                      key={idx}
-                      variant="search.sidebar.item"
-                      sx={{ "::before": { display: "none" } }}
-                    >
-                      <Link to={`/${un.name}`}>
-                        <Flex
-                          sx={{
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Flex sx={{ alignItems: "center" }}>
-                            <Text variant="search.sidebar.nom.name">
-                              {un.name}.nom
-                            </Text>
-                          </Flex>
-                          <Text variant="search.sidebar.nom.date">
-                            {moment.unix(un.expiration).format("MM/DD/YYYY")}
+    <Box variant="search.sidebar.container">
+      <AccountProfile />
+      <Box variant="search.sidebar.search" mt={48}>
+        <SearchBar />
+      </Box>
+      <Box variant="search.sidebar.nom.container">
+        {userNoms ? (
+          userNoms.length > 0 && (
+            <>
+              <Heading variant="search.sidebar.heading">My Noms</Heading>
+              {userNoms.map((un, idx) => {
+                return (
+                  <Box
+                    key={idx}
+                    variant="search.sidebar.item"
+                    sx={{ "::before": { display: "none" } }}
+                  >
+                    <Link to={`/${un.name}`}>
+                      <Flex
+                        sx={{
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Flex sx={{ alignItems: "center" }}>
+                          <Text variant="search.sidebar.nom.name">
+                            {un.name}.nom
                           </Text>
                         </Flex>
-                      </Link>
-                    </Box>
-                  );
-                })}
-              </>
-            )
-          ) : (
-            <Spinner />
-          )}
-        </Box>
-        <Box variant="search.sidebar.settings.container">
-          <Heading variant="search.sidebar.heading">Settings</Heading>
-          <Text
-            variant="search.sidebar.item"
-            sx={{ cursor: "pointer" }}
-            onClick={() => {
-              if (colorMode === "light") {
-                setColorMode("dark");
-              } else {
-                setColorMode("light");
-              }
-            }}
-          >
-            Light / Dark Mode
-          </Text>
-          {/* <Text variant="search.sidebar.item">Default Currency</Text>
-        <Text variant="search.sidebar.item">Language</Text> */}
-        </Box>
-        <Box variant="search.sidebar.search">
-          <SearchBar />
-        </Box>
+                        <Text variant="search.sidebar.nom.date">
+                          {moment.unix(un.expiration).format("MM/DD/YYYY")}
+                        </Text>
+                      </Flex>
+                    </Link>
+                  </Box>
+                );
+              })}
+            </>
+          )
+        ) : (
+          <Spinner />
+        )}
       </Box>
-    </>
+      <Box>
+        <Heading variant="search.sidebar.heading">Settings</Heading>
+        <Text
+          variant="search.sidebar.item"
+          sx={{ cursor: "pointer" }}
+          onClick={() => {
+            if (colorMode === "light") {
+              setColorMode("dark");
+            } else {
+              setColorMode("light");
+            }
+          }}
+        >
+          Light / Dark Mode
+        </Text>
+        {/* <Text variant="search.sidebar.item">Default Currency</Text>
+        <Text variant="search.sidebar.item">Language</Text> */}
+      </Box>
+    </Box>
   );
 
   return (
