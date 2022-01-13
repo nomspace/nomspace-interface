@@ -1,10 +1,9 @@
 import React from "react";
 import { useContractKit } from "@celo-tools/use-contractkit";
-import { Box, Button, Card, Flex, Heading } from "theme-ui";
+import { Box, Card, Flex, Heading } from "theme-ui";
 import { BlockText } from "src/components/BlockText";
 import { shortenAddress } from "src/utils/address";
-import { AbiItem, toBN, toWei } from "web3-utils";
-import { toastTx } from "src/utils/toastTx";
+import { AbiItem } from "web3-utils";
 import { BlockscoutAddressLink } from "src/components/BlockscoutAddressLink";
 import styled from "@emotion/styled";
 import gif from "src/images/gif.gif";
@@ -12,7 +11,6 @@ import { NomstronautAddress, MintTime } from "src/config";
 import NOMSTONAUT_ABI from "src/abis/nomspace/Nomstronaut.json";
 import { Nomstronaut } from "src/generated/Nomstronaut";
 import { useAsyncState } from "src/hooks/useAsyncState";
-import { useUserNoms } from "src/hooks/useUserNoms";
 
 export const StyledImg = styled.img`
   width: 200px;
@@ -26,8 +24,8 @@ export const StyledImg = styled.img`
 `;
 
 export const NomstronautView: React.FC = () => {
-  const [userNoms] = useUserNoms();
-  const { address, getConnectedKit, kit } = useContractKit();
+  // const [userNoms] = useUserNoms();
+  const { kit } = useContractKit();
   const call = React.useCallback(async () => {
     const NomContract = new kit.web3.eth.Contract(
       NOMSTONAUT_ABI.abi as AbiItem[],
@@ -39,40 +37,40 @@ export const NomstronautView: React.FC = () => {
     return numMinted;
   }, [kit]);
 
-  const [numMinted, resetNumMinted] = useAsyncState(null, call);
+  const [numMinted] = useAsyncState(null, call);
 
-  console.log(new Date().valueOf() / 1000);
+  // console.log(new Date().valueOf() / 1000);
 
   const currentTime = new Date().valueOf() / 1000;
 
   const firstLaunch = currentTime > MintTime;
-  const secondLaunch = currentTime > MintTime + 3600;
-  const walletConnect = address !== null;
-  const hasNoms = userNoms?.length !== 0 && walletConnect;
+  // const secondLaunch = currentTime > MintTime + 3600;
+  // const walletConnect = address !== null;
+  // const hasNoms = userNoms?.length !== 0 && walletConnect;
 
-  const mintNom = React.useCallback(
-    async (amount: string) => {
-      const kit = await getConnectedKit();
-      if (!kit || !address) {
-        return;
-      }
-      const NomContract = new kit.web3.eth.Contract(
-        NOMSTONAUT_ABI.abi as AbiItem[],
-        NomstronautAddress
-      ) as unknown as Nomstronaut;
-      const amountBN = toBN(amount);
-      const priceEach = toBN(await NomContract.methods.cost().call());
-      const price = amountBN.mul(priceEach);
-      const tx = await NomContract.methods.mint(address, amount).send({
-        from: kit.defaultAccount,
-        gasPrice: toWei("0.5", "gwei"),
-        value: price,
-      });
-      toastTx(tx.transactionHash);
-      resetNumMinted();
-    },
-    [address, getConnectedKit, resetNumMinted]
-  );
+  // const mintNom = React.useCallback(
+  //   async (amount: string) => {
+  //     const kit = await getConnectedKit();
+  //     if (!kit || !address) {
+  //       return;
+  //     }
+  //     const NomContract = new kit.web3.eth.Contract(
+  //       NOMSTONAUT_ABI.abi as AbiItem[],
+  //       NomstronautAddress
+  //     ) as unknown as Nomstronaut;
+  //     const amountBN = toBN(amount);
+  //     const priceEach = toBN(await NomContract.methods.cost().call());
+  //     const price = amountBN.mul(priceEach);
+  //     const tx = await NomContract.methods.mint(address, amount).send({
+  //       from: kit.defaultAccount,
+  //       gasPrice: toWei("0.5", "gwei"),
+  //       value: price,
+  //     });
+  //     toastTx(tx.transactionHash);
+  //     resetNumMinted();
+  //   },
+  //   [address, getConnectedKit, resetNumMinted]
+  // );
 
   return (
     <Flex
