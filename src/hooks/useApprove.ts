@@ -4,7 +4,7 @@ import {
   useGetConnectedSigner,
   useProvider,
 } from "@celo-tools/use-contractkit";
-import { USD, RESERVE_PORTAL } from "addresses";
+import { USD } from "addresses";
 import { ERC20__factory } from "generated";
 import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
@@ -18,10 +18,9 @@ export const useApprove = () => {
   const getConnectedSigner = useGetConnectedSigner();
 
   const approve = useCallback(
-    async (amount: BigNumberish) => {
-      const reservePortalAddress = RESERVE_PORTAL[chainId];
+    async (amount: BigNumberish, spender: string) => {
       const usdAddress = USD[chainId];
-      if (!reservePortalAddress || !usdAddress) {
+      if (!usdAddress) {
         return;
       }
       const signer = await getConnectedSigner();
@@ -29,7 +28,7 @@ export const useApprove = () => {
         setLoading(true);
         const usd = ERC20__factory.connect(usdAddress, signer);
         const gasPrice = await provider.getGasPrice();
-        const tx = await usd.approve(reservePortalAddress, amount, {
+        const tx = await usd.approve(spender, amount, {
           gasPrice,
         });
         toastTx(tx.hash);

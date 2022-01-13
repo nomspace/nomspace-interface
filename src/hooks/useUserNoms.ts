@@ -15,6 +15,9 @@ import {
 import { useCeloChainId } from "./useCeloChainId";
 import { ZERO_ADDRESS } from "utils/constants";
 import { usePollingAsyncState } from "./usePollingAsyncState";
+import { getPastEvents } from "utils/events";
+import { multicallBatch } from "utils/multicall";
+import { BigNumber } from "ethers";
 
 const now = Date.now() / 1000;
 
@@ -47,78 +50,115 @@ export const useUserNoms = () => {
     const baseRegistrarImplementation =
       BaseRegistrarImplementation__factory.connect(baseAddress, celoProvider);
 
-    const tokenIds = await baseRegistrarImplementation
-      .queryFilter(
-        baseRegistrarImplementation.filters[
-          "Transfer(address,address,uint256)"
-        ](null, address, null)
-      )
-      .then((events) => {
-        return events.map((event) => event.args.tokenId);
+    const tokenIds = await getPastEvents(
+      baseRegistrarImplementation,
+      baseRegistrarImplementation.filters["Transfer(address,address,uint256)"](
+        null,
+        address,
+        null
+      ),
+      9295881
+    ).then((events) => {
+      const tokenIds = events.map((event) => BigNumber.from(event.args?.[2]));
+      const seen: Record<string, boolean> = {};
+      return tokenIds.filter((tokenId) => {
+        const t = tokenId.toString();
+        if (!seen[t]) {
+          seen[t] = true;
+          return true;
+        }
+        return false;
       });
-    const tokenIdOwners = await multicall.callStatic
-      .aggregate(
-        tokenIds.map((tokenId) => {
-          return {
-            target: baseAddress,
-            callData: baseRegistrarImplementation.interface.encodeFunctionData(
-              "ownerOf",
-              [tokenId]
-            ),
-          };
-        })
+    });
+    const tokenIdExpirations = await multicallBatch(
+      multicall,
+      tokenIds.map((tokenId) => {
+        return {
+          target: baseAddress,
+          callData: baseRegistrarImplementation.interface.encodeFunctionData(
+            "nameExpires",
+            [tokenId]
+          ),
+        };
+      })
+    ).then((res) =>
+      res.map((value) =>
+        baseRegistrarImplementation.interface
+          .decodeFunctionResult("nameExpires", value)[0]
+          .toNumber()
       )
-      .then((res) =>
-        res.returnData.map(
-          (value) =>
-            baseRegistrarImplementation.interface.decodeFunctionResult(
-              "ownerOf",
-              value
-            )[0]
-        )
-      );
-    const tokenIdExpirations = await multicall.callStatic
-      .aggregate(
-        tokenIds.map((tokenId) => {
-          return {
-            target: baseAddress,
-            callData: baseRegistrarImplementation.interface.encodeFunctionData(
-              "nameExpires",
-              [tokenId]
-            ),
-          };
-        })
-      )
-      .then((res) =>
-        res.returnData.map((value) =>
-          baseRegistrarImplementation.interface
-            .decodeFunctionResult("nameExpires", value)[0]
-            .toNumber()
-        )
-      );
-    const ownedTokens = tokenIds
+    );
+    const activeTokens = tokenIds
       .map((tokenId, idx) => ({
         tokenId,
         expiration: tokenIdExpirations[idx],
+      }))
+      .filter((t) => t.expiration >= now);
+    const tokenIdOwners = await multicallBatch(
+      multicall,
+      activeTokens.map(({ tokenId }) => {
+        return {
+          target: baseAddress,
+          callData: baseRegistrarImplementation.interface.encodeFunctionData(
+            "ownerOf",
+            [tokenId]
+          ),
+        };
+      })
+    ).then((res) =>
+      res.map(
+        (value) =>
+          baseRegistrarImplementation.interface.decodeFunctionResult(
+            "ownerOf",
+            value
+          )[0]
+      )
+    );
+
+    type Token = {
+      name: string;
+      tokenId: BigNumber;
+      expiration: number;
+      owner: string;
+    };
+    const ownedTokens = activeTokens
+      .map(({ tokenId, expiration }, idx) => ({
+        name: tokenId.toHexString(),
+        tokenId,
+        expiration,
         owner: tokenIdOwners[idx],
       }))
-      .filter((t) => t.owner === address && t.expiration >= now);
-    const userNoms = [];
-    for (const token of ownedTokens) {
-      const events = await nomRegistrarController.queryFilter(
-        nomRegistrarController.filters[
-          "NameRegistered(string,bytes32,address,uint256,uint256)"
-        ](null, token.tokenId.toHexString(), null, null, null)
-      );
-      if (events.length > 0) {
-        userNoms.push({
-          ...token,
-          name: events[0]?.args.name,
-        });
-      }
-    }
-    return userNoms;
+      .filter((t) => t.owner === address)
+      .reduce((acc, curr) => {
+        acc[curr.tokenId.toHexString()] = curr;
+        return acc;
+      }, {} as Record<string, Token>);
+    const events = await getPastEvents(
+      nomRegistrarController,
+      (nomRegistrarController as any).filters[
+        "NameRegistered(string,bytes32,address,uint256,uint256)"
+      ](null, Object.keys(ownedTokens), null, null, null),
+      9295881
+    );
+    const seen: Record<string, boolean> = {};
+    return events
+      .filter((event) => {
+        const name = event.args?.[0];
+        if (!seen[name]) {
+          seen[name] = true;
+          return true;
+        }
+        return false;
+      })
+      .map((event) => {
+        const name = event.args?.[0];
+        const tokenId = BigNumber.from(event.args?.[1]).toHexString();
+        return {
+          ...ownedTokens[tokenId]!,
+          name,
+        };
+      });
   }, [celoChainId, celoProvider, address]);
 
-  return usePollingAsyncState(null, 15000, call);
+  return usePollingAsyncState(null, 30000, call);
 };
