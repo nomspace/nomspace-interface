@@ -61,15 +61,13 @@ export const NomstronautView: React.FC = () => {
         NomstronautAddress
       ) as unknown as Nomstronaut;
       const amountBN = toBN(amount);
-      const priceEach = toBN(toWei(".03"));
+      const priceEach = toBN(await NomContract.methods.cost().call());
       const price = amountBN.mul(priceEach);
-      const tx = await NomContract.methods
-        .mint(address, amount)
-        .send({
-          from: kit.defaultAccount,
-          gasPrice: toWei("0.5", "gwei"),
-          value: price,
-        });
+      const tx = await NomContract.methods.mint(address, amount).send({
+        from: kit.defaultAccount,
+        gasPrice: toWei("0.5", "gwei"),
+        value: price,
+      });
       toastTx(tx.transactionHash);
       resetNumMinted();
     },
