@@ -23,8 +23,8 @@ const App: React.FC = () => {
   return (
     <Container sx={{ 
       maxWidth: "100%",
-       width: "auto", 
-       backgroundImage: location.pathname === '/nomstronaut/nomstronaut' && `url(${background})`}}>
+      width: "auto", 
+      backgroundImage: location.pathname === '/nomstronaut/nomstronaut' && `url(${background})`}}>
       <Container sx={{ py: 6, px: [4, "15%"] }}>
         <Header />
         <Switch>

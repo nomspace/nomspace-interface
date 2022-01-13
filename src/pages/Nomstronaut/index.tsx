@@ -94,7 +94,10 @@ export const NomstronautView: React.FC = () => {
               </BlockText>
             </Flex>
           </Flex>
-          {!firstLaunch ? (
+          <BlockText mt={3}>
+          Sold out in 4 minutes!
+          </BlockText>
+          {/* {!firstLaunch ? (
             <BlockText mt={3}>
               Mint for Nom holders starts in{" "}
               {Number((MintTime - currentTime) / 3600).toFixed(2)} hours
@@ -134,7 +137,7 @@ export const NomstronautView: React.FC = () => {
                 Mint 10 Nomstronauts
               </Button>
             </Flex>
-          )}
+          )} */}
           <Flex sx={{ justifyContent: "center", mt: 3 }}>
             <BlockText>
               3 Celo each | Contract Address{" "}
