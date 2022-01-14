@@ -23,11 +23,11 @@ import defaultBanner from "assets/DefaultBanner.png";
 import { ChangePFPModal } from "components/Modal/ChangePFPModal";
 import { isValidHttpUrl } from "utils/url";
 
-//noms
 import styled from "@emotion/styled";
 import { TextKey } from "config";
 import { useHistory } from "react-router-dom";
 import { isAddress } from "web3-utils";
+import { PencilSimple } from "phosphor-react";
 
 const StyledLabel = styled(Label)({});
 const StyledInput = styled(Input)({
@@ -170,14 +170,32 @@ export const Manage: React.FC = () => {
                             backgroundImage: `url(${defaultBanner})`,
                           }}
                         />
-                        <Image
-                          sx={{
-                            cursor: "pointer",
-                          }}
-                          variant="search.banner.avatar"
-                          src={nom.avatar !== "" ? nom.avatar : defaultPFP}
-                          onClick={() => setPfpModalOpen(true)}
-                        />
+                        <Box sx={{ position: "relative" }}>
+                          <Image
+                            sx={{
+                              position: "absolute",
+                              cursor: "pointer",
+                              top: "-80px",
+                              filter: "blur(1px)",
+                            }}
+                            variant="search.banner.avatar"
+                            src={nom.avatar !== "" ? nom.avatar : defaultPFP}
+                            onClick={() => setPfpModalOpen(true)}
+                          />
+                          <Box
+                            sx={{
+                              cursor: "pointer",
+                              position: "absolute",
+                              left: "104px",
+                              top: "-36px",
+                              height: "avatar",
+                              width: "avatar",
+                            }}
+                            onClick={() => setPfpModalOpen(true)}
+                          >
+                            <PencilSimple color="white" size={48} />
+                          </Box>
+                        </Box>
                         {/* nomstronaut + tip */}
                         <Flex variant="search.nomstronautTip.container">
                           <Button

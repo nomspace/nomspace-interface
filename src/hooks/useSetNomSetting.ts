@@ -77,7 +77,9 @@ export const useSetNomSetting = (name?: string | null) => {
         setLoading(true);
         if (chainId === celoChainId) {
           for (let i = 0; i < functionFragments.length; i++) {
-            const tx = await (resolver as any)[functionFragments[i]](...values);
+            const tx = await (resolver as any)
+              .connect(signer)
+              [functionFragments[i]](...values[i]);
             toastTx(tx);
           }
         } else {
