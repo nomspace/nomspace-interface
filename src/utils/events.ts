@@ -1,7 +1,7 @@
 import { Contract, Event, EventFilter } from "ethers";
 import localforage from "localforage";
 
-const BUCKET_SIZE = 1000;
+const BUCKET_SIZE = 10000;
 
 export const getPastEvents = async (
   contract: Contract,
@@ -12,7 +12,7 @@ export const getPastEvents = async (
   const key = JSON.stringify(filter);
   const cachedEvents = await localforage.getItem<string>(key);
   const events = cachedEvents ? JSON.parse(cachedEvents) : [];
-  let i = fromBlock;
+  let i = events.length > 0 ? events[0].blockNumber : fromBlock;
   while (i < latestBlock) {
     events.push(
       ...(await contract.queryFilter(filter, i, i + BUCKET_SIZE - 1))

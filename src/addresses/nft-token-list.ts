@@ -11,6 +11,11 @@ const nftTokenList: Record<number, NFT[]> = {
       name: "Celo Punks",
       chainId: 42220,
     },
+    {
+      address: "0x8237f38694211F25b4c872F147F027044466Fa80",
+      name: "Nomstronaut",
+      chainId: 42220,
+    },
   ],
   44787: [
     {
