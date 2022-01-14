@@ -36,6 +36,7 @@ import { ReserveView } from "components/Modal/ReserveView";
 import { isAddress } from "web3-utils";
 import { NewTabLink } from "components/NewTabLink";
 import { SearchBar } from "components/SearchBar";
+import { Spinner } from "theme-ui";
 
 // import nomstronaut from "pages/SearchDetail/assets/astro.png";
 
@@ -177,6 +178,7 @@ export const SearchDetail: React.FC = () => {
                                   key={idx}
                                 >
                                   <NewTabLink href={t.image}>
+                                    <Spinner />
                                     <Image
                                       variant="search.nft.image"
                                       src={t.image}
