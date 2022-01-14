@@ -170,14 +170,48 @@ export const Manage: React.FC = () => {
                             backgroundImage: `url(${defaultBanner})`,
                           }}
                         />
-                        <Box sx={{ position: "relative" }}>
+
+                        <Box variant="search.banner.avatar">
                           <Image
                             sx={{
-                              position: "absolute",
+                              borderRadius: "50%",
+                              filter: "blur(1px) brightness(0.6)",
+                              transition: "all 0.2s ease",
                               cursor: "pointer",
-                              top: "-80px",
-                              filter: "blur(1px)",
+                              ":hover": {
+                                filter: "blur(2px) brightness(0.4)",
+                              },
                             }}
+                            src={nom.avatar !== "" ? nom.avatar : defaultPFP}
+                            onClick={() => setPfpModalOpen(true)}
+                          />
+                          <Box
+                            sx={{
+                              cursor: "pointer",
+                              position: "absolute",
+                              left: "0",
+                              right: "0",
+                              marginLeft: "auto",
+                              marginRight: "auto",
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                              height: "avatar",
+                              width: "avatar",
+                              display: "inline",
+                              zIndex: "5",
+                              pointerEvents: "none",
+                            }}
+                            onClick={() => setPfpModalOpen(true)}
+                          >
+                            <PencilSimple color="white" size={48} />
+                          </Box>
+                        </Box>
+                        {/* <Box
+                          variant="search.banner.avatar"
+                          sx={{ position: "relative" }}
+                        >
+                          <Image
+                            sx={{}}
                             variant="search.banner.avatar"
                             src={nom.avatar !== "" ? nom.avatar : defaultPFP}
                             onClick={() => setPfpModalOpen(true)}
@@ -186,8 +220,8 @@ export const Manage: React.FC = () => {
                             sx={{
                               cursor: "pointer",
                               position: "absolute",
-                              left: "104px",
-                              top: "-36px",
+                              left: "0",
+                              right: "0",
                               height: "avatar",
                               width: "avatar",
                             }}
@@ -195,7 +229,7 @@ export const Manage: React.FC = () => {
                           >
                             <PencilSimple color="white" size={48} />
                           </Box>
-                        </Box>
+                        </Box> */}
                         {/* nomstronaut + tip */}
                         <Flex variant="search.nomstronautTip.container">
                           <Button

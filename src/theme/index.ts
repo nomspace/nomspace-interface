@@ -280,6 +280,11 @@ export const preset = {
         minHeight: [103, null, null, 298],
         marginBottom: [49, null, null, 120],
       },
+      avatarSizing: {
+        height: [125, null, null, 300],
+        width: [125, null, null, 300],
+        borderRadius: "50%",
+      },
       avatar: {
         position: "absolute",
         left: ["mobile", "tablet", "desktop"],
