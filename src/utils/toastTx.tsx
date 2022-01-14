@@ -9,4 +9,11 @@ export const toastTx = (tx: string) => {
       <BlockscoutTxLink tx={tx}>View on Blockscout</BlockscoutTxLink>
     </>
   );
+  toast(
+    <>
+      <Text>
+        Be patient with us! Changes can take several seconds to appear.
+      </Text>
+    </>
+  );
 };
