@@ -145,7 +145,13 @@ export const Sidebar: React.FC<Props> = ({ openExtendModal }) => {
       </Box>
       <Box mt={24}>
         <Link to="/">
-          <Flex sx={{ flexDirection: "column", alignItems: "center" }}>
+          <Flex
+            sx={{
+              flexDirection: "column",
+              alignItems: "center",
+              fill: "var(--theme-ui-colors-textColor)",
+            }}
+          >
             <LogoIcon />
             <Text>Nomspace</Text>
           </Flex>
