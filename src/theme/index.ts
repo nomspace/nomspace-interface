@@ -549,6 +549,7 @@ export const preset = {
         minWidth: [200, 300, 430],
         padding: "24px 38px",
         height: "100%",
+        overflowY: "auto",
       },
       walletContainer: { marginTop: 20 },
       heading: {
