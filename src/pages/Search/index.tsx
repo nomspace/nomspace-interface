@@ -26,6 +26,7 @@ import NFTIllustration from "assets/NFTIllustration.png";
 import CrossChainIllustration from "assets/CrossChainIllustration.png";
 import { GithubLogo, TwitterLogo, DiscordLogo } from "phosphor-react";
 import { NewTabLink } from "components/NewTabLink";
+import { LogoIcon } from "icons/LogoIcon";
 
 const Title = styled(Heading)({
   fontSize: "40px",
@@ -101,26 +102,25 @@ export const Search: React.FC = () => {
         Wallet addresses are hard to remember.{" "}
         <ColoredDescription>Names aren't.</ColoredDescription>
       </Description>
-      <Box mb={2}>
-        <Image
-          src={Illustration}
-          sx={{
-            height: ["240px", "300px"],
-          }}
-        />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "42px",
+          marginBottom: "42px",
+        }}
+      >
+        <Box sx={{ fill: "textColor" }}>
+          <LogoIcon size={128} />
+        </Box>
+        <Heading as="h1" mb={4} sx={{ fontSize: "42px" }}>
+          Nomspace
+        </Heading>
       </Box>
       <SearchBar />
-      <Flex sx={{ justifyContent: "center", mt: "50px" }}>
-        <Header as="h2" mr="8px">
-          Your Crypto
-        </Header>
-        <ColoredHeader as="h2">Identity</ColoredHeader>
-      </Flex>
-      <Flex sx={{ justifyContent: "space-evenly", mt: "50px" }}>
-        <TokenLogo src={CeloImage} />
-        <TokenLogo src={AvalancheImage} />
-        <TokenLogo src={PolygonImage} />
-      </Flex>
+
       <StyledCard mt="42px">
         <CardTitle as="h3">A Cross-chain Name</CardTitle>
         <CardText>
