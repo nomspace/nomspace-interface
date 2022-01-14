@@ -7,9 +7,9 @@ import {
 import {
   USD,
   RESERVE_PORTAL,
-  ENS_ADDR,
   NOM_REG_ADDR,
   FORWARDER_ADDR,
+  RESOLVER_ADDR,
 } from "addresses";
 import {
   ERC20__factory,
@@ -20,7 +20,6 @@ import {
 import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
 import { YEAR_IN_SECONDS } from "utils/constants";
-import ENS from "@ensdomains/ensjs";
 import { useCeloProvider } from "./useCeloProvider";
 import { useCeloChainId } from "./useCeloChainId";
 import { useUserTxDefaults } from "hooks/useUserTxDefaults";
@@ -50,6 +49,7 @@ export const useReserve = (name?: string) => {
       const regAddress = NOM_REG_ADDR[celoChainId];
       const reservePortalAddress = RESERVE_PORTAL[network.chainId];
       const forwarderAddr = FORWARDER_ADDR[celoChainId];
+      const resolverAddress = RESOLVER_ADDR[celoChainId];
       const signer = await getConnectedSigner();
       if (
         !name ||
@@ -58,6 +58,7 @@ export const useReserve = (name?: string) => {
         !address ||
         !regAddress ||
         !forwarderAddr ||
+        !resolverAddress ||
         !userTxDefaults ||
         !usdRes
       ) {
@@ -68,10 +69,6 @@ export const useReserve = (name?: string) => {
         regAddress,
         celoProvider
       );
-      const ens = new ENS({
-        provider: celoProvider,
-        ensAddress: ENS_ADDR[celoChainId],
-      });
       const decimals = await usd.decimals();
       const duration = Math.ceil(Number(years) * YEAR_IN_SECONDS);
       const cost = (
@@ -79,7 +76,6 @@ export const useReserve = (name?: string) => {
       )
         .shr(18)
         .shl(decimals);
-      const resolver = await ens.name(`${name}.nom`).getResolverAddr();
 
       try {
         setLoading(true);
@@ -89,11 +85,19 @@ export const useReserve = (name?: string) => {
             nomRegistrarController.address
           );
           if (cost.gt(allowance)) {
+            console.log(nomRegistrarController.address);
             await approve(MaxUint256, nomRegistrarController.address);
           }
-          await nomRegistrarController
+          const tx = await nomRegistrarController
             .connect(signer)
-            .registerWithConfig(name, address, duration, resolver, address);
+            .registerWithConfig(
+              name,
+              address,
+              duration,
+              resolverAddress,
+              address
+            );
+          toastTx(tx.hash);
         } else {
           const allowance = await usd.allowance(address, reservePortalAddress);
           if (cost.gt(allowance)) {
@@ -105,7 +109,7 @@ export const useReserve = (name?: string) => {
           ) as unknown as ReservePortal;
           const data = nomRegistrarController.interface.encodeFunctionData(
             "registerWithConfig",
-            [name, address, duration, resolver, address]
+            [name, address, duration, resolverAddress, address]
           );
           if (!data || nonce == null) return;
           const { from, gas, value } = userTxDefaults;
