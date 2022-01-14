@@ -207,7 +207,7 @@ export const SearchDetail: React.FC = () => {
                             {tokens.map((t, idx) => {
                               return (
                                 <Box
-                                  key={idx}
+                                  key={idx + "token"}
                                   variant="search.token.imageContainer"
                                 >
                                   <BlockscoutTokenAddressLink

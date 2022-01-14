@@ -257,7 +257,7 @@ export const preset = {
       marginTop: 9,
     },
     rowScrollContainer: {
-      overflowX: "auto",
+      overflow: "auto",
       paddingLeft: ["mobile", "tablet", "desktop"],
       paddingRight: ["mobile", "tablet", "desktop"],
       display: "inline-flex",
@@ -457,7 +457,6 @@ export const preset = {
         minHeight: [65, null, null, 100],
         marginRight: 18,
         filter: "drop-shadow(0px 3px 6px #00000029)",
-        overflow: "hidden",
         borderRadius: "50%",
         border: "solid",
         borderWidth: "3px",
@@ -469,6 +468,7 @@ export const preset = {
         backgroundSize: "cover",
         width: "100%",
         height: "100%",
+        borderRadius: "50%",
       },
     },
     stat: {
