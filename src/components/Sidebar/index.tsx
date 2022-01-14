@@ -172,7 +172,7 @@ export const Sidebar: React.FC<Props> = ({ openExtendModal }) => {
           padding: "10px",
           borderRadius: "50%",
           cursor: "pointer",
-          transition: "opacity 0.3s ease-in",
+          transition: "opacity 0.20s linear",
           opacity: open ? 0 : 1,
         }}
         onClick={() => {
@@ -194,7 +194,7 @@ export const Sidebar: React.FC<Props> = ({ openExtendModal }) => {
           padding: "10px",
           borderRadius: "50%",
           cursor: "pointer",
-          transition: "opacity 0.3s ease-in",
+          transition: "opacity 0.20s linear",
           opacity: !open ? 0 : 1,
         }}
         onClick={() => {
