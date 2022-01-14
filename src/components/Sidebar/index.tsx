@@ -16,6 +16,8 @@ import { Link } from "react-router-dom";
 import { Spinner } from "theme-ui";
 import { Drawer, ThemeProvider, createTheme } from "@mui/material";
 import { List, CaretLeft } from "phosphor-react";
+import { Logo } from "components/Logo";
+import { LogoIcon } from "icons/LogoIcon";
 
 export const Sidebar: React.FC = () => {
   const [userNoms] = useUserNoms();
@@ -34,9 +36,6 @@ export const Sidebar: React.FC = () => {
   const sidebarContent = (
     <Box variant="search.sidebar.container">
       <AccountProfile />
-      <Box variant="search.sidebar.search" mt={48}>
-        <SearchBar />
-      </Box>
       <Box variant="search.sidebar.nom.container">
         {userNoms ? (
           userNoms.length > 0 && (
@@ -75,8 +74,10 @@ export const Sidebar: React.FC = () => {
           <Spinner />
         )}
       </Box>
-      <Box>
-        <Heading variant="search.sidebar.heading">Settings</Heading>
+      <Box variant="search.sidebar.search" mt={48}>
+        <SearchBar />
+      </Box>
+      <Box mt={48}>
         <Text
           variant="search.sidebar.item"
           sx={{ cursor: "pointer" }}
@@ -92,6 +93,14 @@ export const Sidebar: React.FC = () => {
         </Text>
         {/* <Text variant="search.sidebar.item">Default Currency</Text>
         <Text variant="search.sidebar.item">Language</Text> */}
+      </Box>
+      <Box mt={24}>
+        <Link to="/">
+          <Flex sx={{ flexDirection: "column", alignItems: "center" }}>
+            <LogoIcon />
+            <Text>Nomspace</Text>
+          </Flex>
+        </Link>
       </Box>
     </Box>
   );

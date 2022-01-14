@@ -16,8 +16,8 @@ export const SearchBar: React.FC<IProps> = ({ size }) => {
   let height;
   let transform;
   if (!size) {
-    height = SEARCH_HEIGHT;
-    transform = TRANSFORM;
+    height = SEARCH_HEIGHT[0];
+    transform = TRANSFORM[0];
   } else if (size === "small") {
     height = SEARCH_HEIGHT[0];
     transform = TRANSFORM[0];
