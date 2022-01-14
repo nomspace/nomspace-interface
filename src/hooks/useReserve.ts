@@ -91,13 +91,9 @@ export const useReserve = (name?: string) => {
           if (cost.gt(allowance)) {
             await approve(MaxUint256, nomRegistrarController.address);
           }
-          await nomRegistrarController.registerWithConfig(
-            name,
-            address,
-            duration,
-            resolver,
-            address
-          );
+          await nomRegistrarController
+            .connect(signer)
+            .registerWithConfig(name, address, duration, resolver, address);
         } else {
           const allowance = await usd.allowance(address, reservePortalAddress);
           if (cost.gt(allowance)) {
