@@ -45,7 +45,13 @@ export const Sidebar: React.FC<Props> = ({ openExtendModal }) => {
 
   const sidebarContent = (
     <Box variant="search.sidebar.container">
-      <AccountProfile />
+      <Box
+        onClick={() => {
+          closeSidebar();
+        }}
+      >
+        <AccountProfile />
+      </Box>
       <Box variant="search.sidebar.nom.container">
         {userNoms ? (
           userNoms.length > 0 && (

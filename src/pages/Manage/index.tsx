@@ -4,7 +4,6 @@ import { useContractKit } from "@celo-tools/use-contractkit";
 import {
   Box,
   Button,
-  Card,
   Flex,
   Heading,
   Image,

@@ -11,10 +11,6 @@ import {
 } from "theme-ui";
 import { SearchBar } from "components/SearchBar";
 import styled from "@emotion/styled";
-import Illustration from "assets/SpaceDiscovery.svg";
-import CeloImage from "assets/Celo.png";
-import AvalancheImage from "assets/Avalanche.png";
-import PolygonImage from "assets/Polygon.png";
 import UbeswapDarkImage from "assets/Ubeswap_dark.png";
 import MobiusDarkImage from "assets/Mobius_dark.png";
 import CelotrackerDarkImage from "assets/Celotracker_dark.png";
@@ -56,11 +52,6 @@ const Header = styled(Heading)({
 });
 const ColoredHeader = styled(Header)({
   color: "var(--theme-ui-colors-primaryTextColor)",
-});
-
-const TokenLogo = styled(Image)({
-  height: "68px",
-  width: "68px",
 });
 
 const StyledCard = styled(Card)({
