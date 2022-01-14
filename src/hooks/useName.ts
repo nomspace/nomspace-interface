@@ -8,8 +8,6 @@ export const useName = (): {
   const { name } = useParams<{ name: string }>();
   try {
     return { name: normalize(name), namehash: hash(`${name}.nom`) };
-  } catch (e) {
-    console.warn(e);
-  }
+  } catch (e) {}
   return { name: undefined, namehash: undefined };
 };

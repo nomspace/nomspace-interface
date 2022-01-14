@@ -7,7 +7,6 @@ import {
   Text,
   useColorMode,
   useThemeUI,
-  Button,
   Container,
 } from "theme-ui";
 import { SearchBar } from "components/SearchBar";
