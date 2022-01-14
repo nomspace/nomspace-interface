@@ -140,14 +140,12 @@ export const Manage: React.FC = () => {
       >
         {name ? (
           <Box sx={{ textAlign: "center", width: "100%" }}>
-            <Card
+            <Box
               sx={{
                 width: "100%",
                 backgroundColor: "background",
                 boxShadow: "0 0 0px rgba(0, 0, 0, 0.125)",
               }}
-              py={4}
-              px={3}
             >
               {nom && nom.owner !== ZERO_ADDRESS && isOwner ? (
                 <>
@@ -299,7 +297,7 @@ export const Manage: React.FC = () => {
               ) : (
                 <Spinner />
               )}
-            </Card>
+            </Box>
           </Box>
         ) : (
           <Text>Name is invalid. Try searching again.</Text>
