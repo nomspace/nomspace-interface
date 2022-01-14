@@ -12,7 +12,6 @@ import {
   useColorMode,
 } from "theme-ui";
 import { NATIVE_CURRENCY } from "config";
-import { ZERO_ADDRESS } from "utils/constants";
 import { useName } from "hooks/useName";
 import { Sidebar } from "components/Sidebar";
 import { SocialIcons } from "components/SocialIcons";
@@ -84,7 +83,7 @@ export const SearchDetail: React.FC = () => {
             {/* Sidebar */}
             <Sidebar openExtendModal={() => setExtendModalOpen(true)} />
             {/* Page */}
-            {nom ? (
+            {nom && name ? (
               <Flex
                 sx={{
                   alignItems: "center",
