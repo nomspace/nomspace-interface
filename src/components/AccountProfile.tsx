@@ -7,13 +7,13 @@ import { shortenAddress } from "utils/address";
 import { EXPLORERS } from "./ExplorerIcons";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
+import { ReverseResolution } from "hooks/useReverseResolution";
 
 export const AccountProfile: React.FC = () => {
   const { address, connect, network, destroy } = useContractKit();
-
   const [walletDetailsOpen, setWalletDetailsOpen] = React.useState(false);
-
   const walletCard = React.useRef<HTMLDivElement>(null);
+  const [reverseResolution] = ReverseResolution.useContainer();
 
   return (
     <Flex sx={{ alignItems: "center", justifyContent: "space-evenly" }}>
@@ -44,7 +44,9 @@ export const AccountProfile: React.FC = () => {
                   onCopy={() => toast("Wallet address copied to clipboard")}
                 >
                   <Text variant="primary" ml={2} mt={1}>
-                    {shortenAddress(address)}
+                    {reverseResolution
+                      ? `${reverseResolution}.nom`
+                      : shortenAddress(address)}
                   </Text>
                 </CopyToClipboard>
                 <Box

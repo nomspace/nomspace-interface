@@ -19,6 +19,7 @@ import { ThemeProvider } from "theme-ui";
 import { HashRouter as Router } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import { UserNonce } from "hooks/useUserNonce";
+import { ReverseResolution } from "hooks/useReverseResolution";
 
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
@@ -39,7 +40,9 @@ ReactDOM.render(
           <Router>
             <RecoilRoot>
               <UserNonce.Provider>
-                <App />
+                <ReverseResolution.Provider>
+                  <App />
+                </ReverseResolution.Provider>
               </UserNonce.Provider>
             </RecoilRoot>
           </Router>

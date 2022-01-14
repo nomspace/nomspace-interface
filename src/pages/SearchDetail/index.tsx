@@ -81,7 +81,7 @@ export const SearchDetail: React.FC = () => {
           <Box sx={{ textAlign: "center", width: "100%", height: "100%" }}>
             <Flex sx={{ height: "100%" }}>
               {/* Sidebar */}
-              <Sidebar />
+              <Sidebar openExtendModal={() => setExtendModalOpen(true)} />
               {/* Page */}
               {nom && (
                 <Flex
@@ -125,16 +125,10 @@ export const SearchDetail: React.FC = () => {
                       )}
                       {nom.owner !== ZERO_ADDRESS && (
                         <Button
-                          onClick={() => {
-                            if (nom.owner === address) {
-                              setExtendModalOpen(true);
-                            } else {
-                              setTipModalOpen(true);
-                            }
-                          }}
+                          onClick={() => setTipModalOpen(true)}
                           variant="search.nomstronautTip.tip"
                         >
-                          {nom.owner === address ? "EXTEND" : "TIP"}
+                          TIP
                         </Button>
                       )}
                     </Flex>
@@ -190,14 +184,12 @@ export const SearchDetail: React.FC = () => {
                                         src={t.image}
                                         sx={{ display: "none" }}
                                         onLoad={(e) => {
-                                          console.log("image loaded");
                                           (
                                             e.target as HTMLImageElement
                                           ).previousSibling?.remove();
                                           (
                                             e.target as HTMLImageElement
                                           ).style.display = "block";
-                                          console.log("image loader removed");
                                         }}
                                       />
                                     </NewTabLink>

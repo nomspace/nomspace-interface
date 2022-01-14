@@ -7,22 +7,33 @@ import {
   Text,
   useColorMode,
   useThemeUI,
+  Button,
+  Container,
 } from "theme-ui";
 import { SearchBar } from "components/SearchBar";
 import { AccountProfile } from "components/AccountProfile";
 import moment from "moment";
 import { useUserNoms } from "hooks/useUserNoms";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Spinner } from "theme-ui";
 import { Drawer, ThemeProvider, createTheme } from "@mui/material";
 import { List, CaretLeft } from "phosphor-react";
-import { Logo } from "components/Logo";
 import { LogoIcon } from "icons/LogoIcon";
+import { ReverseResolution } from "hooks/useReverseResolution";
+import { useSetReverseResolution } from "hooks/useSetReverseResolution";
 
-export const Sidebar: React.FC = () => {
+interface Props {
+  openExtendModal?: () => void;
+}
+
+export const Sidebar: React.FC<Props> = ({ openExtendModal }) => {
   const [userNoms] = useUserNoms();
   const [colorMode, setColorMode] = useColorMode();
   const { theme } = useThemeUI();
+  const history = useHistory();
+  const [reverseResolution, refetchReverseResolution] =
+    ReverseResolution.useContainer();
+  const { setReverseResolution } = useSetReverseResolution();
 
   const [open, setOpen] = useState(false);
 
@@ -43,29 +54,68 @@ export const Sidebar: React.FC = () => {
               <Heading variant="search.sidebar.heading">My Noms</Heading>
               {userNoms.map((un, idx) => {
                 return (
-                  <Box
+                  <Flex
                     key={idx}
                     variant="search.sidebar.item"
-                    sx={{ "::before": { display: "none" } }}
+                    sx={{
+                      "::before": { display: "none" },
+                      flexDirection: "column",
+                    }}
                   >
-                    <Link to={`/${un.name}`}>
-                      <Flex
-                        sx={{
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
+                    <Flex
+                      sx={{
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Link to={`/${un.name}`}>
                         <Flex sx={{ alignItems: "center" }}>
                           <Text variant="search.sidebar.nom.name">
                             {un.name}.nom
                           </Text>
                         </Flex>
-                        <Text variant="search.sidebar.nom.date">
+                      </Link>
+                      <Flex sx={{ alignItems: "center" }}>
+                        <Text variant="search.sidebar.nom.date" mr={2}>
                           {moment.unix(un.expiration).format("MM/DD/YYYY")}
                         </Text>
+                        <Text
+                          sx={{
+                            textDecoration: "underline",
+                            fontSize: 12,
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            if (openExtendModal) {
+                              history.push(`/${un.name}`);
+                              closeSidebar();
+                              openExtendModal();
+                            }
+                          }}
+                        >
+                          Extend
+                        </Text>
                       </Flex>
-                    </Link>
-                  </Box>
+                    </Flex>
+                    {reverseResolution !== un.name && (
+                      <Container
+                        sx={{ textAlign: "right", height: "fit-content" }}
+                      >
+                        <Text
+                          sx={{
+                            cursor: "pointer",
+                            textDecoration: "underline",
+                          }}
+                          onClick={async () => {
+                            await setReverseResolution(un.name);
+                            refetchReverseResolution();
+                          }}
+                        >
+                          Set as default
+                        </Text>
+                      </Container>
+                    )}
+                  </Flex>
                 );
               })}
             </>
@@ -166,7 +216,6 @@ export const Sidebar: React.FC = () => {
             anchor="left"
             open={open}
             onClose={() => {
-              console.log("close sidebar");
               closeSidebar();
             }}
             sx={{

@@ -46,10 +46,8 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
                     src={t.image}
                     sx={{ display: "none", cursor: "pointer" }}
                     onLoad={(e) => {
-                      console.log("image loaded");
                       (e.target as HTMLImageElement).previousSibling?.remove();
                       (e.target as HTMLImageElement).style.display = "block";
-                      console.log("image loader removed");
                     }}
                     onClick={() => changePFP(t.image)}
                   ></Image>

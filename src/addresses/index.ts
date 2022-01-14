@@ -29,6 +29,10 @@ export const NOM_REG_ADDR: AddressMap = {
   [ChainId.Celo]: "",
   [ChainId.Alfajores]: "0x26AeE0de70C180f33190CD4f34C02C47C56b2665",
 };
+export const REVERSE_ADDR: AddressMap = {
+  [ChainId.Celo]: "",
+  [ChainId.Alfajores]: "0x10a575534D5976e361d2A90083c6A91512a6Bf94",
+};
 export const USD: AddressMap = {
   [ChainId.Celo]: "0x765DE816845861e75A25fCA122bb6898B8B1282a",
 
