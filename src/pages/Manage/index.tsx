@@ -175,7 +175,7 @@ export const Manage: React.FC = () => {
                           <Image
                             sx={{
                               borderRadius: "50%",
-                              filter: "blur(1px) brightness(0.6)",
+                              filter: "blur(1px) brightness(0.7)",
                               transition: "all 0.2s ease",
                               cursor: "pointer",
                               ":hover": {
@@ -206,30 +206,6 @@ export const Manage: React.FC = () => {
                             <PencilSimple color="white" size={48} />
                           </Box>
                         </Box>
-                        {/* <Box
-                          variant="search.banner.avatar"
-                          sx={{ position: "relative" }}
-                        >
-                          <Image
-                            sx={{}}
-                            variant="search.banner.avatar"
-                            src={nom.avatar !== "" ? nom.avatar : defaultPFP}
-                            onClick={() => setPfpModalOpen(true)}
-                          />
-                          <Box
-                            sx={{
-                              cursor: "pointer",
-                              position: "absolute",
-                              left: "0",
-                              right: "0",
-                              height: "avatar",
-                              width: "avatar",
-                            }}
-                            onClick={() => setPfpModalOpen(true)}
-                          >
-                            <PencilSimple color="white" size={48} />
-                          </Box>
-                        </Box> */}
                         {/* nomstronaut + tip */}
                         <Flex variant="search.nomstronautTip.container">
                           <Button
@@ -245,7 +221,13 @@ export const Manage: React.FC = () => {
 
                       {/* Main Body */}
                       <Box variant="search.details.container">
-                        <Flex variant="search.details.heading">
+                        <Flex
+                          sx={{
+                            flexDirection: "column",
+                            flexWrap: "wrap",
+                            justifyContent: "space-between",
+                          }}
+                        >
                           {/* Name & Heading */}
                           <Box variant="search.name.container">
                             <Flex variant="search.name.nameContainer">
