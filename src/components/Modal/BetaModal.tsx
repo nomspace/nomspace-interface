@@ -26,8 +26,8 @@ export const BetaModal: React.FC<Props> = ({ setBetaVerified }) => {
         setHasNomstronaut(true);
       }
     });
+    // if user has 0 NFTs
     if (nftMetadata === undefined) {
-      console.log("set");
       setEmptyAccount(true);
     }
     console.log("nft", nftMetadata);
@@ -93,7 +93,7 @@ export const BetaModal: React.FC<Props> = ({ setBetaVerified }) => {
             padding: ["0px 10vw", null, "0px 20vw", "0px 15vw"],
           }}
         >
-          <Text variant="modal.title">NomSpace 2.0 Beta</Text>
+          <Text variant="modal.title">Nomspace 2.0 Beta</Text>
           <Text variant="modal.text">
             Welcome! In order to access the Beta, you must:
           </Text>
@@ -132,6 +132,20 @@ export const BetaModal: React.FC<Props> = ({ setBetaVerified }) => {
                     Don't worry! Nomspace 2.0 will become to available to
                     everyone on {"<date here>"}
                   </Text>
+                  <Text variant="modal.text" sx={{ textAlign: "center" }}>
+                    ___________
+                  </Text>
+                  <Text variant="modal.text" sx={{ textAlign: "center" }}>
+                    Connect a different wallet.
+                  </Text>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                    <AccountProfile />
+                  </Box>
                 </>
               ) : (
                 <Spinner />
