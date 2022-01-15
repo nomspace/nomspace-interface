@@ -93,25 +93,30 @@ export const BetaModal: React.FC<Props> = ({ setBetaVerified }) => {
             padding: ["0px 10vw", null, "0px 20vw", "0px 15vw"],
           }}
         >
-          <Text variant="modal.title">Nomspace 2.0 Beta</Text>
-          <Text variant="modal.text">
-            Welcome! In order to access the Beta, you must:
-          </Text>
-          <Text
-            variant="modal.text"
-            sx={{ width: "100%", marginLeft: "25px", textAlign: "left" }}
-          >
-            <b>1.</b> Connect your wallet.
-          </Text>
-          <Text
-            variant="modal.text"
-            sx={{ width: "100%", marginLeft: "25px", textAlign: "left" }}
-          >
-            <b>2.</b> Own an official Nomstronaut NFT.
-          </Text>
-
+          {address != null ? (
+            <></>
+          ) : (
+            <>
+              {" "}
+              <Text variant="modal.title">Nomspace 2.0 Beta</Text>
+              <Text variant="modal.text">
+                Welcome! In order to access the Beta, you must:
+              </Text>
+              <Text
+                variant="modal.text"
+                sx={{ width: "100%", marginLeft: "25px", textAlign: "left" }}
+              >
+                <b>1.</b> Connect your wallet.
+              </Text>
+              <Text
+                variant="modal.text"
+                sx={{ width: "100%", marginLeft: "25px", textAlign: "left" }}
+              >
+                <b>2.</b> Own an official Nomstronaut NFT.
+              </Text>
+            </>
+          )}
           <Text variant="modal.title">Status:</Text>
-
           <>
             {address != null ? (
               nftMetadata != null || emptyAccount ? (
