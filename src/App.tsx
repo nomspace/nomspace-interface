@@ -11,46 +11,59 @@ import { Stats } from "./pages/Stats";
 import { Manage } from "pages/Manage";
 import { GlobalNom } from "hooks/useNom";
 
+// TODO: REMOVE AFTER BETA
+import { BetaModal } from "components/Modal/BetaModal";
+
 const App: React.FC = () => {
   React.useEffect(() => {
     Modal.setAppElement("body");
   });
 
+  // TODO: REMOVE AFTER BETA
+  const [betaVerified, setBetaVerified] = React.useState(false);
+
   return (
-    <Container sx={{ maxWidth: "100%", width: "100%", height: "100vh" }}>
-      <Container sx={{ height: "100%" }}>
-        {/* <Header /> */}
-        <Switch>
-          <Route exact path="/">
-            <Search />
-          </Route>
-          <Route exact path="/stats">
-            <Stats />
-          </Route>
-          <Route path="/:name">
-            <GlobalNom.Provider>
-              <Switch>
-                <Route exact path="/:name">
-                  <SearchDetail />
-                </Route>
-                <Route exact path="/:name/manage">
-                  <Manage />
-                </Route>
-                <Route exact path="/:name/extend">
-                  <Extend />
-                </Route>
-              </Switch>
-            </GlobalNom.Provider>
-          </Route>
-        </Switch>
+    <>
+      <Container sx={{ maxWidth: "100%", width: "100%", height: "100vh" }}>
+        <Container sx={{ height: "100%" }}>
+          {/* <Header /> */}
+          <Switch>
+            <Route exact path="/">
+              <Search />
+            </Route>
+            <Route exact path="/stats">
+              <Stats />
+            </Route>
+            <Route path="/:name">
+              <GlobalNom.Provider>
+                {/* TODO: REMOVE AFTER BETA */}
+                {!betaVerified ? (
+                  <BetaModal setBetaVerified={setBetaVerified} />
+                ) : (
+                  <Switch>
+                    <Route exact path="/:name">
+                      <SearchDetail />
+                    </Route>
+                    <Route exact path="/:name/manage">
+                      <Manage />
+                    </Route>
+                    <Route exact path="/:name/extend">
+                      <Extend />
+                    </Route>
+                  </Switch>
+                )}
+              </GlobalNom.Provider>
+            </Route>
+          </Switch>
+        </Container>
+        <Footer />
+        <ToastContainer
+          style={{ background: "var(--theme-ui-colors-background)" }}
+          toastClassName="toast-body"
+          bodyClassName="toast-body"
+        />
       </Container>
-      <Footer />
-      <ToastContainer
-        style={{ background: "var(--theme-ui-colors-background)" }}
-        toastClassName="toast-body"
-        bodyClassName="toast-body"
-      />
-    </Container>
+    </>
   );
 };
 

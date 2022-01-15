@@ -1,21 +1,22 @@
-import React from 'react'
-import { Box, BoxProps } from 'theme-ui'
-import { motion, MotionProps } from 'framer-motion'
-import { useModal } from './ModalContext'
+import React from "react";
+import { Box, BoxProps } from "theme-ui";
+import { motion, MotionProps } from "framer-motion";
+import { useModal } from "./ModalContext";
+import { ModalProps } from "./Modal";
 
-const MotionBox = motion.custom(Box)
+const MotionBox = motion.custom(Box);
 
-export default function Backdrop(props: BoxProps & MotionProps) {
-  const { skipAnimations, isFullScreen } = useModal()
+export default function Backdrop(props: BoxProps & MotionProps & ModalProps) {
+  const { skipAnimations, isFullScreen } = useModal();
 
   if (isFullScreen) {
-    return null
+    return null;
   }
 
   return (
     <MotionBox
       aria-hidden="true"
-      variant="modals.backdrop"
+      variant={`modals.${props.backdropVariant}`}
       custom={{ skip: skipAnimations }}
       variants={{
         enter: {
@@ -30,20 +31,20 @@ export default function Backdrop(props: BoxProps & MotionProps) {
               transition: {
                 duration: 0.2,
               },
-            }
+            };
           }
           return {
             opacity: 0,
             transition: {
               duration: 0.2,
             },
-          }
+          };
         },
       }}
       animate="enter"
-      initial={skipAnimations ? false : 'exit'}
+      initial={skipAnimations ? false : "exit"}
       exit="exit"
       {...(props as any)}
     />
-  )
+  );
 }

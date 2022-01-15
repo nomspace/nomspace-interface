@@ -173,7 +173,7 @@ export const Sidebar: React.FC<Props> = ({ openExtendModal }) => {
           position: "absolute",
           top: 10,
           left: 10,
-          zIndex: open ? 99 : 10000,
+          zIndex: open ? 49 : 50,
           backgroundColor: "rgba(0,0,0,0.3)",
           padding: "10px",
           borderRadius: "50%",

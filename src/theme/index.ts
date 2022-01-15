@@ -610,6 +610,9 @@ export const preset = {
       fontSize: "50px",
       fontWeight: "800",
     },
+    text: {
+      fontSize: ["20px", null, "25px", "28px"],
+    },
     wallet: {
       desktop: {
         fontSize: "35px",
@@ -734,6 +737,16 @@ export const preset = {
       background: `rgba(0,0,0,0.2)`,
       backdropFilter: "blur(5px)",
     },
+    betaBackdrop: {
+      zIndex: `0`,
+      position: `absolute`,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: `rgba(0,0,0,0.2)`,
+      backdropFilter: "blur(5px)",
+    },
     content: {
       px: "1rem",
       flexGrow: 1,
@@ -772,6 +785,24 @@ export const preset = {
       position: `relative`,
       top: [`5%`, `10%`, `10%`],
       zIndex: `modal`,
+    },
+    beta: {
+      backgroundColor: "modalBackground",
+      color: "textColor",
+      backdropFilter: "blur(50px) brightness(132%)",
+      padding: ["5px", "10px", null, "90px 100px"],
+      borderRadius: "30px",
+      boxShadow: `md`,
+      display: `flex`,
+      flexDirection: `column`,
+      justifyContent: "center",
+      maxHeight: `80vh`,
+      minHeight: "16rem",
+      minWidth: "16rem",
+      maxWidth: "90vw",
+      position: `relative`,
+      top: [`5%`, `10%`, `10%`],
+      zIndex: `0`,
     },
   },
   zIndices: {

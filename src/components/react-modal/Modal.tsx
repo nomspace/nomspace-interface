@@ -51,6 +51,10 @@ export interface ModalProps extends Omit<BoxProps, "children"> {
    */
   skipAnimations?: boolean;
 
+  backdropVariant?: string;
+
+  zIndex?: string | number;
+
   /**
    * The component to use as the backdrop behind the modals
    */
@@ -88,6 +92,8 @@ export default function Modal({
   skipAnimations = false,
   sx,
   variant = "default",
+  backdropVariant = "backdrop",
+  zIndex = "modal",
   width = `auto`,
   animations,
   ...props
@@ -147,7 +153,7 @@ export default function Modal({
           <>
             <Box
               sx={{
-                zIndex: `modal`,
+                zIndex: `${zIndex}`,
                 position: `fixed`,
                 top: 0,
                 left: 0,
@@ -158,7 +164,9 @@ export default function Modal({
               }}
               onClick={closeOnOutsideClick ? handleClose : undefined}
             >
-              {BackdropComponent && <BackdropComponent />}
+              {BackdropComponent && (
+                <BackdropComponent backdropVariant={backdropVariant} />
+              )}
               <MotionBox
                 aria-modal="true"
                 variants={animation}
