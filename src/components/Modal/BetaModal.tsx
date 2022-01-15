@@ -45,7 +45,7 @@ export const BetaModal: React.FC<Props> = ({ setBetaVerified }) => {
     if (walletConnected && hasNomstronaut) {
       setBetaVerified(true);
     }
-  }, [walletConnected, hasNomstronaut]);
+  }, [walletConnected, hasNomstronaut, setBetaVerified]);
 
   return (
     <Modal
