@@ -28,6 +28,7 @@ export const preset = {
 
     // custom components
     modalBackground: "rgba(255, 255, 255, 0.44)",
+    scrollBar: "hsla(0, 0%, 0%, 0.1)",
     modes: {
       dark: {
         primaryTextColor: "#CCC3FC",
@@ -47,6 +48,7 @@ export const preset = {
         disabled: "#BDBDBD",
         // custom components
         modalBackground: "rgba(0,0,0,0.44)",
+        scrollBar: "hsla(302, 0%, 75%, 1)",
       },
     },
   },
@@ -231,6 +233,14 @@ export const preset = {
       color: "primaryTextColor",
       px: 3,
       py: 2,
+    },
+  },
+  containers: {
+    scroll: {
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "scrollBar",
+        borderRadius: "10px",
+      },
     },
   },
   search: {
