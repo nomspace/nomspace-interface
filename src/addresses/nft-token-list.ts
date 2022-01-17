@@ -36,16 +36,6 @@ const nftTokenList: Record<number, NFT[]> = {
       name: "Celo Shapes",
       chainId: 42220,
     },
-    {
-      address: "0x07b6C9D6bB32655A70D97a38a9274da349A1EFAf",
-      name: "Celo Punks Neon",
-      chainId: 42220,
-    },
-    {
-      address: "0x6Fc1C8d59FdC261c55273f9b8e64B7E88C45E208",
-      name: "Celo Toadz",
-      chainId: 42220,
-    },
   ],
   44787: [
     {
