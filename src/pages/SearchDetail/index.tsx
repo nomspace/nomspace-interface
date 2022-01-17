@@ -53,7 +53,7 @@ export const SearchDetail: React.FC = () => {
 
   let isNormal = false;
   try {
-    isNormal = !!normalize(name);
+    isNormal = !!normalize(name) && !name.includes(".");
   } catch (e) {}
 
   if (nom == null) {
