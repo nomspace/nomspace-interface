@@ -185,7 +185,7 @@ export const SearchDetail: React.FC = () => {
                                       src={t.image}
                                       sx={{
                                         display: "none",
-                                        width: 200,
+                                        width: "100%",
                                       }}
                                       onLoad={(e) => {
                                         (
