@@ -37,6 +37,7 @@ import { isAddress } from "web3-utils";
 import { NewTabLink } from "components/NewTabLink";
 import { SearchBar } from "components/SearchBar";
 import { Spinner } from "theme-ui";
+import { getAddress } from "ethers/lib/utils";
 
 // import nomstronaut from "pages/SearchDetail/assets/astro.png";
 
@@ -53,7 +54,7 @@ export const SearchDetail: React.FC = () => {
   const { transferOwnership } = useTransferOwnership(name);
   const [colorMode] = useColorMode();
 
-  const isOwner = address && nom?.owner && nom.owner === address;
+  const isOwner = address && nom?.owner && nom.owner === getAddress(address);
 
   return (
     <>
@@ -84,7 +85,7 @@ export const SearchDetail: React.FC = () => {
             {/* Sidebar */}
             <Sidebar openExtendModal={() => setExtendModalOpen(true)} />
             {/* Page */}
-            {nom && name ? (
+            {nom !== null ? (
               <Flex
                 sx={{
                   alignItems: "center",
@@ -163,7 +164,7 @@ export const SearchDetail: React.FC = () => {
                     </Box>
                   </Flex>
                   {/* NFTs */}
-                  {nom.owner == null ? (
+                  {nom.owner == null && name ? (
                     <ReserveView name={name} />
                   ) : (
                     <>
@@ -182,7 +183,10 @@ export const SearchDetail: React.FC = () => {
                                     <Image
                                       variant="search.nft.image"
                                       src={t.image}
-                                      sx={{ display: "none" }}
+                                      sx={{
+                                        display: "none",
+                                        width: 200,
+                                      }}
                                       onLoad={(e) => {
                                         (
                                           e.target as HTMLImageElement
@@ -283,7 +287,7 @@ export const SearchDetail: React.FC = () => {
                         </Text>
                         <ExplorerIcons userAddress={nom.resolution} />
                       </Box>
-                      {nom.owner === address && (
+                      {isOwner && (
                         <Flex sx={{ py: 20, justifyContent: "center" }}>
                           <Button
                             sx={{ px: 16, py: 8, backgroundColor: "red" }}
@@ -319,13 +323,21 @@ export const SearchDetail: React.FC = () => {
               </Flex>
             ) : (
               <Container sx={{ textAlign: "center", mt: 42 }}>
-                <Heading as="h1" sx={{ fontSize: 42 }}>
-                  Invalid name.
-                </Heading>
-                <Text sx={{ display: "block" }} mb={16}>
-                  Please try searching again
-                </Text>
-                <SearchBar />
+                {name ? (
+                  <Flex sx={{ justifyContent: "center" }}>
+                    <Spinner />
+                  </Flex>
+                ) : (
+                  <>
+                    <Heading as="h1" sx={{ fontSize: 42 }}>
+                      Invalid name.
+                    </Heading>
+                    <Text sx={{ display: "block" }} mb={16}>
+                      Please try searching again
+                    </Text>
+                    <SearchBar />
+                  </>
+                )}
               </Container>
             )}
           </Flex>

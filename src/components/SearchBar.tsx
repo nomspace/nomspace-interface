@@ -7,9 +7,10 @@ const TRANSFORM = ["translate(8px, 12px)", "translate(16px, 32px)"];
 
 interface IProps {
   size?: "small" | "large";
+  onSearch?: () => void;
 }
 
-export const SearchBar: React.FC<IProps> = ({ size }) => {
+export const SearchBar: React.FC<IProps> = ({ size, onSearch }) => {
   const searchInput = React.useRef<any>(null);
   const history = useHistory();
 
@@ -53,6 +54,7 @@ export const SearchBar: React.FC<IProps> = ({ size }) => {
           if (searchTerm && searchTerm !== "") {
             history.push(`/${searchTerm}`);
           }
+          onSearch && onSearch();
           e.preventDefault();
         }}
       >
@@ -62,7 +64,7 @@ export const SearchBar: React.FC<IProps> = ({ size }) => {
               pl: [6, 7],
               height,
               backgroundColor: "secondaryBackground",
-              border: "4px solid var(--theme-ui-colors-primary)",
+              border: "2px solid var(--theme-ui-colors-primary)",
               borderRadius: "12px",
               fontSize: "20px",
               textAlign: "center",

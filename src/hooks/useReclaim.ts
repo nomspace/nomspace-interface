@@ -58,44 +58,51 @@ export const useReclaim = (name?: string) => {
     try {
       setLoading(true);
       const tokenId = labelhash(name);
-      const data = baseRegistrarImplementation.interface.encodeFunctionData(
-        "reclaim",
-        [tokenId, address]
-      );
-      if (!data || nonce == null) return;
-      const { from, gas, value } = userTxDefaults;
-      const to = baseRegistrarImplementation.address;
-      const signature = await getSignature(
-        signer,
-        from,
-        to,
-        value,
-        gas,
-        nonce,
-        data,
-        chainId,
-        forwarderAddr
-      );
-      const gasPrice = await provider.getGasPrice();
-      const tx = await reservePortal.escrow(
-        usd.address,
-        0,
-        celoChainId,
-        {
+      if (network.chainId === celoChainId) {
+        const tx = await baseRegistrarImplementation
+          .connect(signer)
+          .reclaim(tokenId, address);
+        toastTx(tx.hash);
+      } else {
+        const data = baseRegistrarImplementation.interface.encodeFunctionData(
+          "reclaim",
+          [tokenId, address]
+        );
+        if (!data || nonce == null) return;
+        const { from, gas, value } = userTxDefaults;
+        const to = baseRegistrarImplementation.address;
+        const signature = await getSignature(
+          signer,
           from,
           to,
-          gas,
           value,
+          gas,
           nonce,
-          chainId,
           data,
-        },
-        signature,
-        { gasPrice }
-      );
-      await tx.wait(2);
-      setNonce(nonce + 1);
-      toastTx(tx.hash);
+          chainId,
+          forwarderAddr
+        );
+        const gasPrice = await provider.getGasPrice();
+        const tx = await reservePortal.escrow(
+          usd.address,
+          0,
+          celoChainId,
+          {
+            from,
+            to,
+            gas,
+            value,
+            nonce,
+            chainId,
+            data,
+          },
+          signature,
+          { gasPrice }
+        );
+        await tx.wait(2);
+        setNonce(nonce + 1);
+        toastTx(tx.hash);
+      }
     } catch (e: any) {
       toast(e.message);
       console.error(e);

@@ -6,6 +6,7 @@ import { Box, Text, Button, Spinner } from "theme-ui";
 import { useName } from "hooks/useName";
 import { useReclaim } from "../../hooks/useReclaim";
 import { useContractKit } from "@celo-tools/use-contractkit";
+import { getAddress } from "ethers/lib/utils";
 
 export const ReclaimModal: React.FC = () => {
   const { address } = useContractKit();
@@ -18,8 +19,9 @@ export const ReclaimModal: React.FC = () => {
   return (
     <CustomModal
       open={
+        address !== null &&
         nom.owner !== null &&
-        nom.owner === address &&
+        nom.owner === getAddress(address) &&
         nom.owner !== nom.recordOwner
       }
     >

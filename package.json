@@ -52,6 +52,7 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
+    "@apollo/client": "^3.5.7",
     "@celo-tools/use-contractkit": "npm:@nomspace/use-contractkit@^0.0.2",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
@@ -70,6 +71,7 @@
     "eth-ens-namehash": "^2.0.8",
     "ethers": "^5.4.1",
     "framer-motion": "^2.0.0",
+    "graphql": "^16.2.0",
     "localforage": "^1.10.0",
     "moment": "^2.29.1",
     "phosphor-react": "^1.3.1",

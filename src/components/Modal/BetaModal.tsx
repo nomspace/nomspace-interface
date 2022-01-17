@@ -1,9 +1,8 @@
 import React from "react";
 import { Modal } from "../react-modal";
 import { ModalContent } from "@mattjennings/react-modal";
-import { useNFTs } from "hooks/useNFTs";
 import { Box, Spinner, Image, Text } from "theme-ui";
-
+import { useHasNomstronauts } from "hooks/useHasNomstronauts";
 import { AccountProfile } from "components/AccountProfile";
 import { useContractKit } from "@celo-tools/use-contractkit";
 
@@ -12,49 +11,23 @@ interface Props {
 }
 
 export const BetaModal: React.FC<Props> = ({ setBetaVerified }) => {
-  const [walletConnected, setWalletConnected] = React.useState(false);
-  const [hasNomstronaut, setHasNomstronaut] = React.useState(false);
-  const [emptyAccount, setEmptyAccount] = React.useState(false);
-
   const { address } = useContractKit();
-  const [nftMetadata] = useNFTs();
-
-  // check if have nomstronaut
-  React.useEffect(() => {
-    nftMetadata?.forEach((e) => {
-      if (e.name.includes("Nomstronaut")) {
-        setHasNomstronaut(true);
-      }
-    });
-    // if user has 0 NFTs
-    if (nftMetadata === undefined) {
-      setEmptyAccount(true);
-    }
-    console.log("nft", nftMetadata);
-  }, [nftMetadata]);
-
-  // check if wallet connected
-  React.useEffect(() => {
-    if (address != null) {
-      setWalletConnected(true);
-    }
-  }, [address]);
+  const [hasNomstronaut] = useHasNomstronauts();
 
   // update hook to allow nomstronaut holders access to site
   React.useEffect(() => {
-    if (walletConnected && hasNomstronaut) {
+    if (address && hasNomstronaut) {
       setBetaVerified(true);
     }
-  }, [walletConnected, hasNomstronaut, setBetaVerified]);
+  }, [hasNomstronaut, setBetaVerified, address]);
 
   return (
     <Modal
       sx={{ zIndex: 0 }}
       zIndex="0"
       variant={"beta"}
-      open={!(walletConnected && hasNomstronaut)}
+      open={!(address && hasNomstronaut)}
       backdropVariant="betaBackdrop"
-      onClose={() => {}}
       fullScreen={false}
       animations={{
         default: {
@@ -119,7 +92,7 @@ export const BetaModal: React.FC<Props> = ({ setBetaVerified }) => {
           <Text variant="modal.title">Status:</Text>
           <>
             {address != null ? (
-              nftMetadata != null || emptyAccount ? (
+              hasNomstronaut != null ? (
                 <>
                   <Text variant="modal.text" sx={{ textAlign: "center" }}>
                     Sorry, It looks like you don't own an official Nomstronaut

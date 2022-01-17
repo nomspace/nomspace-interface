@@ -243,6 +243,19 @@ export const preset = {
       },
     },
   },
+  splash: {
+    card: {
+      title: {
+        fontSize: ["21px", "25px", "35px", "45px"],
+        marginBottom: "12px",
+      },
+      text: {
+        fontSize: ["12.5px", "16px", "23px", "23px"],
+        color: "primaryTextColor",
+        lineHeight: ["24px", "24px", "35px"],
+      },
+    },
+  },
   search: {
     details: {
       container: {
@@ -558,8 +571,7 @@ export const preset = {
         color: "textColor",
         minWidth: [200, 300, 430],
         padding: "24px 38px",
-        height: "100%",
-        overflowY: "auto",
+        minHeight: "fit-content",
       },
       walletContainer: { marginTop: 20 },
       heading: {

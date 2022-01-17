@@ -106,7 +106,11 @@ export const Manage: React.FC = () => {
     }
     if (nom?.telegram !== newTelegram && newTelegram) {
       fragments.push("setText");
-      values.push([namehash, TextKey.DISCORD, newTelegram.replaceAll("@", "")]);
+      values.push([
+        namehash,
+        TextKey.TELEGRAM,
+        newTelegram.replaceAll("@", ""),
+      ]);
     }
     await setNomSetting(fragments, values);
     refetchNom();

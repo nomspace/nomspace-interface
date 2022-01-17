@@ -65,7 +65,6 @@ export const useSetReverseResolution = () => {
         setLoading(true);
         if (chainId === celoChainId) {
           const tx = await reverseRegistrar.connect(signer).setName(name);
-          await tx.wait(1);
           toastTx(tx.hash);
         } else {
           const usd = ERC20__factory.connect(usdAddress, signer);

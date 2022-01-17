@@ -20,9 +20,11 @@ import CelotrackerLightImage from "assets/Celotracker_light.png";
 import ProfilePreviewIllustration from "assets/ProfilePreviewIllustration.png";
 import NFTIllustration from "assets/NFTIllustration.png";
 import CrossChainIllustration from "assets/CrossChainIllustration.png";
-import { GithubLogo, TwitterLogo, DiscordLogo } from "phosphor-react";
 import { NewTabLink } from "components/NewTabLink";
 import { LogoIcon } from "icons/LogoIcon";
+import { ReactComponent as DiscordLogo } from "assets/discord.svg";
+import { ReactComponent as TwitterLogo } from "assets/twitter.svg";
+import { ReactComponent as GithubLogo } from "assets/github.svg";
 
 const Title = styled(Heading)({
   fontSize: "40px",
@@ -31,7 +33,6 @@ const Title = styled(Heading)({
 });
 
 const Subtitle = styled(Heading)({
-  fontSize: "28px",
   fontWeight: 600,
   lineHeight: "28px",
   color: "var(--theme-ui-colors-primaryTextColor)",
@@ -39,18 +40,18 @@ const Subtitle = styled(Heading)({
 });
 
 const Description = styled(Text)({
-  fontSize: "28px",
   lineHeight: "28px",
 });
 const ColoredDescription = styled(Description)({
   color: "var(--theme-ui-colors-primaryTextColor)",
+  whiteSpace: "nowrap",
 });
 
 const Header = styled(Heading)({
   fontSize: "24px",
-  fontWeight: 600,
 });
-const ColoredHeader = styled(Header)({
+const ColoredHeader = styled(Heading)({
+  fontWeight: 600,
   color: "var(--theme-ui-colors-primaryTextColor)",
 });
 
@@ -62,15 +63,8 @@ const StyledCard = styled(Card)({
   padding: "28px 24px",
   borderRadius: "20px",
 });
-const CardTitle = styled(Heading)({
-  fontSize: "25px",
-  marginBottom: "12px",
-});
-const CardText = styled(Text)({
-  fontSize: "16px",
-  color: "var(--theme-ui-colors-primaryTextColor)",
-  lineHeight: "24px",
-});
+const CardTitle = styled(Heading)({});
+const CardText = styled(Text)({});
 const CardImage = styled(Image)({
   marginTop: "20px",
 });
@@ -88,10 +82,14 @@ export const Search: React.FC = () => {
       }}
     >
       <Title as="h1">Nomspace</Title>
-      <Subtitle>One Nom to rule them all.</Subtitle>
-      <Description>
+      <Subtitle sx={{ fontSize: ["21px", "28px"] }}>
+        One Nom to rule them all.
+      </Subtitle>
+      <Description sx={{ fontSize: ["19px", "28px"] }}>
         Wallet addresses are hard to remember.{" "}
-        <ColoredDescription>Names aren't.</ColoredDescription>
+        <ColoredDescription sx={{ fontSize: ["19px", "28px"] }}>
+          Names aren't.
+        </ColoredDescription>
       </Description>
       <Box
         sx={{
@@ -106,15 +104,17 @@ export const Search: React.FC = () => {
         <Box sx={{ fill: "textColor" }}>
           <LogoIcon size={128} />
         </Box>
-        <Heading as="h1" mb={4} sx={{ fontSize: "42px" }}>
+        {/* <Heading as="h1" mb={4} sx={{ fontSize: "42px" }}>
           Nomspace
-        </Heading>
+        </Heading> */}
       </Box>
       <SearchBar />
 
       <StyledCard mt="42px">
-        <CardTitle as="h3">A Cross-chain Name</CardTitle>
-        <CardText>
+        <CardTitle as="h3" variant="splash.card.title">
+          A Cross-chain Name
+        </CardTitle>
+        <CardText variant="splash.card.text">
           <strong>Reserve once and use everywhere.</strong>
           <br />
           Why manage a different name service for every chain when you can use
@@ -123,27 +123,38 @@ export const Search: React.FC = () => {
         <CardImage src={CrossChainIllustration} />
       </StyledCard>
       <StyledCard mt="42px">
-        <CardTitle as="h3">Show off a little</CardTitle>
-        <CardText>
+        <CardTitle as="h3" variant="splash.card.title">
+          Show off a little
+        </CardTitle>
+        <CardText variant="splash.card.text">
           Every .nom comes with a domain to show off your growing art
-          collection. <strong>Showcase more than just a PFP.</strong>
+          collection.
+          <br /> <strong>Showcase more than just a PFP.</strong>
         </CardText>
         <CardImage src={NFTIllustration} />
       </StyledCard>
       <StyledCard mt="42px">
-        <CardTitle as="h3">You Are What You Do</CardTitle>
-        <CardText>
-          <strong>Put your coins where your mouth is.</strong> Use your .nom
-          landing page to show your assets + favorite projects.
+        <CardTitle as="h3" variant="splash.card.title">
+          You Are What You Do
+        </CardTitle>
+        <CardText variant="splash.card.text">
+          <strong>Put your coins where your mouth is.</strong>
+          <br /> Use your .nom landing page to show your assets + favorite
+          projects.
         </CardText>
         <CardImage src={ProfilePreviewIllustration} />
       </StyledCard>
 
-      <Header as="h2" mt="50px">
+      <Header as="h2" mt="50px" sx={{ textAlign: "center" }}>
         Integrated with
       </Header>
       <Flex
-        sx={{ justifyContent: "space-evenly", mt: "30px", flexWrap: "wrap" }}
+        sx={{
+          justifyContent: "space-evenly",
+          mt: "30px",
+          flexWrap: "wrap",
+          "> *": { marginLeft: 30, marginRight: 30, mt: 20 },
+        }}
       >
         <NewTabLink href="https://ubeswap.org">
           <Image
@@ -172,29 +183,55 @@ export const Search: React.FC = () => {
       <Header as="h2" mt="64px">
         Nomspace
       </Header>
-      <ColoredHeader>Mint your name as an NFT.</ColoredHeader>
+      <ColoredHeader sx={{ fontSize: ["20px", "28px"] }}>
+        Mint your name as an NFT.
+      </ColoredHeader>
       <Text my="12px">
         All .nom's are NFTs which means you can easily transfer and sell them.
       </Text>
       <SearchBar />
-      <Flex sx={{ justifyContent: "center", my: "42px" }}>
+      <Flex
+        sx={{
+          mt: "42px",
+          mb: "21px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          "> *": {
+            marginRight: 20,
+            marginLeft: 20,
+            textDecoration: "none",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
+          "> * > *": {
+            height: "32px",
+            width: "32px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
+          ">  * *": {
+            fill: "var(--theme-ui-colors-primaryTextColor) !important",
+          },
+        }}
+      >
         <Link
           target="_blank"
           rel="noopener noreferrer"
           href="https://github.com/Nomspace"
           style={{ textDecoration: "none" }}
-          mr={2}
         >
-          <GithubLogo size={32} />
+          <GithubLogo />
         </Link>
         <Link
           target="_blank"
           rel="noopener noreferrer"
           href="https://twitter.com/Nomspace"
           style={{ textDecoration: "none" }}
-          mr={2}
         >
-          <TwitterLogo size={32} />
+          <TwitterLogo />
         </Link>
         <Link
           target="_blank"
@@ -202,7 +239,8 @@ export const Search: React.FC = () => {
           href="https://discord.gg/3g9zRPRAPH"
           style={{ textDecoration: "none" }}
         >
-          <DiscordLogo size={32} />
+          <DiscordLogo />
+          {/* <Image src={DiscordLogo} /> */}
         </Link>
       </Flex>
     </Flex>

@@ -20,9 +20,14 @@ import { HashRouter as Router } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import { UserNonce } from "hooks/useUserNonce";
 import { ReverseResolution } from "hooks/useReverseResolution";
-
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+
+const client = new ApolloClient({
+  uri: "https://api.thegraph.com/subgraphs/name/nomspace/nomspacetest",
+  cache: new InMemoryCache(),
+});
 
 ReactDOM.render(
   <React.StrictMode>
@@ -41,7 +46,9 @@ ReactDOM.render(
             <RecoilRoot>
               <UserNonce.Provider>
                 <ReverseResolution.Provider>
-                  <App />
+                  <ApolloProvider client={client}>
+                    <App />
+                  </ApolloProvider>
                 </ReverseResolution.Provider>
               </UserNonce.Provider>
             </RecoilRoot>

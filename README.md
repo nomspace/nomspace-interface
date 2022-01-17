@@ -7,7 +7,7 @@ Frontend for the Nomspace protocol.
 Install Yarn, then run:
 
 ```bash
-yarn install
+yarn
 yarn start
 ```
 

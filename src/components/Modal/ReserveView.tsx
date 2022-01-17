@@ -29,15 +29,19 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
   }
 
   const confirmButton = (
-    <Button
-      variant="modal.form.submit"
-      onClick={async () => {
-        await reserve(years);
-        refetchUSD();
-      }}
-    >
-      CONFIRM
-    </Button>
+    <>
+      <Button
+        variant="modal.form.submit"
+        onClick={async () => {
+          await reserve(years);
+          refetchUSD();
+        }}
+        disabled={true}
+      >
+        Confirm
+      </Button>
+      <Text mt={4}>Reserving is disabled while in beta.</Text>
+    </>
   );
 
   let button = confirmButton;

@@ -130,7 +130,7 @@ export const Sidebar: React.FC<Props> = ({ openExtendModal }) => {
         )}
       </Box>
       <Box variant="search.sidebar.search" mt={48}>
-        <SearchBar />
+        <SearchBar onSearch={() => closeSidebar()} />
       </Box>
       <Box mt={48}>
         <Text

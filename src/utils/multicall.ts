@@ -5,17 +5,18 @@ const BUCKET_SIZE = 500;
 
 export const multicallBatch = async (
   multicall: Multicall,
-  calls: { target: string; callData: BytesLike }[]
+  calls: { target: string; callData: BytesLike }[],
+  bucketSize = BUCKET_SIZE
 ): Promise<string[]> => {
   const results = [];
   let i = 0;
   while (i < calls.length) {
     results.push(
       ...(await multicall.callStatic
-        .aggregate(calls.slice(i, i + BUCKET_SIZE))
+        .aggregate(calls.slice(i, i + bucketSize))
         .then((r) => r.returnData))
     );
-    i += BUCKET_SIZE;
+    i += bucketSize;
   }
   return results;
 };
