@@ -538,6 +538,7 @@ export const preset = {
       heading: {
         fontFamily: "Sen",
         fontSize: [20, null, null, 35],
+        lineHeight: ["50px", null, null, "35px"],
       },
       text: {
         fontFamily: "Sen",
