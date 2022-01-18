@@ -403,6 +403,9 @@ export const preset = {
         marginBottom: 16,
         alignItems: "center",
         display: ["block", null, null, "none"],
+        ">  * *": {
+          fill: "white !important",
+        },
       },
       imageContainer: {
         width: [46, null, null, 72],
@@ -538,7 +541,7 @@ export const preset = {
       heading: {
         fontFamily: "Sen",
         fontSize: [20, null, null, 35],
-        lineHeight: ["50px", null, null, "35px"],
+        lineHeight: ["45px", null, null, "35px"],
       },
       text: {
         fontFamily: "Sen",

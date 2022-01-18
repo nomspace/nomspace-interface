@@ -240,7 +240,6 @@ export const Search: React.FC = () => {
           style={{ textDecoration: "none" }}
         >
           <DiscordLogo />
-          {/* <Image src={DiscordLogo} /> */}
         </Link>
       </Flex>
     </Flex>

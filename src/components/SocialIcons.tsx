@@ -1,11 +1,13 @@
 import styled from "@emotion/styled";
-import { Flex, Image, Text } from "theme-ui";
-import DiscordIcon from "assets/discord.png";
-import TwitterIcon from "assets/twitter.png";
-import TelegramIcon from "assets/telegram.png";
+import { Flex, Text, Box } from "theme-ui";
+
+import { ReactComponent as DiscordLogo } from "assets/discord.svg";
+import { ReactComponent as TwitterLogo } from "assets/twitter.svg";
+import { ReactComponent as TelegramLogo } from "assets/telegram.svg";
+
 import { NewTabLink } from "components/NewTabLink";
 
-const Icon = styled(Image)({
+const Icon = styled(Box)({
   width: "46px",
   height: "46px",
   marginRight: "12px",
@@ -55,17 +57,23 @@ export const SocialIcons: React.FC<Props> = ({ nom }) => {
       )}
       {nom.discord && (
         <NewTabLink href={`https://discordapp.com/users/${nom.discord}`}>
-          <Icon src={DiscordIcon} />
+          <Icon>
+            <DiscordLogo />
+          </Icon>
         </NewTabLink>
       )}
       {nom.twitter && (
         <NewTabLink href={`https://twitter.com/${nom.twitter}`}>
-          <Icon src={TwitterIcon} />
+          <Icon>
+            <TwitterLogo />
+          </Icon>
         </NewTabLink>
       )}
       {nom.telegram && (
         <NewTabLink href={`https://t.me/${nom.telegram}`}>
-          <Icon src={TelegramIcon} />
+          <Icon>
+            <TelegramLogo />
+          </Icon>
         </NewTabLink>
       )}
     </Flex>
