@@ -303,29 +303,35 @@ export const preset = {
       container: {
         position: "relative",
         width: "100%",
-        minHeight: [103, null, null, 298],
-        marginBottom: [49, null, null, 120],
+        minHeight: [103, null, 200, 298],
+        marginBottom: [49, 49, 80, 120],
+        "@media only screen and (max-width: 520px)": {
+          marginBottom: 85,
+        },
       },
       avatarSizing: {
-        height: [125, null, null, 300],
-        width: [125, null, null, 300],
+        height: [125, null, 200, 300],
+        width: [125, null, 200, 300],
         borderRadius: "50%",
       },
       avatar: {
         position: "absolute",
         left: ["mobile", "tablet", "desktop"],
         bottom: "-40%",
-        height: [125, null, null, 300],
-        width: [125, null, null, 300],
+        height: [125, null, 200, 300],
+        width: [125, null, 200, 300],
         borderRadius: "50%",
       },
     },
     nomstronautTip: {
       container: {
         marginRight: ["mobile", "tablet", "desktop"],
-        marginTop: [13, null, null, 49],
+        marginTop: [15, 15, null, 49],
         justifyContent: "flex-end",
         alignItems: "center",
+        "@media only screen and (max-width: 520px)": {
+          marginTop: 38,
+        },
       },
       imageContainer: {
         height: [37, null, null, 70],
@@ -344,6 +350,7 @@ export const preset = {
         fontSize: [17, null, null, 31],
         padding: ["8px 28px", null, null, "14px 56px"],
         filter: "drop-shadow(0px 3px 6px #00000029)",
+        border: "4px solid var(--theme-ui-colors-primary)",
       },
       edit: {
         marginLeft: 11,
@@ -354,6 +361,7 @@ export const preset = {
         backgroundColor: "box",
         border: "4px solid var(--theme-ui-colors-primary)",
         color: "textColor",
+        boxSizing: "border-box",
       },
     },
     name: {
@@ -472,7 +480,7 @@ export const preset = {
         minWidth: [133, null, null, 300],
         minHeight: [133, null, null, 300],
         marginRight: 18,
-        boxShadow: "0px 3px 6px #00000029",
+        boxShadow: "0px 5px 7px #00000029",
         overflow: "hidden",
         borderRadius: "11px",
         display: "flex",

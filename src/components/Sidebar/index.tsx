@@ -73,7 +73,13 @@ export const Sidebar: React.FC<Props> = ({ openExtendModal }) => {
                         alignItems: "center",
                       }}
                     >
-                      <Link to={`/${un.name}`}>
+                      <Link
+                        to={`/${un.name}`}
+                        onClick={() => {
+                          // close sidebar when navigating to new nom
+                          closeSidebar();
+                        }}
+                      >
                         <Flex sx={{ alignItems: "center" }}>
                           <Text variant="search.sidebar.nom.name">
                             {un.name}.nom

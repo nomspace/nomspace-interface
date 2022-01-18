@@ -117,8 +117,8 @@ export const SearchDetail: React.FC = () => {
                         variant="search.connection.imageContainer"
                         sx={{
                           backgroundColor: "transparent",
-                          width: [60, null, null, 80],
-                          height: [60, null, null, 80],
+                          width: [60, null, null, 85],
+                          height: [60, null, null, 85],
                           marginRight: [0, null, null, 12],
                         }}
                         ml="4px"

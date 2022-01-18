@@ -34,7 +34,7 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
           overflowX: "hidden",
         }}
       >
-        <Text variant="modal.title">Change profile picture</Text>
+        <Text variant="modal.title">Select new profile picture</Text>
         <Box variant="search.rowScrollContainer">
           {nftMetadata != null ? (
             nftMetadata?.map((t, idx) => {
