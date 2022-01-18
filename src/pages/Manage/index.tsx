@@ -233,7 +233,7 @@ export const Manage: React.FC = () => {
                           <Box variant="search.name.container">
                             <Flex variant="search.name.nameContainer">
                               <Heading variant="search.name.heading">
-                                {name}
+                                <b>{name}</b>
                               </Heading>
                               <Heading
                                 variant="search.name.heading"
