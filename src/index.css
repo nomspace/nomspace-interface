@@ -1,12 +1,9 @@
-.toast-body {
-  background: var(--theme-ui-colors-box);
-}
-
 /* HACK: Fix title color in wallet modal */
 .dark:tw-text-gray-300 {
   color: rgb(43, 43, 44);
 }
 
 .toast-body {
-  background: var(--theme-ui-colors-box);
+  background: var(--theme-ui-colors-secondary);
+  color: var(--theme-ui-colors-textColor);
 }

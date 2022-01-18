@@ -61,7 +61,8 @@ const App: React.FC = () => {
         </Container>
         <Footer />
         <ToastContainer
-          style={{ background: "var(--theme-ui-colors-background)" }}
+          enableMultiContainer
+          // style={{ background: "var(--theme-ui-colors-background)" }}
           toastClassName="toast-body"
           bodyClassName="toast-body"
         />

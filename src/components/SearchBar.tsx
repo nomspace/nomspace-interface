@@ -50,7 +50,13 @@ export const SearchBar: React.FC<IProps> = ({ size, onSearch }) => {
       <form
         style={{ width: "100%", maxWidth: 1000 }}
         onSubmit={(e) => {
-          const searchTerm = searchInput?.current.value;
+          let dirty = searchInput?.current.value;
+          // filter .nom.nom ending
+          if (dirty.endsWith(".nom.nom")) {
+            let ind = dirty.lastIndexOf(".nom.nom");
+            dirty = dirty.substring(0, ind);
+          }
+          const searchTerm = dirty;
           if (searchTerm && searchTerm !== "") {
             history.push(`/${searchTerm}`);
           }

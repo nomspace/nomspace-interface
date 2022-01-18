@@ -1,11 +1,18 @@
 import { Modal } from "../react-modal";
+import { X } from "phosphor-react";
 
 interface Props {
   open: boolean;
   onClose?: () => void;
+  showClose?: boolean;
 }
 
-export const CustomModal: React.FC<Props> = ({ open, onClose, children }) => {
+export const CustomModal: React.FC<Props> = ({
+  open,
+  onClose,
+  showClose = false,
+  children,
+}) => {
   return (
     <Modal
       open={open}
@@ -31,6 +38,19 @@ export const CustomModal: React.FC<Props> = ({ open, onClose, children }) => {
         },
       }}
     >
+      {showClose && (
+        <div
+          style={{
+            position: "absolute",
+            top: 20,
+            right: 20,
+            cursor: "pointer",
+          }}
+          onClick={onClose}
+        >
+          <X size={32} />
+        </div>
+      )}
       {children}
     </Modal>
   );

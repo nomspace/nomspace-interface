@@ -27,7 +27,6 @@ import { ReactComponent as TwitterLogo } from "assets/twitter.svg";
 import { ReactComponent as GithubLogo } from "assets/github.svg";
 
 const Title = styled(Heading)({
-  fontSize: "40px",
   fontWeight: 600,
   marginBottom: "4px",
 });
@@ -81,13 +80,13 @@ export const Search: React.FC = () => {
         mx: ["28px", "180px"],
       }}
     >
-      <Title as="h1">Nomspace</Title>
-      <Subtitle sx={{ fontSize: ["21px", "28px"] }}>
-        One Nom to rule them all.
-      </Subtitle>
-      <Description sx={{ fontSize: ["19px", "28px"] }}>
+      <Title as="h1" variant="splash.title">
+        Nomspace
+      </Title>
+      <Subtitle variant="splash.subtitle">One Nom to rule them all.</Subtitle>
+      <Description variant="splash.description">
         Wallet addresses are hard to remember.{" "}
-        <ColoredDescription sx={{ fontSize: ["19px", "28px"] }}>
+        <ColoredDescription variant="splash.description">
           Names aren't.
         </ColoredDescription>
       </Description>
@@ -180,13 +179,13 @@ export const Search: React.FC = () => {
         </NewTabLink>
       </Flex>
 
-      <Header as="h2" mt="64px">
+      <Header as="h2" mt="64px" sx={{ fontSize: ["24px", "28px", "35px"] }}>
         Nomspace
       </Header>
-      <ColoredHeader sx={{ fontSize: ["20px", "28px"] }}>
+      <ColoredHeader sx={{ fontSize: ["20px", "28px", "35px"] }}>
         Mint your name as an NFT.
       </ColoredHeader>
-      <Text my="12px">
+      <Text my="12px" sx={{ fontSize: ["18px", null, "25px"] }}>
         All .nom's are NFTs which means you can easily transfer and sell them.
       </Text>
       <SearchBar />

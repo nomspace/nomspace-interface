@@ -16,6 +16,7 @@ import { useName } from "hooks/useName";
 import { Sidebar } from "components/Sidebar";
 import { SocialIcons } from "components/SocialIcons";
 import { useTokenBalances } from "hooks/useTokenBalances";
+import { useHasNomstronauts } from "hooks/useHasNomstronauts";
 import { useUserStats } from "hooks/useUserStats";
 import { ExplorerIcons } from "components/ExplorerIcons";
 import { UserTags } from "components/UserTags";
@@ -39,6 +40,7 @@ import { NewTabLink } from "components/NewTabLink";
 import { SearchBar } from "components/SearchBar";
 import { Spinner } from "theme-ui";
 import { getAddress } from "ethers/lib/utils";
+import { toast, ToastContainer } from "react-toastify";
 
 // import nomstronaut from "pages/SearchDetail/assets/astro.png";
 
@@ -54,11 +56,54 @@ export const SearchDetail: React.FC = () => {
   const [extendModalOpen, setExtendModalOpen] = useState(false);
   const { transferOwnership } = useTransferOwnership(name);
   const [colorMode] = useColorMode();
+  const [hasNomstronaut] = useHasNomstronauts();
+
+  const PromptSetResolutionModal = () => {
+    if (isOwner && !nom?.resolution) {
+      console.log("res inside{", !nom?.resolution);
+      toast.warn(
+        <>
+          <div>
+            ⚠️ It looks like you don't have a resolution! Set it{" "}
+            <u
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                history.push(`${name}/${Page.MANAGE}`);
+              }}
+            >
+              here
+            </u>{" "}
+            to see your NFTs!
+          </div>
+        </>,
+        {
+          position: "top-center",
+          autoClose: false,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          toastId: "resolution",
+          containerId: "B",
+          style: { cursor: "default" },
+          bodyClassName: "warningBodyToast",
+        }
+      );
+    }
+  };
 
   const isOwner = address && nom?.owner && nom.owner === getAddress(address);
 
   return (
     <>
+      {/* this is just for the warning banner */}
+      <ToastContainer
+        enableMultiContainer
+        style={{ width: "auto", zIndex: 90 }}
+        containerId={"B"}
+      />
+      {PromptSetResolutionModal()}
       {nom && name && (
         <>
           <TipModal
@@ -111,7 +156,7 @@ export const SearchDetail: React.FC = () => {
                     />
                   </NewTabLink>
                   <Flex variant="search.nomstronautTip.container">
-                    {
+                    {hasNomstronaut && (
                       <Image
                         src={astro}
                         variant="search.connection.imageContainer"
@@ -124,7 +169,7 @@ export const SearchDetail: React.FC = () => {
                         ml="4px"
                         mr="6px"
                       />
-                    }
+                    )}
                     <Box variant="search.connection.desktopContainer">
                       <SocialIcons nom={nom} />
                     </Box>

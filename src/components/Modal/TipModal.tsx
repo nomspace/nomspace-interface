@@ -18,10 +18,14 @@ import {
 import Select from "@mui/material/Select";
 import { TokenWithBalance, useTokens } from "hooks/useTokens";
 import { formatUnits, parseUnits } from "ethers/lib/utils";
-import { useGetConnectedSigner } from "@celo-tools/use-contractkit";
+import {
+  useContractKit,
+  useGetConnectedSigner,
+} from "@celo-tools/use-contractkit";
 import { ERC20__factory } from "generated";
 import { GlobalNom } from "hooks/useNom";
 import { toastTx } from "utils/toastTx";
+import { X } from "phosphor-react";
 
 interface Props {
   open: boolean;
@@ -34,6 +38,7 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
   const [tokens] = useTokens();
   const [coin, setCoin] = React.useState<TokenWithBalance>();
   const [colorMode] = useColorMode();
+  const { address } = useContractKit();
   const getConnectedSigner = useGetConnectedSigner();
   useEffect(() => {
     const initialToken =
@@ -57,7 +62,7 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
   }, [amount, coin, getConnectedSigner, nom, onClose]);
 
   return (
-    <CustomModal open={open} onClose={onClose}>
+    <CustomModal open={open} onClose={onClose} showClose={true}>
       <ModalContent
         sx={{
           display: "flex",
@@ -184,15 +189,21 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
                 Amount
               </Text>
             </Box>
-            <Button
-              onClick={send}
-              variant="modal.form.submit"
-              disabled={coin?.balance.lt(
-                parseUnits(amount.toString(), coin.decimals)
-              )}
-            >
-              SEND
-            </Button>
+            {!address ? (
+              <Button variant="modal.form.submit" disabled={true}>
+                Connect Wallet
+              </Button>
+            ) : (
+              <Button
+                onClick={send}
+                variant="modal.form.submit"
+                disabled={coin?.balance.lt(
+                  parseUnits(amount.toString(), coin.decimals)
+                )}
+              >
+                SEND
+              </Button>
+            )}
           </Box>
         </Flex>
         <Text variant="modal.wallet.desktop">

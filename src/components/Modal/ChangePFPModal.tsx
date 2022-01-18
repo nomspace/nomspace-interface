@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { CustomModal } from "components/Modal/CustomModal";
 import { ModalContent } from "@mattjennings/react-modal";
 import { useNFTs } from "hooks/useNFTs";
@@ -16,6 +16,7 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
   const { name, namehash } = useName();
   const [nftMetadata] = useNFTs();
   const { setNomSetting } = useSetNomSetting(name);
+  const [NftRow, setNftRow] = React.useState(<></>);
   const changePFP = React.useCallback(
     async (avatarUrl: string) => {
       await setNomSetting(["setText"], [[namehash, TextKey.AVATAR, avatarUrl]]);
@@ -23,6 +24,56 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
     },
     [namehash, onClose, setNomSetting]
   );
+
+  React.useEffect(() => {
+    if (nftMetadata == null) return;
+    type parsedNFT = {
+      [key: string]: ReactElement[];
+    };
+    let parsed: parsedNFT = {};
+
+    nftMetadata?.map((t, idx) => {
+      // assuming NFT names go like this:
+      // <name> #0000
+      let name: string = t.name;
+      name = name.substring(0, name.lastIndexOf(" "));
+
+      if (parsed[name] == undefined) {
+        parsed[name] = [];
+      }
+      parsed[name]?.push(
+        <Box variant="search.nft.imageContainer" key={name + idx}>
+          <Spinner />
+          <Image
+            variant="search.nft.image"
+            src={t.image}
+            sx={{ display: "none", cursor: "pointer" }}
+            onLoad={(e) => {
+              (e.target as HTMLImageElement).previousSibling?.remove();
+              (e.target as HTMLImageElement).style.display = "block";
+            }}
+            onClick={() => changePFP(t.image)}
+          ></Image>
+        </Box>
+      );
+    });
+
+    let elms: ReactElement[] = [];
+    for (const nftName in parsed) {
+      elms.push(
+        <Text variant="modal.text" key={nftName + "title"}>
+          <b>{nftName}</b>
+        </Text>
+      );
+      elms.push(
+        <Box variant="search.rowScrollContainer" key={nftName + "row"}>
+          {parsed[nftName]}
+        </Box>
+      );
+    }
+
+    setNftRow(<>{elms}</>);
+  }, [nftMetadata]);
 
   return (
     <CustomModal open={open} onClose={onClose}>
@@ -35,28 +86,20 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
         }}
       >
         <Text variant="modal.title">Select new profile picture</Text>
-        <Box variant="search.rowScrollContainer">
-          {nftMetadata != null ? (
-            nftMetadata?.map((t, idx) => {
-              return (
-                <Box variant="search.nft.imageContainer" key={idx}>
-                  <Spinner />
-                  <Image
-                    variant="search.nft.image"
-                    src={t.image}
-                    sx={{ display: "none", cursor: "pointer" }}
-                    onLoad={(e) => {
-                      (e.target as HTMLImageElement).previousSibling?.remove();
-                      (e.target as HTMLImageElement).style.display = "block";
-                    }}
-                    onClick={() => changePFP(t.image)}
-                  ></Image>
-                </Box>
-              );
-            })
-          ) : (
-            <Spinner />
-          )}
+        <Box
+          sx={{
+            overflow: "auto",
+            paddingLeft: ["mobile", "tablet", "desktop"],
+            paddingRight: ["mobile", "tablet", "desktop"],
+            width: "100%",
+            overflowY: "visible",
+            paddingBottom: 20,
+            "::-webkit-scrollbar-thumb": {
+              // backgroundColor: "transparent",
+            },
+          }}
+        >
+          {nftMetadata != null ? NftRow : <Spinner />}
         </Box>
       </ModalContent>
     </CustomModal>

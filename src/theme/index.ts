@@ -244,6 +244,9 @@ export const preset = {
     },
   },
   splash: {
+    title: { fontSize: ["40px", null, "50px"] },
+    subtitle: { fontSize: ["21px", "28px", null, "35px"] },
+    description: { fontSize: ["19px", "28px", null, "35px"] },
     card: {
       title: {
         fontSize: ["21px", "25px", "35px", "45px"],
@@ -477,8 +480,10 @@ export const preset = {
     },
     nft: {
       imageContainer: {
-        minWidth: [133, null, null, 300],
-        minHeight: [133, null, null, 300],
+        minWidth: [133, 160, 200, 300],
+        minHeight: [133, 160, 200, 300],
+        maxWidth: [133, 160, 200, 300],
+        maxHeight: [133, 160, 200, 300],
         marginRight: 18,
         boxShadow: "0px 5px 7px #00000029",
         overflow: "hidden",
