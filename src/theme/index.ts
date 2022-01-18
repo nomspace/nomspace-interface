@@ -287,6 +287,9 @@ export const preset = {
       width: "100%",
       overflowY: "visible",
       paddingBottom: 20,
+      "::-webkit-scrollbar-thumb": {
+        backgroundColor: "transparent",
+      },
     },
     banner: {
       image: {
