@@ -142,7 +142,9 @@ export const SearchDetail: React.FC = () => {
                     {/* Name & Description */}
                     <Box variant="search.name.container">
                       <Flex variant="search.name.nameContainer">
-                        <Heading variant="search.name.heading">{name}</Heading>
+                        <Heading variant="search.name.heading">
+                          <b>{name}</b>
+                        </Heading>
                         <Heading
                           variant="search.name.heading"
                           sx={{
