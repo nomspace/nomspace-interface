@@ -244,9 +244,12 @@ export const preset = {
     },
   },
   splash: {
-    title: { fontSize: ["40px", null, "50px"] },
+    title: { fontSize: ["40px", null, "50px"], color: "textColor" },
     subtitle: { fontSize: ["21px", "28px", null, "35px"] },
-    description: { fontSize: ["19px", "28px", null, "35px"] },
+    description: {
+      fontSize: ["19px", "28px", null, "35px"],
+      color: "textColor",
+    },
     card: {
       title: {
         fontSize: ["21px", "25px", "35px", "45px"],
@@ -657,7 +660,7 @@ export const preset = {
   },
   modal: {
     title: {
-      fontSize: "50px",
+      fontSize: ["30px", null, "50px"],
       fontWeight: "800",
     },
     text: {

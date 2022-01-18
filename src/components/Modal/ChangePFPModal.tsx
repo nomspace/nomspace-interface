@@ -61,7 +61,11 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
     let elms: ReactElement[] = [];
     for (const nftName in parsed) {
       elms.push(
-        <Text variant="modal.text" key={nftName + "title"}>
+        <Text
+          variant="modal.text"
+          key={nftName + "title"}
+          sx={{ paddingLeft: "1.2rem" }}
+        >
           <b>{nftName}</b>
         </Text>
       );
@@ -76,21 +80,31 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
   }, [nftMetadata, changePFP]);
 
   return (
-    <CustomModal open={open} onClose={onClose}>
+    <CustomModal
+      open={open}
+      onClose={onClose}
+      showClose={true}
+      sx={{ padding: 0 }}
+    >
       <ModalContent
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           overflowX: "hidden",
+          px: "0",
         }}
       >
-        <Text variant="modal.title">Select new profile picture</Text>
+        <Text
+          variant="modal.title"
+          sx={{ marginTop: "1.2rem", paddingLeft: "1.2rem" }}
+        >
+          Select new profile picture
+        </Text>
         <Box
           sx={{
             overflow: "auto",
-            paddingLeft: ["mobile", "tablet", "desktop"],
-            paddingRight: ["mobile", "tablet", "desktop"],
+
             width: "100%",
             overflowY: "visible",
             paddingBottom: 20,

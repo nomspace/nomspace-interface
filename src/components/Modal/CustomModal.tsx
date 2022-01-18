@@ -1,10 +1,12 @@
 import { Modal } from "../react-modal";
 import { X } from "phosphor-react";
+import { ThemeUIStyleObject } from "theme-ui";
 
 interface Props {
   open: boolean;
   onClose?: () => void;
   showClose?: boolean;
+  sx?: ThemeUIStyleObject | undefined;
 }
 
 export const CustomModal: React.FC<Props> = ({
@@ -12,6 +14,7 @@ export const CustomModal: React.FC<Props> = ({
   onClose,
   showClose = false,
   children,
+  sx,
 }) => {
   return (
     <Modal
@@ -37,6 +40,7 @@ export const CustomModal: React.FC<Props> = ({
           },
         },
       }}
+      sx={sx}
     >
       {showClose && (
         <div
