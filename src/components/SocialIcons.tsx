@@ -7,19 +7,6 @@ import { ReactComponent as TelegramLogo } from "assets/telegram.svg";
 
 import { NewTabLink } from "components/NewTabLink";
 
-const Icon = styled(Box)({
-  width: "46px",
-  height: "46px",
-  marginRight: "12px",
-  padding: "7px",
-  backgroundColor: "#5452FC",
-  filter: "drop-shadow(0px 3px 6px #00000029)",
-  borderRadius: "50%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-});
-
 const Website = styled(Text)({
   width: "46px",
   height: "46px",
@@ -57,23 +44,23 @@ export const SocialIcons: React.FC<Props> = ({ nom }) => {
       )}
       {nom.discord && (
         <NewTabLink href={`https://discordapp.com/users/${nom.discord}`}>
-          <Icon>
+          <Box variant="search.connection.imageContainer">
             <DiscordLogo />
-          </Icon>
+          </Box>
         </NewTabLink>
       )}
       {nom.twitter && (
         <NewTabLink href={`https://twitter.com/${nom.twitter}`}>
-          <Icon>
+          <Box variant="search.connection.imageContainer">
             <TwitterLogo />
-          </Icon>
+          </Box>
         </NewTabLink>
       )}
       {nom.telegram && (
         <NewTabLink href={`https://t.me/${nom.telegram}`}>
-          <Icon>
+          <Box variant="search.connection.imageContainer">
             <TelegramLogo />
-          </Icon>
+          </Box>
         </NewTabLink>
       )}
     </Flex>

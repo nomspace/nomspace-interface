@@ -355,10 +355,6 @@ export const preset = {
         border: "4px solid var(--theme-ui-colors-primary)",
         color: "textColor",
       },
-      connectionsContainer: {
-        marginLeft: 11,
-        display: ["none", null, null, "block"],
-      },
     },
     name: {
       container: {
@@ -407,11 +403,22 @@ export const preset = {
           fill: "white !important",
         },
       },
+      desktopContainer: {
+        marginLeft: 11,
+        display: ["none", null, null, "flex"],
+        justifyContent: "center",
+        alignItems: "center",
+        "> *": {
+          display: ["flex !important"],
+          marginBottom: "0 !important",
+          marginLeft: "0px !important",
+        },
+      },
       imageContainer: {
         width: [46, null, null, 72],
         height: [46, null, null, 72],
         marginRight: 12,
-        padding: "7px",
+        padding: ["7px", null, null, "9px"],
         backgroundColor: "#5452FC",
         filter: "drop-shadow(0px 3px 6px #00000029)",
         borderRadius: "50%",

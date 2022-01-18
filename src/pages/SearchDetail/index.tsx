@@ -32,6 +32,7 @@ import defaultBanner from "assets/DefaultBanner.png";
 import life2 from "pages/SearchDetail/assets/life1.png";
 import life1 from "pages/SearchDetail/assets/life2.png";
 import networth from "pages/SearchDetail/assets/networth.png";
+import astro from "pages/SearchDetail/assets/astro.png";
 import { ReserveView } from "components/Modal/ReserveView";
 import { isAddress } from "web3-utils";
 import { NewTabLink } from "components/NewTabLink";
@@ -110,7 +111,21 @@ export const SearchDetail: React.FC = () => {
                     />
                   </NewTabLink>
                   <Flex variant="search.nomstronautTip.container">
-                    <Box variant="search.nomstronautTip.connectionsContainer">
+                    {
+                      <Image
+                        src={astro}
+                        variant="search.connection.imageContainer"
+                        sx={{
+                          backgroundColor: "transparent",
+                          width: [60, null, null, 80],
+                          height: [60, null, null, 80],
+                          marginRight: [0, null, null, 12],
+                        }}
+                        ml="4px"
+                        mr="6px"
+                      />
+                    }
+                    <Box variant="search.connection.desktopContainer">
                       <SocialIcons nom={nom} />
                     </Box>
                     {isOwner && (
