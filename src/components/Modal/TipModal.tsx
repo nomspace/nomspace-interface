@@ -25,7 +25,6 @@ import {
 import { ERC20__factory } from "generated";
 import { GlobalNom } from "hooks/useNom";
 import { toastTx } from "utils/toastTx";
-import { X } from "phosphor-react";
 
 interface Props {
   open: boolean;

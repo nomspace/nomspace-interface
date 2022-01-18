@@ -32,13 +32,13 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
     };
     let parsed: parsedNFT = {};
 
-    nftMetadata?.map((t, idx) => {
+    nftMetadata?.forEach((t, idx) => {
       // assuming NFT names go like this:
       // <name> #0000
       let name: string = t.name;
       name = name.substring(0, name.lastIndexOf(" "));
 
-      if (parsed[name] == undefined) {
+      if (parsed[name] === undefined) {
         parsed[name] = [];
       }
       parsed[name]?.push(
@@ -73,7 +73,7 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
     }
 
     setNftRow(<>{elms}</>);
-  }, [nftMetadata]);
+  }, [nftMetadata, changePFP]);
 
   return (
     <CustomModal open={open} onClose={onClose}>
