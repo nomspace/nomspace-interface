@@ -130,7 +130,7 @@ export const SearchDetail: React.FC = () => {
                         onClick={() => setTipModalOpen(true)}
                         variant="search.nomstronautTip.tip"
                       >
-                        TIP
+                        <b>TIP</b>
                       </Button>
                     )}
                   </Flex>
