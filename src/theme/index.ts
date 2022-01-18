@@ -481,7 +481,7 @@ export const preset = {
       imageContainer: {
         minWidth: [65, null, null, 100],
         minHeight: [65, null, null, 100],
-        marginRight: 18,
+        marginRight: 12,
         filter: "drop-shadow(0px 3px 6px #00000029)",
         borderRadius: "50%",
         border: "solid",
