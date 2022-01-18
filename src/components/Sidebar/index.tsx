@@ -133,19 +133,44 @@ export const Sidebar: React.FC<Props> = ({ openExtendModal }) => {
         <SearchBar onSearch={() => closeSidebar()} />
       </Box>
       <Box mt={48}>
-        <Text
-          variant="search.sidebar.item"
-          sx={{ cursor: "pointer" }}
-          onClick={() => {
-            if (colorMode === "light") {
-              setColorMode("dark");
-            } else {
-              setColorMode("light");
-            }
-          }}
-        >
-          Light / Dark Mode
-        </Text>
+        {colorMode === "light" ? (
+          <Text
+            variant="search.sidebar.item"
+            sx={{ cursor: "pointer" }}
+            onClick={() => {
+              if (colorMode === "light") {
+                setColorMode("dark");
+              } else {
+                setColorMode("light");
+              }
+            }}
+          >
+            {" "}
+            <u>
+              <b>Light</b>
+            </u>{" "}
+            / Dark Mode
+          </Text>
+        ) : (
+          <Text
+            variant="search.sidebar.item"
+            sx={{ cursor: "pointer" }}
+            onClick={() => {
+              if (colorMode === "light") {
+                setColorMode("dark");
+              } else {
+                setColorMode("light");
+              }
+            }}
+          >
+            Light /{" "}
+            <u>
+              <b>Dark</b>
+            </u>{" "}
+            Mode
+          </Text>
+        )}
+
         {/* <Text variant="search.sidebar.item">Default Currency</Text>
         <Text variant="search.sidebar.item">Language</Text> */}
       </Box>
