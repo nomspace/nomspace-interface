@@ -45,140 +45,142 @@ export const Sidebar: React.FC<Props> = ({ openExtendModal }) => {
 
   const sidebarContent = (
     <Box variant="search.sidebar.container">
-      <Box
-        onClick={() => {
-          closeSidebar();
-        }}
-      >
-        <AccountProfile />
-      </Box>
-      <Box variant="search.sidebar.nom.container">
-        {userNoms ? (
-          userNoms.length > 0 && (
-            <>
-              <Heading variant="search.sidebar.heading">My Noms</Heading>
-              {userNoms.map((un, idx) => {
-                return (
-                  <Flex
-                    key={idx}
-                    variant="search.sidebar.item"
-                    sx={{
-                      "::before": { display: "none" },
-                      flexDirection: "column",
-                    }}
-                  >
+      <Box>
+        <Box
+          onClick={() => {
+            closeSidebar();
+          }}
+        >
+          <AccountProfile />
+        </Box>
+        <Box variant="search.sidebar.nom.container">
+          {userNoms ? (
+            userNoms.length > 0 && (
+              <>
+                <Heading variant="search.sidebar.heading">My Noms</Heading>
+                {userNoms.map((un, idx) => {
+                  return (
                     <Flex
+                      key={idx}
+                      variant="search.sidebar.item"
                       sx={{
-                        justifyContent: "space-between",
-                        alignItems: "center",
+                        "::before": { display: "none" },
+                        flexDirection: "column",
                       }}
                     >
-                      <Link
-                        to={`/${un.name}`}
-                        onClick={() => {
-                          // close sidebar when navigating to new nom
-                          closeSidebar();
+                      <Flex
+                        sx={{
+                          justifyContent: "space-between",
+                          alignItems: "center",
                         }}
                       >
+                        <Link
+                          to={`/${un.name}`}
+                          onClick={() => {
+                            // close sidebar when navigating to new nom
+                            closeSidebar();
+                          }}
+                        >
+                          <Flex sx={{ alignItems: "center" }}>
+                            <Text variant="search.sidebar.nom.name">
+                              {un.name}.nom
+                            </Text>
+                          </Flex>
+                        </Link>
                         <Flex sx={{ alignItems: "center" }}>
-                          <Text variant="search.sidebar.nom.name">
-                            {un.name}.nom
+                          <Text variant="search.sidebar.nom.date" mr={2}>
+                            {moment.unix(un.expiration).format("MM/DD/YYYY")}
+                          </Text>
+                          <Text
+                            sx={{
+                              textDecoration: "underline",
+                              fontSize: 12,
+                              cursor: "pointer",
+                            }}
+                            onClick={() => {
+                              if (openExtendModal) {
+                                history.push(`/${un.name}`);
+                                closeSidebar();
+                                openExtendModal();
+                              }
+                            }}
+                          >
+                            Extend
                           </Text>
                         </Flex>
-                      </Link>
-                      <Flex sx={{ alignItems: "center" }}>
-                        <Text variant="search.sidebar.nom.date" mr={2}>
-                          {moment.unix(un.expiration).format("MM/DD/YYYY")}
-                        </Text>
-                        <Text
-                          sx={{
-                            textDecoration: "underline",
-                            fontSize: 12,
-                            cursor: "pointer",
-                          }}
-                          onClick={() => {
-                            if (openExtendModal) {
-                              history.push(`/${un.name}`);
-                              closeSidebar();
-                              openExtendModal();
-                            }
-                          }}
-                        >
-                          Extend
-                        </Text>
                       </Flex>
-                    </Flex>
-                    {reverseResolution !== un.name && (
-                      <Container
-                        sx={{ textAlign: "right", height: "fit-content" }}
-                      >
-                        <Text
-                          sx={{
-                            cursor: "pointer",
-                            textDecoration: "underline",
-                          }}
-                          onClick={async () => {
-                            await setReverseResolution(un.name);
-                            refetchReverseResolution();
-                          }}
+                      {reverseResolution !== un.name && (
+                        <Container
+                          sx={{ textAlign: "right", height: "fit-content" }}
                         >
-                          Set as default
-                        </Text>
-                      </Container>
-                    )}
-                  </Flex>
-                );
-              })}
-            </>
-          )
-        ) : (
-          <Spinner />
-        )}
-      </Box>
-      <Box variant="search.sidebar.search" mt={48}>
-        <SearchBar onSearch={() => closeSidebar()} />
-      </Box>
-      <Box mt={48}>
-        {colorMode === "light" ? (
-          <Text
-            variant="search.sidebar.item"
-            sx={{ cursor: "pointer" }}
-            onClick={() => {
-              if (colorMode === "light") {
-                setColorMode("dark");
-              } else {
-                setColorMode("light");
-              }
-            }}
-          >
-            {" "}
-            <u>
-              <b>Light</b>
-            </u>{" "}
-            / Dark Mode
-          </Text>
-        ) : (
-          <Text
-            variant="search.sidebar.item"
-            sx={{ cursor: "pointer" }}
-            onClick={() => {
-              if (colorMode === "light") {
-                setColorMode("dark");
-              } else {
-                setColorMode("light");
-              }
-            }}
-          >
-            Light /{" "}
-            <u>
-              <b>Dark</b>
-            </u>{" "}
-            Mode
-          </Text>
-        )}
+                          <Text
+                            sx={{
+                              cursor: "pointer",
+                              textDecoration: "underline",
+                            }}
+                            onClick={async () => {
+                              await setReverseResolution(un.name);
+                              refetchReverseResolution();
+                            }}
+                          >
+                            Set as default
+                          </Text>
+                        </Container>
+                      )}
+                    </Flex>
+                  );
+                })}
+              </>
+            )
+          ) : (
+            <Spinner />
+          )}
+        </Box>
+        <Box variant="search.sidebar.search" mt={48}>
+          <SearchBar onSearch={() => closeSidebar()} />
+        </Box>
+        <Box mt={48}>
+          {colorMode === "light" ? (
+            <Text
+              variant="search.sidebar.item"
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                if (colorMode === "light") {
+                  setColorMode("dark");
+                } else {
+                  setColorMode("light");
+                }
+              }}
+            >
+              {" "}
+              <u>
+                <b>Light</b>
+              </u>{" "}
+              / Dark Mode
+            </Text>
+          ) : (
+            <Text
+              variant="search.sidebar.item"
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                if (colorMode === "light") {
+                  setColorMode("dark");
+                } else {
+                  setColorMode("light");
+                }
+              }}
+            >
+              Light /{" "}
+              <u>
+                <b>Dark</b>
+              </u>{" "}
+              Mode
+            </Text>
+          )}
 
-        {/* <Text variant="search.sidebar.item">Default Currency</Text>
+          {/* <Text variant="search.sidebar.item">Default Currency</Text>
         <Text variant="search.sidebar.item">Language</Text> */}
+        </Box>
       </Box>
       <Box mt={24}>
         <Link to="/">
@@ -280,7 +282,11 @@ export const Sidebar: React.FC<Props> = ({ openExtendModal }) => {
             anchor="left"
             open={open}
             onClose={closeSidebar}
-            sx={{}}
+            sx={{
+              ".MuiDrawer-paper": {
+                backgroundColor: "var(--theme-ui-colors-secondary)",
+              },
+            }}
           >
             <ThemeUIThemeProvider theme={theme}>
               {sidebarContent}
