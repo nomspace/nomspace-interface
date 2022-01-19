@@ -11,16 +11,10 @@ import { Stats } from "./pages/Stats";
 import { Manage } from "pages/Manage";
 import { GlobalNom } from "hooks/useNom";
 
-// TODO: REMOVE AFTER BETA
-import { BetaModal } from "components/Modal/BetaModal";
-
 const App: React.FC = () => {
   React.useEffect(() => {
     Modal.setAppElement("body");
   });
-
-  // TODO: REMOVE AFTER BETA
-  const [betaVerified, setBetaVerified] = React.useState(false);
 
   return (
     <>
@@ -39,22 +33,17 @@ const App: React.FC = () => {
             </Route>
             <Route path="/:name">
               <GlobalNom.Provider>
-                {/* TODO: REMOVE AFTER BETA */}
-                {!betaVerified ? (
-                  <BetaModal setBetaVerified={setBetaVerified} />
-                ) : (
-                  <Switch>
-                    <Route exact path="/:name">
-                      <SearchDetail />
-                    </Route>
-                    <Route exact path="/:name/manage">
-                      <Manage />
-                    </Route>
-                    <Route exact path="/:name/extend">
-                      <Extend />
-                    </Route>
-                  </Switch>
-                )}
+                <Switch>
+                  <Route exact path="/:name">
+                    <SearchDetail />
+                  </Route>
+                  <Route exact path="/:name/manage">
+                    <Manage />
+                  </Route>
+                  <Route exact path="/:name/extend">
+                    <Extend />
+                  </Route>
+                </Switch>
               </GlobalNom.Provider>
             </Route>
           </Switch>
