@@ -28,6 +28,7 @@ import { UserNonce } from "./useUserNonce";
 import { useUSD } from "./useUSD";
 import { useApprove } from "./useApprove";
 import { MaxUint256 } from "@ethersproject/constants";
+import { shiftDecimals } from "utils/number";
 
 export const useReserve = (name?: string) => {
   const { address, network, connect } = useContractKit();
@@ -71,11 +72,11 @@ export const useReserve = (name?: string) => {
       );
       const decimals = await usd.decimals();
       const duration = Math.ceil(Number(years) * YEAR_IN_SECONDS);
-      const cost = (
-        await nomRegistrarController.rentPrice(name, duration, address)
-      )
-        .shr(18)
-        .shl(decimals);
+      const cost = shiftDecimals(
+        await nomRegistrarController.rentPrice(name, duration, address),
+        18,
+        decimals
+      );
 
       try {
         setLoading(true);
