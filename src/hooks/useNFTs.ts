@@ -77,10 +77,9 @@ export const useNFTs = () => {
                 .map(async (uri) => {
                   return axios.get(uri).then(async (res) => ({
                     ...res.data,
-                    image: res.data.image.replace(
-                      "ipfs://",
-                      "https://cloudflare-ipfs.com/ipfs/"
-                    ),
+                    image: res.data.image
+                      .replace("ipfs.io", "cloudflare-ipfs.com")
+                      .replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/"),
                   }));
                 })
             );
