@@ -72,7 +72,13 @@ export const useNFTs = () => {
                 if (!uri.endsWith("json")) {
                   uri = uri + ".json"; // TODO: Hardcode
                 }
-                return axios.get(uri).then(async (res) => res.data);
+                return axios.get(uri).then(async (res) => ({
+                  ...res.data,
+                  image: res.data.image.replace(
+                    "ipfs://",
+                    "https://cloudflare-ipfs.com/ipfs/"
+                  ),
+                }));
               })
             );
           });
