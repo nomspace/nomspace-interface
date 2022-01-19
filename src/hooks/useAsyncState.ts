@@ -12,7 +12,11 @@ export function useAsyncState<T>(
         setState(v);
         setDirty(false);
       })
-      .catch(console.warn);
+      .catch((e) => {
+        console.warn(e);
+        setState(undefined!);
+        setDirty(false);
+      });
   }, [asyncGetter, dirty]);
 
   const refetch = () => {

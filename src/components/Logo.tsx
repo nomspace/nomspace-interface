@@ -1,8 +1,8 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Box, Flex, Text } from "theme-ui";
-import { LogoIcon } from "src/icons/LogoIcon";
-import { Breakpoint, useBreakpoint } from "src/hooks/useBreakpoint";
+import { LogoIcon } from "icons/LogoIcon";
+import { Breakpoint, useBreakpoint } from "hooks/useBreakpoint";
 
 export const Logo: React.FC = () => {
   const history = useHistory();
@@ -14,7 +14,7 @@ export const Logo: React.FC = () => {
         history.push("/");
       }}
     >
-      <Box sx={{ fill: "text" }} mr={2}>
+      <Box sx={{ fill: "textColor" }} mr={2}>
         <LogoIcon />
       </Box>
       {breakpoint === Breakpoint.DESKTOP && (

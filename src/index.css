@@ -1,17 +1,26 @@
-.toast-body {
-  background: var(--theme-ui-colors-box);
-}
-
 /* HACK: Fix title color in wallet modal */
-.tw-font-medium {
-  color: black;
-}
-
-/* HACK: Fix title color in wallet modal */
-.tw-text-lg {
-  color: black;
+.dark:tw-text-gray-300 {
+  color: rgb(43, 43, 44);
 }
 
 .toast-body {
-  background: var(--theme-ui-colors-box);
+  background: var(--theme-ui-colors-secondary);
+  color: var(--theme-ui-colors-textColor);
+}
+
+.no-scrollbars {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.no-scrollbars::-webkit-scrollbar {
+  width: 1px;
+}
+.no-scrollbars::-webkit-scrollbar-track {
+  background: transparent;
+}
+.no-scrollbars::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+.no-scrollbars::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }

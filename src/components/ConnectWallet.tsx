@@ -1,7 +1,7 @@
 import { useContractKit } from "@celo-tools/use-contractkit";
 import React from "react";
 import { Card, Text, Flex } from "theme-ui";
-import { shortenAddress } from "src/utils/address";
+import { shortenAddress } from "utils/address";
 import { Wallet } from "phosphor-react";
 
 export const ConnectWallet: React.FC = () => {
@@ -10,11 +10,7 @@ export const ConnectWallet: React.FC = () => {
     <Card
       sx={{ cursor: "pointer", height: "fit-content" }}
       onClick={async () => {
-        try {
-          await connect();
-        } catch (e) {
-          console.warn(e);
-        }
+        await connect().catch(console.warn);
       }}
       px={3}
     >

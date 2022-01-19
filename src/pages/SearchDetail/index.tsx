@@ -1,297 +1,359 @@
-import React from "react";
-import { useNom } from "src/hooks/useNom";
+import { GlobalNom } from "hooks/useNom";
+import React, { useState } from "react";
 import { useContractKit } from "@celo-tools/use-contractkit";
-import { useParams, useHistory } from "react-router-dom";
-import { Box, Button, Card, Divider, Flex, Heading, Spinner } from "theme-ui";
-import { ethers } from "ethers";
-import { BlockText } from "src/components/BlockText";
-import { shortenAddress } from "src/utils/address";
-import NomMetadata from "src/abis/nomspace/Nom.json";
-import ERC20Metadata from "src/abis/nomspace/ERC20.json";
-import { Nom } from "src/generated/Nom";
-import { DEFAULT_GAS_PRICE, NOM } from "src/config";
-import { AbiItem, toWei } from "web3-utils";
-import { toastTx } from "src/utils/toastTx";
-import { toast } from "react-toastify";
-import { isAddress } from "ethers/lib/utils";
-import { QRNameModal } from "src/components/QRNameModal";
-import { SearchBar } from "src/components/SearchBar";
-import { ZERO_ADDRESS } from "src/constants";
-import { formatName } from "src/utils/name";
-import QRCode from "qrcode.react";
-import { BlockscoutAddressLink } from "src/components/BlockscoutAddressLink";
-import { ERC20 } from "src/generated/ERC20";
-import { normalize } from "eth-ens-namehash";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Heading,
+  Image,
+  Text,
+  useColorMode,
+} from "theme-ui";
+import { NATIVE_CURRENCY } from "config";
+import { useName } from "hooks/useName";
+import { Sidebar } from "components/Sidebar";
+import { SocialIcons } from "components/SocialIcons";
+import { useTokenBalances } from "hooks/useTokenBalances";
+import { useHasNomstronauts } from "hooks/useHasNomstronauts";
+import { useUserStats } from "hooks/useUserStats";
+import { ExplorerIcons } from "components/ExplorerIcons";
+import { UserTags } from "components/UserTags";
+import { TipModal } from "components/Modal/TipModal";
+import { ExtendModal } from "components/Modal/ExtendModal";
+import { ReclaimModal } from "components/Modal/ReclaimModal";
+import { Page } from "state/global";
+import { useHistory } from "react-router-dom";
+import { TokenCarousel } from "components/TokenCarousel";
+import { NFTCarousel } from "components/NFTCarousel";
+import { useTransferOwnership } from "hooks/useTransferOwnership";
+import { useNFTs } from "hooks/useNFTs";
+import defaultPFP from "assets/DefaultPFP.png";
+import defaultBanner from "assets/DefaultBanner.png";
+import life2 from "pages/SearchDetail/assets/life1.png";
+import life1 from "pages/SearchDetail/assets/life2.png";
+import networth from "pages/SearchDetail/assets/networth.png";
+import astro from "pages/SearchDetail/assets/astro.png";
+import { ReserveView } from "components/Modal/ReserveView";
+import { isAddress } from "web3-utils";
+import { NewTabLink } from "components/NewTabLink";
+import { SearchBar } from "components/SearchBar";
+import { Spinner } from "theme-ui";
+import { getAddress } from "ethers/lib/utils";
+import { toast, ToastContainer } from "react-toastify";
 
 export const SearchDetail: React.FC = () => {
-  const { name } = useParams<{ name: string }>();
-  const nameFormatted = formatName(name);
-
-  const { address, getConnectedKit, network } = useContractKit();
-  const [nom, refetchNom] = useNom(nameFormatted);
-  const [changeResLoading, setChangeResLoading] = React.useState(false);
-  const [changeOwnerLoading, setChangeOwnerLoading] = React.useState(false);
-  const [showQR, setShowQR] = React.useState(false);
+  const { name } = useName();
+  const { address, network } = useContractKit();
+  const [nom] = GlobalNom.useContainer();
+  const [nftMetadata] = useNFTs();
+  const [tokens] = useTokenBalances(nom?.resolution);
+  const [userStats] = useUserStats(nom?.resolution);
   const history = useHistory();
-  const sendCUSD = React.useCallback(
-    async (amount: string) => {
-      const kit = await getConnectedKit();
-      if (!kit || !nom) {
-        return;
-      }
-      const cUSD = new kit.web3.eth.Contract(
-        ERC20Metadata.abi as AbiItem[],
-        "0x765DE816845861e75A25fCA122bb6898B8B1282a"
-      ) as unknown as ERC20;
-      const tx = await cUSD.methods
-        .transfer(nom.resolution, toWei(amount))
-        .send({ from: kit.defaultAccount, gasPrice: toWei("0.5", "gwei") });
-      toastTx(tx.transactionHash);
-    },
-    [getConnectedKit, nom]
-  );
+  const [tipModalOpen, setTipModalOpen] = useState(false);
+  const [extendModalOpen, setExtendModalOpen] = useState(false);
+  const { transferOwnership } = useTransferOwnership(name);
+  const [colorMode] = useColorMode();
+  const [hasNomstronaut] = useHasNomstronauts();
 
-  let isNormal = false;
-  try {
-    isNormal = !!normalize(name) && !name.includes(".");
-  } catch (e) {}
+  const PromptSetResolutionModal = () => {
+    if (isOwner && !nom?.resolution) {
+      console.log("res inside{", !nom?.resolution);
+      toast.warn(
+        <>
+          <div>
+            ⚠️ It looks like you don't have a resolution! Set it{" "}
+            <u
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                history.push(`${name}/${Page.MANAGE}`);
+              }}
+            >
+              here
+            </u>{" "}
+            to see your NFTs!
+          </div>
+        </>,
+        {
+          position: "top-center",
+          autoClose: false,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          toastId: "resolution",
+          containerId: "B",
+          style: { cursor: "default" },
+          bodyClassName: "warningBodyToast",
+        }
+      );
+    }
+  };
 
-  if (nom == null) {
-    return <Spinner />;
-  }
-  const isOwner = address && nom.owner.toLowerCase() === address.toLowerCase();
+  const isOwner = address && nom?.owner && nom.owner === getAddress(address);
 
   return (
-    <Flex
-      sx={{
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      <Box sx={{ width: "100%", maxWidth: "800px" }} mb={4}>
-        <SearchBar size="small" />
-      </Box>
-      <Box sx={{ textAlign: "center" }}>
-        <Card sx={{ width: "100%", maxWidth: "800px" }} py={4} px={3}>
-          <Heading as="h2" mb={4}>
-            {name}.nom
-          </Heading>
-          <Flex sx={{ alignItems: "center", flexDirection: "column", mb: 2 }}>
-            <QRCode value={`celo://wallet/pay?address=${address}`} />
-            <Flex sx={{ alignItems: "center" }}>
-              <BlockscoutAddressLink address={nom.resolution}>
-                <BlockText mt={2}>
-                  {shortenAddress(nom.resolution, 5)}
-                </BlockText>
-              </BlockscoutAddressLink>
-              {changeResLoading ? (
-                <Spinner />
-              ) : (
-                <Button
-                  sx={{ p: 1, fontSize: 1, ml: 2, mt: 2 }}
-                  onClick={async () => {
-                    const kit = await getConnectedKit();
-                    // kit is connected to a wallet
-                    const nom = new kit.web3.eth.Contract(
-                      NomMetadata.abi as AbiItem[],
-                      NOM[network.chainId]
-                    ) as unknown as Nom;
-                    const nextResolution = prompt(
-                      "Enter new resolution address"
-                    );
-                    if (!nextResolution || !isAddress(nextResolution)) {
-                      alert("Invalid address. Please try again.");
-                      return;
-                    }
-
-                    try {
-                      setChangeResLoading(true);
-                      const tx = await nom.methods
-                        .changeResolution(
-                          ethers.utils.formatBytes32String(nameFormatted),
-                          nextResolution
-                        )
-                        .send({
-                          from: kit.defaultAccount,
-                          gasPrice: DEFAULT_GAS_PRICE,
-                        });
-                      toastTx(tx.transactionHash);
-                      refetchNom();
-                    } catch (e: any) {
-                      toast(e.message);
-                    } finally {
-                      setChangeResLoading(false);
-                    }
-                  }}
-                  disabled={!isOwner}
-                >
-                  Change
-                </Button>
-              )}
-            </Flex>
-          </Flex>
-          {nom.owner !== ZERO_ADDRESS && isOwner && (
-            <>
-              <Divider />
-              <BlockText variant="primary">Owner</BlockText>
+    <>
+      {/* this is just for the warning banner */}
+      <ToastContainer
+        enableMultiContainer
+        style={{ width: "auto", zIndex: 90 }}
+        containerId={"B"}
+      />
+      {PromptSetResolutionModal()}
+      {nom && name && (
+        <>
+          <TipModal
+            open={tipModalOpen}
+            onClose={() => setTipModalOpen(false)}
+            resolution={nom.resolution}
+          />
+          <ExtendModal
+            open={extendModalOpen}
+            onClose={() => setExtendModalOpen(false)}
+            name={name}
+          />
+          <ReclaimModal />
+        </>
+      )}
+      <Flex
+        sx={{
+          alignItems: "center",
+          flexDirection: "column",
+          height: "100%",
+        }}
+      >
+        <Box sx={{ textAlign: "center", width: "100%", height: "100%" }}>
+          <Flex sx={{ height: "100%" }}>
+            {/* Sidebar */}
+            <Sidebar openExtendModal={() => setExtendModalOpen(true)} />
+            {/* Page */}
+            {nom !== null ? (
               <Flex
-                sx={{ alignItems: "center", justifyContent: "center", mb: 2 }}
+                sx={{
+                  alignItems: "center",
+                  flexDirection: "column",
+                  width: "100%",
+                }}
               >
-                <BlockText>{shortenAddress(nom.owner, 5)}</BlockText>
-                {changeOwnerLoading ? (
-                  <Spinner />
-                ) : (
-                  <Button
-                    sx={{ p: 1, fontSize: 1, ml: 2 }}
-                    onClick={async () => {
-                      const kit = await getConnectedKit();
-                      // kit is connected to a wallet
-                      const nom = new kit.web3.eth.Contract(
-                        NomMetadata.abi as AbiItem[],
-                        NOM[network.chainId]
-                      ) as unknown as Nom;
-                      const nextOwner = prompt("Enter new owner address");
-                      if (!nextOwner || !isAddress(nextOwner)) {
-                        alert("Invalid address. Please try again.");
-                        return;
-                      }
-
-                      try {
-                        setChangeOwnerLoading(true);
-                        const tx = await nom.methods
-                          .changeNameOwner(
-                            ethers.utils.formatBytes32String(nameFormatted),
-                            nextOwner
-                          )
-                          .send({
-                            from: kit.defaultAccount,
-                            gasPrice: DEFAULT_GAS_PRICE,
-                          });
-                        toastTx(tx.transactionHash);
-                        refetchNom();
-                      } catch (e) {
-                        toast(e.message);
-                      } finally {
-                        setChangeOwnerLoading(false);
-                      }
+                {/* Banner */}
+                <Box variant="search.banner.container">
+                  <Box
+                    variant="search.banner.image"
+                    sx={{
+                      backgroundImage: `url(${defaultBanner})`,
                     }}
-                    disabled={!isOwner}
+                  />
+                  <NewTabLink
+                    href={nom.avatar !== "" ? nom.avatar : defaultPFP}
                   >
-                    Transfer
-                  </Button>
-                )}
-              </Flex>
-            </>
-          )}
-          {nom.owner !== ZERO_ADDRESS && isOwner && (
-            <>
-              <BlockText variant="primary">Expiration</BlockText>
-              <Flex
-                sx={{ alignItems: "center", justifyContent: "center", mb: 2 }}
-              >
-                <BlockText>
-                  {new Date(parseInt(nom.expiration) * 1000).toLocaleDateString(
-                    "en-US"
+                    <Image
+                      variant="search.banner.avatar"
+                      src={nom.avatar !== "" ? nom.avatar : defaultPFP}
+                    />
+                  </NewTabLink>
+                  <Flex variant="search.nomstronautTip.container">
+                    {hasNomstronaut && (
+                      <Image
+                        src={astro}
+                        variant="search.connection.imageContainer"
+                        sx={{
+                          backgroundColor: "transparent",
+                          width: [60, null, null, 85],
+                          height: [60, null, null, 85],
+                          marginRight: [0, null, null, 12],
+                        }}
+                        ml="4px"
+                        mr="6px"
+                      />
+                    )}
+                    <Box variant="search.connection.desktopContainer">
+                      <SocialIcons nom={nom} />
+                    </Box>
+                    {isOwner && (
+                      <>
+                        <Button
+                          onClick={() => {
+                            history.push(`${name}/${Page.MANAGE}`);
+                          }}
+                          variant="search.nomstronautTip.edit"
+                        >
+                          EDIT
+                        </Button>
+                      </>
+                    )}
+                    {nom.owner != null && (
+                      <Button
+                        onClick={() => setTipModalOpen(true)}
+                        variant="search.nomstronautTip.tip"
+                      >
+                        <b>TIP</b>
+                      </Button>
+                    )}
+                  </Flex>
+                </Box>
+
+                {/* Main Body */}
+                <Box variant="search.details.container">
+                  <Flex variant="search.details.heading">
+                    {/* Name & Description */}
+                    <Box variant="search.name.container">
+                      <Flex variant="search.name.nameContainer">
+                        <Heading variant="search.name.heading">
+                          <b>{name}</b>
+                        </Heading>
+                        <Heading
+                          variant="search.name.heading"
+                          sx={{
+                            color: `${
+                              colorMode === "light" ? "#D9D9D9" : "#5e5e5e"
+                            }`,
+                          }}
+                        >
+                          .nom
+                        </Heading>
+                      </Flex>
+                      <Heading variant="search.name.subHeading">
+                        {nom.bio}
+                      </Heading>
+                    </Box>
+                    <Box>
+                      <SocialIcons nom={nom} />
+                      <UserTags userAddress={nom.resolution} />
+                    </Box>
+                  </Flex>
+                  {/* NFTs */}
+                  {nom.owner == null && name ? (
+                    <ReserveView name={name} />
+                  ) : (
+                    <>
+                      {nftMetadata != null && nftMetadata?.length > 0 && (
+                        <>
+                          <Heading variant="search.heading">NFTs</Heading>
+                          <NFTCarousel tokens={nftMetadata} />
+                        </>
+                      )}
+                      {/* Tokens */}
+                      {tokens && tokens.length > 0 && (
+                        <>
+                          <Heading variant="search.heading">Tokens</Heading>
+                          <TokenCarousel tokens={tokens} />
+                        </>
+                      )}
+                      {/* Stats */}
+
+                      <Heading variant="search.heading">Stats</Heading>
+                      <Box variant="search.stat.container">
+                        <Flex variant="search.stat.row">
+                          <Box variant="search.stat.icon">
+                            <Image
+                              src={life1}
+                              variant="search.stat.life1Icon"
+                            />
+                            <Image
+                              src={life2}
+                              variant="search.stat.life2Icon"
+                            />
+                          </Box>
+                          <Heading variant="search.stat.heading">
+                            Activity:&nbsp;
+                          </Heading>
+                          <Text variant="search.stat.text">
+                            {userStats
+                              ? new Intl.NumberFormat().format(
+                                  userStats?.transactionCount
+                                )
+                              : "-"}{" "}
+                            Transactions
+                          </Text>
+                        </Flex>
+                        <Box variant="search.stat.divider"></Box>
+                        <Flex variant="search.stat.row">
+                          <Image
+                            src={networth}
+                            variant="search.stat.icon"
+                            ml="4px"
+                            mr="6px"
+                          />
+                          <Heading variant="search.stat.heading">
+                            Net Worth:&nbsp;
+                          </Heading>
+                          <Text variant="search.stat.text">
+                            {userStats
+                              ? new Intl.NumberFormat().format(
+                                  userStats.nativeBalance
+                                )
+                              : "0"}{" "}
+                            {NATIVE_CURRENCY[network.chainId]}
+                          </Text>
+                        </Flex>
+                      </Box>
+                      {/* Sources */}
+                      <Heading variant="search.heading">Sources</Heading>
+                      <Box variant="search.rowScrollContainer">
+                        <Text variant="search.source.text">
+                          View on Block Explorers: &nbsp;&nbsp;
+                        </Text>
+                        <ExplorerIcons userAddress={nom.resolution} />
+                      </Box>
+                      {isOwner && (
+                        <Flex sx={{ py: 20, justifyContent: "center" }}>
+                          <Button
+                            sx={{ px: 16, py: 8, backgroundColor: "red" }}
+                            onClick={() => {
+                              const newOwner = prompt(
+                                "Enter new owner address"
+                              );
+                              if (!newOwner || !isAddress(newOwner)) {
+                                alert(
+                                  "Invalid address entered. Please try again"
+                                );
+                                return;
+                              }
+                              transferOwnership(newOwner);
+                            }}
+                          >
+                            Transfer Ownership
+                          </Button>
+                        </Flex>
+                      )}
+                    </>
                   )}
-                </BlockText>
-                <Button
-                  sx={{ p: 1, fontSize: 1, ml: 2 }}
-                  onClick={() => {
-                    history.push(`/${name}/extend`);
-                  }}
-                >
-                  Extend
-                </Button>
+                  {/* Footer */}
+                  {/* absolutely positioned */}
+                  <Box variant="search.footer.container">
+                    <Box variant="search.footer.wallet"></Box>
+                    <Box variant="search.footer.moreContainer">
+                      <Box variant="search.footer.more"></Box>
+                      <Box variant="search.footer.search"></Box>
+                    </Box>
+                  </Box>
+                </Box>
               </Flex>
-              <Divider />
-            </>
-          )}
-          <br />
-          {nom.resolution !== ZERO_ADDRESS && (
-            <Flex sx={{ mt: 1, justifyContent: "center", flexWrap: "wrap" }}>
-              <Button
-                mr={2}
-                mb={1}
-                onClick={async () => {
-                  await sendCUSD("1");
-                }}
-              >
-                Tip 1 cUSD
-              </Button>
-              <Button
-                mr={2}
-                mb={1}
-                onClick={async () => {
-                  await sendCUSD("5");
-                }}
-              >
-                Tip 5 cUSD
-              </Button>
-              <Button
-                mr={2}
-                mb={1}
-                onClick={async () => {
-                  await sendCUSD("10");
-                }}
-              >
-                Tip 10 cUSD
-              </Button>
-              <Button
-                mr={2}
-                mb={1}
-                onClick={async () => {
-                  const amount = prompt("Enter a custom tip amount");
-                  if (
-                    amount === null ||
-                    isNaN(Number(amount)) ||
-                    Number(amount) <= 0
-                  ) {
-                    alert("Invalid amount specified");
-                    return;
-                  }
-                  await sendCUSD(amount);
-                }}
-              >
-                Custom tip
-              </Button>
-            </Flex>
-          )}
-          <Flex sx={{ justifyContent: "center", mt: 6 }}>
-            {isNormal ? (
-              nom.owner === ZERO_ADDRESS ? (
-                <Button
-                  onClick={() => {
-                    history.push(`/${name}/reserve`);
-                  }}
-                >
-                  Reserve
-                </Button>
-              ) : nom.owner === address ? (
-                <BlockText>You own this name!</BlockText>
-              ) : (
-                <BlockText>
-                  Name has already been reserved by{" "}
-                  <BlockscoutAddressLink address={nom.owner}>
-                    {shortenAddress(nom.owner)}
-                  </BlockscoutAddressLink>
-                </BlockText>
-              )
             ) : (
-              <BlockText>
-                This name is invalid and not available for reservation.
-              </BlockText>
+              <Container sx={{ textAlign: "center", mt: 42 }}>
+                {name ? (
+                  <Flex sx={{ justifyContent: "center" }}>
+                    <Spinner />
+                  </Flex>
+                ) : (
+                  <>
+                    <Heading as="h1" sx={{ fontSize: 42 }}>
+                      Invalid name.
+                    </Heading>
+                    <Text sx={{ display: "block" }} mb={16}>
+                      Please try searching again
+                    </Text>
+                    <SearchBar />
+                  </>
+                )}
+              </Container>
             )}
           </Flex>
-        </Card>
-        {nom.resolution && nom.resolution !== ZERO_ADDRESS && (
-          <QRNameModal
-            name={name}
-            address={nom.resolution}
-            isOpen={showQR}
-            setIsOpen={setShowQR}
-          />
-        )}
-      </Box>
-    </Flex>
+        </Box>
+      </Flex>
+    </>
   );
 };

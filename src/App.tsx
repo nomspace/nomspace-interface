@@ -1,63 +1,62 @@
 import React from "react";
 import { Container } from "theme-ui";
-import { Route, Switch, useLocation } from "react-router-dom";
-import { Search } from "src/pages/Search";
-import { SearchDetail } from "src/pages/SearchDetail";
-import { Reserve } from "src/pages/Reserve";
-import { Extend } from "src/pages/Extend";
-import { Request } from "src/pages/Request";
-import { Header } from "src/components/Header";
+import { Route, Switch } from "react-router-dom";
+import { Search } from "pages/Search";
+import { SearchDetail } from "pages/SearchDetail";
+import { Extend } from "pages/Extend";
 import Modal from "react-modal";
-import { Footer } from "src/components/Footer";
+import { Footer } from "components/Footer";
 import { ToastContainer } from "react-toastify";
 import { Stats } from "./pages/Stats";
-import { NomstronautView } from "./pages/Nomstronaut";
-import background from "src/images/stars.jpeg";
+import { Manage } from "pages/Manage";
+import { GlobalNom } from "hooks/useNom";
 
 const App: React.FC = () => {
   React.useEffect(() => {
     Modal.setAppElement("body");
   });
-  const location = useLocation();
 
   return (
-    <Container sx={{ 
-      maxWidth: "100%",
-      width: "auto", 
-      backgroundImage: location.pathname === '/nomstronaut/nomstronaut' && `url(${background})`}}>
-      <Container sx={{ py: 6, px: [4, "15%"] }}>
-        <Header />
-        <Switch>
-          <Route exact path="/">
-            <Search />
-          </Route>
-          <Route exact path="/stats">
-            <Stats />
-          </Route>
-          <Route exact path="/:name">
-            <SearchDetail />
-          </Route>
-          <Route exact path="/nomstronaut/nomstronaut">
-            <NomstronautView />
-          </Route>
-          <Route exact path="/:name/reserve">
-            <Reserve />
-          </Route>
-          <Route exact path="/:name/request">
-            <Request />
-          </Route>
-          <Route exact path="/:name/extend">
-            <Extend />
-          </Route>
-        </Switch>
+    <>
+      <Container
+        sx={{ maxWidth: "100%", width: "100%", height: "100vh" }}
+        variant="containers.scroll"
+      >
+        <Container sx={{ height: "100%" }}>
+          {/* <Header /> */}
+          <Switch>
+            <Route exact path="/">
+              <Search />
+            </Route>
+            <Route exact path="/stats">
+              <Stats />
+            </Route>
+            <Route path="/:name">
+              <GlobalNom.Provider>
+                <Switch>
+                  <Route exact path="/:name">
+                    <SearchDetail />
+                  </Route>
+                  <Route exact path="/:name/manage">
+                    <Manage />
+                  </Route>
+                  <Route exact path="/:name/extend">
+                    <Extend />
+                  </Route>
+                </Switch>
+              </GlobalNom.Provider>
+            </Route>
+          </Switch>
+        </Container>
+        <Footer />
+        <ToastContainer
+          enableMultiContainer
+          // style={{ background: "var(--theme-ui-colors-background)" }}
+          toastClassName="toast-body"
+          bodyClassName="toast-body"
+        />
       </Container>
-      <Footer />
-      <ToastContainer
-        style={{ background: "var(--theme-ui-colors-background)" }}
-        toastClassName="toast-body"
-        bodyClassName="toast-body"
-      />
-    </Container>
+    </>
   );
 };
 

@@ -1,28 +1,24 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Breakpoint, useBreakpoint } from "src/hooks/useBreakpoint";
-import WhiteSearchIcon from "src/icons/WhiteSearchIcon.svg";
-import BlackSearchIcon from "src/icons/BlackSearchIcon.svg";
-import { Button, Flex, Input, useColorMode } from "theme-ui";
+import { Flex, Input } from "theme-ui";
 
 const SEARCH_HEIGHT = [56, 90];
 const TRANSFORM = ["translate(8px, 12px)", "translate(16px, 32px)"];
 
 interface IProps {
   size?: "small" | "large";
+  onSearch?: () => void;
 }
 
-export const SearchBar: React.FC<IProps> = ({ size }) => {
+export const SearchBar: React.FC<IProps> = ({ size, onSearch }) => {
   const searchInput = React.useRef<any>(null);
   const history = useHistory();
-  const breakpoint = useBreakpoint();
-  const [colorMode] = useColorMode();
 
   let height;
   let transform;
   if (!size) {
-    height = SEARCH_HEIGHT;
-    transform = TRANSFORM;
+    height = SEARCH_HEIGHT[0];
+    transform = TRANSFORM[0];
   } else if (size === "small") {
     height = SEARCH_HEIGHT[0];
     transform = TRANSFORM[0];
@@ -40,22 +36,25 @@ export const SearchBar: React.FC<IProps> = ({ size }) => {
           height: 28,
           width: 28,
           transform: transform,
-          backgroundColor: "var(--theme-ui-colors-text)",
-          background: `url(${
-            colorMode === "light" ? BlackSearchIcon : WhiteSearchIcon
-          }) no-repeat`,
+          // backgroundColor: "var(--theme-ui-colors-textColor)",
+          // background: `url(${
+          //   colorMode === "light" ? BlackSearchIcon : WhiteSearchIcon
+          // }) no-repeat`,
         },
         width: "100%",
         justifyContent: "center",
+        caretColor: "textColor",
+        color: "textColor",
       }}
     >
       <form
         style={{ width: "100%", maxWidth: 1000 }}
         onSubmit={(e) => {
-          const searchTerm = searchInput?.current.value;
+          const searchTerm = searchInput?.current.value.replaceAll(".nom", "");
           if (searchTerm && searchTerm !== "") {
             history.push(`/${searchTerm}`);
           }
+          onSearch && onSearch();
           e.preventDefault();
         }}
       >
@@ -63,23 +62,27 @@ export const SearchBar: React.FC<IProps> = ({ size }) => {
           <Input
             sx={{
               pl: [6, 7],
-              height: height,
-              width: "100%",
+              height,
               backgroundColor: "secondaryBackground",
-              border: "none",
-              borderRadius: "6px 0 0 6px",
+              border: "2px solid var(--theme-ui-colors-primary)",
+              borderRadius: "12px",
+              fontSize: "20px",
+              textAlign: "center",
+              "::placeholder": {
+                color: "var(--theme-ui-colors-primary)",
+              },
             }}
             ref={searchInput}
-            placeholder="Search name"
+            placeholder="Find a nom"
           />
-          {breakpoint === Breakpoint.DESKTOP && (
+          {/* {breakpoint === Breakpoint.DESKTOP && (
             <Button
               sx={{ height: height, borderRadius: "0 6px 6px 0" }}
               type="submit"
             >
               Search
             </Button>
-          )}
+          )} */}
         </Flex>
       </form>
     </Flex>
