@@ -25,7 +25,7 @@ import { ExtendModal } from "components/Modal/ExtendModal";
 import { ReclaimModal } from "components/Modal/ReclaimModal";
 import { Page } from "state/global";
 import { useHistory } from "react-router-dom";
-import { BlockscoutTokenAddressLink } from "components/BlockscoutTokenAddressLink";
+import { TokenCarousel } from "components/TokenCarousel";
 import { useTransferOwnership } from "hooks/useTransferOwnership";
 import { useNFTs } from "hooks/useNFTs";
 import defaultPFP from "assets/DefaultPFP.png";
@@ -267,28 +267,7 @@ export const SearchDetail: React.FC = () => {
                       {tokens && tokens.length > 0 && (
                         <>
                           <Heading variant="search.heading">Tokens</Heading>
-                          <Box variant="search.rowScrollContainer">
-                            {tokens.map((t, idx) => {
-                              return (
-                                <Box
-                                  key={idx + "token"}
-                                  variant="search.token.imageContainer"
-                                >
-                                  <BlockscoutTokenAddressLink
-                                    address={address || ""}
-                                    tokenAddress={t.address}
-                                  >
-                                    <Box
-                                      variant="search.token.image"
-                                      sx={{
-                                        backgroundImage: `url(${t.logoURI})`,
-                                      }}
-                                    ></Box>
-                                  </BlockscoutTokenAddressLink>
-                                </Box>
-                              );
-                            })}
-                          </Box>
+                          <TokenCarousel tokens={tokens} />
                         </>
                       )}
                       {/* Stats */}

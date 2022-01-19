@@ -291,7 +291,6 @@ export const preset = {
       paddingRight: ["mobile", "tablet", "desktop"],
       display: "inline-flex",
       width: "100%",
-      overflowY: "visible",
       paddingBottom: 20,
       "::-webkit-scrollbar-thumb": {
         backgroundColor: "transparent",
@@ -505,8 +504,8 @@ export const preset = {
     },
     token: {
       imageContainer: {
-        minWidth: [65, null, null, 100],
-        minHeight: [65, null, null, 100],
+        maxWidth: [65, null, null, 100],
+        maxHeight: [65, null, null, 100],
         marginRight: 12,
         filter: "drop-shadow(0px 3px 6px #00000029)",
         borderRadius: "50%",
