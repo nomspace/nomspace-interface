@@ -3,6 +3,7 @@ import { NewTabLink } from "components/NewTabLink";
 import { Box, Spinner, Image } from "theme-ui";
 import { FixedSizeList as List } from "react-window";
 import React from "react";
+import { useBreakpointIndex } from "@theme-ui/match-media";
 
 interface Metadata {
   image: string;
@@ -46,13 +47,16 @@ const Column: React.FC<IItemProps> = ({ index, style, data }) => {
 
 export const NFTCarousel: React.FC<Props> = ({ tokens }) => {
   const { width } = useWindowDimensions();
+  const breakpointIndex = useBreakpointIndex();
+  const heights = [133, 160, 200, 300];
+  const widths = heights.map((h) => h + 12);
   return (
     <Box variant="search.rowScrollContainer">
       <List
         className="no-scrollbars"
-        height={200}
+        height={heights[breakpointIndex] || 200}
         itemCount={tokens.length}
-        itemSize={212}
+        itemSize={widths[breakpointIndex] || 212}
         layout="horizontal"
         width={width - 32}
         itemData={{ tokens }}
