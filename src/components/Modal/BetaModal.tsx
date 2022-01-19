@@ -5,6 +5,7 @@ import { Box, Spinner, Image, Text } from "theme-ui";
 import { useHasNomstronauts } from "hooks/useHasNomstronauts";
 import { AccountProfile } from "components/AccountProfile";
 import { useContractKit } from "@celo-tools/use-contractkit";
+import { useUserNoms } from "hooks/useUserNoms";
 
 interface Props {
   setBetaVerified: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,20 +14,23 @@ interface Props {
 export const BetaModal: React.FC<Props> = ({ setBetaVerified }) => {
   const { address } = useContractKit();
   const [hasNomstronaut] = useHasNomstronauts();
+  const [userNoms] = useUserNoms();
 
   // update hook to allow nomstronaut holders access to site
+  const betaVerified =
+    address && (hasNomstronaut || (userNoms?.length ?? 0) > 0);
   React.useEffect(() => {
-    if (address && hasNomstronaut) {
+    if (betaVerified) {
       setBetaVerified(true);
     }
-  }, [hasNomstronaut, setBetaVerified, address]);
+  }, [hasNomstronaut, setBetaVerified, address, betaVerified]);
 
   return (
     <Modal
       sx={{ zIndex: 0 }}
       zIndex="0"
       variant={"beta"}
-      open={!(address && hasNomstronaut)}
+      open={!betaVerified}
       backdropVariant="betaBackdrop"
       fullScreen={false}
       animations={{
@@ -85,7 +89,8 @@ export const BetaModal: React.FC<Props> = ({ setBetaVerified }) => {
                 variant="modal.text"
                 sx={{ width: "100%", marginLeft: "25px", textAlign: "left" }}
               >
-                <b>2.</b> Own an official Nomstronaut NFT.
+                <b>2.</b> Own an official Nomstronaut NFT or own an existing
+                .nom
               </Text>
             </>
           )}
@@ -96,7 +101,7 @@ export const BetaModal: React.FC<Props> = ({ setBetaVerified }) => {
                 <>
                   <Text variant="modal.text" sx={{ textAlign: "center" }}>
                     Sorry, It looks like you don't own an official Nomstronaut
-                    NFT!
+                    NFT or .nom!
                   </Text>
                   <Image
                     src="https://media1.giphy.com/media/vsvBFlxjvLoME/giphy.gif?cid=790b7611b73ecc2c208736326b1384f15ecdfb074b687a85&amp;rid=giphy.gif&amp;ct=g"
