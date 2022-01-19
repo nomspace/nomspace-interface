@@ -68,18 +68,21 @@ export const useNFTs = () => {
           })
           .then((tokenURIs) => {
             return Promise.all(
-              tokenURIs.map(async (uri) => {
-                if (!uri.endsWith("json")) {
-                  uri = uri + ".json"; // TODO: Hardcode
-                }
-                return axios.get(uri).then(async (res) => ({
-                  ...res.data,
-                  image: res.data.image.replace(
-                    "ipfs://",
-                    "https://cloudflare-ipfs.com/ipfs/"
-                  ),
-                }));
-              })
+              tokenURIs
+                .map((tokenURI) =>
+                  tokenURI
+                    .replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/")
+                    .replace("ipfs.io", "cloudflare-ipfs.com")
+                )
+                .map(async (uri) => {
+                  return axios.get(uri).then(async (res) => ({
+                    ...res.data,
+                    image: res.data.image.replace(
+                      "ipfs://",
+                      "https://cloudflare-ipfs.com/ipfs/"
+                    ),
+                  }));
+                })
             );
           });
         allTokenMetadata.push(...tokenMetadata);
