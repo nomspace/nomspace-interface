@@ -482,14 +482,11 @@ export const preset = {
     },
     nft: {
       imageContainer: {
-        minWidth: [133, 160, 200, 300],
-        minHeight: [133, 160, 200, 300],
-        maxWidth: [133, 160, 200, 300],
-        maxHeight: [133, 160, 200, 300],
+        width: 200,
+        height: 200,
         marginRight: 18,
         boxShadow: "0px 5px 7px #00000029",
         overflow: "hidden",
-        borderRadius: "11px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -498,8 +495,9 @@ export const preset = {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
-        width: "100%",
-        height: "100%",
+        borderRadius: "11px",
+        width: 200,
+        height: 200,
       },
     },
     token: {

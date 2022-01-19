@@ -3,7 +3,6 @@ import { NewTabLink } from "components/NewTabLink";
 import { Box, Spinner, Image } from "theme-ui";
 import { FixedSizeList as List } from "react-window";
 import React from "react";
-import { useBreakpointIndex } from "@theme-ui/match-media";
 
 interface Metadata {
   image: string;
@@ -31,10 +30,6 @@ const Column: React.FC<IItemProps> = ({ index, style, data }) => {
         <Image
           variant="search.nft.image"
           src={token.image}
-          sx={{
-            display: "none",
-            width: "100%",
-          }}
           onLoad={(e) => {
             (e.target as HTMLImageElement).previousSibling?.remove();
             (e.target as HTMLImageElement).style.display = "block";
@@ -47,16 +42,13 @@ const Column: React.FC<IItemProps> = ({ index, style, data }) => {
 
 export const NFTCarousel: React.FC<Props> = ({ tokens }) => {
   const { width } = useWindowDimensions();
-  const breakpointIndex = useBreakpointIndex();
-  const heights = [133, 160, 200, 300];
-  const widths = heights.map((h) => h + 12);
   return (
     <Box variant="search.rowScrollContainer">
       <List
         className="no-scrollbars"
-        height={heights[breakpointIndex] || 200}
+        height={200}
         itemCount={tokens.length}
-        itemSize={widths[breakpointIndex] || 212}
+        itemSize={218}
         layout="horizontal"
         width={width - 32}
         itemData={{ tokens }}
