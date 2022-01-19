@@ -42,8 +42,6 @@ import { Spinner } from "theme-ui";
 import { getAddress } from "ethers/lib/utils";
 import { toast, ToastContainer } from "react-toastify";
 
-// import nomstronaut from "pages/SearchDetail/assets/astro.png";
-
 export const SearchDetail: React.FC = () => {
   const { name } = useName();
   const { address, network } = useContractKit();
