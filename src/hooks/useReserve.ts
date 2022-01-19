@@ -202,53 +202,60 @@ export const useReserve = (name?: string) => {
       try {
         setLoading(true);
         const duration = Math.ceil(Number(years) * YEAR_IN_SECONDS);
-        const data = nomRegistrarController.interface.encodeFunctionData(
-          "renew",
-          [name, duration]
-        );
-        if (!data || nonce == null) return;
-        const { from, gas, value } = userTxDefaults;
-        const to = nomRegistrarController.address;
-        const signature = await getSignature(
-          signer,
-          from,
-          to,
-          value,
-          gas,
-          nonce,
-          data,
-          chainId,
-          forwarderAddr
-        );
-        const gasPrice = await provider.getGasPrice();
-        const decimals = await usd.decimals();
-        const cost = (
-          await nomRegistrarController.rentPrice(name, duration, address)
-        )
-          .shr(18)
-          .shl(decimals);
-        if (cost.gt(usdRes.allowance)) {
-          await approve(MaxUint256, nomRegistrarController.address);
-        }
-        const tx = await reservePortal.escrow(
-          usdAddress,
-          cost,
-          celoChainId,
-          {
+        if (chainId === celoChainId) {
+          const tx = await nomRegistrarController
+            .connect(signer)
+            .renew(name, duration);
+          toastTx(tx.hash);
+        } else {
+          const data = nomRegistrarController.interface.encodeFunctionData(
+            "renew",
+            [name, duration]
+          );
+          if (!data || nonce == null) return;
+          const { from, gas, value } = userTxDefaults;
+          const to = nomRegistrarController.address;
+          const signature = await getSignature(
+            signer,
             from,
             to,
-            gas,
             value,
+            gas,
             nonce,
-            chainId,
             data,
-          },
-          signature,
-          { gasPrice }
-        );
-        await tx.wait(2);
-        setNonce(nonce + 1);
-        toastTx(tx.hash);
+            chainId,
+            forwarderAddr
+          );
+          const gasPrice = await provider.getGasPrice();
+          const decimals = await usd.decimals();
+          const cost = (
+            await nomRegistrarController.rentPrice(name, duration, address)
+          )
+            .shr(18)
+            .shl(decimals);
+          if (cost.gt(usdRes.allowance)) {
+            await approve(MaxUint256, nomRegistrarController.address);
+          }
+          const tx = await reservePortal.escrow(
+            usdAddress,
+            cost,
+            celoChainId,
+            {
+              from,
+              to,
+              gas,
+              value,
+              nonce,
+              chainId,
+              data,
+            },
+            signature,
+            { gasPrice }
+          );
+          await tx.wait(2);
+          setNonce(nonce + 1);
+          toastTx(tx.hash);
+        }
       } catch (e: any) {
         toast(e.message);
         console.error(e);
