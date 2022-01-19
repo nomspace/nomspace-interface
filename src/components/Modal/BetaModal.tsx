@@ -113,7 +113,7 @@ export const BetaModal: React.FC<Props> = ({ setBetaVerified }) => {
                   />
                   <Text variant="modal.text" sx={{ textAlign: "center" }}>
                     Don't worry! Nomspace 2.0 will become to available to
-                    everyone on {"<date here>"}
+                    everyone on 1/19/2021
                   </Text>
                   <Text variant="modal.text" sx={{ textAlign: "center" }}>
                     ___________
