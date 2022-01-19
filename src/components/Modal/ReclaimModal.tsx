@@ -31,13 +31,14 @@ export const ReclaimModal: React.FC = () => {
           flexDirection: "column",
           alignItems: "center",
           overflowX: "hidden",
+          textAlign: "center",
         }}
       >
-        <Text variant="modal.title">Reclaim Ownership</Text>
+        <Text variant="modal.title">Claim Ownership</Text>
         <Text variant="modal.description">
-          You currently own this name, but not the record.
+          <b>This name is almost yours!</b>
           <br />
-          Click the button below to also own the record.
+          Clicking claim will give you full ownership of this nom.
         </Text>
         <Box mt={32}>
           {loading ? (

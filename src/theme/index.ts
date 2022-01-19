@@ -596,7 +596,9 @@ export const preset = {
     },
     sidebar: {
       container: {
-        display: ["block"],
+        display: ["flex"],
+        flexDirection: "column",
+        justifyContent: "space-between",
         backgroundColor: "secondary",
         color: "textColor",
         minWidth: [200, 300, 430],
