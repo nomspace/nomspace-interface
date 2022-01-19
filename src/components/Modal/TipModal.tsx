@@ -117,45 +117,49 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
                   }}
                 >
                   {tokens &&
-                    tokens.map((t) => {
-                      return (
-                        <MenuItem value={t.symbol} key={t.address}>
-                          <ThemeUIThemeProvider theme={theme}>
-                            <Flex
-                              sx={{
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                                width: "100%",
-                              }}
-                            >
+                    tokens
+                      .filter(
+                        (t) => Number(formatUnits(t.balance, t.decimals)) > 0.01
+                      )
+                      .map((t) => {
+                        return (
+                          <MenuItem value={t.symbol} key={t.address}>
+                            <ThemeUIThemeProvider theme={theme}>
                               <Flex
                                 sx={{
+                                  justifyContent: "space-between",
                                   alignItems: "center",
-                                  fontFamily: "sen",
-                                  fontSize: ["25px", null, null, "33px"],
+                                  width: "100%",
                                 }}
                               >
-                                <Image
-                                  sx={{ height: 24, width: 24 }}
-                                  mr={4}
-                                  src={t.logoURI}
-                                />
-                                {t.symbol}
+                                <Flex
+                                  sx={{
+                                    alignItems: "center",
+                                    fontFamily: "sen",
+                                    fontSize: ["25px", null, null, "33px"],
+                                  }}
+                                >
+                                  <Image
+                                    sx={{ height: 24, width: 24 }}
+                                    mr={4}
+                                    src={t.logoURI}
+                                  />
+                                  {t.symbol}
+                                </Flex>
+                                <Text
+                                  sx={{
+                                    color: `var(--theme-ui-colors-textColor)`,
+                                  }}
+                                >
+                                  {Number(
+                                    formatUnits(t.balance, t.decimals)
+                                  ).toFixed(4)}
+                                </Text>
                               </Flex>
-                              <Text
-                                sx={{
-                                  color: `var(--theme-ui-colors-textColor)`,
-                                }}
-                              >
-                                {Number(
-                                  formatUnits(t.balance, t.decimals)
-                                ).toFixed(4)}
-                              </Text>
-                            </Flex>
-                          </ThemeUIThemeProvider>
-                        </MenuItem>
-                      );
-                    })}
+                            </ThemeUIThemeProvider>
+                          </MenuItem>
+                        );
+                      })}
                 </Select>
               </ThemeProvider>
             </Box>
