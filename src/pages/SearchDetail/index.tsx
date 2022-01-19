@@ -26,6 +26,7 @@ import { ReclaimModal } from "components/Modal/ReclaimModal";
 import { Page } from "state/global";
 import { useHistory } from "react-router-dom";
 import { TokenCarousel } from "components/TokenCarousel";
+import { NFTCarousel } from "components/NFTCarousel";
 import { useTransferOwnership } from "hooks/useTransferOwnership";
 import { useNFTs } from "hooks/useNFTs";
 import defaultPFP from "assets/DefaultPFP.png";
@@ -231,36 +232,7 @@ export const SearchDetail: React.FC = () => {
                       {nftMetadata != null && nftMetadata?.length > 0 && (
                         <>
                           <Heading variant="search.heading">NFTs</Heading>
-                          <Box variant="search.rowScrollContainer">
-                            {nftMetadata?.map((t, idx) => {
-                              return (
-                                <Box
-                                  variant="search.nft.imageContainer"
-                                  key={idx}
-                                >
-                                  <NewTabLink href={t.image}>
-                                    <Spinner />
-                                    <Image
-                                      variant="search.nft.image"
-                                      src={t.image}
-                                      sx={{
-                                        display: "none",
-                                        width: "100%",
-                                      }}
-                                      onLoad={(e) => {
-                                        (
-                                          e.target as HTMLImageElement
-                                        ).previousSibling?.remove();
-                                        (
-                                          e.target as HTMLImageElement
-                                        ).style.display = "block";
-                                      }}
-                                    />
-                                  </NewTabLink>
-                                </Box>
-                              );
-                            })}
-                          </Box>
+                          <NFTCarousel tokens={nftMetadata} />
                         </>
                       )}
                       {/* Tokens */}
