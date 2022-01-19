@@ -36,11 +36,10 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
           await reserve(years);
           refetchUSD();
         }}
-        disabled={true}
       >
         Confirm
       </Button>
-      <Text mt={4}>Reserving is disabled while in beta.</Text>
+      <Text mt={4}>CONFIRM</Text>
     </>
   );
 
