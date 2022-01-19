@@ -4,6 +4,9 @@ type AddressMap = Record<string, string>;
 
 export const RESERVE_PORTAL: AddressMap = {
   [ChainId.Celo]: "0x4f8A658a993347C25f17De54c192C5E6CE8D51cf",
+  [ChainId.Avalanche]: "0xC3604Ae1EAeC5Ef06CBf8AF6D3aB060C488453A3",
+  [ChainId.Polygon]: "0x1a81A68Fc79aE5821211859e8b01cDD5A24Beab8",
+  [ChainId.Fantom]: "0xC3604Ae1EAeC5Ef06CBf8AF6D3aB060C488453A3",
 
   [ChainId.Alfajores]: "0x032307BFAa0BB0C787E5544425c74cBcBd0d0438",
   [ChainId.Fuji]: "0x4F4dac4180dAC08dc0AF38aE8f439C3A58F296A7",
@@ -35,6 +38,9 @@ export const REVERSE_ADDR: AddressMap = {
 };
 export const USD: AddressMap = {
   [ChainId.Celo]: "0x765DE816845861e75A25fCA122bb6898B8B1282a",
+  [ChainId.Avalanche]: "0xC3604Ae1EAeC5Ef06CBf8AF6D3aB060C488453A3", // USDC.e
+  [ChainId.Polygon]: "0x1a81A68Fc79aE5821211859e8b01cDD5A24Beab8", // USDC
+  [ChainId.Fantom]: "0xC3604Ae1EAeC5Ef06CBf8AF6D3aB060C488453A3", // USDC
 
   [ChainId.Alfajores]: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
   [ChainId.Fuji]: "0x45ea5d57ba80b5e3b0ed502e9a08d568c96278f9", // USDC.e
