@@ -27,6 +27,7 @@ import { TextKey } from "config";
 import { useHistory } from "react-router-dom";
 import { isAddress } from "web3-utils";
 import { PencilSimple } from "phosphor-react";
+import { getAddress } from "ethers/lib/utils";
 
 const StyledLabel = styled(Label)({});
 const StyledInput = styled(Input)({
@@ -55,7 +56,7 @@ export const Manage: React.FC = () => {
   const [pfpModalOpen, setPfpModalOpen] = useState(false);
   const [colorMode] = useColorMode();
 
-  const isOwner = address && nom?.owner && nom.owner === address;
+  const isOwner = address && nom?.owner && nom.owner === getAddress(address);
 
   // TODO: Text validation
   const onSave = useCallback(async () => {
