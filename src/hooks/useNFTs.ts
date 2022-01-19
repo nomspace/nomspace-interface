@@ -23,57 +23,63 @@ export const useNFTs = () => {
     const networkTokens = nftTokenList[network.chainId] ?? [];
     const allTokenMetadata = [];
     for (const token of networkTokens) {
-      const nft = ERC721__factory.connect(token.address, provider);
+      try {
+        const nft = ERC721__factory.connect(token.address, provider);
 
-      const total = (await nft.balanceOf(nom.resolution)).toNumber();
+        const total = (await nft.balanceOf(nom.resolution)).toNumber();
 
-      const tokenMetadata = await multicall.callStatic
-        .aggregate(
-          new Array(total).fill(0).map((_, idx) => {
-            return {
-              target: nft.address,
-              callData: nft.interface.encodeFunctionData(
-                "tokenOfOwnerByIndex",
-                [nom.resolution, idx]
-              ),
-            };
-          })
-        )
-        .then((res) => {
-          return res.returnData.map((r) => {
-            return nft.interface.decodeFunctionResult(
-              "tokenOfOwnerByIndex",
-              r
-            )[0] as BigNumber;
-          });
-        })
-        .then((tokenIds) =>
-          multicall.callStatic.aggregate(
-            tokenIds.map((tokenId) => ({
-              target: nft.address,
-              callData: nft.interface.encodeFunctionData("tokenURI", [tokenId]),
-            }))
-          )
-        )
-        .then((res) => {
-          return res.returnData.map((r) => {
-            return nft.interface.decodeFunctionResult(
-              "tokenURI",
-              r
-            )[0] as string;
-          });
-        })
-        .then((tokenURIs) => {
-          return Promise.all(
-            tokenURIs.map(async (uri) => {
-              if (!uri.endsWith("json")) {
-                uri = uri + ".json"; // TODO: Hardcode
-              }
-              return axios.get(uri).then(async (res) => res.data);
+        const tokenMetadata = await multicall.callStatic
+          .aggregate(
+            new Array(total).fill(0).map((_, idx) => {
+              return {
+                target: nft.address,
+                callData: nft.interface.encodeFunctionData(
+                  "tokenOfOwnerByIndex",
+                  [nom.resolution, idx]
+                ),
+              };
             })
-          );
-        });
-      allTokenMetadata.push(...tokenMetadata);
+          )
+          .then((res) => {
+            return res.returnData.map((r) => {
+              return nft.interface.decodeFunctionResult(
+                "tokenOfOwnerByIndex",
+                r
+              )[0] as BigNumber;
+            });
+          })
+          .then((tokenIds) =>
+            multicall.callStatic.aggregate(
+              tokenIds.map((tokenId) => ({
+                target: nft.address,
+                callData: nft.interface.encodeFunctionData("tokenURI", [
+                  tokenId,
+                ]),
+              }))
+            )
+          )
+          .then((res) => {
+            return res.returnData.map((r) => {
+              return nft.interface.decodeFunctionResult(
+                "tokenURI",
+                r
+              )[0] as string;
+            });
+          })
+          .then((tokenURIs) => {
+            return Promise.all(
+              tokenURIs.map(async (uri) => {
+                if (!uri.endsWith("json")) {
+                  uri = uri + ".json"; // TODO: Hardcode
+                }
+                return axios.get(uri).then(async (res) => res.data);
+              })
+            );
+          });
+        allTokenMetadata.push(...tokenMetadata);
+      } catch (e) {
+        console.error(e);
+      }
     }
     return allTokenMetadata;
   }, [network.chainId, nom?.resolution, provider]);
