@@ -2,6 +2,7 @@ import { GlobalNom } from "hooks/useNom";
 import React, { useState } from "react";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import {
+  Badge,
   Box,
   Button,
   Container,
@@ -214,6 +215,14 @@ export const SearchDetail: React.FC = () => {
                         >
                           .nom
                         </Heading>
+                        <Badge
+                          mt={4}
+                          ml={4}
+                          px={2}
+                          bg={nom.owner ? "primary" : "gray"}
+                        >
+                          {nom.owner ? "Reserved" : "Unreserved"}
+                        </Badge>
                       </Flex>
                       <Heading variant="search.name.subHeading">
                         {nom.bio}
