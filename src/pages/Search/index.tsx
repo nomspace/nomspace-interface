@@ -107,7 +107,7 @@ export const Search: React.FC = () => {
           Nomspace
         </Heading> */}
       </Box>
-      <SearchBar />
+      <SearchBar placeHolder="Reserve a nom" />
 
       <StyledCard mt="42px">
         <CardTitle as="h3" variant="splash.card.title">

@@ -7,10 +7,15 @@ const TRANSFORM = ["translate(8px, 12px)", "translate(16px, 32px)"];
 
 interface IProps {
   size?: "small" | "large";
+  placeHolder?: string;
   onSearch?: () => void;
 }
 
-export const SearchBar: React.FC<IProps> = ({ size, onSearch }) => {
+export const SearchBar: React.FC<IProps> = ({
+  size,
+  placeHolder,
+  onSearch,
+}) => {
   const searchInput = React.useRef<any>(null);
   const history = useHistory();
 
@@ -73,7 +78,7 @@ export const SearchBar: React.FC<IProps> = ({ size, onSearch }) => {
               },
             }}
             ref={searchInput}
-            placeholder="Find a nom"
+            placeholder={placeHolder || "Find a nom"}
           />
           {/* {breakpoint === Breakpoint.DESKTOP && (
             <Button
