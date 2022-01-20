@@ -40,7 +40,7 @@ export const USD: AddressMap = {
   [ChainId.Celo]: "0x765DE816845861e75A25fCA122bb6898B8B1282a",
   [ChainId.Avalanche]: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664", // USDC.e
   [ChainId.Polygon]: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", // USDC
-  [ChainId.Fantom]: "0x04068da6c83afcfa0e13ba15a6696662335d5b75", // USDC
+  [ChainId.Fantom]: "0x04068DA6C83AFCFA0e13ba15A6696662335D5B75", // USDC
 
   [ChainId.Alfajores]: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
   [ChainId.Fuji]: "0x45ea5d57ba80b5e3b0ed502e9a08d568c96278f9", // USDC.e

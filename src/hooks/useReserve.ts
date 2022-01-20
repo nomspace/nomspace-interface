@@ -143,7 +143,6 @@ export const useReserve = (name?: string) => {
             signature,
             { gasPrice }
           );
-          await tx.wait(2);
           setNonce(nonce + 1);
           toastTx(tx.hash);
         }
@@ -253,7 +252,6 @@ export const useReserve = (name?: string) => {
             signature,
             { gasPrice }
           );
-          await tx.wait(2);
           setNonce(nonce + 1);
           toastTx(tx.hash);
         }

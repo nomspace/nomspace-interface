@@ -99,7 +99,6 @@ export const useReclaim = (name?: string) => {
           signature,
           { gasPrice }
         );
-        await tx.wait(2);
         setNonce(nonce + 1);
         toastTx(tx.hash);
       }
