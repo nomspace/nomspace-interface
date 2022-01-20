@@ -53,6 +53,7 @@ export const useNFTs = () => {
           allTokenMetadata.push(
             ...tokenIds.map((id) => ({
               id,
+              name: token.name,
               image: `${token.imagePrefix}${id}.${token.imageExt}`,
             }))
           );

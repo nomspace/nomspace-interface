@@ -10,7 +10,7 @@ const nftTokenList: Record<number, NFT[]> = {
   42220: [
     {
       address: "0x8237f38694211F25b4c872F147F027044466Fa80",
-      name: "Nomstronaut",
+      name: "Nomstronauts",
       chainId: 42220,
       imagePrefix:
         "https://ipfs.io/ipfs/bafybeic5njlcdwf54zompsphejih6ghy2754d3hlfewbtexdkc3abtksdq/output/",
