@@ -12,7 +12,7 @@ export const toastTx = (tx: string) => {
   toast(
     <>
       <Text>
-        Be patient with us! Changes can take several seconds to appear.
+        Be patient with us! Changes can take several seconds to finalize.
       </Text>
     </>
   );

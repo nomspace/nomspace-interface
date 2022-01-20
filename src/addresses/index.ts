@@ -48,5 +48,11 @@ export const USD: AddressMap = {
 };
 export const MULTICALL_ADDR: AddressMap = {
   [ChainId.Celo]: "0x75f59534dd892c1f8a7b172d639fa854d529ada3",
+  [ChainId.Avalanche]: "0x0FB54156B496b5a040b51A71817aED9e2927912E",
+  [ChainId.Polygon]: "0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507",
+  [ChainId.Fantom]: "0xD98e3dBE5950Ca8Ce5a4b59630a5652110403E5c",
+
   [ChainId.Alfajores]: "0x387ce7960b5DA5381De08Ea4967b13a7c8cAB3f6",
+  [ChainId.Fuji]: "0xb465Fd2d9C71d5D6e6c069aaC9b4E21c69aAA78f",
+  [ChainId.Mumbai]: "0x08411ADd0b5AA8ee47563b146743C13b3556c9Cc",
 };

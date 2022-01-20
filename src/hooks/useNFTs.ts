@@ -28,7 +28,7 @@ export const useNFTs = () => {
 
         const total = (await nft.balanceOf(nom.resolution)).toNumber();
 
-        const tokenMetadata = await multicall.callStatic
+        const tokenIds = await multicall.callStatic
           .aggregate(
             new Array(total).fill(0).map((_, idx) => {
               return {
@@ -47,9 +47,18 @@ export const useNFTs = () => {
                 r
               )[0] as BigNumber;
             });
-          })
-          .then((tokenIds) =>
-            multicall.callStatic.aggregate(
+          });
+
+        if (token.imagePrefix && token.imageExt) {
+          allTokenMetadata.push(
+            ...tokenIds.map((id) => ({
+              id,
+              image: `${token.imagePrefix}${id}.${token.imageExt}`,
+            }))
+          );
+        } else {
+          const tokenMetadata = await multicall.callStatic
+            .aggregate(
               tokenIds.map((tokenId) => ({
                 target: nft.address,
                 callData: nft.interface.encodeFunctionData("tokenURI", [
@@ -57,34 +66,37 @@ export const useNFTs = () => {
                 ]),
               }))
             )
-          )
-          .then((res) => {
-            return res.returnData.map((r) => {
-              return nft.interface.decodeFunctionResult(
-                "tokenURI",
-                r
-              )[0] as string;
-            });
-          })
-          .then((tokenURIs) => {
-            return Promise.all(
-              tokenURIs
-                .map((tokenURI) =>
-                  tokenURI
-                    .replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/")
-                    .replace("ipfs.io", "cloudflare-ipfs.com")
-                )
-                .map(async (uri) => {
-                  return axios.get(uri).then(async (res) => ({
-                    ...res.data,
-                    image: res.data.image
+            .then((res) => {
+              return res.returnData.map((r) => {
+                return nft.interface.decodeFunctionResult(
+                  "tokenURI",
+                  r
+                )[0] as string;
+              });
+            })
+            .then((tokenURIs) => {
+              return Promise.all(
+                tokenURIs
+                  .map((tokenURI) =>
+                    tokenURI
+                      .replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/")
                       .replace("ipfs.io", "cloudflare-ipfs.com")
-                      .replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/"),
-                  }));
-                })
-            );
-          });
-        allTokenMetadata.push(...tokenMetadata);
+                  )
+                  .map(async (uri) => {
+                    return axios.get(uri).then(async (res) => ({
+                      ...res.data,
+                      image: res.data.image
+                        .replace("ipfs.io", "cloudflare-ipfs.com")
+                        .replace(
+                          "ipfs://",
+                          "https://cloudflare-ipfs.com/ipfs/"
+                        ),
+                    }));
+                  })
+              );
+            });
+          allTokenMetadata.push(...tokenMetadata);
+        }
       } catch (e) {
         console.error(e);
       }
