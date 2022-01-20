@@ -67,10 +67,17 @@ const nftTokenList: Record<number, NFT[]> = {
   43114: [
     {
       address: "0xF70576a5255fcCfE6551f3eC8De74c9E002E1A82",
-      imagePrefix: "https://avaxpunks.com/punks/",
-      imageExt: "png",
       name: "Avalanche Punks",
       chainId: 43114,
+      imagePrefix: "https://avaxpunks.com/punks/",
+      imageExt: "png",
+    },
+  ],
+  137: [
+    {
+      address: "0x9498274b8c82b4a3127d67839f2127f2ae9753f4",
+      name: "Polygon Punks",
+      chainId: 137,
     },
   ],
 };
