@@ -229,11 +229,11 @@ export const useReserve = (name?: string) => {
           );
           const gasPrice = await provider.getGasPrice();
           const decimals = await usd.decimals();
-          const cost = (
-            await nomRegistrarController.rentPrice(name, duration, address)
-          )
-            .shr(18)
-            .shl(decimals);
+          const cost = shiftDecimals(
+            await nomRegistrarController.rentPrice(name, duration, address),
+            18,
+            decimals
+          );
           if (cost.gt(usdRes.allowance)) {
             await approve(MaxUint256, nomRegistrarController.address);
           }

@@ -113,7 +113,9 @@ export const Manage: React.FC = () => {
         newTelegram.replaceAll("@", ""),
       ]);
     }
-    await setNomSetting(fragments, values);
+    if (fragments.length > 0) {
+      await setNomSetting(fragments, values);
+    }
     refetchNom();
     history.push(`/${name}`);
   }, [
