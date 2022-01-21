@@ -1,8 +1,8 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { CustomModal } from "components/Modal/CustomModal";
 import { ModalContent } from "@mattjennings/react-modal";
 import { useNFTs } from "hooks/useNFTs";
-import { Box, Spinner, Image, Text, Heading } from "theme-ui";
+import { Box, Text, Heading } from "theme-ui";
 import { useSetNomSetting } from "hooks/useSetNomSetting";
 import { TextKey } from "config";
 import { useName } from "hooks/useName";
