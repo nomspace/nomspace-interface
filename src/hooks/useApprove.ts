@@ -31,6 +31,7 @@ export const useApprove = () => {
         const tx = await usd.approve(spender, amount, {
           gasPrice,
         });
+        await tx.wait(1);
         toastTx(tx.hash);
       } catch (e: any) {
         toast(e.message);
