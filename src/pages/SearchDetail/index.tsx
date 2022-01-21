@@ -37,7 +37,7 @@ import life1 from "pages/SearchDetail/assets/life2.png";
 import networth from "pages/SearchDetail/assets/networth.png";
 import astro from "pages/SearchDetail/assets/astro.png";
 import { ReserveView } from "components/Modal/ReserveView";
-import { isAddress, isHex } from "web3-utils";
+import { isAddress } from "web3-utils";
 import { NewTabLink } from "components/NewTabLink";
 import { SearchBar } from "components/SearchBar";
 import { Spinner } from "theme-ui";

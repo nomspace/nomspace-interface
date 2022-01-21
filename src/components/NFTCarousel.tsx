@@ -56,13 +56,13 @@ export const NFTCarousel: React.FC<Props> = ({
   return (
     <Box variant="search.rowScrollContainer">
       <List
-        className="no-scrollbars"
         height={200}
         itemCount={tokens.length}
         itemSize={218}
         layout="horizontal"
         width={width || windowWidth - 32}
         itemData={{ tokens, onItemClick }}
+        style={{ overflow: "visible" }}
       >
         {Column}
       </List>

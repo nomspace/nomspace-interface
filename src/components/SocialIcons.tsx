@@ -1,26 +1,10 @@
-import styled from "@emotion/styled";
-import { Flex, Text, Box } from "theme-ui";
+import { Flex, Box } from "theme-ui";
 
 import { ReactComponent as DiscordLogo } from "assets/discord.svg";
 import { ReactComponent as TwitterLogo } from "assets/twitter.svg";
 import { ReactComponent as TelegramLogo } from "assets/telegram.svg";
 
 import { NewTabLink } from "components/NewTabLink";
-
-const Website = styled(Text)({
-  width: "46px",
-  height: "46px",
-  marginRight: "12px",
-  padding: "7px",
-  backgroundColor: "#5452FC",
-  filter: "drop-shadow(0px 3px 6px #00000029)",
-  borderRadius: "50%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  fontSize: "12px",
-  color: "white",
-});
 
 interface Props {
   nom: {

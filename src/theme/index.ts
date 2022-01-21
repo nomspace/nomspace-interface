@@ -293,7 +293,7 @@ export const preset = {
       width: "100%",
       paddingBottom: 20,
       "::-webkit-scrollbar-thumb": {
-        backgroundColor: "transparent",
+        // backgroundColor: "transparent",
       },
     },
     banner: {
