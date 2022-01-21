@@ -74,7 +74,7 @@ export const TipModal: React.FC<Props> = ({ resolution, open, onClose }) => {
         <Flex variant="modal.container">
           <Box variant="modal.qrCode">
             <QRCode
-              value={`https://twitter.com/nomspace_nom`}
+              value={`celo://wallet/pay?address=${nom?.resolution}`}
               bgColor={"rgba(0,0,0,0)"}
               fgColor={`${colorMode === "light" ? "black" : "white"}`}
               style={{ width: "100%", height: "100%" }}

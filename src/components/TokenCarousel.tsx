@@ -5,6 +5,7 @@ import { BlockscoutTokenAddressLink } from "components/BlockscoutTokenAddressLin
 import { useContractKit } from "@celo-tools/use-contractkit";
 import { FixedSizeList as List } from "react-window";
 import React from "react";
+import { Breakpoint, useBreakpoint } from "hooks/useBreakpoint";
 
 interface Props {
   tokens: Token[];
@@ -43,16 +44,17 @@ const Column: React.FC<IItemProps> = ({ index, style, data }) => {
 
 export const TokenCarousel: React.FC<Props> = ({ tokens }) => {
   const { width } = useWindowDimensions();
+  const breakpoint = useBreakpoint();
   return (
     <Box variant="search.rowScrollContainer">
       <List
-        className="no-scrollbars"
-        height={75}
+        height={breakpoint === Breakpoint.DESKTOP ? 110 : 75}
         itemCount={tokens.length}
-        itemSize={75}
+        itemSize={breakpoint === Breakpoint.DESKTOP ? 110 : 75}
         layout="horizontal"
         width={width - 32}
         itemData={{ tokens }}
+        style={{ overflow: "visible" }}
       >
         {Column}
       </List>

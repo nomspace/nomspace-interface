@@ -26,7 +26,7 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
     [namehash, onClose, setNomSetting]
   );
 
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   if (nftMetadata == null) return null;
   const groups = Object.entries(

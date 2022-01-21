@@ -59,7 +59,7 @@ export const SearchDetail: React.FC = () => {
   const [hasNomstronaut] = useHasNomstronauts();
 
   const PromptSetResolutionModal = () => {
-    if (isOwner && !nom?.resolution) {
+    if (isOwner && (!nom?.resolution || Number(nom?.resolution) === 0)) {
       console.log("res inside{", !nom?.resolution);
       toast.warn(
         <>
