@@ -39,7 +39,12 @@ export const SocialIcons: React.FC<Props> = ({ nom }) => {
     <Flex variant="search.connection.container">
       {nom.website && (
         <NewTabLink href={nom.website}>
-          <Website>WWW</Website>
+          <Box
+            variant="search.connection.imageContainer"
+            sx={{ fontSize: ["12px", null, null, "20px"], color: "white" }}
+          >
+            WWW
+          </Box>
         </NewTabLink>
       )}
       {nom.discord && (
