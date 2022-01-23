@@ -25,6 +25,7 @@ import { useUSD } from "./useUSD";
 import { MaxUint256 } from "@ethersproject/constants";
 import { BigNumber } from "ethers";
 import { UserNonce } from "./useUserNonce";
+import { shiftDecimals } from "utils/number";
 
 export const useSetNomSetting = (name?: string | null) => {
   const { address, network } = useContractKit();
@@ -108,9 +109,12 @@ export const useSetNomSetting = (name?: string | null) => {
               forwarderAddr
             );
             const decimals = await usd.decimals();
-            const cost = BigNumber.from(GAS_USD * 1000)
-              .shl(decimals)
-              .shr(3);
+            const cost = shiftDecimals(
+              BigNumber.from(GAS_USD * 1000),
+              decimals,
+              3
+            );
+            console.log(cost);
             currencies.push(usdAddress);
             amounts.push(cost);
             chainIds.push(celoChainId);
