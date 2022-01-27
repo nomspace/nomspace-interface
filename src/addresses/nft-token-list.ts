@@ -13,7 +13,7 @@ const nftTokenList: Record<number, NFT[]> = {
       name: "Nomstronauts",
       chainId: 42220,
       imagePrefix:
-        "https://ipfs.io/ipfs/bafybeic5njlcdwf54zompsphejih6ghy2754d3hlfewbtexdkc3abtksdq/output/",
+        "https://ipfs.io/ipfs/bafybeifigjz7vn6czinttkewenz7qbsitoa4zormghjanpitpdlpw4mmki/output/",
       imageExt: "png",
     },
     {
