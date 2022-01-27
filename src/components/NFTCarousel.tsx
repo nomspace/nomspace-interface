@@ -3,6 +3,8 @@ import { NewTabLink } from "components/NewTabLink";
 import { Box, Spinner, Image } from "theme-ui";
 import { FixedSizeList as List } from "react-window";
 import React from "react";
+import { useThemeUI } from "theme-ui";
+import { Breakpoint, useBreakpoint } from "hooks/useBreakpoint";
 
 interface Metadata {
   image: string;
@@ -53,16 +55,38 @@ export const NFTCarousel: React.FC<Props> = ({
   onItemClick,
 }) => {
   const { width: windowWidth } = useWindowDimensions();
+  const context = useThemeUI();
+  const { theme } = context;
+  const breakpoint = useBreakpoint();
+
   return (
-    <Box variant="search.rowScrollContainer">
+    <Box
+      variant="search.carouselRowScrollContainer"
+      sx={{
+        "> * > * > *": {
+          marginLeft: ["mobile", "tablet", "desktop"],
+          paddingBottom: "10px",
+          paddingTop: "10px",
+          height: "auto !important",
+        },
+        "> * > *": {
+          paddingBottom: "10px",
+        },
+      }}
+    >
       <List
-        height={200}
+        height={breakpoint == Breakpoint.DESKTOP ? "220px" : "200px"}
         itemCount={tokens.length}
         itemSize={218}
         layout="horizontal"
-        width={width || windowWidth - 32}
+        // change this if you change scrollbar width
+        width={width || windowWidth - 3}
         itemData={{ tokens, onItemClick }}
-        style={{ overflow: "visible" }}
+        style={{
+          overflowX: "scroll",
+          overflowY: "hidden",
+          paddingRight: breakpoint == Breakpoint.DESKTOP ? "62px" : "5%",
+        }}
       >
         {Column}
       </List>

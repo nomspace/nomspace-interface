@@ -63,9 +63,9 @@ export const preset = {
     heading: 1.25,
   },
   space: {
-    mobile: "5%",
-    tablet: "10%",
-    desktop: "62px",
+    mobile: "5% !important",
+    tablet: "10% !important",
+    desktop: "62px !important",
   },
   letterSpacings: {
     small: "-0.05em",
@@ -295,6 +295,9 @@ export const preset = {
       "::-webkit-scrollbar-thumb": {
         // backgroundColor: "transparent",
       },
+    },
+    carouselRowScrollContainer: {
+      overflow: "visible",
     },
     banner: {
       image: {
