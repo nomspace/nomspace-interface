@@ -56,3 +56,63 @@ export const MULTICALL_ADDR: AddressMap = {
   [ChainId.Fuji]: "0xb465Fd2d9C71d5D6e6c069aaC9b4E21c69aAA78f",
   [ChainId.Mumbai]: "0x08411ADd0b5AA8ee47563b146743C13b3556c9Cc",
 };
+
+export type Token = {
+  address: string;
+  name: string;
+  symbol: string;
+  chainId: number;
+  decimals: number;
+  logoURI: string;
+  registrar?: string;
+};
+type TokenList = Record<string, Token>;
+
+export const TOKEN_LIST: TokenList = {
+  NomVoucher: {
+    address: "0x0956525490C753fe8134BC64873374167D0f3923",
+    name: "NomVoucher",
+    symbol: "vNOM",
+    chainId: 0,
+    decimals: 18,
+    logoURI:
+      "https://raw.githubusercontent.com/sushiswap/icons/master/token/celo.jpg",
+    registrar: "0xB6F26C1B34A994859960f47C4d2350Aa151e43C4",
+  },
+  Celo: {
+    address: "0x765DE816845861e75A25fCA122bb6898B8B1282a",
+    name: "Celo",
+    symbol: "cUSD",
+    chainId: 42220,
+    decimals: 18,
+    logoURI:
+      "https://raw.githubusercontent.com/sushiswap/icons/master/token/celo.jpg",
+  },
+  Avalanche: {
+    address: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+    name: "Avalanche",
+    symbol: "USD.e",
+    chainId: 43114,
+    decimals: 18,
+    logoURI:
+      "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/avalanche/info/logo.png",
+  },
+  Polygon: {
+    address: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+    name: "Polygon",
+    symbol: "USDc",
+    chainId: 137,
+    decimals: 18,
+    logoURI:
+      "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/info/logo.png",
+  },
+  Fantom: {
+    address: "0x04068DA6C83AFCFA0e13ba15A6696662335D5B75",
+    name: "Fantom",
+    symbol: "USDc",
+    chainId: 250,
+    decimals: 18,
+    logoURI:
+      "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/fantom/info/logo.png",
+  },
+};
