@@ -74,7 +74,7 @@ export const useSetReverseResolution = () => {
             .shl(decimals)
             .shr(3);
           if (cost.gt(allowance)) {
-            await approve(MaxUint256, reservePortalAddress);
+            await approve(MaxUint256, reservePortalAddress, usdAddress);
           }
           const reservePortal = ReservePortal__factory.connect(
             reservePortalAddress,
