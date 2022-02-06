@@ -114,7 +114,6 @@ export const useSetNomSetting = (name?: string | null) => {
               decimals,
               3
             );
-            console.log(cost);
             currencies.push(usdAddress);
             amounts.push(cost);
             chainIds.push(celoChainId);

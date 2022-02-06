@@ -47,7 +47,6 @@ const Column: React.FC<IItemProps> = ({ index, style, data }) => {
 export const TokenCarousel: React.FC<Props> = ({ tokens }) => {
   const { width } = useWindowDimensions();
   const breakpoint = useBreakpoint();
-  console.log(tokens.length);
   return (
     <Box
       variant="search.carouselRowContainer"

@@ -3,7 +3,6 @@ import { NewTabLink } from "components/NewTabLink";
 import { Box, Spinner, Image } from "theme-ui";
 import { FixedSizeList as List } from "react-window";
 import React from "react";
-import { useThemeUI } from "theme-ui";
 import { Breakpoint, useBreakpoint } from "hooks/useBreakpoint";
 
 interface Metadata {
@@ -55,8 +54,6 @@ export const NFTCarousel: React.FC<Props> = ({
   onItemClick,
 }) => {
   const { width: windowWidth } = useWindowDimensions();
-  const context = useThemeUI();
-  const { theme } = context;
   const breakpoint = useBreakpoint();
 
   return (
@@ -75,7 +72,7 @@ export const NFTCarousel: React.FC<Props> = ({
       }}
     >
       <List
-        height={breakpoint == Breakpoint.DESKTOP ? "220px" : "200px"}
+        height={breakpoint === Breakpoint.DESKTOP ? "220px" : "200px"}
         itemCount={tokens.length}
         itemSize={218}
         layout="horizontal"
@@ -85,7 +82,7 @@ export const NFTCarousel: React.FC<Props> = ({
         style={{
           overflowX: "scroll",
           overflowY: "hidden",
-          paddingRight: breakpoint == Breakpoint.DESKTOP ? "62px" : "5%",
+          paddingRight: breakpoint === Breakpoint.DESKTOP ? "62px" : "5%",
         }}
       >
         {Column}

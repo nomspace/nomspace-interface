@@ -4,11 +4,11 @@ import { useAsyncState } from "hooks/useAsyncState";
 import { RESERVE_PORTAL, USD } from "addresses";
 import { ERC20__factory } from "generated";
 
-export const useUSD = () => {
+export const useUSD = (addr?: string) => {
   const { address, network } = useContractKit();
   const provider = useProvider();
   const call = React.useCallback(async () => {
-    const usdAddress = USD[network.chainId];
+    const usdAddress = addr || USD[network.chainId];
     const reservePortalAddress = RESERVE_PORTAL[network.chainId];
     if (!address || !provider || !usdAddress || !reservePortalAddress) {
       return null;
@@ -19,6 +19,6 @@ export const useUSD = () => {
     const balance = await usd.balanceOf(address);
     const decimals = await usd.decimals();
     return { address: usdAddress, allowance, balance, decimals };
-  }, [address, network.chainId, provider]);
+  }, [address, network.chainId, provider, addr]);
   return useAsyncState(null, call);
 };

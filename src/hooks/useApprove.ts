@@ -4,7 +4,6 @@ import {
   useGetConnectedSigner,
   useProvider,
 } from "@celo-tools/use-contractkit";
-import { USD } from "addresses";
 import { ERC20__factory } from "generated";
 import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
@@ -35,6 +34,7 @@ export const useApprove = () => {
         setLoading(false);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [getConnectedSigner, chainId, provider]
   );
 

@@ -14,7 +14,6 @@ import {
 import { useUSD } from "hooks/useUSD";
 import { useReserve } from "hooks/useReserve";
 import { formatUnits } from "ethers/lib/utils";
-import { useTokens } from "hooks/useTokens";
 import { getNomCost, getNomYears } from "utils/cost";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import { BlockscoutAddressLink } from "components/BlockscoutAddressLink";
@@ -37,16 +36,16 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
   const [cost, setCost] = React.useState(name.length <= 3 ? 20 : 5);
   const [coin, setCoin] = React.useState<Token | undefined>();
   const [usd, refetchUSD] = useUSD(coin?.address);
-  const [tokens] = useTokens();
   const { reserve, loading } = useReserve(name);
 
   const [colorMode] = useColorMode();
 
-  let button;
+  const [button, setButton] = React.useState<JSX.Element>();
+
   React.useEffect(() => {
     if (TOKEN_LIST) {
       let sameChainToken = Object.entries(TOKEN_LIST).filter(
-        ([_, t]) => t.chainId == network.chainId
+        ([_, t]) => t.chainId === network.chainId
       );
 
       if (sameChainToken[0]) {
@@ -55,58 +54,39 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
     }
   }, [network]);
 
-  React.useEffect(() => {
-    console.log("coin", coin);
-  }, [coin]);
-
   // when dropdown updated, update cost
   React.useEffect(() => {
-    setCost(getNomCost(name, years, coin?.symbol == "vNOM"));
-    console.log("hook", usd);
-    if (usd) {
-      console.log(
-        "bal",
-        Number(formatUnits(usd.balance, usd.decimals)).toFixed(4)
-      );
-    }
     if (usd && Number(formatUnits(usd.balance, usd.decimals)) < cost) {
-      button = (
+      setButton(
         <Button variant="modal.form.submit" disabled={true}>
           Insufficient funds
         </Button>
       );
-    } else if (usd) {
-      console.log(Number(formatUnits(usd.balance, usd.decimals)), cost);
+    } else if (usd && Number(formatUnits(usd.balance, usd.decimals)) >= cost) {
+      setButton(
+        <Button
+          variant="modal.form.submit"
+          onClick={async () => {
+            await reserve(years, coin?.name || "");
+            refetchUSD();
+          }}
+        >
+          Confirm
+        </Button>
+      );
     }
-  }, [usd]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [usd, cost]);
+
+  React.useEffect(() => {
+    setCost(getNomCost(name, years, coin?.symbol === "vNOM"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coin]);
 
   if (nom == null) {
     return <Spinner />;
   }
 
-  const confirmButton = (
-    <Button
-      variant="modal.form.submit"
-      onClick={async () => {
-        await reserve(years, coin?.name || "");
-        refetchUSD();
-      }}
-    >
-      Confirm
-    </Button>
-  );
-
-  button = confirmButton;
-
-  if (usd) {
-    if (Number(formatUnits(usd.balance, usd.decimals)) < cost) {
-      button = (
-        <Button variant="modal.form.submit" disabled={true}>
-          Insufficient funds
-        </Button>
-      );
-    }
-  }
   if (!name) return <Text>Invalid name</Text>;
   return (
     <Flex variant="modal.container">
@@ -150,7 +130,7 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
             >
               {TOKEN_LIST &&
                 Object.entries(TOKEN_LIST)
-                  .filter(([_, t]) => t.chainId == network.chainId)
+                  .filter(([_, t]) => t.chainId === network.chainId)
                   .map(([_, t]) => {
                     return (
                       <MenuItem value={t.name} key={t.address}>
@@ -196,7 +176,7 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
               const years = Number(e.target.value);
               if (isNaN(years)) return;
               setYears(years);
-              setCost(getNomCost(name, years, coin?.symbol == "vNOM"));
+              setCost(getNomCost(name, years, coin?.symbol === "vNOM"));
             }}
             mr={2}
           />
@@ -232,7 +212,7 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
               const cost = Number(e.target.value);
               if (isNaN(cost)) return;
               setCost(cost);
-              setYears(getNomYears(name, cost, coin?.symbol == "vNOM"));
+              setYears(getNomYears(name, cost, coin?.symbol === "vNOM"));
             }}
           />
           <Text sx={{ ml: 8 }}>{coin?.symbol}</Text>

@@ -60,7 +60,9 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
           <NFTCarousel
             tokens={group as any}
             onItemClick={(i) => changePFP((group as any)[i].image)}
-            width={breakpoint == Breakpoint.DESKTOP ? width - 300 : width - 150}
+            width={
+              breakpoint === Breakpoint.DESKTOP ? width - 300 : width - 150
+            }
           />
         </Box>
       </>
