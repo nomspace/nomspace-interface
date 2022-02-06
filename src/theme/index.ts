@@ -488,7 +488,7 @@ export const preset = {
         width: 200,
         height: 200,
         marginRight: 18,
-        boxShadow: "0px 5px 7px #00000029",
+
         overflow: "hidden",
         display: "flex",
         justifyContent: "center",

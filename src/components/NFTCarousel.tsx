@@ -38,6 +38,7 @@ const Column: React.FC<IItemProps> = ({ index, style, data }) => {
         <Image
           variant="search.nft.image"
           src={token.image}
+          sx={{ boxShadow: "0px 3px 4px #00000029" }}
           onLoad={(e) => {
             (e.target as HTMLImageElement).previousSibling?.remove();
             (e.target as HTMLImageElement).style.display = "block";
