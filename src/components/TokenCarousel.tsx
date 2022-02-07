@@ -24,21 +24,23 @@ const Column: React.FC<IItemProps> = ({ index, style, data }) => {
   const { tokens } = data;
   const token = tokens[index];
   return (
-    <Box style={style} variant="search.token.imageContainer">
+    <>
       {token && (
-        <BlockscoutTokenAddressLink
-          address={address || ""}
-          tokenAddress={token.address}
-        >
-          <Box
-            variant="search.token.image"
-            sx={{
-              backgroundImage: `url(${token.logoURI})`,
-            }}
-          />
-        </BlockscoutTokenAddressLink>
+        <Box style={style} variant="search.token.imageContainer">
+          <BlockscoutTokenAddressLink
+            address={address || ""}
+            tokenAddress={token.address}
+          >
+            <Box
+              variant="search.token.image"
+              sx={{
+                backgroundImage: `url(${token.logoURI})`,
+              }}
+            />
+          </BlockscoutTokenAddressLink>
+        </Box>
       )}
-    </Box>
+    </>
   );
 };
 
@@ -46,15 +48,23 @@ export const TokenCarousel: React.FC<Props> = ({ tokens }) => {
   const { width } = useWindowDimensions();
   const breakpoint = useBreakpoint();
   return (
-    <Box variant="search.rowScrollContainer">
+    <Box
+      variant="search.carouselRowContainer"
+      sx={{
+        "> * > * > *": {
+          marginLeft: ["mobile", "tablet", "desktop"],
+        },
+        "> * > *": {},
+      }}
+    >
       <List
         height={breakpoint === Breakpoint.DESKTOP ? 110 : 75}
         itemCount={tokens.length}
         itemSize={breakpoint === Breakpoint.DESKTOP ? 110 : 75}
         layout="horizontal"
-        width={width - 32}
+        width={width - 3}
         itemData={{ tokens }}
-        style={{ overflow: "visible" }}
+        style={{ overflow: "auto" }}
       >
         {Column}
       </List>

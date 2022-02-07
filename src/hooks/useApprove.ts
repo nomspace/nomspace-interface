@@ -4,7 +4,6 @@ import {
   useGetConnectedSigner,
   useProvider,
 } from "@celo-tools/use-contractkit";
-import { USD } from "addresses";
 import { ERC20__factory } from "generated";
 import { toastTx } from "utils/toastTx";
 import { toast } from "react-toastify";
@@ -18,15 +17,11 @@ export const useApprove = () => {
   const getConnectedSigner = useGetConnectedSigner();
 
   const approve = useCallback(
-    async (amount: BigNumberish, spender: string) => {
-      const usdAddress = USD[chainId];
-      if (!usdAddress) {
-        return;
-      }
+    async (amount: BigNumberish, spender: string, address: string) => {
       const signer = await getConnectedSigner();
       try {
         setLoading(true);
-        const usd = ERC20__factory.connect(usdAddress, signer);
+        const usd = ERC20__factory.connect(address, signer);
         const gasPrice = await provider.getGasPrice();
         const tx = await usd.approve(spender, amount, {
           gasPrice,
@@ -39,6 +34,7 @@ export const useApprove = () => {
         setLoading(false);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [getConnectedSigner, chainId, provider]
   );
 

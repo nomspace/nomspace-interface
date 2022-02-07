@@ -114,7 +114,6 @@ export const useSetNomSetting = (name?: string | null) => {
               decimals,
               3
             );
-            console.log(cost);
             currencies.push(usdAddress);
             amounts.push(cost);
             chainIds.push(celoChainId);
@@ -135,7 +134,7 @@ export const useSetNomSetting = (name?: string | null) => {
           );
           const allowance = await usd.allowance(address, reservePortalAddress);
           if (totalCost.gt(allowance)) {
-            await approve(MaxUint256, reservePortalAddress);
+            await approve(MaxUint256, reservePortalAddress, usdAddress);
           }
           const gasPrice = await provider.getGasPrice();
           const tx = await reservePortal.batchEscrow(

@@ -56,3 +56,93 @@ export const MULTICALL_ADDR: AddressMap = {
   [ChainId.Fuji]: "0xb465Fd2d9C71d5D6e6c069aaC9b4E21c69aAA78f",
   [ChainId.Mumbai]: "0x08411ADd0b5AA8ee47563b146743C13b3556c9Cc",
 };
+
+export type Token = {
+  address: string;
+  name: string;
+  symbol: string;
+  chainId: number;
+  decimals: number;
+  logoURI: string;
+  registrar?: string;
+};
+type TokenList = Record<string, Token>;
+
+export const TOKEN_LIST: TokenList = {
+  "Celo Alfajores cUSD": {
+    address: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
+    name: "Celo Alfajores cUSD",
+    symbol: "cUSD",
+    chainId: 44787,
+    decimals: 18,
+    logoURI:
+      "https://raw.githubusercontent.com/sushiswap/icons/master/token/cusd.jpg",
+    registrar: "0x26AeE0de70C180f33190CD4f34C02C47C56b2665",
+  },
+  "Avalanche Fuji USDC.e": {
+    address: "0x45ea5d57ba80b5e3b0ed502e9a08d568c96278f9",
+    name: "Avalanche Fuji USDC.e",
+    symbol: "USDC.e",
+    chainId: 43113,
+    decimals: 18,
+    logoURI:
+      "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+    registrar: "0x26AeE0de70C180f33190CD4f34C02C47C56b2665",
+  },
+  "Polygon Mumbai USDT": {
+    address: "0x3813e82e6f7098b9583fc0f33a962d02018b6803",
+    name: "Polygon Mumbai USDT",
+    symbol: "USDT",
+    chainId: 80001,
+    decimals: 18,
+    logoURI:
+      "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+    registrar: "0x26AeE0de70C180f33190CD4f34C02C47C56b2665",
+  },
+  "Celo cUSD": {
+    address: "0x765DE816845861e75A25fCA122bb6898B8B1282a",
+    name: "Celo cUSD",
+    symbol: "cUSD",
+    chainId: 42220,
+    decimals: 18,
+    logoURI:
+      "https://raw.githubusercontent.com/sushiswap/icons/master/token/cusd.jpg",
+  },
+  "Nom Voucher": {
+    address: "0x0956525490C753fe8134BC64873374167D0f3923",
+    name: "Nom Voucher",
+    symbol: "vNOM",
+    chainId: 42220,
+    decimals: 18,
+    logoURI:
+      "https://raw.githubusercontent.com/sushiswap/icons/master/token/celo.jpg",
+    registrar: "0xB6F26C1B34A994859960f47C4d2350Aa151e43C4",
+  },
+  "Avalanche USDC.e": {
+    address: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+    name: "Avalanche USDC.e",
+    symbol: "USDC.e",
+    chainId: 43114,
+    decimals: 18,
+    logoURI:
+      "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+  },
+  "Polygon USDC": {
+    address: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+    name: "Polygon USDC",
+    symbol: "USDC",
+    chainId: 137,
+    decimals: 18,
+    logoURI:
+      "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+  },
+  "Fantom USDC": {
+    address: "0x04068DA6C83AFCFA0e13ba15A6696662335D5B75",
+    name: "Fantom USDC",
+    symbol: "USDC",
+    chainId: 250,
+    decimals: 18,
+    logoURI:
+      "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+  },
+};

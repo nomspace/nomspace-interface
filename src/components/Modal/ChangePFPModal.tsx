@@ -8,6 +8,7 @@ import { TextKey } from "config";
 import { useName } from "hooks/useName";
 import { NFTCarousel } from "components/NFTCarousel";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
+import { Breakpoint, useBreakpoint } from "hooks/useBreakpoint";
 
 interface Props {
   open: boolean;
@@ -27,6 +28,7 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
   );
 
   const { width } = useWindowDimensions();
+  const breakpoint = useBreakpoint();
 
   if (nftMetadata == null) return null;
   const groups = Object.entries(
@@ -38,11 +40,29 @@ export const ChangePFPModal: React.FC<Props> = ({ open, onClose }) => {
   ).map(([name, group], idx) => {
     return (
       <>
-        <Heading sx={{ fontSize: 36, mb: 8 }}>{name}</Heading>
-        <Box sx={{ height: 200, width: [width - 100, width - 200], mb: 32 }}>
+        <Heading sx={{ fontSize: 36, mb: 8 }} key={name + "heading"}>
+          {name}
+        </Heading>
+        <Box
+          key={name + "img"}
+          sx={{
+            height: 200,
+            width: [width - 100, width - 200],
+            mb: 32,
+            "> *": {
+              width: [width - 100 + " !important", width - 200 + " !important"],
+            },
+            "> * > *": {
+              width: [width - 100 + " !important", width - 200 + " !important"],
+            },
+          }}
+        >
           <NFTCarousel
             tokens={group as any}
             onItemClick={(i) => changePFP((group as any)[i].image)}
+            width={
+              breakpoint === Breakpoint.DESKTOP ? width - 300 : width - 150
+            }
           />
         </Box>
       </>

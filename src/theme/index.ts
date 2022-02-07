@@ -63,9 +63,9 @@ export const preset = {
     heading: 1.25,
   },
   space: {
-    mobile: "5%",
-    tablet: "10%",
-    desktop: "62px",
+    mobile: "5% !important",
+    tablet: "10% !important",
+    desktop: "62px !important",
   },
   letterSpacings: {
     small: "-0.05em",
@@ -296,6 +296,9 @@ export const preset = {
         // backgroundColor: "transparent",
       },
     },
+    carouselRowScrollContainer: {
+      overflow: "visible",
+    },
     banner: {
       image: {
         width: "100%",
@@ -485,7 +488,7 @@ export const preset = {
         width: 200,
         height: 200,
         marginRight: 18,
-        boxShadow: "0px 5px 7px #00000029",
+
         overflow: "hidden",
         display: "flex",
         justifyContent: "center",
