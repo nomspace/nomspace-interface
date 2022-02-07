@@ -44,12 +44,11 @@ export const useReserve = (name?: string) => {
   const [usdRes] = useUSD();
 
   const reserve = useCallback(
-    // todo: pass token
-    async (years: number, token: string) => {
+    async (years: number, tokenAddress: string) => {
       if (!address) await connect();
-      const usdAddress = TOKEN_LIST[token]?.address;
+      const usdAddress = TOKEN_LIST[tokenAddress]?.address;
       const regAddress =
-        TOKEN_LIST[token]?.registrar || NOM_REG_ADDR[celoChainId];
+        TOKEN_LIST[tokenAddress]?.registrar || NOM_REG_ADDR[celoChainId];
       const reservePortalAddress = RESERVE_PORTAL[network.chainId];
       const forwarderAddr = FORWARDER_ADDR[celoChainId];
       const resolverAddress = RESOLVER_ADDR[celoChainId];
@@ -177,11 +176,10 @@ export const useReserve = (name?: string) => {
   );
 
   const extend = useCallback(
-    //todo: add approve, address
-    async (years: number, token: string) => {
-      const usdAddress = TOKEN_LIST[token]?.address;
+    async (years: number, tokenAddress: string) => {
+      const usdAddress = TOKEN_LIST[tokenAddress]?.address;
       const regAddress =
-        TOKEN_LIST[token]?.registrar || NOM_REG_ADDR[celoChainId];
+        TOKEN_LIST[tokenAddress]?.registrar || NOM_REG_ADDR[celoChainId];
       const reservePortalAddress = RESERVE_PORTAL[network.chainId];
       const forwarderAddr = FORWARDER_ADDR[celoChainId];
       if (
