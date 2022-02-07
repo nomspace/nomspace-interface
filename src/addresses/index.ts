@@ -79,10 +79,10 @@ export const TOKEN_LIST: TokenList = {
       "https://raw.githubusercontent.com/sushiswap/icons/master/token/cusd.jpg",
     registrar: "0x26AeE0de70C180f33190CD4f34C02C47C56b2665",
   },
-  "Avalanche Fuji USD.e": {
+  "Avalanche Fuji USDC.e": {
     address: "0x45ea5d57ba80b5e3b0ed502e9a08d568c96278f9",
-    name: "Avalanche Fuji USD.e",
-    symbol: "USD.e",
+    name: "Avalanche Fuji USDC.e",
+    symbol: "USDC.e",
     chainId: 43113,
     decimals: 18,
     logoURI:
@@ -118,28 +118,28 @@ export const TOKEN_LIST: TokenList = {
       "https://raw.githubusercontent.com/sushiswap/icons/master/token/celo.jpg",
     registrar: "0xB6F26C1B34A994859960f47C4d2350Aa151e43C4",
   },
-  "Avalanche USD.e": {
+  "Avalanche USDC.e": {
     address: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
-    name: "Avalanche USD.e",
-    symbol: "USD.e",
+    name: "Avalanche USDC.e",
+    symbol: "USDC.e",
     chainId: 43114,
     decimals: 18,
     logoURI:
       "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
   },
-  "Polygon USDc": {
+  "Polygon USDC": {
     address: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-    name: "Polygon USDc",
-    symbol: "USDc",
+    name: "Polygon USDC",
+    symbol: "USDC",
     chainId: 137,
     decimals: 18,
     logoURI:
       "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
   },
-  "Fantom USDc": {
+  "Fantom USDC": {
     address: "0x04068DA6C83AFCFA0e13ba15A6696662335D5B75",
-    name: "Fantom USDc",
-    symbol: "USDc",
+    name: "Fantom USDC",
+    symbol: "USDC",
     chainId: 250,
     decimals: 18,
     logoURI:
