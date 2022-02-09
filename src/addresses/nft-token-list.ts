@@ -52,9 +52,6 @@ const nftTokenList: Record<number, NFT[]> = {
       address: "0x50826Faa5b20250250E09067e8dDb1AFa2bdf910",
       name: "Womxn of Celo",
       chainId: 42220,
-      imagePrefix:
-        "https://womxnofcelo.mypinata.cloud/ipfs/QmWQrQrDpTyLWk76qZwNYf4NQSSmKsCRSeVKuH4oAMJa25/",
-      imageExt: "json",
     },
     {
       address: "0x501f7ea7b1aa25ff7d2feb3a2e96979ba754204b",
