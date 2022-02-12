@@ -114,9 +114,17 @@ export const TOKEN_LIST: TokenList = {
     symbol: "vNOM",
     chainId: 42220,
     decimals: 18,
-    logoURI:
-      "https://raw.githubusercontent.com/sushiswap/icons/master/token/celo.jpg",
-    registrar: "0xB6F26C1B34A994859960f47C4d2350Aa151e43C4",
+    logoURI: "https://nom.space/android-chrome-512x512.png",
+    registrar: "0x33D2bb7aC3D9c726b940AEB0d31c44864716514B",
+  },
+  "Avalanche Nom Voucher": {
+    address: "0xE0d373A8c31D05f240E9864138b35e580FC53cD8",
+    name: "Avalanche Nom Voucher",
+    symbol: "vNOM",
+    chainId: 43114,
+    decimals: 18,
+    logoURI: "https://nom.space/android-chrome-512x512.png",
+    registrar: "0x33D2bb7aC3D9c726b940AEB0d31c44864716514B",
   },
   "Avalanche USDC.e": {
     address: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",

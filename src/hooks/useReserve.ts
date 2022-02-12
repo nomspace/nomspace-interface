@@ -44,18 +44,18 @@ export const useReserve = (name?: string) => {
   const [usdRes] = useUSD();
 
   const reserve = useCallback(
-    async (years: number, tokenAddress: string) => {
+    async (years: number, tokenName: string) => {
       if (!address) await connect();
-      const usdAddress = TOKEN_LIST[tokenAddress]?.address;
+      const tokenAddress = TOKEN_LIST[tokenName]?.address;
       const regAddress =
-        TOKEN_LIST[tokenAddress]?.registrar || NOM_REG_ADDR[celoChainId];
+        TOKEN_LIST[tokenName]?.registrar || NOM_REG_ADDR[celoChainId];
       const reservePortalAddress = RESERVE_PORTAL[network.chainId];
       const forwarderAddr = FORWARDER_ADDR[celoChainId];
       const resolverAddress = RESOLVER_ADDR[celoChainId];
       const signer = await getConnectedSigner();
       if (
         !name ||
-        !usdAddress ||
+        !tokenAddress ||
         !reservePortalAddress ||
         !address ||
         !regAddress ||
@@ -66,12 +66,12 @@ export const useReserve = (name?: string) => {
       ) {
         return;
       }
-      const usd = ERC20__factory.connect(usdAddress, signer);
+      const token = ERC20__factory.connect(tokenAddress, signer);
       const nomRegistrarController = NomRegistrarController__factory.connect(
         regAddress,
         celoProvider
       );
-      const decimals = await usd.decimals();
+      const decimals = await token.decimals();
       const duration = Math.ceil(Number(years) * YEAR_IN_SECONDS);
       const cost = shiftDecimals(
         await nomRegistrarController.rentPrice(name, duration, address),
@@ -82,7 +82,7 @@ export const useReserve = (name?: string) => {
       try {
         setLoading(true);
         if (chainId === celoChainId) {
-          const allowance = await usd.allowance(
+          const allowance = await token.allowance(
             address,
             nomRegistrarController.address
           );
@@ -90,7 +90,7 @@ export const useReserve = (name?: string) => {
             await approve(
               MaxUint256,
               nomRegistrarController.address,
-              usdAddress
+              tokenAddress
             );
           }
           const tx = await nomRegistrarController
@@ -104,9 +104,12 @@ export const useReserve = (name?: string) => {
             );
           toastTx(tx.hash);
         } else {
-          const allowance = await usd.allowance(address, reservePortalAddress);
+          const allowance = await token.allowance(
+            address,
+            reservePortalAddress
+          );
           if (cost.gt(allowance)) {
-            await approve(MaxUint256, reservePortalAddress, usdAddress);
+            await approve(MaxUint256, reservePortalAddress, tokenAddress);
           }
           const reservePortal = ReservePortal__factory.connect(
             reservePortalAddress,
@@ -132,7 +135,7 @@ export const useReserve = (name?: string) => {
           );
           const gasPrice = await provider.getGasPrice();
           const tx = await reservePortal.escrow(
-            usdAddress,
+            tokenAddress,
             cost,
             celoChainId,
             {
@@ -176,10 +179,10 @@ export const useReserve = (name?: string) => {
   );
 
   const extend = useCallback(
-    async (years: number, tokenAddress: string) => {
-      const usdAddress = TOKEN_LIST[tokenAddress]?.address;
+    async (years: number, tokenName: string) => {
+      const usdAddress = TOKEN_LIST[tokenName]?.address;
       const regAddress =
-        TOKEN_LIST[tokenAddress]?.registrar || NOM_REG_ADDR[celoChainId];
+        TOKEN_LIST[tokenName]?.registrar || NOM_REG_ADDR[celoChainId];
       const reservePortalAddress = RESERVE_PORTAL[network.chainId];
       const forwarderAddr = FORWARDER_ADDR[celoChainId];
       if (
@@ -195,7 +198,7 @@ export const useReserve = (name?: string) => {
         return;
       }
       const signer = await getConnectedSigner();
-      const usd = ERC20__factory.connect(usdAddress, signer);
+      const token = ERC20__factory.connect(usdAddress, signer);
       const nomRegistrarController = NomRegistrarController__factory.connect(
         regAddress,
         celoProvider
@@ -208,12 +211,12 @@ export const useReserve = (name?: string) => {
       try {
         setLoading(true);
         const duration = Math.ceil(Number(years) * YEAR_IN_SECONDS);
-        const allowance = await usd.allowance(
+        const allowance = await token.allowance(
           address,
           nomRegistrarController.address
         );
         if (chainId === celoChainId) {
-          const decimals = await usd.decimals();
+          const decimals = await token.decimals();
           const cost = shiftDecimals(
             await nomRegistrarController.rentPrice(name, duration, address),
             18,
@@ -251,7 +254,7 @@ export const useReserve = (name?: string) => {
             forwarderAddr
           );
           const gasPrice = await provider.getGasPrice();
-          const decimals = await usd.decimals();
+          const decimals = await token.decimals();
           const cost = shiftDecimals(
             await nomRegistrarController.rentPrice(name, duration, address),
             18,
