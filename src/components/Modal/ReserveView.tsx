@@ -29,7 +29,7 @@ interface Props {
 }
 
 export const ReserveView: React.FC<Props> = ({ name }) => {
-  const { address, network } = useContractKit();
+  const { address, network, connect } = useContractKit();
 
   const [nom] = GlobalNom.useContainer();
   const [years, setYears] = React.useState(1);
@@ -39,8 +39,6 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
   const { reserve, loading } = useReserve(name);
 
   const [colorMode] = useColorMode();
-
-  const [button, setButton] = React.useState<JSX.Element>();
 
   React.useEffect(() => {
     if (TOKEN_LIST) {
@@ -54,34 +52,37 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
     }
   }, [network]);
 
-  // when dropdown updated, update cost
-  React.useEffect(() => {
-    if (usd && Number(formatUnits(usd.balance, usd.decimals)) < cost) {
-      setButton(
-        <Button variant="modal.form.submit" disabled={true}>
-          Insufficient funds
-        </Button>
-      );
-    } else if (usd && Number(formatUnits(usd.balance, usd.decimals)) >= cost) {
-      setButton(
-        <Button
-          variant="modal.form.submit"
-          onClick={async () => {
-            await reserve(years, coin?.name || "");
-            refetchUSD();
-          }}
-        >
-          Confirm
-        </Button>
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usd, cost]);
+  let button = (
+    <Button
+      variant="modal.form.submit"
+      onClick={() => connect().catch(console.warn)}
+    >
+      Connect Wallet
+    </Button>
+  );
+  if (usd && Number(formatUnits(usd.balance, usd.decimals)) < cost) {
+    button = (
+      <Button variant="modal.form.submit" disabled={true}>
+        Insufficient funds
+      </Button>
+    );
+  } else if (usd && Number(formatUnits(usd.balance, usd.decimals)) >= cost) {
+    button = (
+      <Button
+        variant="modal.form.submit"
+        onClick={async () => {
+          await reserve(years, coin?.name || "");
+          refetchUSD();
+        }}
+      >
+        Confirm
+      </Button>
+    );
+  }
 
   React.useEffect(() => {
     setCost(getNomCost(name, years, coin?.symbol === "vNOM"));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coin]);
+  }, [coin, name, years]);
 
   if (nom == null) {
     return <Spinner />;
@@ -97,73 +98,75 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
         </Text>
       </Text>
       <Box variant="modal.form.container">
-        <Box variant="modal.form.selectWrapper">
-          <ThemeProvider
-            theme={createTheme({
-              palette: {
-                mode: `${colorMode === "light" ? "light" : "dark"}`,
-              },
-            })}
-          >
-            <Select
-              MenuProps={{
-                disableScrollLock: true,
-              }}
-              value={coin?.name || ""}
-              label="Select Currency"
-              onChange={(e) => {
-                const token = TOKEN_LIST[e.target.value] || coin;
-                setCoin(token);
-              }}
-              autoWidth
-              sx={{
-                borderRadius: "11px",
-                backgroundColor: "var(--theme-ui-colors-secondaryBackground)",
-                border: "4px solid var(--theme-ui-colors-primary)",
-                // backgroundColor: "white",
-                filter: "drop-shadow(0px 3px 6px #00000029)",
-                width: "100%",
-                "& .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
+        {address && (
+          <Box variant="modal.form.selectWrapper">
+            <ThemeProvider
+              theme={createTheme({
+                palette: {
+                  mode: `${colorMode === "light" ? "light" : "dark"}`,
                 },
-              }}
+              })}
             >
-              {TOKEN_LIST &&
-                Object.entries(TOKEN_LIST)
-                  .filter(([_, t]) => t.chainId === network.chainId)
-                  .map(([_, t]) => {
-                    return (
-                      <MenuItem value={t.name} key={t.address}>
-                        <ThemeUIThemeProvider theme={theme}>
-                          <Flex
-                            sx={{
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              width: "100%",
-                            }}
-                          >
+              <Select
+                MenuProps={{
+                  disableScrollLock: true,
+                }}
+                value={coin?.name || ""}
+                label="Select Currency"
+                onChange={(e) => {
+                  const token = TOKEN_LIST[e.target.value] || coin;
+                  setCoin(token);
+                }}
+                autoWidth
+                sx={{
+                  borderRadius: "11px",
+                  backgroundColor: "var(--theme-ui-colors-secondaryBackground)",
+                  border: "4px solid var(--theme-ui-colors-primary)",
+                  // backgroundColor: "white",
+                  filter: "drop-shadow(0px 3px 6px #00000029)",
+                  width: "100%",
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    border: "none",
+                  },
+                }}
+              >
+                {TOKEN_LIST &&
+                  Object.entries(TOKEN_LIST)
+                    .filter(([_, t]) => t.chainId === network.chainId)
+                    .map(([_, t]) => {
+                      return (
+                        <MenuItem value={t.name} key={t.address}>
+                          <ThemeUIThemeProvider theme={theme}>
                             <Flex
                               sx={{
+                                justifyContent: "space-between",
                                 alignItems: "center",
-                                fontFamily: "sen",
-                                fontSize: ["25px", null, null, "33px"],
+                                width: "100%",
                               }}
                             >
-                              <Image
-                                sx={{ height: 24, width: 24 }}
-                                mr={4}
-                                src={t.logoURI}
-                              />
-                              {t.name}
+                              <Flex
+                                sx={{
+                                  alignItems: "center",
+                                  fontFamily: "sen",
+                                  fontSize: ["25px", null, null, "33px"],
+                                }}
+                              >
+                                <Image
+                                  sx={{ height: 24, width: 24 }}
+                                  mr={4}
+                                  src={t.logoURI}
+                                />
+                                {t.name}
+                              </Flex>
                             </Flex>
-                          </Flex>
-                        </ThemeUIThemeProvider>
-                      </MenuItem>
-                    );
-                  })}
-            </Select>
-          </ThemeProvider>
-        </Box>
+                          </ThemeUIThemeProvider>
+                        </MenuItem>
+                      );
+                    })}
+              </Select>
+            </ThemeProvider>
+          </Box>
+        )}
         <Flex
           variant="modal.form.durationWrapper"
           sx={{ alignItems: "center" }}
@@ -215,7 +218,7 @@ export const ReserveView: React.FC<Props> = ({ name }) => {
               setYears(getNomYears(name, cost, coin?.symbol === "vNOM"));
             }}
           />
-          <Text sx={{ ml: 8 }}>{coin?.symbol}</Text>
+          <Text sx={{ ml: 8 }}>{address ? coin?.symbol : "USD"}</Text>
         </Flex>
         {loading ? (
           <Spinner />

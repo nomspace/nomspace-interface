@@ -117,15 +117,6 @@ export const TOKEN_LIST: TokenList = {
     logoURI: "https://nom.space/android-chrome-512x512.png",
     registrar: "0x33D2bb7aC3D9c726b940AEB0d31c44864716514B",
   },
-  "Avalanche Nom Voucher": {
-    address: "0xE0d373A8c31D05f240E9864138b35e580FC53cD8",
-    name: "Avalanche Nom Voucher",
-    symbol: "vNOM",
-    chainId: 43114,
-    decimals: 18,
-    logoURI: "https://nom.space/android-chrome-512x512.png",
-    registrar: "0x33D2bb7aC3D9c726b940AEB0d31c44864716514B",
-  },
   "Avalanche USDC.e": {
     address: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
     name: "Avalanche USDC.e",
@@ -134,6 +125,15 @@ export const TOKEN_LIST: TokenList = {
     decimals: 18,
     logoURI:
       "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+  },
+  "Avalanche Nom Voucher": {
+    address: "0xE0d373A8c31D05f240E9864138b35e580FC53cD8",
+    name: "Avalanche Nom Voucher",
+    symbol: "vNOM",
+    chainId: 43114,
+    decimals: 18,
+    logoURI: "https://nom.space/android-chrome-512x512.png",
+    registrar: "0x33D2bb7aC3D9c726b940AEB0d31c44864716514B",
   },
   "Polygon USDC": {
     address: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
