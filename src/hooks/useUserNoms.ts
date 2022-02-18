@@ -14,6 +14,7 @@ import { multicallBatch } from "utils/multicall";
 import { BigNumber } from "ethers";
 import { getAddress, solidityKeccak256 } from "ethers/lib/utils";
 import { gql, useApolloClient } from "@apollo/client";
+import { createContainer } from "unstated-next";
 
 const now = Date.now() / 1000;
 const BASE_NODE =
@@ -27,7 +28,7 @@ const DOMAIN_QUERY = gql`
   }
 `;
 
-export const useUserNoms = () => {
+const useUserNomsInner = () => {
   const { address } = useContractKit();
   const celoProvider = useCeloProvider();
   const celoChainId = useCeloChainId();
@@ -145,3 +146,6 @@ export const useUserNoms = () => {
 
   return usePollingAsyncState(null, 30000, call);
 };
+
+export const { useContainer: useUserNoms, Provider: UserNomsProvider } =
+  createContainer(useUserNomsInner);

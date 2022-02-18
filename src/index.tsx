@@ -23,6 +23,7 @@ import { ReverseResolution } from "hooks/useReverseResolution";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import { UserNomsProvider } from "hooks/useUserNoms";
 
 const client = new ApolloClient({
   uri: "https://api.thegraph.com/subgraphs/name/nomspace/nomspacetest",
@@ -47,7 +48,9 @@ ReactDOM.render(
               <UserNonce.Provider>
                 <ReverseResolution.Provider>
                   <ApolloProvider client={client}>
-                    <App />
+                    <UserNomsProvider>
+                      <App />
+                    </UserNomsProvider>
                   </ApolloProvider>
                 </ReverseResolution.Provider>
               </UserNonce.Provider>
