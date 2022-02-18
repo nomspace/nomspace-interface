@@ -43,6 +43,11 @@ import { SearchBar } from "components/SearchBar";
 import { Spinner } from "theme-ui";
 import { getAddress } from "ethers/lib/utils";
 import { toast, ToastContainer } from "react-toastify";
+import { useUserNoms } from "hooks/useUserNoms";
+import { EXPIRATION_THRESHOLD } from "utils/constants";
+import moment from "moment";
+
+const now = Date.now() / 1000;
 
 export const SearchDetail: React.FC = () => {
   const { name } = useName();
@@ -57,9 +62,11 @@ export const SearchDetail: React.FC = () => {
   const { transferOwnership } = useTransferOwnership(name);
   const [colorMode] = useColorMode();
   const [hasNomstronaut] = useHasNomstronauts();
+  const [userNoms] = useUserNoms();
 
   const isOwner = address && nom?.owner && nom.owner === getAddress(address);
 
+  // Toast for no resolution
   React.useEffect(() => {
     let toastId: React.ReactText;
     if (isOwner && (!nom?.resolution || Number(nom?.resolution) === 0)) {
@@ -97,6 +104,55 @@ export const SearchDetail: React.FC = () => {
       toastId && toast.dismiss(toastId);
     };
   }, [history, isOwner, name, nom?.resolution]);
+
+  React.useEffect(() => {
+    let toastId: React.ReactText;
+    if (userNoms) {
+      const expiringNoms = userNoms
+        .filter((un) => un.expiration < now + EXPIRATION_THRESHOLD)
+        .sort((a, b) => a.expiration - b.expiration);
+      if (expiringNoms.length > 0) {
+        const expiringNom = expiringNoms[0]!;
+        const durationToExpiry = moment.duration(
+          expiringNom.expiration - now,
+          "seconds"
+        );
+        toastId = toast.warn(
+          <>
+            <div>
+              ⚠️ {expiringNom.name}.nom is expiring in{" "}
+              {durationToExpiry.humanize()}! Renew it{" "}
+              <u
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  history.push(`${expiringNom.name}`);
+                  setExtendModalOpen(true);
+                }}
+              >
+                here
+              </u>
+            </div>
+          </>,
+          {
+            position: "top-center",
+            autoClose: false,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            toastId: `expiring_${expiringNom.name}`,
+            containerId: "B",
+            style: { cursor: "default" },
+            bodyClassName: "warningBodyToast",
+          }
+        );
+      }
+    }
+    return () => {
+      toastId && toast.dismiss(toastId);
+    };
+  }, [history, isOwner, name, nom, userNoms]);
 
   return (
     <>
