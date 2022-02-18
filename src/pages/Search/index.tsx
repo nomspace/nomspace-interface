@@ -80,9 +80,19 @@ export const Search: React.FC = () => {
         mx: ["28px", "180px"],
       }}
     >
-      <Title as="h1" variant="splash.title">
-        Nomspace
-      </Title>
+      <Flex sx={{ justifyContent: "space-between", alignItems: "center" }}>
+        <Title as="h1" variant="splash.title">
+          Nomspace
+        </Title>
+        <Link
+          sx={{ fontSize: 5, color: "white" }}
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://docs.nom.space"
+        >
+          Docs
+        </Link>
+      </Flex>
       <Subtitle variant="splash.subtitle">One Nom to rule them all.</Subtitle>
       <Description variant="splash.description">
         Wallet addresses are hard to remember.{" "}
