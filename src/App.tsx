@@ -7,7 +7,6 @@ import { Extend } from "pages/Extend";
 import Modal from "react-modal";
 import { Footer } from "components/Footer";
 import { ToastContainer } from "react-toastify";
-import { Stats } from "./pages/Stats";
 import { Manage } from "pages/Manage";
 import { GlobalNom } from "hooks/useNom";
 
@@ -23,13 +22,9 @@ const App: React.FC = () => {
         variant="containers.scroll"
       >
         <Container sx={{ height: "100%" }}>
-          {/* <Header /> */}
           <Switch>
             <Route exact path="/">
               <Search />
-            </Route>
-            <Route exact path="/stats">
-              <Stats />
             </Route>
             <Route path="/:name">
               <GlobalNom.Provider>
