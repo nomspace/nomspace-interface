@@ -58,9 +58,12 @@ export const SearchDetail: React.FC = () => {
   const [colorMode] = useColorMode();
   const [hasNomstronaut] = useHasNomstronauts();
 
+  const isOwner = address && nom?.owner && nom.owner === getAddress(address);
+
   React.useEffect(() => {
+    let toastId: React.ReactText;
     if (isOwner && (!nom?.resolution || Number(nom?.resolution) === 0)) {
-      toast.warn(
+      toastId = toast.warn(
         <>
           <div>
             ⚠️ It looks like you don't have a resolution! Set it{" "}
@@ -83,16 +86,17 @@ export const SearchDetail: React.FC = () => {
           pauseOnHover: true,
           draggable: false,
           progress: undefined,
-          toastId: "resolution",
+          toastId: `resolution_${name}`,
           containerId: "B",
           style: { cursor: "default" },
           bodyClassName: "warningBodyToast",
         }
       );
     }
-  });
-
-  const isOwner = address && nom?.owner && nom.owner === getAddress(address);
+    return () => {
+      toastId && toast.dismiss(toastId);
+    };
+  }, [history, isOwner, name, nom?.resolution]);
 
   return (
     <>
