@@ -58,9 +58,8 @@ export const SearchDetail: React.FC = () => {
   const [colorMode] = useColorMode();
   const [hasNomstronaut] = useHasNomstronauts();
 
-  const PromptSetResolutionModal = () => {
+  React.useEffect(() => {
     if (isOwner && (!nom?.resolution || Number(nom?.resolution) === 0)) {
-      console.log("res inside{", !nom?.resolution);
       toast.warn(
         <>
           <div>
@@ -91,7 +90,7 @@ export const SearchDetail: React.FC = () => {
         }
       );
     }
-  };
+  });
 
   const isOwner = address && nom?.owner && nom.owner === getAddress(address);
 
@@ -103,7 +102,6 @@ export const SearchDetail: React.FC = () => {
         style={{ width: "auto", zIndex: 90 }}
         containerId={"B"}
       />
-      {PromptSetResolutionModal()}
       {nom && name && (
         <>
           <TipModal
