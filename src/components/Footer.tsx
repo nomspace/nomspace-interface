@@ -32,7 +32,7 @@ export const Footer: React.FC = () => {
         <Link
           target="_blank"
           rel="noopener noreferrer"
-          href="https://twitter.com/Nomspace"
+          href="https://twitter.com/Nomspace_nom"
           style={{ textDecoration: "none" }}
           mr={2}
         >

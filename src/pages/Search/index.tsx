@@ -237,7 +237,7 @@ export const Search: React.FC = () => {
         <Link
           target="_blank"
           rel="noopener noreferrer"
-          href="https://twitter.com/Nomspace"
+          href="https://twitter.com/Nomspace_nom"
           style={{ textDecoration: "none" }}
         >
           <TwitterLogo />
