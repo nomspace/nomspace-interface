@@ -56,6 +56,14 @@ const nftTokenList: Record<number, NFT[]> = {
         "https://ipfs.io/ipfs/QmbpQ6GjZFc9HdeMnmtxjqgGa3RURArEniqbPWY46JT2XZ/",
       imageExt: "png",
     },
+    {
+      address: "0x1F25F8Df9E33033668d6F04DAE0bDE4854E9F1A5",
+      name: "Knoxer",
+      chainId: 42220,
+      imagePrefix:
+        "https://ipfs.io/ipfs/QmTDzVspMNFLEQ2QAUwRBkEb1aTdxZFwU2JE7z6DmnMipE/",
+      imageExt: "jpg",
+    },
   ],
   44787: [
     {
