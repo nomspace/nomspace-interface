@@ -69,6 +69,16 @@ const nftTokenList: Record<number, NFT[]> = {
         "https://ipfs.io/ipfs/QmTDzVspMNFLEQ2QAUwRBkEb1aTdxZFwU2JE7z6DmnMipE/",
       imageExt: "jpg",
     },
+    {
+    address: "0xc8DF51073CD581902b4fb50131d31f29343131F0",
+    name: "ChinChilla Gang",
+    chainId: 42220,
+    },
+    {
+      address: "0xAc80c3c8b122DB4DcC3C351ca93aC7E0927C605d",
+      name: "Celostrials",
+      chainId: 42220,
+    },
   ],
   44787: [
     {
