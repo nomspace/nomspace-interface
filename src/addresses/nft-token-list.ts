@@ -1,9 +1,9 @@
 export type NFT = {
-  address: string;
-  name: string;
-  chainId: number;
-  imagePrefix?: string;
-  imageExt?: string;
+  address: string,
+  name: string,
+  chainId: number,
+  imagePrefix?: string,
+  imageExt?: string,
 };
 
 const nftTokenList: Record<number, NFT[]> = {
@@ -70,13 +70,18 @@ const nftTokenList: Record<number, NFT[]> = {
       imageExt: "jpg",
     },
     {
-    address: "0xc8DF51073CD581902b4fb50131d31f29343131F0",
-    name: "ChinChilla Gang",
-    chainId: 42220,
+      address: "0xc8DF51073CD581902b4fb50131d31f29343131F0",
+      name: "ChinChilla Gang",
+      chainId: 42220,
     },
     {
       address: "0xAc80c3c8b122DB4DcC3C351ca93aC7E0927C605d",
       name: "Celostrials",
+      chainId: 42220,
+    },
+    {
+      address: "0xc4ea80deCA2415105746639eC16cB0cF8378996A",
+      name: "Daopolis",
       chainId: 42220,
     },
   ],
