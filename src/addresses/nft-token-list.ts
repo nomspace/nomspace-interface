@@ -1,9 +1,9 @@
 export type NFT = {
-  address: string,
-  name: string,
-  chainId: number,
-  imagePrefix?: string,
-  imageExt?: string,
+  address: string;
+  name: string;
+  chainId: number;
+  imagePrefix?: string;
+  imageExt?: string;
 };
 const nftTokenList: Record<number, NFT[]> = {
   42220: [
