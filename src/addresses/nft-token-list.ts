@@ -5,7 +5,6 @@ export type NFT = {
   imagePrefix?: string,
   imageExt?: string,
 };
-
 const nftTokenList: Record<number, NFT[]> = {
   42220: [
     {
@@ -73,11 +72,17 @@ const nftTokenList: Record<number, NFT[]> = {
       address: "0xc8DF51073CD581902b4fb50131d31f29343131F0",
       name: "ChinChilla Gang",
       chainId: 42220,
+      imagePrefix:
+        "https://ipfs.io/ipfs/QmWPN6892DfYqbiG186VxEtWxNGkwy4MvJQhHdkGUeD1jT/",
+      imageExt: "png",
     },
     {
       address: "0xAc80c3c8b122DB4DcC3C351ca93aC7E0927C605d",
       name: "Celostrials",
       chainId: 42220,
+      imagePrefix:
+        "https://ipfs.io/ipfs/QmTn1W5CpTdqrkvdSLb7nXGWVYYmoTWMv8N2ripQthXw2v/",
+      imageExt: "png",
     },
     {
       address: "0xc4ea80deCA2415105746639eC16cB0cF8378996A",
@@ -93,6 +98,21 @@ const nftTokenList: Record<number, NFT[]> = {
     },
   ],
   43114: [
+    {
+      address: "0x3d1fc2045A031C3D9C848F3DaCCAdad191ec6794",
+      name: " Alter Ego Punks",
+      chainId: 43114,
+    },
+    {
+      address: "0x72D4fEd90e52B30759989B1B7BA894B3930BD9a7",
+      name: "Avalanche Riders",
+      chainId: 43114,
+    },
+    {
+      address: "0xBbD9786f178e2AEBb4b4329c41A821921ca05339",
+      name: "Vending Machines NFT",
+      chainId: 43114,
+    },
     {
       address: "0xF70576a5255fcCfE6551f3eC8De74c9E002E1A82",
       name: "Avalanche Punks",
