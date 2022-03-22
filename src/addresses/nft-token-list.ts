@@ -73,7 +73,7 @@ const nftTokenList: Record<number, NFT[]> = {
       name: "ChinChilla Gang",
       chainId: 42220,
       imagePrefix:
-        "https://ipfs.io/ipfs/QmWPN6892DfYqbiG186VxEtWxNGkwy4MvJQhHdkGUeD1jT/",
+        "https://ipfs.io/ipfs/Qmf4SjPj66qMwWsN34e35tjya6BA5a7abA8B2ct9DaizSC/",
       imageExt: "png",
     },
     {
@@ -81,13 +81,17 @@ const nftTokenList: Record<number, NFT[]> = {
       name: "Celostrials",
       chainId: 42220,
       imagePrefix:
-        "https://ipfs.io/ipfs/QmTn1W5CpTdqrkvdSLb7nXGWVYYmoTWMv8N2ripQthXw2v/",
+        "https://ipfs.io/ipfs/Qme97ifAexrMDfjE3DZRMasWhe7D276uYsCGonyprSA2MJ/",
       imageExt: "png",
     },
     {
       address: "0xc4ea80deCA2415105746639eC16cB0cF8378996A",
       name: "Daopolis",
       chainId: 42220,
+      imagePrefix:
+        "https://cybertime.mypinata.cloud/ipfs/QmefdE5PdY4bSZTXP84uKG6ehjBAmyqnYTJnoMhXSe5EvW/",
+      imageExt: "png",
+
     },
   ],
   44787: [
@@ -119,6 +123,21 @@ const nftTokenList: Record<number, NFT[]> = {
       chainId: 43114,
       imagePrefix: "https://avaxpunks.com/punks/",
       imageExt: "png",
+    },
+    {
+      address: "0x3c965D9Fcaf231F434186E9Cf0C1e179307CD211",
+      name: "Ava Sharks",
+      chainId: 43114,
+    },
+    {
+      address: "0x8927985B358692815E18F2138964679DcA5d3b79",
+      name: "chikn",
+      chainId: 43114,
+    },
+    {
+      address: "0x6d5087B3082f73D42a32D85e38BC95dcceDe39Bb",
+      name: "AvaxApes",
+      chainId: 43114,
     },
   ],
   137: [
