@@ -73,11 +73,7 @@ const nftTokenList: Record<number, NFT[]> = {
       name: "ChinChilla Gang",
       chainId: 42220,
       imagePrefix:
-<<<<<<< HEAD
         "https://ipfs.io/ipfs/Qmf4SjPj66qMwWsN34e35tjya6BA5a7abA8B2ct9DaizSC/",
-=======
-        "https://ipfs.io/ipfs/QmWPN6892DfYqbiG186VxEtWxNGkwy4MvJQhHdkGUeD1jT/",
->>>>>>> 6b18bff1fc3cd1a76a2f3f8c0b59c8eeeb961b58
       imageExt: "png",
     },
     {
@@ -85,11 +81,7 @@ const nftTokenList: Record<number, NFT[]> = {
       name: "Celostrials",
       chainId: 42220,
       imagePrefix:
-<<<<<<< HEAD
         "https://ipfs.io/ipfs/Qme97ifAexrMDfjE3DZRMasWhe7D276uYsCGonyprSA2MJ/",
-=======
-        "https://ipfs.io/ipfs/QmTn1W5CpTdqrkvdSLb7nXGWVYYmoTWMv8N2ripQthXw2v/",
->>>>>>> 6b18bff1fc3cd1a76a2f3f8c0b59c8eeeb961b58
       imageExt: "png",
     },
     {
