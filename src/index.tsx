@@ -4,12 +4,11 @@ import "react-toastify/dist/ReactToastify.min.css";
 import "index.css";
 
 import {
-  Alfajores,
   Avalanche,
-  Celo,
   ContractKitProvider,
   Fuji,
 } from "@celo-tools/use-contractkit";
+import { Celo, Alfajores } from "./networks";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -67,6 +66,7 @@ ReactDOM.render(
         icon: "https://www.nom.space/favicon-32x32.png",
         supportedNetworks: [Celo, Alfajores, Avalanche, Fuji],
       }}
+      networks={[Celo, Alfajores, Avalanche, Fuji]}
     >
       <ThemeProvider theme={theme}>
         <Provider store={store}>

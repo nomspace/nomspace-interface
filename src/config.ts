@@ -41,7 +41,7 @@ export const SUPPORTED_NETWORKS: Array<Network> = [
   {
     chainId: 42220,
     name: "Celo",
-    rpc: "https://forno.celo.org",
+    rpc: "https://celo.quickestnode.com",
     explorer: "https://explorer.celo.org",
     gasCurrency: "CELO",
     blockTimeInSeconds: 5,
