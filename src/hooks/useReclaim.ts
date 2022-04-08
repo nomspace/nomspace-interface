@@ -11,8 +11,7 @@ import {
   ReservePortal,
   ReservePortal__factory,
 } from "generated";
-import { toastTx } from "utils/toastTx";
-import { toast } from "react-toastify";
+import { toastTx, toastError } from "utils/toastTx";
 import { labelhash } from "@ensdomains/ensjs";
 import { useCeloProvider } from "./useCeloProvider";
 import { useCeloChainId } from "./useCeloChainId";
@@ -103,7 +102,7 @@ export const useReclaim = (name?: string) => {
         toastTx(tx.hash);
       }
     } catch (e: any) {
-      toast(e.message);
+      toastError(e);
       console.error(e);
     } finally {
       setLoading(false);

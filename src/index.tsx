@@ -24,6 +24,33 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { UserNomsProvider } from "hooks/useUserNoms";
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
+
+if (process.env.REACT_APP_SENTRY_DSN) {
+  const sentryCfg = {
+    environment:
+      process.env.REACT_APP_SENTRY_ENVIRONMENT ??
+      `${process.env.REACT_APP_VERCEL_ENV ?? "unknown"}`,
+    release:
+      process.env.REACT_APP_SENTRY_RELEASE ??
+      `${
+        process.env.REACT_APP_VERCEL_GIT_COMMIT_REF?.replace(/\//g, "--") ??
+        "unknown"
+      }-${process.env.REACT_APP_VERCEL_GIT_COMMIT_SHA ?? "unknown"}`,
+  };
+  Sentry.init({
+    dsn: process.env.REACT_APP_SENTRY_DSN,
+    integrations: [new BrowserTracing()],
+    tracesSampleRate: 0.2,
+    ...sentryCfg,
+  });
+  console.log(
+    `Initializing Sentry environment at release ${sentryCfg.release} in environment ${sentryCfg.environment}`
+  );
+} else {
+  console.warn(`REACT_APP_SENTRY_DSN not found. Sentry will not be loaded.`);
+}
 
 const client = new ApolloClient({
   uri: "https://api.thegraph.com/subgraphs/name/nomspace/nomspacetest",

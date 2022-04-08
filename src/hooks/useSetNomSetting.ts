@@ -11,8 +11,7 @@ import {
   PublicResolver__factory,
   ERC20__factory,
 } from "generated";
-import { toastTx } from "utils/toastTx";
-import { toast } from "react-toastify";
+import { toastTx, toastError } from "utils/toastTx";
 import { useCeloChainId } from "./useCeloChainId";
 import { useCeloProvider } from "./useCeloProvider";
 import { ENSJS } from "types/ensjs";
@@ -149,7 +148,7 @@ export const useSetNomSetting = (name?: string | null) => {
           toastTx(tx.hash);
         }
       } catch (e: any) {
-        toast(e.message);
+        toastError(e);
         console.error(e);
       } finally {
         setLoading(false);

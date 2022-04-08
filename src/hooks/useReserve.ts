@@ -17,8 +17,7 @@ import {
   ReservePortal,
   ReservePortal__factory,
 } from "generated";
-import { toastTx } from "utils/toastTx";
-import { toast } from "react-toastify";
+import { toastError, toastTx } from "utils/toastTx";
 import { YEAR_IN_SECONDS } from "utils/constants";
 import { useCeloProvider } from "./useCeloProvider";
 import { useCeloChainId } from "./useCeloChainId";
@@ -154,7 +153,7 @@ export const useReserve = (name?: string) => {
           toastTx(tx.hash);
         }
       } catch (e: any) {
-        toast(e.message);
+        toastError(e);
         console.error(e);
       } finally {
         setLoading(false);
@@ -287,7 +286,7 @@ export const useReserve = (name?: string) => {
           toastTx(tx.hash);
         }
       } catch (e: any) {
-        toast(e.message);
+        toastError(e);
         console.error(e);
       } finally {
         setLoading(false);
