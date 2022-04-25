@@ -1,108 +1,120 @@
-import { useContractKit, useProvider } from "@celo-tools/use-contractkit";
 import { MULTICALL_ADDR } from "addresses";
 import { BigNumber } from "ethers";
-import { ERC721__factory } from "generated";
+import { ERC721__factory, Multicall } from "generated";
 import { Multicall__factory } from "generated";
 import { useCallback } from "react";
 import { useAsyncState } from "./useAsyncState";
-import nftTokenList from "addresses/nft-token-list";
+import nftTokenList, { NFT } from "addresses/nft-token-list";
 import axios from "axios";
-import { GlobalNom } from "./useNom";
+import { GlobalNom, NomResult } from "./useNom";
+import { SUPPORTED_NETWORKS } from "config";
+import { JsonRpcProvider } from "@ethersproject/providers";
+
+const fetchCollection = async (
+  token: NFT,
+  provider: JsonRpcProvider,
+  multicall: Multicall,
+  nom: NomResult
+) => {
+  const metadata = [];
+
+  try {
+    const nft = ERC721__factory.connect(token.address, provider);
+
+    const total = (await nft.balanceOf(nom.resolution)).toNumber();
+
+    const tokenIds = await multicall.callStatic
+      .aggregate(
+        new Array(total).fill(0).map((_, idx) => {
+          return {
+            target: nft.address,
+            callData: nft.interface.encodeFunctionData("tokenOfOwnerByIndex", [
+              nom.resolution,
+              idx,
+            ]),
+          };
+        })
+      )
+      .then((res) => {
+        return res.returnData.map((r) => {
+          return nft.interface.decodeFunctionResult(
+            "tokenOfOwnerByIndex",
+            r
+          )[0] as BigNumber;
+        });
+      });
+
+    if (token.imagePrefix && token.imageExt) {
+      metadata.push(
+        ...tokenIds.map((id) => ({
+          id,
+          name: token.name,
+          image: `${token.imagePrefix}${id}.${token.imageExt}`,
+        }))
+      );
+    } else {
+      const tokenMetadata = await multicall.callStatic
+        .aggregate(
+          tokenIds.map((tokenId) => ({
+            target: nft.address,
+            callData: nft.interface.encodeFunctionData("tokenURI", [tokenId]),
+          }))
+        )
+        .then((res) => {
+          return res.returnData.map((r) => {
+            return nft.interface.decodeFunctionResult(
+              "tokenURI",
+              r
+            )[0] as string;
+          });
+        })
+        .then((tokenURIs) => {
+          return Promise.all(
+            tokenURIs
+              .map((tokenURI) =>
+                tokenURI
+                  .replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/")
+                  .replace("ipfs.io", "cloudflare-ipfs.com")
+              )
+              .map(async (uri) => {
+                return axios.get(uri).then(async (res) => ({
+                  ...res.data,
+                  image: res.data.image
+                    .replace("ipfs.io", "cloudflare-ipfs.com")
+                    .replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/"),
+                }));
+              })
+          );
+        });
+      metadata.push(...tokenMetadata);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return metadata;
+};
 
 export const useNFTs = () => {
   const [nom] = GlobalNom.useContainer();
-  const { network } = useContractKit();
-  const provider = useProvider();
 
   const call = useCallback(async () => {
-    // TODO: MULTICALL on other networks
-    const multicallAddress = MULTICALL_ADDR[network.chainId];
-    if (!nom?.resolution || !multicallAddress) return null;
-    const multicall = Multicall__factory.connect(multicallAddress, provider);
+    if (!nom?.resolution) return null;
 
-    const networkTokens = nftTokenList[network.chainId] ?? [];
     const allTokenMetadata = [];
-    for (const token of networkTokens) {
-      try {
-        const nft = ERC721__factory.connect(token.address, provider);
+    for (const [chainId, networkTokens] of Object.entries(nftTokenList)) {
+      const network = SUPPORTED_NETWORKS.find(
+        (network) => network.chainId.toString() === chainId
+      );
+      const multicallAddress = MULTICALL_ADDR[chainId];
+      if (!network || !multicallAddress) continue;
 
-        const total = (await nft.balanceOf(nom.resolution)).toNumber();
-
-        const tokenIds = await multicall.callStatic
-          .aggregate(
-            new Array(total).fill(0).map((_, idx) => {
-              return {
-                target: nft.address,
-                callData: nft.interface.encodeFunctionData(
-                  "tokenOfOwnerByIndex",
-                  [nom.resolution, idx]
-                ),
-              };
-            })
-          )
-          .then((res) => {
-            return res.returnData.map((r) => {
-              return nft.interface.decodeFunctionResult(
-                "tokenOfOwnerByIndex",
-                r
-              )[0] as BigNumber;
-            });
-          });
-
-        if (token.imagePrefix && token.imageExt) {
-          allTokenMetadata.push(
-            ...tokenIds.map((id) => ({
-              id,
-              name: token.name,
-              image: `${token.imagePrefix}${id}.${token.imageExt}`,
-            }))
-          );
-        } else {
-          const tokenMetadata = await multicall.callStatic
-            .aggregate(
-              tokenIds.map((tokenId) => ({
-                target: nft.address,
-                callData: nft.interface.encodeFunctionData("tokenURI", [
-                  tokenId,
-                ]),
-              }))
-            )
-            .then((res) => {
-              return res.returnData.map((r) => {
-                return nft.interface.decodeFunctionResult(
-                  "tokenURI",
-                  r
-                )[0] as string;
-              });
-            })
-            .then((tokenURIs) => {
-              return Promise.all(
-                tokenURIs
-                  .map((tokenURI) =>
-                    tokenURI
-                      .replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/")
-                      .replace("ipfs.io", "cloudflare-ipfs.com")
-                  )
-                  .map(async (uri) => {
-                    return axios.get(uri).then(async (res) => ({
-                      ...res.data,
-                      image: res.data.image
-                        .replace("ipfs.io", "cloudflare-ipfs.com")
-                        .replace(
-                          "ipfs://",
-                          "https://cloudflare-ipfs.com/ipfs/"
-                        ),
-                    }));
-                  })
-              );
-            });
-          allTokenMetadata.push(...tokenMetadata);
-        }
-      } catch (e) {
-        console.error(e);
+      const provider = new JsonRpcProvider(network.rpc);
+      const multicall = Multicall__factory.connect(multicallAddress, provider);
+      for (const token of networkTokens) {
+        allTokenMetadata.push(fetchCollection(token, provider, multicall, nom));
       }
     }
-    return allTokenMetadata;
-  }, [network.chainId, nom?.resolution, provider]);
+    return await Promise.all(allTokenMetadata).then((res) => res.flat());
+  }, [nom]);
   return useAsyncState(null, call);
 };

@@ -14,7 +14,7 @@ import { labelhash } from "@ensdomains/ensjs";
 import { useName } from "./useName";
 import { createContainer } from "unstated-next";
 
-type NomResult = {
+export type NomResult = {
   resolution: string;
   owner: string | null;
   recordOwner: string;

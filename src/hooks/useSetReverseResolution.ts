@@ -12,8 +12,7 @@ import {
   ReservePortal__factory,
   ReverseRegistrar__factory,
 } from "generated";
-import { toastTx } from "utils/toastTx";
-import { toast } from "react-toastify";
+import { toastTx, toastError } from "utils/toastTx";
 import { useCeloProvider } from "./useCeloProvider";
 import { useCeloChainId } from "./useCeloChainId";
 import { useUserTxDefaults } from "hooks/useUserTxDefaults";
@@ -119,7 +118,7 @@ export const useSetReverseResolution = () => {
           toastTx(tx.hash);
         }
       } catch (e: any) {
-        toast(e.message);
+        toastError(e);
         console.error(e);
       } finally {
         setLoading(false);

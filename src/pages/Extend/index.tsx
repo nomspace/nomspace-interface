@@ -76,7 +76,7 @@ export const Extend: React.FC = () => {
   //         toastTx(tx.hash);
   //         refetchUSD();
   //       } catch (e: any) {
-  //         toast(e.message);
+  //         toastError(e);
   //       } finally {
   //         setApproveLoading(false);
   //       }
@@ -107,7 +107,7 @@ export const Extend: React.FC = () => {
   //         toastTx(tx.hash);
   //         refetchNom();
   //       } catch (e: any) {
-  //         toast(e.message);
+  //         toastError(e);
   //       } finally {
   //         setExtendLoading(false);
   //       }

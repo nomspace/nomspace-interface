@@ -5,8 +5,7 @@ import {
   useProvider,
 } from "@celo-tools/use-contractkit";
 import { ERC20__factory } from "generated";
-import { toastTx } from "utils/toastTx";
-import { toast } from "react-toastify";
+import { toastTx, toastError } from "utils/toastTx";
 import { BigNumberish } from "ethers";
 
 export const useApprove = () => {
@@ -29,7 +28,7 @@ export const useApprove = () => {
         await tx.wait(1);
         toastTx(tx.hash);
       } catch (e: any) {
-        toast(e.message);
+        toastError(e);
       } finally {
         setLoading(false);
       }
