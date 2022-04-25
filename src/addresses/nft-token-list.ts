@@ -139,6 +139,22 @@ const nftTokenList: Record<number, NFT[]> = {
       name: "AvaxApes",
       chainId: 43114,
     },
+    {
+      address: "0x0540E4EE0C5CdBA347C2f0E011ACF8651bB70Eb9",
+      name: "CryptoSeals",
+      chainId: 43114,
+    },
+    {
+      address: "0x4245a1bD84eB5f3EBc115c2Edf57E50667F98b0b",
+      name: "Hoppers",
+      chainId: 43114,
+    },
+    {
+      address: "0xA69fEe085a4C38656ce9c37A064a330725307482",
+      name: "Avalant",
+      chainId: 43114,
+    },
+
   ],
   137: [
     {
