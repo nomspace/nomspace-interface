@@ -115,7 +115,10 @@ const useNom = () => {
         values: [namehash],
       },
     ];
-    const owner = await base.ownerOf(tokenId).catch(() => null);
+    const owner = await base.ownerOf(tokenId).catch((e) => {
+      console.error("Error getting base.ownerOf()", e);
+      return null;
+    });
 
     const [
       resolution,
