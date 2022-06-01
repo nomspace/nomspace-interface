@@ -3,7 +3,7 @@ import { ChainId, Network, NetworkNames } from "@celo-tools/use-contractkit";
 // We do an unsafe cast so we can use a custom network name
 export const Celo: Network = {
   name: "QNMainnet",
-  rpcUrl: "https://celo.quickestnode.com",
+  rpcUrl: "https://forno.celo.org",
   graphQl: "https://explorer.celo.org/graphiql",
   explorer: "https://explorer.celo.org",
   chainId: ChainId.Celo,

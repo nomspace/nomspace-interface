@@ -6,17 +6,12 @@ import {
   Text,
   Image,
   Card,
-  useColorMode,
   Link,
+  useColorMode,
+  Container,
 } from "theme-ui";
 import { SearchBar } from "components/SearchBar";
 import styled from "@emotion/styled";
-import UbeswapDarkImage from "assets/Ubeswap_dark.png";
-import MobiusDarkImage from "assets/Mobius_dark.png";
-import CelotrackerDarkImage from "assets/Celotracker_dark.png";
-import UbeswapLightImage from "assets/Ubeswap_light.png";
-import MobiusLightImage from "assets/Mobius_light.png";
-import CelotrackerLightImage from "assets/Celotracker_light.png";
 import ProfilePreviewIllustration from "assets/ProfilePreviewIllustration.png";
 import NFTIllustration from "assets/NFTIllustration.png";
 import CrossChainIllustration from "assets/CrossChainIllustration.png";
@@ -25,6 +20,7 @@ import { LogoIcon } from "icons/LogoIcon";
 import { ReactComponent as DiscordLogo } from "assets/discord.svg";
 import { ReactComponent as TwitterLogo } from "assets/twitter.svg";
 import { ReactComponent as GithubLogo } from "assets/github.svg";
+import { PARTNER_LIST } from "partner-list";
 
 const Title = styled(Heading)({
   fontWeight: 600,
@@ -162,31 +158,35 @@ export const Search: React.FC = () => {
           justifyContent: "space-evenly",
           mt: "30px",
           flexWrap: "wrap",
-          "> *": { marginLeft: 30, marginRight: 30, mt: 20 },
+          "> *": { mx: 30, mt: 20 },
         }}
       >
-        <NewTabLink href="https://ubeswap.org">
-          <Image
-            sx={{ height: "40px" }}
-            src={colorMode === "dark" ? UbeswapDarkImage : UbeswapLightImage}
-          />
-        </NewTabLink>
-        <NewTabLink href="https://mobius.money">
-          <Image
-            sx={{ height: "40px" }}
-            src={colorMode === "dark" ? MobiusDarkImage : MobiusLightImage}
-          />
-        </NewTabLink>
-        <NewTabLink href="https://celotracker.com">
-          <Image
-            sx={{ height: "40px" }}
-            src={
-              colorMode === "dark"
-                ? CelotrackerDarkImage
-                : CelotrackerLightImage
-            }
-          />
-        </NewTabLink>
+        {PARTNER_LIST.map(
+          ({ href, lightImageSrc, darkImageSrc, text }, idx) => (
+            <Container
+              sx={{
+                width: ["100%", "fit-content"],
+                mb: 8,
+              }}
+            >
+              <NewTabLink key={idx} href={href}>
+                <Flex
+                  sx={{
+                    width: "100%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image
+                    sx={{ height: "40px" }}
+                    src={colorMode === "dark" ? darkImageSrc : lightImageSrc}
+                  />
+                  {text && <Text sx={{ ml: 4 }}>{text}</Text>}
+                </Flex>
+              </NewTabLink>
+            </Container>
+          )
+        )}
       </Flex>
 
       <Header as="h2" mt="64px" sx={{ fontSize: ["24px", "28px", "35px"] }}>

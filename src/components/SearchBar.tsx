@@ -1,9 +1,8 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Flex, Input } from "theme-ui";
+import { Button, Flex, Input } from "theme-ui";
 
 const SEARCH_HEIGHT = [56, 90];
-const TRANSFORM = ["translate(8px, 12px)", "translate(16px, 32px)"];
 
 interface IProps {
   size?: "small" | "large";
@@ -20,32 +19,17 @@ export const SearchBar: React.FC<IProps> = ({
   const history = useHistory();
 
   let height;
-  let transform;
   if (!size) {
     height = SEARCH_HEIGHT[0];
-    transform = TRANSFORM[0];
   } else if (size === "small") {
     height = SEARCH_HEIGHT[0];
-    transform = TRANSFORM[0];
   } else {
     height = SEARCH_HEIGHT[1];
-    transform = TRANSFORM[1];
   }
 
   return (
     <Flex
       sx={{
-        "form::before": {
-          content: '""',
-          position: "absolute",
-          height: 28,
-          width: 28,
-          transform: transform,
-          // backgroundColor: "var(--theme-ui-colors-textColor)",
-          // background: `url(${
-          //   colorMode === "light" ? BlackSearchIcon : WhiteSearchIcon
-          // }) no-repeat`,
-        },
         width: "100%",
         justifyContent: "center",
         caretColor: "textColor",
@@ -63,16 +47,24 @@ export const SearchBar: React.FC<IProps> = ({
           e.preventDefault();
         }}
       >
-        <Flex>
+        <Flex
+          sx={{
+            fontSize: ["15px", "20px"],
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
           <Input
             sx={{
               pl: [6, 7],
               height,
+              maxWidth: ["200px", "66%"],
               backgroundColor: "secondaryBackground",
               border: "2px solid var(--theme-ui-colors-primary)",
               borderRadius: "12px",
-              fontSize: "20px",
               textAlign: "center",
+              mb: 8,
+              mr: 8,
               "::placeholder": {
                 color: "var(--theme-ui-colors-primary)",
               },
@@ -80,14 +72,18 @@ export const SearchBar: React.FC<IProps> = ({
             ref={searchInput}
             placeholder={placeHolder || "Find a nom"}
           />
-          {/* {breakpoint === Breakpoint.DESKTOP && (
-            <Button
-              sx={{ height: height, borderRadius: "0 6px 6px 0" }}
-              type="submit"
-            >
-              Search
-            </Button>
-          )} */}
+          <Button
+            sx={{
+              px: 8,
+              py: 4,
+              boarderRadius: "12px",
+              height,
+              width: "fit-content",
+            }}
+            type="submit"
+          >
+            Search
+          </Button>
         </Flex>
       </form>
     </Flex>
