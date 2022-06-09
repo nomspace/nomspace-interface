@@ -1,3 +1,5 @@
+//import { GlobalNom } from "../hooks/useNom";
+
 export type NFT = {
   address: string,
   name: string,
@@ -5,6 +7,25 @@ export type NFT = {
   imagePrefix?: string,
   imageExt?: string,
 };
+
+//const [nom] = GlobalNom.useContainer();
+
+// const options = {
+//   method: 'GET',
+//   headers: {
+//     Accept: 'application/json',
+//     'X-API-Key': '6EooDy7rzViLSuSC2Qa0DjQgSFtWN9uusfSdTodhahwmJr1gbYI3BsiWDTh8Fg9qxX6kId84iS3hv3Dd0QAo9K00YmAeAm7cCxKhzNDRHu2K61Ow0pfo5NVmtfA8aAoS'
+//   }
+// };
+
+// var obj:any; 
+// fetch(`https://api.poap.tech/actions/scan/${nom?.resolution}`, options)
+//   .then(response => response.json())
+//   .then(response => obj = response)
+//   .catch(err => console.error(err));
+
+// const poapURL = obj != null ? obj[0]?.event.image_url : null 
+
 const nftTokenList: Record<number, NFT[]> = {
   42220: [
     {
@@ -161,6 +182,13 @@ const nftTokenList: Record<number, NFT[]> = {
       address: "0x9498274b8c82b4a3127d67839f2127f2ae9753f4",
       name: "Polygon Punks",
       chainId: 137,
+    },
+  ],
+  1: [
+    {
+      address: "0x22C1f6050E56d2876009903609a2cC3fEf83B415",
+      name: "POAP",
+      chainId: 1
     },
   ],
 };
