@@ -110,7 +110,6 @@ export const useNFTs = () => {
 
       const provider = new JsonRpcProvider(network.rpc);
       const multicall = Multicall__factory.connect(multicallAddress, provider);
-
       for (const token of networkTokens) {
         allTokenMetadata.push(fetchCollection(token, provider, multicall, nom));
       }
