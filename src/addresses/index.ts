@@ -51,6 +51,8 @@ export const MULTICALL_ADDR: AddressMap = {
   [ChainId.Avalanche]: "0x0FB54156B496b5a040b51A71817aED9e2927912E",
   [ChainId.Polygon]: "0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507",
   [ChainId.Fantom]: "0xD98e3dBE5950Ca8Ce5a4b59630a5652110403E5c",
+  //[100]: "0xb5b692a88bdfc81ca69dcb1d924f59f0413a602a", //xDai
+  [ChainId.Ethereum]: "0xeefba1e63905ef1d7acba5a8513c70307c1ce441",
 
   [ChainId.Alfajores]: "0x387ce7960b5DA5381De08Ea4967b13a7c8cAB3f6",
   [ChainId.Fuji]: "0xb465Fd2d9C71d5D6e6c069aaC9b4E21c69aAA78f",
