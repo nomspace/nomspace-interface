@@ -1,5 +1,3 @@
-//import { GlobalNom } from "../hooks/useNom";
-
 export type NFT = {
   address: string,
   name: string,
