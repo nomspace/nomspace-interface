@@ -149,13 +149,13 @@ export const useNFTs = () => {
       for (const token of networkTokens) {
 
         if (token.name==='POAP'){ //POAP API CALL
-          poapMetadata = poapMetadata.concat(await poapCall(nom.resolution));
+          poapMetadata.push(...(await poapCall(nom.resolution)));
         }
         allTokenMetadata.push(fetchCollection(token, provider, multicall, nom));
       }
     }
     var tokenMetadata = await Promise.all(allTokenMetadata).then((res) => res.flat());    
-    tokenMetadata = tokenMetadata.concat(poapMetadata)
+    tokenMetadata.push(...poapMetadata)
     return tokenMetadata;
   }, [nom]);
   return useAsyncState(null, call);
