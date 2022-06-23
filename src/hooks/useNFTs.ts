@@ -17,7 +17,6 @@ async function poapCall(resolution: string) {
   }
   const poapMetadata = [];
   const options = {
-    //POAP API parameters
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -25,11 +24,16 @@ async function poapCall(resolution: string) {
     },
   };
 
-  var poaps: any;
-  await fetch(`https://api.poap.tech/actions/scan/${resolution}`, options) //hardcode somebodys address and check
+  let poaps: any = await fetch(
+    `https://api.poap.tech/actions/scan/${resolution}`,
+    options
+  )
     .then((response) => response.json())
     .then((response) => (poaps = response))
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      console.error(err);
+      return [];
+    });
 
   for (const poap of poaps) {
     const url = poap.event.image_url;
@@ -133,7 +137,7 @@ export const useNFTs = () => {
     if (!nom?.resolution) return null;
 
     const allTokenMetadata = [];
-    let poapMetadata = [] as any;
+    let poapMetadata = [];
     for (const [chainId, networkTokens] of Object.entries(nftTokenList)) {
       const network = SUPPORTED_NETWORKS.find(
         (network) => network.chainId.toString() === chainId
@@ -151,7 +155,6 @@ export const useNFTs = () => {
       const multicall = Multicall__factory.connect(multicallAddress, provider);
       for (const token of networkTokens) {
         if (token.name === "POAP") {
-          //POAP API CALL
           poapMetadata.push(...(await poapCall(nom.resolution)));
         }
         allTokenMetadata.push(fetchCollection(token, provider, multicall, nom));

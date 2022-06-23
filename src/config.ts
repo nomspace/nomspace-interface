@@ -78,14 +78,14 @@ export const SUPPORTED_NETWORKS: Array<Network> = [
     gasCurrency: "ETH",
     blockTimeInSeconds: 15,
   },
-  // {
-  //   chainId: 100,
-  //   name: "xDai",
-  //   rpc: "https://rpc.xdaichain.com",
-  //   explorer: "https://blockscout.com/xdai/mainnet",
-  //   gasCurrency: "XDAI",
-  //   blockTimeInSeconds: 5,
-  // },
+  {
+    chainId: 100,
+    name: "xDai",
+    rpc: "https://rpc.xdaichain.com",
+    explorer: "https://blockscout.com/xdai/mainnet",
+    gasCurrency: "XDAI",
+    blockTimeInSeconds: 5,
+  },
   ...(process.env.NODE_ENV === "development"
     ? [
         {
