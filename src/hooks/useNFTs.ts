@@ -10,34 +10,34 @@ import { GlobalNom, NomResult } from "./useNom";
 import { SUPPORTED_NETWORKS } from "config";
 import { JsonRpcProvider } from "@ethersproject/providers";
 
-async function poapCall(resolution:string) {
-
-  if (process.env.REACT_APP_POAP_KEY === undefined){
+async function poapCall(resolution: string) {
+  if (process.env.REACT_APP_POAP_KEY === undefined) {
     console.error("REACT_APP_POAP_KEY not present, skipping POAP fetch");
     return [];
   }
   const poapMetadata = [];
-  const options = { //POAP API parameters
-    method: 'GET',
+  const options = {
+    //POAP API parameters
+    method: "GET",
     headers: {
-      Accept: 'application/json',
-      'X-API-Key': process.env.REACT_APP_POAP_KEY,
-    }
+      Accept: "application/json",
+      "X-API-Key": process.env.REACT_APP_POAP_KEY,
+    },
   };
-  
-  var poaps:any; 
+
+  var poaps: any;
   await fetch(`https://api.poap.tech/actions/scan/${resolution}`, options) //hardcode somebodys address and check
-    .then(response => response.json())
-    .then(response => poaps = response)
-    .catch(err => console.error(err));
+    .then((response) => response.json())
+    .then((response) => (poaps = response))
+    .catch((err) => console.error(err));
 
   for (const poap of poaps) {
-    const url = poap.event.image_url
-    
+    const url = poap.event.image_url;
+
     poapMetadata.push({
       name: poap.event.name,
-      image: `${url}`
-    })
+      image: `${url}`,
+    });
   }
   return poapMetadata;
 }
@@ -140,22 +140,27 @@ export const useNFTs = () => {
       );
       const multicallAddress = MULTICALL_ADDR[chainId];
       if (!network || !multicallAddress) {
-      console.error("Missing network or multicall address for network", chainId);
+        console.error(
+          "Missing network or multicall address for network",
+          chainId
+        );
         continue;
       }
 
       const provider = new JsonRpcProvider(network.rpc);
       const multicall = Multicall__factory.connect(multicallAddress, provider);
       for (const token of networkTokens) {
-
-        if (token.name==='POAP'){ //POAP API CALL
+        if (token.name === "POAP") {
+          //POAP API CALL
           poapMetadata.push(...(await poapCall(nom.resolution)));
         }
         allTokenMetadata.push(fetchCollection(token, provider, multicall, nom));
       }
     }
-    var tokenMetadata = await Promise.all(allTokenMetadata).then((res) => res.flat());    
-    tokenMetadata.push(...poapMetadata)
+    var tokenMetadata = await Promise.all(allTokenMetadata).then((res) =>
+      res.flat()
+    );
+    tokenMetadata.push(...poapMetadata);
     return tokenMetadata;
   }, [nom]);
   return useAsyncState(null, call);
