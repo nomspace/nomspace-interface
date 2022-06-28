@@ -73,7 +73,7 @@ export const SUPPORTED_NETWORKS: Array<Network> = [
   {
     chainId: 1,
     name: "Ethereum",
-    rpc: process.env.REACT_APP_ETHEREUM_RPC_URL || "",
+    rpc: process.env.REACT_APP_ETHEREUM_RPC || "",
     explorer: "https://etherscan.io",
     gasCurrency: "ETH",
     blockTimeInSeconds: 15,

@@ -155,12 +155,12 @@ export const useNFTs = () => {
       const multicall = Multicall__factory.connect(multicallAddress, provider);
       for (const token of networkTokens) {
         if (token.name === "POAP") {
-          poapMetadata.push(...(await poapCall(nom.resolution)));
+          poapMetadata.push(poapCall(nom.resolution));
         }
         allTokenMetadata.push(fetchCollection(token, provider, multicall, nom));
       }
     }
-    var tokenMetadata = await Promise.all(allTokenMetadata).then((res) =>
+    let tokenMetadata = await Promise.all(allTokenMetadata).then((res) =>
       res.flat()
     );
     tokenMetadata.push(...poapMetadata);
