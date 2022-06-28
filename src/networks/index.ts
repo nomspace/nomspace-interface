@@ -16,3 +16,10 @@ export const Alfajores: Network = {
   explorer: "https://alfajores-blockscout.celo-testnet.org",
   chainId: ChainId.Alfajores,
 };
+
+export const xDai: Network = {
+name: "xDai",
+rpcUrl: "https://rpc.xdaichain.com",
+explorer: "https://blockscout.com/xdai/mainnet",
+chainId: 100
+} as unknown as Network;

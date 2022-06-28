@@ -10,6 +10,41 @@ import { GlobalNom, NomResult } from "./useNom";
 import { SUPPORTED_NETWORKS } from "config";
 import { JsonRpcProvider } from "@ethersproject/providers";
 
+async function poapCall(resolution: string) {
+  if (process.env.REACT_APP_POAP_KEY === undefined) {
+    console.error("REACT_APP_POAP_KEY not present, skipping POAP fetch");
+    return [];
+  }
+  const poapMetadata = [];
+  const options = {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "X-API-Key": process.env.REACT_APP_POAP_KEY,
+    },
+  };
+
+  let poaps = await fetch(
+    `https://api.poap.tech/actions/scan/${resolution}`,
+    options
+  )
+    .then((response) => response.json())
+    .catch((err) => {
+      console.error(err);
+      return [];
+    });
+
+  for (const poap of poaps) {
+    const url = poap.event.image_url;
+
+    poapMetadata.push({
+      name: poap.event.name,
+      image: `${url}`,
+    });
+  }
+  return poapMetadata;
+}
+
 const fetchCollection = async (
   token: NFT,
   provider: JsonRpcProvider,
@@ -106,7 +141,13 @@ export const useNFTs = () => {
         (network) => network.chainId.toString() === chainId
       );
       const multicallAddress = MULTICALL_ADDR[chainId];
-      if (!network || !multicallAddress) continue;
+      if (!network || !multicallAddress) {
+        console.error(
+          "Missing network or multicall address for network",
+          chainId
+        );
+        continue;
+      }
 
       const provider = new JsonRpcProvider(network.rpc);
       const multicall = Multicall__factory.connect(multicallAddress, provider);
@@ -114,7 +155,11 @@ export const useNFTs = () => {
         allTokenMetadata.push(fetchCollection(token, provider, multicall, nom));
       }
     }
-    return await Promise.all(allTokenMetadata).then((res) => res.flat());
+    allTokenMetadata.push((poapCall(nom.resolution)));
+    let tokenMetadata = await Promise.all(allTokenMetadata).then((res) =>
+      res.flat()
+    );
+    return tokenMetadata;
   }, [nom]);
   return useAsyncState(null, call);
 };

@@ -154,7 +154,6 @@ const nftTokenList: Record<number, NFT[]> = {
       name: "Avalant",
       chainId: 43114,
     },
-
   ],
   137: [
     {

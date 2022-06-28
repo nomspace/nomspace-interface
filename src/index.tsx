@@ -8,7 +8,7 @@ import {
   ContractKitProvider,
   Fuji,
 } from "@celo-tools/use-contractkit";
-import { Celo, Alfajores } from "./networks";
+import { Celo, Alfajores, xDai} from "./networks";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -64,7 +64,7 @@ ReactDOM.render(
         description: "Protocol for name registration",
         url: "https://app.nom.space",
         icon: "https://www.nom.space/favicon-32x32.png",
-        supportedNetworks: [Celo, Alfajores, Avalanche, Fuji],
+        supportedNetworks: [Celo, Alfajores, Avalanche, Fuji, xDai],
       }}
       networks={[Celo, Alfajores, Avalanche, Fuji]}
     >
