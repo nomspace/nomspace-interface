@@ -24,7 +24,7 @@ async function poapCall(resolution: string) {
     },
   };
 
-  let poaps:any = await fetch(
+  let poaps = await fetch(
     `https://api.poap.tech/actions/scan/${resolution}`,
     options
   )
