@@ -24,13 +24,11 @@ async function poapCall(resolution: string) {
     },
   };
 
-  let poaps:any;
-  await fetch(
+  let poaps:any = await fetch(
     `https://api.poap.tech/actions/scan/${resolution}`,
     options
   )
     .then((response) => response.json())
-    .then((response) => (poaps = response))
     .catch((err) => {
       console.error(err);
       return [];
