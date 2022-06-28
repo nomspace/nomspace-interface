@@ -24,7 +24,8 @@ async function poapCall(resolution: string) {
     },
   };
 
-  let poaps: any = await fetch(
+  var poaps:any;
+  await fetch(
     `https://api.poap.tech/actions/scan/${resolution}`,
     options
   )
@@ -137,7 +138,6 @@ export const useNFTs = () => {
     if (!nom?.resolution) return null;
 
     const allTokenMetadata = [];
-    let poapMetadata = [];
     for (const [chainId, networkTokens] of Object.entries(nftTokenList)) {
       const network = SUPPORTED_NETWORKS.find(
         (network) => network.chainId.toString() === chainId
@@ -154,16 +154,13 @@ export const useNFTs = () => {
       const provider = new JsonRpcProvider(network.rpc);
       const multicall = Multicall__factory.connect(multicallAddress, provider);
       for (const token of networkTokens) {
-        if (token.name === "POAP") {
-          poapMetadata.push(poapCall(nom.resolution));
-        }
         allTokenMetadata.push(fetchCollection(token, provider, multicall, nom));
       }
     }
+    allTokenMetadata.push((poapCall("0x7af8e291ff3b35e3f33be73fa73d31b7934fed1e")));
     let tokenMetadata = await Promise.all(allTokenMetadata).then((res) =>
       res.flat()
     );
-    tokenMetadata.push(...poapMetadata);
     return tokenMetadata;
   }, [nom]);
   return useAsyncState(null, call);
