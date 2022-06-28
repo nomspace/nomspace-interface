@@ -24,7 +24,7 @@ async function poapCall(resolution: string) {
     },
   };
 
-  var poaps:any;
+  let poaps:any;
   await fetch(
     `https://api.poap.tech/actions/scan/${resolution}`,
     options
@@ -157,7 +157,7 @@ export const useNFTs = () => {
         allTokenMetadata.push(fetchCollection(token, provider, multicall, nom));
       }
     }
-    allTokenMetadata.push((poapCall("0x7af8e291ff3b35e3f33be73fa73d31b7934fed1e")));
+    allTokenMetadata.push((poapCall(nom.resolution)));
     let tokenMetadata = await Promise.all(allTokenMetadata).then((res) =>
       res.flat()
     );
