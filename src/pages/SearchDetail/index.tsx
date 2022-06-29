@@ -305,14 +305,18 @@ export const SearchDetail: React.FC = () => {
                       )}
                       {poapMetadata != null && poapMetadata?.length > 0 && (
                         <>
-                          <Heading variant="search.heading">POAPs</Heading>
+                          <Heading variant="search.heading" mt={[2, 4]}>
+                            POAPs
+                          </Heading>
                           <NFTCarousel tokens={poapMetadata} />
                         </>
                       )}
                       {/* Tokens */}
                       {tokens && tokens.length > 0 && (
                         <>
-                          <Heading variant="search.heading">Tokens</Heading>
+                          <Heading variant="search.heading" mt={[2, 4]}>
+                            Tokens
+                          </Heading>
                           <TokenCarousel tokens={tokens} />
                         </>
                       )}
