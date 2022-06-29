@@ -1,6 +1,7 @@
 import { ChainId } from "@celo-tools/use-contractkit";
 import styled from "@emotion/styled";
 import { useCeloChainId } from "hooks/useCeloChainId";
+import { CustomChainId } from "networks";
 import Celo from "pages/SearchDetail/assets/s1.png";
 import Polygon from "pages/SearchDetail/assets/s2.png";
 import Avalanche from "pages/SearchDetail/assets/s3.png";
@@ -18,17 +19,17 @@ type Explorer = {
 };
 
 const MAINNET_EXPLORERS: Record<string, Explorer> = {
-  [ChainId.Celo]: {
+  [ChainId.Mainnet]: {
     imageUrl: Celo,
     explorerUrl: "https://explorer.celo.org",
     name: "Celo",
   },
-  [ChainId.Polygon]: {
+  [CustomChainId.Polygon]: {
     imageUrl: Polygon,
     explorerUrl: "https://polygonscan.com",
     name: "Polygon",
   },
-  [ChainId.Avalanche]: {
+  [CustomChainId.Avalanche]: {
     imageUrl: Avalanche,
     explorerUrl: "https://snowtrace.io",
     name: "Avalanche",
@@ -41,12 +42,12 @@ const TESTNET_EXPLORERS: Record<string, Explorer> = {
     explorerUrl: "https://alfajores-blockscout.celo-testnet.org",
     name: "Celo",
   },
-  [ChainId.Mumbai]: {
+  [CustomChainId.Mumbai]: {
     imageUrl: Polygon,
     explorerUrl: "https://mumbai.polygonscan.com",
     name: "Mumbai",
   },
-  [ChainId.Fuji]: {
+  [CustomChainId.Fuji]: {
     imageUrl: Avalanche,
     explorerUrl: "https://testnet.snowtrace.io",
     name: "Avalanche",

@@ -1,4 +1,5 @@
 import { ChainId } from "@celo-tools/use-contractkit";
+import { CustomChainId } from "networks";
 import { YEAR_IN_SECONDS } from "utils/constants";
 
 export enum TextKey {
@@ -16,16 +17,16 @@ export enum TextKey {
 }
 
 export const NATIVE_CURRENCY: Record<string, string> = {
-  [ChainId.Celo]: "CELO",
+  [ChainId.Mainnet]: "CELO",
   [ChainId.Alfajores]: "CELO",
-  [ChainId.Fuji]: "AVAX",
-  [ChainId.Avalanche]: "AVAX",
-  [ChainId.Kovan]: "ETH",
-  [ChainId.Ethereum]: "AVAX",
-  [ChainId.FantomTestnet]: "FTM",
-  [ChainId.Fantom]: "FTM",
-  [ChainId.Mumbai]: "MATIC",
-  [ChainId.Polygon]: "MATIC",
+  [CustomChainId.Fuji]: "AVAX",
+  [CustomChainId.Avalanche]: "AVAX",
+  [CustomChainId.Kovan]: "ETH",
+  [CustomChainId.Ethereum]: "AVAX",
+  [CustomChainId.FantomTestnet]: "FTM",
+  [CustomChainId.Fantom]: "FTM",
+  [CustomChainId.Mumbai]: "MATIC",
+  [CustomChainId.Polygon]: "MATIC",
 };
 
 export type Network = {

@@ -3,12 +3,18 @@ import "@celo-tools/use-contractkit/lib/styles.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import "index.css";
 
+import { ContractKitProvider } from "@celo-tools/use-contractkit";
 import {
   Avalanche,
-  ContractKitProvider,
   Fuji,
-} from "@celo-tools/use-contractkit";
-import { Celo, Alfajores, xDai } from "./networks";
+  Celo,
+  Alfajores,
+  xDai,
+  Fantom,
+  FantomTestnet,
+  Polygon,
+  Mumbai,
+} from "./networks";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -64,9 +70,18 @@ ReactDOM.render(
         description: "Protocol for name registration",
         url: "https://app.nom.space",
         icon: "https://www.nom.space/favicon-32x32.png",
-        supportedNetworks: [Celo, Alfajores, Avalanche, Fuji, xDai],
       }}
-      networks={[Celo, Alfajores, Avalanche, Fuji]}
+      networks={[
+        Celo,
+        Alfajores,
+        Avalanche,
+        Fuji,
+        xDai,
+        Fantom,
+        FantomTestnet,
+        Polygon,
+        Mumbai,
+      ]}
     >
       <ThemeProvider theme={theme}>
         <Provider store={store}>
