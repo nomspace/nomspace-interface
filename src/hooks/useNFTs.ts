@@ -155,11 +155,18 @@ export const useNFTs = () => {
         allTokenMetadata.push(fetchCollection(token, provider, multicall, nom));
       }
     }
-    allTokenMetadata.push((poapCall(nom.resolution)));
-    let tokenMetadata = await Promise.all(allTokenMetadata).then((res) =>
-      res.flat()
-    );
-    return tokenMetadata;
+    return await Promise.all(allTokenMetadata).then((res) => res.flat());
+  }, [nom]);
+  return useAsyncState(null, call);
+};
+
+export const usePOAPs = () => {
+  const [nom] = GlobalNom.useContainer();
+
+  const call = useCallback(async () => {
+    if (!nom?.resolution) return null;
+
+    return await poapCall(nom.resolution);
   }, [nom]);
   return useAsyncState(null, call);
 };
