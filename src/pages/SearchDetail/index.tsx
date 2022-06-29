@@ -29,7 +29,7 @@ import { useHistory } from "react-router-dom";
 import { TokenCarousel } from "components/TokenCarousel";
 import { NFTCarousel } from "components/NFTCarousel";
 import { useTransferOwnership } from "hooks/useTransferOwnership";
-import { useNFTs } from "hooks/useNFTs";
+import { useNFTs, usePOAPs } from "hooks/useNFTs";
 import defaultPFP from "assets/DefaultPFP.png";
 import defaultBanner from "assets/DefaultBanner.png";
 import life2 from "pages/SearchDetail/assets/life1.png";
@@ -54,6 +54,7 @@ export const SearchDetail: React.FC = () => {
   const { address, network } = useContractKit();
   const [nom] = GlobalNom.useContainer();
   const [nftMetadata] = useNFTs();
+  const [poapMetadata] = usePOAPs();
   const [tokens] = useTokenBalances(nom?.resolution);
   const [userStats] = useUserStats(nom?.resolution);
   const history = useHistory();
@@ -300,6 +301,12 @@ export const SearchDetail: React.FC = () => {
                         <>
                           <Heading variant="search.heading">NFTs</Heading>
                           <NFTCarousel tokens={nftMetadata} />
+                        </>
+                      )}
+                      {poapMetadata != null && poapMetadata?.length > 0 && (
+                        <>
+                          <Heading variant="search.heading">POAPs</Heading>
+                          <NFTCarousel tokens={poapMetadata} />
                         </>
                       )}
                       {/* Tokens */}
