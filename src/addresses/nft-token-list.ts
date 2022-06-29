@@ -1,9 +1,9 @@
 export type NFT = {
-  address: string,
-  name: string,
-  chainId: number,
-  imagePrefix?: string,
-  imageExt?: string,
+  address: string;
+  name: string;
+  chainId: number;
+  imagePrefix?: string;
+  imageExt?: string;
 };
 const nftTokenList: Record<number, NFT[]> = {
   42220: [
@@ -91,7 +91,6 @@ const nftTokenList: Record<number, NFT[]> = {
       imagePrefix:
         "https://cybertime.mypinata.cloud/ipfs/QmefdE5PdY4bSZTXP84uKG6ehjBAmyqnYTJnoMhXSe5EvW/",
       imageExt: "png",
-
     },
   ],
   44787: [

@@ -4813,30 +4813,14 @@
   "ast": {
     "absolutePath": "/home/home/dotfiles/nomspace/contracts/FeeModuleV1.sol",
     "exportedSymbols": {
-      "Address": [
-        1933
-      ],
-      "Context": [
-        1956
-      ],
-      "FeeModuleV1": [
-        189
-      ],
-      "IERC20": [
-        1388
-      ],
-      "IFeeModule": [
-        612
-      ],
-      "Ownable": [
-        803
-      ],
-      "SafeERC20": [
-        1637
-      ],
-      "SafeMath": [
-        2268
-      ]
+      "Address": [1933],
+      "Context": [1956],
+      "FeeModuleV1": [189],
+      "IERC20": [1388],
+      "IFeeModule": [612],
+      "Ownable": [803],
+      "SafeERC20": [1637],
+      "SafeMath": [2268]
     },
     "id": 190,
     "license": "MIT",
@@ -4844,12 +4828,7 @@
     "nodes": [
       {
         "id": 20,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:1"
       },
@@ -4933,12 +4912,7 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 189,
-        "linearizedBaseContracts": [
-          189,
-          803,
-          1956,
-          612
-        ],
+        "linearizedBaseContracts": [189, 803, 1956, 612],
         "name": "FeeModuleV1",
         "nameLocation": "283:11:1",
         "nodeType": "ContractDefinition",
@@ -5556,9 +5530,7 @@
             "visibility": "public"
           },
           {
-            "baseFunctions": [
-              611
-            ],
+            "baseFunctions": [611],
             "body": {
               "id": 116,
               "nodeType": "Block",
@@ -5688,10 +5660,7 @@
                       "id": 93,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1271:7:1",
                       "typeDescriptions": {
@@ -6016,9 +5985,7 @@
               "src": "1526:143:1",
               "statements": [
                 {
-                  "assignments": [
-                    127
-                  ],
+                  "assignments": [127],
                   "declarations": [
                     {
                       "constant": false,
@@ -6355,9 +6322,7 @@
               "src": "1738:147:1",
               "statements": [
                 {
-                  "assignments": [
-                    154
-                  ],
+                  "assignments": [154],
                   "declarations": [
                     {
                       "constant": false,
@@ -6592,9 +6557,7 @@
               "src": "1948:126:1",
               "statements": [
                 {
-                  "assignments": [
-                    175
-                  ],
+                  "assignments": [175],
                   "declarations": [
                     {
                       "constant": false,
@@ -6835,30 +6798,14 @@
   "legacyAST": {
     "absolutePath": "/home/home/dotfiles/nomspace/contracts/FeeModuleV1.sol",
     "exportedSymbols": {
-      "Address": [
-        1933
-      ],
-      "Context": [
-        1956
-      ],
-      "FeeModuleV1": [
-        189
-      ],
-      "IERC20": [
-        1388
-      ],
-      "IFeeModule": [
-        612
-      ],
-      "Ownable": [
-        803
-      ],
-      "SafeERC20": [
-        1637
-      ],
-      "SafeMath": [
-        2268
-      ]
+      "Address": [1933],
+      "Context": [1956],
+      "FeeModuleV1": [189],
+      "IERC20": [1388],
+      "IFeeModule": [612],
+      "Ownable": [803],
+      "SafeERC20": [1637],
+      "SafeMath": [2268]
     },
     "id": 190,
     "license": "MIT",
@@ -6866,12 +6813,7 @@
     "nodes": [
       {
         "id": 20,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:1"
       },
@@ -6955,12 +6897,7 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 189,
-        "linearizedBaseContracts": [
-          189,
-          803,
-          1956,
-          612
-        ],
+        "linearizedBaseContracts": [189, 803, 1956, 612],
         "name": "FeeModuleV1",
         "nameLocation": "283:11:1",
         "nodeType": "ContractDefinition",
@@ -7578,9 +7515,7 @@
             "visibility": "public"
           },
           {
-            "baseFunctions": [
-              611
-            ],
+            "baseFunctions": [611],
             "body": {
               "id": 116,
               "nodeType": "Block",
@@ -7710,10 +7645,7 @@
                       "id": 93,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1271:7:1",
                       "typeDescriptions": {
@@ -8038,9 +7970,7 @@
               "src": "1526:143:1",
               "statements": [
                 {
-                  "assignments": [
-                    127
-                  ],
+                  "assignments": [127],
                   "declarations": [
                     {
                       "constant": false,
@@ -8377,9 +8307,7 @@
               "src": "1738:147:1",
               "statements": [
                 {
-                  "assignments": [
-                    154
-                  ],
+                  "assignments": [154],
                   "declarations": [
                     {
                       "constant": false,
@@ -8614,9 +8542,7 @@
               "src": "1948:126:1",
               "statements": [
                 {
-                  "assignments": [
-                    175
-                  ],
+                  "assignments": [175],
                   "declarations": [
                     {
                       "constant": false,

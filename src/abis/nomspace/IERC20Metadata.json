@@ -237,12 +237,8 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
     "exportedSymbols": {
-      "IERC20": [
-        1388
-      ],
-      "IERC20Metadata": [
-        1413
-      ]
+      "IERC20": [1388],
+      "IERC20Metadata": [1413]
     },
     "id": 1414,
     "license": "MIT",
@@ -250,12 +246,7 @@
     "nodes": [
       {
         "id": 1390,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:10"
       },
@@ -297,10 +288,7 @@
         },
         "fullyImplemented": false,
         "id": 1413,
-        "linearizedBaseContracts": [
-          1413,
-          1388
-        ],
+        "linearizedBaseContracts": [1413, 1388],
         "name": "IERC20Metadata",
         "nameLocation": "210:14:10",
         "nodeType": "ContractDefinition",
@@ -499,12 +487,8 @@
   "legacyAST": {
     "absolutePath": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
     "exportedSymbols": {
-      "IERC20": [
-        1388
-      ],
-      "IERC20Metadata": [
-        1413
-      ]
+      "IERC20": [1388],
+      "IERC20Metadata": [1413]
     },
     "id": 1414,
     "license": "MIT",
@@ -512,12 +496,7 @@
     "nodes": [
       {
         "id": 1390,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:10"
       },
@@ -559,10 +538,7 @@
         },
         "fullyImplemented": false,
         "id": 1413,
-        "linearizedBaseContracts": [
-          1413,
-          1388
-        ],
+        "linearizedBaseContracts": [1413, 1388],
         "name": "IERC20Metadata",
         "nameLocation": "210:14:10",
         "nodeType": "ContractDefinition",

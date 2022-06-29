@@ -1,3 +1,1 @@
-export const useTags = (user?: string) => {
-
-}
+export const useTags = (user?: string) => {};

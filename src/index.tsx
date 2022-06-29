@@ -8,7 +8,7 @@ import {
   ContractKitProvider,
   Fuji,
 } from "@celo-tools/use-contractkit";
-import { Celo, Alfajores, xDai} from "./networks";
+import { Celo, Alfajores, xDai } from "./networks";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
