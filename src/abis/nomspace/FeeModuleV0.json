@@ -495,12 +495,8 @@
   "ast": {
     "absolutePath": "/home/home/dotfiles/nomspace/contracts/FeeModuleV0.sol",
     "exportedSymbols": {
-      "FeeModuleV0": [
-        18
-      ],
-      "IFeeModule": [
-        612
-      ]
+      "FeeModuleV0": [18],
+      "IFeeModule": [612]
     },
     "id": 19,
     "license": "MIT",
@@ -508,12 +504,7 @@
     "nodes": [
       {
         "id": 1,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:0"
       },
@@ -549,18 +540,13 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 18,
-        "linearizedBaseContracts": [
-          18,
-          612
-        ],
+        "linearizedBaseContracts": [18, 612],
         "name": "FeeModuleV0",
         "nameLocation": "106:11:0",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "baseFunctions": [
-              611
-            ],
+            "baseFunctions": [611],
             "body": {
               "id": 16,
               "nodeType": "Block",
@@ -717,12 +703,8 @@
   "legacyAST": {
     "absolutePath": "/home/home/dotfiles/nomspace/contracts/FeeModuleV0.sol",
     "exportedSymbols": {
-      "FeeModuleV0": [
-        18
-      ],
-      "IFeeModule": [
-        612
-      ]
+      "FeeModuleV0": [18],
+      "IFeeModule": [612]
     },
     "id": 19,
     "license": "MIT",
@@ -730,12 +712,7 @@
     "nodes": [
       {
         "id": 1,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:0"
       },
@@ -771,18 +748,13 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 18,
-        "linearizedBaseContracts": [
-          18,
-          612
-        ],
+        "linearizedBaseContracts": [18, 612],
         "name": "FeeModuleV0",
         "nameLocation": "106:11:0",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "baseFunctions": [
-              611
-            ],
+            "baseFunctions": [611],
             "body": {
               "id": 16,
               "nodeType": "Block",

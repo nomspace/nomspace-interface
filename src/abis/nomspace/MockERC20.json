@@ -5233,21 +5233,11 @@
   "ast": {
     "absolutePath": "/home/home/dotfiles/nomspace/contracts/mocks/MockERC20.sol",
     "exportedSymbols": {
-      "Context": [
-        1956
-      ],
-      "ERC20": [
-        1310
-      ],
-      "IERC20": [
-        1388
-      ],
-      "IERC20Metadata": [
-        1413
-      ],
-      "MockERC20": [
-        693
-      ]
+      "Context": [1956],
+      "ERC20": [1310],
+      "IERC20": [1388],
+      "IERC20Metadata": [1413],
+      "MockERC20": [693]
     },
     "id": 694,
     "license": "MIT",
@@ -5255,12 +5245,7 @@
     "nodes": [
       {
         "id": 673,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:6"
       },
@@ -5296,13 +5281,7 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 693,
-        "linearizedBaseContracts": [
-          693,
-          1310,
-          1413,
-          1388,
-          1956
-        ],
+        "linearizedBaseContracts": [693, 1310, 1413, 1388, 1956],
         "name": "MockERC20",
         "nameLocation": "124:9:6",
         "nodeType": "ContractDefinition",
@@ -5514,21 +5493,11 @@
   "legacyAST": {
     "absolutePath": "/home/home/dotfiles/nomspace/contracts/mocks/MockERC20.sol",
     "exportedSymbols": {
-      "Context": [
-        1956
-      ],
-      "ERC20": [
-        1310
-      ],
-      "IERC20": [
-        1388
-      ],
-      "IERC20Metadata": [
-        1413
-      ],
-      "MockERC20": [
-        693
-      ]
+      "Context": [1956],
+      "ERC20": [1310],
+      "IERC20": [1388],
+      "IERC20Metadata": [1413],
+      "MockERC20": [693]
     },
     "id": 694,
     "license": "MIT",
@@ -5536,12 +5505,7 @@
     "nodes": [
       {
         "id": 673,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:6"
       },
@@ -5577,13 +5541,7 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 693,
-        "linearizedBaseContracts": [
-          693,
-          1310,
-          1413,
-          1388,
-          1956
-        ],
+        "linearizedBaseContracts": [693, 1310, 1413, 1388, 1956],
         "name": "MockERC20",
         "nameLocation": "124:9:6",
         "nodeType": "ContractDefinition",

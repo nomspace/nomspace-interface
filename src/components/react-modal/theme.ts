@@ -1,4 +1,4 @@
-import { Theme } from 'theme-ui'
+import { Theme } from "theme-ui";
 
 export const modalTheme = {
   modals: {
@@ -13,47 +13,47 @@ export const modalTheme = {
       background: `rgba(0,0,0,0.3)`,
     },
     content: {
-      px: '1rem',
+      px: "1rem",
       flexGrow: 1,
-      overflowY: 'scroll',
+      overflowY: "scroll",
     },
     footer: {
       minHeight: 16,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      px: '1rem',
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      px: "1rem",
     },
     title: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
       minHeight: 16,
-      px: '1rem',
+      px: "1rem",
     },
 
     // Modal variants
     default: {
-      backgroundColor: 'background',
-      borderRadius: 'lg',
+      backgroundColor: "background",
+      borderRadius: "lg",
       boxShadow: `md`,
       display: `flex`,
       flexDirection: `column`,
       maxHeight: `80vh`,
-      minHeight: '16rem',
-      minWidth: '16rem',
-      maxWidth: 'min(90vw, 64rem)',
+      minHeight: "16rem",
+      minWidth: "16rem",
+      maxWidth: "min(90vw, 64rem)",
       position: `absolute`,
       top: [`25%`, `10%`, `10%`],
       zIndex: `modal`,
     },
     defaultFullScreen: {
-      backgroundColor: 'background',
+      backgroundColor: "background",
       borderRadius: 0,
       display: `flex`,
       flexDirection: `column`,
-      minHeight: '100vh',
-      maxHeight: '100vh',
+      minHeight: "100vh",
+      maxHeight: "100vh",
       height: `fill-available`,
       position: `absolute`,
       top: 0,
@@ -65,7 +65,7 @@ export const modalTheme = {
     backdrop: 100,
     modal: 110,
   },
-}
+};
 
 export function withModalTheme<T extends Theme>(theme: T) {
   return {
@@ -75,5 +75,5 @@ export function withModalTheme<T extends Theme>(theme: T) {
       ...modalTheme.zIndices,
       ...(theme?.zIndices ?? []),
     },
-  }
+  };
 }

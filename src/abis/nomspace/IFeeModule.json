@@ -39,9 +39,7 @@
   "ast": {
     "absolutePath": "/home/home/dotfiles/nomspace/contracts/interfaces/IFeeModule.sol",
     "exportedSymbols": {
-      "IFeeModule": [
-        612
-      ]
+      "IFeeModule": [612]
     },
     "id": 613,
     "license": "MIT",
@@ -49,12 +47,7 @@
     "nodes": [
       {
         "id": 602,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "32:23:4"
       },
@@ -65,9 +58,7 @@
         "contractKind": "interface",
         "fullyImplemented": false,
         "id": 612,
-        "linearizedBaseContracts": [
-          612
-        ],
+        "linearizedBaseContracts": [612],
         "name": "IFeeModule",
         "nameLocation": "67:10:4",
         "nodeType": "ContractDefinition",
@@ -194,9 +185,7 @@
   "legacyAST": {
     "absolutePath": "/home/home/dotfiles/nomspace/contracts/interfaces/IFeeModule.sol",
     "exportedSymbols": {
-      "IFeeModule": [
-        612
-      ]
+      "IFeeModule": [612]
     },
     "id": 613,
     "license": "MIT",
@@ -204,12 +193,7 @@
     "nodes": [
       {
         "id": 602,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "32:23:4"
       },
@@ -220,9 +204,7 @@
         "contractKind": "interface",
         "fullyImplemented": false,
         "id": 612,
-        "linearizedBaseContracts": [
-          612
-        ],
+        "linearizedBaseContracts": [612],
         "name": "IFeeModule",
         "nameLocation": "67:10:4",
         "nodeType": "ContractDefinition",

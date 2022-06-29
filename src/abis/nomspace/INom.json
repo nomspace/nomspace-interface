@@ -163,9 +163,7 @@
   "ast": {
     "absolutePath": "/home/home/dotfiles/nomspace/contracts/interfaces/INom.sol",
     "exportedSymbols": {
-      "INom": [
-        671
-      ]
+      "INom": [671]
     },
     "id": 672,
     "license": "MIT",
@@ -173,12 +171,7 @@
     "nodes": [
       {
         "id": 614,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "32:23:5"
       },
@@ -189,9 +182,7 @@
         "contractKind": "interface",
         "fullyImplemented": false,
         "id": 671,
-        "linearizedBaseContracts": [
-          671
-        ],
+        "linearizedBaseContracts": [671],
         "name": "INom",
         "nameLocation": "137:4:5",
         "nodeType": "ContractDefinition",
@@ -871,9 +862,7 @@
   "legacyAST": {
     "absolutePath": "/home/home/dotfiles/nomspace/contracts/interfaces/INom.sol",
     "exportedSymbols": {
-      "INom": [
-        671
-      ]
+      "INom": [671]
     },
     "id": 672,
     "license": "MIT",
@@ -881,12 +870,7 @@
     "nodes": [
       {
         "id": 614,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "32:23:5"
       },
@@ -897,9 +881,7 @@
         "contractKind": "interface",
         "fullyImplemented": false,
         "id": 671,
-        "linearizedBaseContracts": [
-          671
-        ],
+        "linearizedBaseContracts": [671],
         "name": "INom",
         "nameLocation": "137:4:5",
         "nodeType": "ContractDefinition",

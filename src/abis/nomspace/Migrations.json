@@ -669,9 +669,7 @@
   "ast": {
     "absolutePath": "/home/home/dotfiles/nomspace/contracts/Migrations.sol",
     "exportedSymbols": {
-      "Migrations": [
-        222
-      ]
+      "Migrations": [222]
     },
     "id": 223,
     "license": "MIT",
@@ -679,15 +677,7 @@
     "nodes": [
       {
         "id": 191,
-        "literals": [
-          "solidity",
-          ">=",
-          "0.4",
-          ".22",
-          "<",
-          "0.9",
-          ".0"
-        ],
+        "literals": ["solidity", ">=", "0.4", ".22", "<", "0.9", ".0"],
         "nodeType": "PragmaDirective",
         "src": "32:32:2"
       },
@@ -698,9 +688,7 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 222,
-        "linearizedBaseContracts": [
-          222
-        ],
+        "linearizedBaseContracts": [222],
         "name": "Migrations",
         "nameLocation": "75:10:2",
         "nodeType": "ContractDefinition",
@@ -884,10 +872,7 @@
                       "id": 199,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "196:7:2",
                       "typeDescriptions": {
@@ -1065,9 +1050,7 @@
   "legacyAST": {
     "absolutePath": "/home/home/dotfiles/nomspace/contracts/Migrations.sol",
     "exportedSymbols": {
-      "Migrations": [
-        222
-      ]
+      "Migrations": [222]
     },
     "id": 223,
     "license": "MIT",
@@ -1075,15 +1058,7 @@
     "nodes": [
       {
         "id": 191,
-        "literals": [
-          "solidity",
-          ">=",
-          "0.4",
-          ".22",
-          "<",
-          "0.9",
-          ".0"
-        ],
+        "literals": ["solidity", ">=", "0.4", ".22", "<", "0.9", ".0"],
         "nodeType": "PragmaDirective",
         "src": "32:32:2"
       },
@@ -1094,9 +1069,7 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 222,
-        "linearizedBaseContracts": [
-          222
-        ],
+        "linearizedBaseContracts": [222],
         "name": "Migrations",
         "nameLocation": "75:10:2",
         "nodeType": "ContractDefinition",
@@ -1280,10 +1253,7 @@
                       "id": 199,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "196:7:2",
                       "typeDescriptions": {

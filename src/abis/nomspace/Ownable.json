@@ -67,12 +67,8 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts/access/Ownable.sol",
     "exportedSymbols": {
-      "Context": [
-        1956
-      ],
-      "Ownable": [
-        803
-      ]
+      "Context": [1956],
+      "Ownable": [803]
     },
     "id": 804,
     "license": "MIT",
@@ -80,12 +76,7 @@
     "nodes": [
       {
         "id": 695,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:7"
       },
@@ -127,10 +118,7 @@
         },
         "fullyImplemented": true,
         "id": 803,
-        "linearizedBaseContracts": [
-          803,
-          1956
-        ],
+        "linearizedBaseContracts": [803, 1956],
         "name": "Ownable",
         "nameLocation": "602:7:7",
         "nodeType": "ContractDefinition",
@@ -243,9 +231,7 @@
               "src": "857:135:7",
               "statements": [
                 {
-                  "assignments": [
-                    712
-                  ],
+                  "assignments": [712],
                   "declarations": [
                     {
                       "constant": false,
@@ -708,10 +694,7 @@
                       "id": 741,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1272:7:7",
                       "typeDescriptions": {
@@ -1157,10 +1140,7 @@
                       "id": 782,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2074:7:7",
                       "typeDescriptions": {
@@ -1387,12 +1367,8 @@
   "legacyAST": {
     "absolutePath": "@openzeppelin/contracts/access/Ownable.sol",
     "exportedSymbols": {
-      "Context": [
-        1956
-      ],
-      "Ownable": [
-        803
-      ]
+      "Context": [1956],
+      "Ownable": [803]
     },
     "id": 804,
     "license": "MIT",
@@ -1400,12 +1376,7 @@
     "nodes": [
       {
         "id": 695,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:7"
       },
@@ -1447,10 +1418,7 @@
         },
         "fullyImplemented": true,
         "id": 803,
-        "linearizedBaseContracts": [
-          803,
-          1956
-        ],
+        "linearizedBaseContracts": [803, 1956],
         "name": "Ownable",
         "nameLocation": "602:7:7",
         "nodeType": "ContractDefinition",
@@ -1563,9 +1531,7 @@
               "src": "857:135:7",
               "statements": [
                 {
-                  "assignments": [
-                    712
-                  ],
+                  "assignments": [712],
                   "declarations": [
                     {
                       "constant": false,
@@ -2028,10 +1994,7 @@
                       "id": 741,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1272:7:7",
                       "typeDescriptions": {
@@ -2477,10 +2440,7 @@
                       "id": 782,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2074:7:7",
                       "typeDescriptions": {

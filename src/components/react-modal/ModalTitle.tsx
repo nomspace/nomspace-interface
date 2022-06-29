@@ -1,14 +1,14 @@
-import React from 'react'
-import { Box, BoxProps, Close } from 'theme-ui'
-import { useModal } from './ModalContext'
+import React from "react";
+import { Box, BoxProps, Close } from "theme-ui";
+import { useModal } from "./ModalContext";
 
 export interface ModalTitleProps extends BoxProps {
-  CloseButton?: React.ComponentType<{ onClick: () => any }>
+  CloseButton?: React.ComponentType<{ onClick: () => any }>;
 }
 
 const ModalTitle = React.forwardRef<HTMLDivElement, ModalTitleProps>(
   function ModalTitle({ children, CloseButton, ...props }, ref) {
-    const { allowClose, onClose } = useModal()
+    const { allowClose, onClose } = useModal();
 
     return (
       <Box variant="modals.title" {...props} ref={ref}>
@@ -21,16 +21,16 @@ const ModalTitle = React.forwardRef<HTMLDivElement, ModalTitleProps>(
               sx={{
                 height: 6,
                 width: 6,
-                '&:hover': {
-                  cursor: 'pointer',
+                "&:hover": {
+                  cursor: "pointer",
                 },
               }}
               onClick={onClose}
             />
           ))}
       </Box>
-    )
+    );
   }
-)
+);
 
-export default ModalTitle
+export default ModalTitle;
