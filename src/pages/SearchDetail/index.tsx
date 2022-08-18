@@ -41,7 +41,6 @@ import { isAddress } from "web3-utils";
 import { NewTabLink } from "components/NewTabLink";
 import { SearchBar } from "components/SearchBar";
 import { Spinner } from "theme-ui";
-import { getAddress } from "ethers/lib/utils";
 import { toast, ToastContainer } from "react-toastify";
 import { useUserNoms } from "hooks/useUserNoms";
 import { EXPIRATION_THRESHOLD } from "utils/constants";
@@ -51,7 +50,7 @@ const now = Date.now() / 1000;
 
 export const SearchDetail: React.FC = () => {
   const { name } = useName();
-  const { address, network } = useContractKit();
+  const { network } = useContractKit();
   const [nom] = GlobalNom.useContainer();
   const [nftMetadata] = useNFTs();
   const [poapMetadata] = usePOAPs();
@@ -65,12 +64,10 @@ export const SearchDetail: React.FC = () => {
   const [hasNomstronaut] = useHasNomstronauts();
   const [userNoms] = useUserNoms();
 
-  const isOwner = address && nom?.owner && nom.owner === getAddress(address);
-
   // Toast for no resolution
   React.useEffect(() => {
     let toastId: React.ReactText;
-    if (isOwner && (!nom?.resolution || Number(nom?.resolution) === 0)) {
+    if (nom?.isOwner && (!nom?.resolution || Number(nom?.resolution) === 0)) {
       toastId = toast.warn(
         <>
           <div>
@@ -104,7 +101,7 @@ export const SearchDetail: React.FC = () => {
     return () => {
       toastId && toast.dismiss(toastId);
     };
-  }, [history, isOwner, name, nom?.resolution]);
+  }, [history, name, nom?.isOwner, nom?.resolution]);
 
   React.useEffect(() => {
     let toastId: React.ReactText;
@@ -153,7 +150,7 @@ export const SearchDetail: React.FC = () => {
     return () => {
       toastId && toast.dismiss(toastId);
     };
-  }, [history, isOwner, name, nom, userNoms]);
+  }, [history, name, nom, userNoms]);
 
   return (
     <>
@@ -232,7 +229,7 @@ export const SearchDetail: React.FC = () => {
                     <Box variant="search.connection.desktopContainer">
                       <SocialIcons nom={nom} />
                     </Box>
-                    {isOwner && (
+                    {nom.isOwner && (
                       <>
                         <Button
                           onClick={() => {
@@ -376,7 +373,7 @@ export const SearchDetail: React.FC = () => {
                         </Text>
                         <ExplorerIcons userAddress={nom.resolution} />
                       </Box>
-                      {isOwner && (
+                      {nom.isOwner && (
                         <Flex sx={{ py: 20, justifyContent: "center" }}>
                           <Button
                             sx={{ px: 16, py: 8, backgroundColor: "red" }}

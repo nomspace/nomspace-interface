@@ -31,7 +31,7 @@ interface Props {
 }
 
 export const ExtendView: React.FC<Props> = ({ onClose, name }) => {
-  const { address, network } = useContractKit();
+  const { network } = useContractKit();
 
   const [nom] = GlobalNom.useContainer();
   const [years, setYears] = React.useState(1);
@@ -221,7 +221,7 @@ export const ExtendView: React.FC<Props> = ({ onClose, name }) => {
           </Flex>
           {loading ? (
             <Spinner />
-          ) : nom.owner === address ? (
+          ) : nom.isOwner ? (
             button
           ) : (
             nom.owner && (

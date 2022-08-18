@@ -13,6 +13,8 @@ import {
 import { labelhash } from "@ensdomains/ensjs";
 import { useName } from "./useName";
 import { createContainer } from "unstated-next";
+import { useContractKit } from "@celo-tools/use-contractkit";
+import { getAddress } from "ethers/lib/utils";
 
 export type NomResult = {
   resolution: string;
@@ -26,9 +28,11 @@ export type NomResult = {
   telegram: string;
   twitter: string;
   avatar: string;
+  isOwner: boolean;
 };
 
 const useNom = () => {
+  const { address: connectedAddress } = useContractKit();
   const { name, namehash } = useName();
   const celoProvider = useCeloProvider();
   const celoChainId = useCeloChainId();
@@ -163,8 +167,9 @@ const useNom = () => {
       telegram,
       twitter,
       avatar,
+      isOwner: owner !== null && connectedAddress === getAddress(owner),
     };
-  }, [celoChainId, name, namehash, celoProvider]);
+  }, [celoChainId, name, namehash, celoProvider, connectedAddress]);
 
   return usePollingAsyncState(null, 10000, call);
 };
