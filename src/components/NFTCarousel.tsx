@@ -1,5 +1,4 @@
 import { useWindowDimensions } from "hooks/useWindowDimensions";
-import { NewTabLink } from "components/NewTabLink";
 import { Box, Spinner, Image } from "theme-ui";
 import { FixedSizeList as List } from "react-window";
 import React from "react";
@@ -33,18 +32,19 @@ const Column: React.FC<IItemProps> = ({ index, style, data }) => {
       variant="search.nft.imageContainer"
       onClick={onItemClick ? () => onItemClick(index) : undefined}
     >
-      <NewTabLink href={onItemClick ? undefined : token.image}>
-        <Spinner />
-        <Image
-          variant="search.nft.image"
-          src={token.image}
-          sx={{ boxShadow: "0px 3px 4px #00000029" }}
-          onLoad={(e) => {
-            (e.target as HTMLImageElement).previousSibling?.remove();
-            (e.target as HTMLImageElement).style.display = "block";
-          }}
-        />
-      </NewTabLink>
+      <Spinner />
+      <Image
+        variant="search.nft.image"
+        src={token.image}
+        sx={{
+          boxShadow: "0px 3px 4px #00000029",
+          cursor: onItemClick ? "pointer" : "auto",
+        }}
+        onLoad={(e) => {
+          (e.target as HTMLImageElement).previousSibling?.remove();
+          (e.target as HTMLImageElement).style.display = "block";
+        }}
+      />
     </Box>
   );
 };

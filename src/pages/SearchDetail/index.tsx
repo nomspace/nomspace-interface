@@ -45,6 +45,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { useUserNoms } from "hooks/useUserNoms";
 import { EXPIRATION_THRESHOLD } from "utils/constants";
 import moment from "moment";
+import { ImageModal } from "components/ImageModal";
 
 const now = Date.now() / 1000;
 
@@ -54,6 +55,7 @@ export const SearchDetail: React.FC = () => {
   const [nom] = GlobalNom.useContainer();
   const [nftMetadata] = useNFTs();
   const [poapMetadata] = usePOAPs();
+  const [selectedImage, setSelectedImage] = useState<string>();
   const [tokens] = useTokenBalances(nom?.resolution);
   const [userStats] = useUserStats(nom?.resolution);
   const history = useHistory();
@@ -175,6 +177,7 @@ export const SearchDetail: React.FC = () => {
           <ReclaimModal />
         </>
       )}
+      <ImageModal src={selectedImage} setSrc={setSelectedImage} />
       <Flex
         sx={{
           alignItems: "center",
@@ -297,7 +300,12 @@ export const SearchDetail: React.FC = () => {
                       {nftMetadata != null && nftMetadata?.length > 0 && (
                         <>
                           <Heading variant="search.heading">NFTs</Heading>
-                          <NFTCarousel tokens={nftMetadata} />
+                          <NFTCarousel
+                            tokens={nftMetadata}
+                            onItemClick={(idx) => {
+                              setSelectedImage(nftMetadata[idx]?.image);
+                            }}
+                          />
                         </>
                       )}
                       {poapMetadata != null && poapMetadata?.length > 0 && (
@@ -305,7 +313,12 @@ export const SearchDetail: React.FC = () => {
                           <Heading variant="search.heading" mt={[2, 4]}>
                             POAPs
                           </Heading>
-                          <NFTCarousel tokens={poapMetadata} />
+                          <NFTCarousel
+                            tokens={poapMetadata}
+                            onItemClick={(idx) => {
+                              setSelectedImage(poapMetadata[idx]?.image);
+                            }}
+                          />
                         </>
                       )}
                       {/* Tokens */}
